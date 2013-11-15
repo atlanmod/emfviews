@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirtualEMF Editor
+Bundle-SymbolicName: fr.inria.atlanmod.emfviews.editor;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: fr.inria.atlanmod.emfviews.editor.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.core.resources,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.forms,
+ fr.inria.atlanmod.emfviews.ui,
+ org.eclipse.emf.ecore.editor,
+ org.eclipse.jface,
+ fr.inria.atlanmod.emfviews
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.gef.ui.parts

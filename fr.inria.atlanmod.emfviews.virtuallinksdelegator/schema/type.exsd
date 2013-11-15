@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="fr.inria.virtuallinksdelegator" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="fr.inria.virtuallinksdelegator" id="type" name="type"/>
+      </appinfo>
+      <documentation>
+         The VirtualLinksDelegate plugin allows to transform different linking/comparison DSLs into a canonical links model. This model can be latter use in a tool such as VirtualEMF.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="linkingDslContribution"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="linkingDslContribution">
+      <annotation>
+         <documentation>
+            Define the dsl for defining tools that supports this extension.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="fileExtension" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class to be instantiated.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn="fr.inria.virtuallinksdelegator.VirtualLinksDelegateFactory:fr.inria.virtuallinksdelegator.IVirtualLinksDelegate"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="default" type="boolean">
+            <annotation>
+               <documentation>
+                  Allows the user to indicate the delegator to use this handler as the default, in case there are several handlers that register to the same extension.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;pre&gt;
+   &lt;extension
+         point=&quot;fr.inria.virtuallinksdelegator.type&quot;&gt;
+      &lt;linkingDslContribution
+            class=&quot;fr.inria.virtuallinksepsilondelegate.EclDelegate&quot;
+            fileExtension=&quot;ecl&quot;&gt;
+      &lt;/linkingDslContribution&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         Plugins that want to extend this extension point must generate objects that implement &lt;samp&gt; fr.inria.virtuallinksdelegator.IVirtualLinksDelegate &lt;/samp&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>
