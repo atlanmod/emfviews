@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 INRIA.
+ * Copyright (c) 2013 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  * Cauê Clasen - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.emfviews.rules;
+package fr.inria.atlanmod.emfviews.rules;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.InternalEObject.EStore;
 
-import fr.inria.emfviews.core.View;
+import fr.inria.atlanmod.emfviews.core.View;
 
 public abstract class TranslationRule implements EStore {
 

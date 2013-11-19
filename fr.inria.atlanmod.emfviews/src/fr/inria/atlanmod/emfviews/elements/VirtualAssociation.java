@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 INRIA.
+ * Copyright (c) 2013 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  * Cauê Clasen - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.emfviews.elements;
+package fr.inria.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,14 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import fr.inria.emfviews.core.View;
-import fr.inria.emfviews.rules.TranslationRule;
-import fr.inria.emfviews.rules.VirtualModelList;
+import fr.inria.atlanmod.emfviews.core.View;
+import fr.inria.atlanmod.emfviews.rules.TranslationRule;
+import fr.inria.atlanmod.emfviews.rules.VirtualModelList;
 
-// TODO: support containment virtual associations
 public class VirtualAssociation {
 
 	private EObject container;
-	private List<EObject> referencedElements; // these are concrete elements
+	private List<EObject> referencedElements;
 	private EStructuralFeature virtualFeature;
 
 	public VirtualAssociation(EObject container,
@@ -78,7 +77,7 @@ public class VirtualAssociation {
 			this.referencedElements.clear();
 			this.referencedElements.add(target);
 		}
-		return null; // should be old value
+		return null;
 	}
 
 	public void removeTargetElement(EObject target) {

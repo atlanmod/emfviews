@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 INRIA.
+ * Copyright (c) 2013 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  * Cauê Clasen - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.emfviews.core;
+package fr.inria.atlanmod.emfviews.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
+import fr.inria.atlanmod.emfviews.rules.TranslationRule;
 import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.emfviews.elements.ReproduceElementImpl;
-import fr.inria.emfviews.elements.VirtualElement;
-import fr.inria.emfviews.rules.TranslationRule;
 
 public class LinksProjector {
 
@@ -37,12 +36,9 @@ public class LinksProjector {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void load(VirtualLinks virtualLinks) {
 
 		List<Association> associations = new ArrayList<Association>();
-		List<EObject> merges = new ArrayList<EObject>();
-		List<EObject> filters = new ArrayList<EObject>();
 		EList<VirtualLink> links = virtualLinks.getVirtualLinks();
 		for (VirtualLink link : links) {
 			if (link instanceof Association) {
@@ -53,7 +49,6 @@ public class LinksProjector {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	private void loadAssociations(List<Association> associations) {
 
 		for (Association association : associations) {
@@ -82,7 +77,6 @@ public class LinksProjector {
 					.getMetamodelManager().getVirtualAssociation(vElement,
 							virtualFeatureName);
 
-			
 			vElement.setVirtualAssociation(virtualFeature,
 					TranslationRule.NO_INDEX, targetElements);
 			vElement.toString();

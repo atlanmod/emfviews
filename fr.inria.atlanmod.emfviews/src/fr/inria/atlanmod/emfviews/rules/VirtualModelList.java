@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 INRIA.
+ * Copyright (c) 2013 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  * Cauê Clasen - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.emfviews.rules;
+package fr.inria.atlanmod.emfviews.rules;
 
 import java.util.AbstractList;
 import java.util.List;
@@ -18,18 +18,18 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import fr.inria.emfviews.core.View;
+import fr.inria.atlanmod.emfviews.core.View;
+import fr.inria.atlanmod.emfviews.elements.FilterElement;
+import fr.inria.atlanmod.emfviews.elements.MergeElementImpl;
 
 public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
-	// public class VirtualModelList<E> extends BasicEStoreEList<E> implements
-	// EList<E> {
 
 	private List<E>[] subLists;
 	private View virtualModel;
 
 	public VirtualModelList(EObject object, EStructuralFeature feature,
 			List<E>... subLists) {
-		// super((InternalEObject) object, feature);
+
 		this.subLists = subLists;
 		this.virtualModel = (View) object.eResource();
 	}
@@ -44,7 +44,14 @@ public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
 						EObject virtualEO = virtualModel
 								.getVirtualLinkManager().getVirtualElement(
 										concreteEO);
-						
+						if (virtualEO instanceof MergeElementImpl) {
+							if (!(((MergeElementImpl) virtualEO)
+									.getPreferableElement() == concreteEO)) {
+								index++;
+							}
+						} else if (virtualEO instanceof FilterElement) {
+							index++;
+						}
 					}
 					return (E) virtualModel
 							.translateToVirtualElement((EObject) subLists[i]
@@ -71,7 +78,13 @@ public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
 		for (E e : list) {
 			EObject eo = (EObject) virtualModel.getVirtualLinkManager()
 					.getVirtualElement((EObject) e);
-		
+			if (eo instanceof MergeElementImpl) {
+				if (((MergeElementImpl) eo).getPreferableElement() == e) {
+					count++;
+				}
+			} else if (!(eo instanceof FilterElement)) {
+				count++;
+			}
 		}
 		return count;
 	}

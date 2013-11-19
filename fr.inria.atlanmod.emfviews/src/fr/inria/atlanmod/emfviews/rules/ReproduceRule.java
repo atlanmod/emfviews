@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 INRIA.
+ * Copyright (c) 2013 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,21 +9,21 @@
  * Cauê Clasen - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.emfviews.rules;
+package fr.inria.atlanmod.emfviews.rules;
 
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import fr.inria.emfviews.core.View;
-import fr.inria.emfviews.core.ViewOperationException;
-import fr.inria.emfviews.elements.ReproduceElementImpl;
+import fr.inria.atlanmod.emfviews.core.View;
+import fr.inria.atlanmod.emfviews.core.ViewOperationException;
+import fr.inria.atlanmod.emfviews.elements.FilterElement;
+import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 
 public class ReproduceRule extends TranslationRule {
 
@@ -35,16 +35,7 @@ public class ReproduceRule extends TranslationRule {
 			int index) {
 		try {
 			ReproduceElementImpl vElement = (ReproduceElementImpl) object;
-			
-			if (feature instanceof EReference) {
-				EReference temp = (EReference) feature;
-			}
-			
-			if (vElement.getConcreteElement().eClass().getName()
-					.compareToIgnoreCase("DocumentRoot") == 0) {
-				
-			}
-			
+
 			View vModel = (View) vElement.eResource();
 			if (vModel.getMetamodelManager().isVirtualAssociation(feature)) {
 				return vElement.getVirtualAssociation(feature, index);
@@ -60,7 +51,9 @@ public class ReproduceRule extends TranslationRule {
 					}
 				} else {
 					value = vModel.translateToVirtualElement((EObject) value);
-					
+					if (value instanceof FilterElement) {
+						value = null;
+					}
 				}
 			} else {
 				if (feature.getUpperBound() != 1 && index != NO_INDEX) {
@@ -69,7 +62,7 @@ public class ReproduceRule extends TranslationRule {
 			}
 			return value;
 		} catch (Exception e) {
-			
+
 		}
 		return null;
 	}
@@ -145,6 +138,7 @@ public class ReproduceRule extends TranslationRule {
 				return cElement.eIsSet(cFeature);
 			}
 		} catch (Exception e) {
+
 		}
 		return false;
 	}
@@ -161,7 +155,7 @@ public class ReproduceRule extends TranslationRule {
 
 	@Override
 	public int hashCode(InternalEObject object, EStructuralFeature feature) {
-		
+
 		View vModel = (View) object.eResource();
 		ReproduceElementImpl vElement = (ReproduceElementImpl) object;
 		EObject cElement = ((ReproduceElementImpl) object).getConcreteElement();
@@ -185,13 +179,13 @@ public class ReproduceRule extends TranslationRule {
 		EStructuralFeature vFeature = vModel.getMetamodelManager()
 				.translateToVirtualFeature(object,
 						cElement.eContainingFeature());
-		// if(vFeature instanceof EAttribute)
-		// System.out.println();
+
 		return vFeature;
 	}
 
 	@Override
 	public EObject create(EClass eClass) {
+
 		throw new ViewOperationException("EStore.move()");
 	}
 

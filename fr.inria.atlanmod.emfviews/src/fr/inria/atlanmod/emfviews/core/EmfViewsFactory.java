@@ -7,10 +7,9 @@
  *
  * Contributors:
  * Cauê Clasen - initial API and implementation
- * Juan David Villa Calle
  *******************************************************************************/
 
-package fr.inria.emfviews.core;
+package fr.inria.atlanmod.emfviews.core;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,17 +23,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 public class EmfViewsFactory extends ResourceFactoryImpl {
 
-	/**
-	 * Returns a newly allocated view/viewtype resource
-	 * 
-	 * @param uri
-	 *            the URI.
-	 * @return a new resource for the URI.
-	 */
 	@Override
 	public Resource createResource(URI uri) {
 		if (uri.toString().endsWith(".eview")) {
@@ -47,13 +38,10 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
 			try {
 				inStream = uriInworkspace.toURL().openStream();
 				properties.load(inStream);
-
 				inStream.close();
+
 				return new EView(uri);
 
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				return null;
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;
@@ -68,17 +56,6 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
 
 	}
 
-	/**
-	 * Creates a new EView
-	 * 
-	 * @param contributingModels
-	 * @param contributingMetamodels
-	 * @param compositionMetamodel
-	 * @param correspondenceModelAbsolutePath
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 */
 	public Resource createEView(List<String> contributingModels,
 			String compositionMetamodel, String correspondenceModelAbsolutePath)
 			throws MalformedURLException, IOException {
@@ -86,15 +63,6 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
 				correspondenceModelAbsolutePath);
 	}
 
-	/**
-	 * Creates a new Viewtype
-	 * 
-	 * @param contributingMetamodels
-	 * @param filtersMMUri
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
 	public Resource createViewtype(List<String> contributingMetamodels,
 			String filtersMMUri) throws FileNotFoundException, IOException {
 		return new Viewtype(contributingMetamodels, filtersMMUri);

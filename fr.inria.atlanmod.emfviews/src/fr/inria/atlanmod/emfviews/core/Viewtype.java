@@ -1,4 +1,14 @@
-package fr.inria.emfviews.core;
+/*******************************************************************************
+ * Copyright (c) 2013 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Juan David Villa Calle - initial API and implementation
+ *******************************************************************************/
+package fr.inria.atlanmod.emfviews.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -70,6 +80,8 @@ public class Viewtype extends ResourceImpl {
 	private String correspondenceModelBase;
 
 	public String getCorrespondenceModelBase() {
+		System.out.println("Cuantas veces se retorna: "
+				+ correspondenceModelBase);
 		return correspondenceModelBase;
 	}
 
@@ -137,13 +149,9 @@ public class Viewtype extends ResourceImpl {
 		setVirtualContents();
 	}
 
-	
-
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
-		
 
 		properties = new Properties();
 		properties.load(inputStream);
@@ -162,6 +170,7 @@ public class Viewtype extends ResourceImpl {
 				vld.createVirtualMetamodelLinks(org.eclipse.emf.common.util.URI
 						.createURI(uri.toString()));
 			} catch (CoreException e) {
+
 				e.printStackTrace();
 			}
 		}
@@ -186,17 +195,17 @@ public class Viewtype extends ResourceImpl {
 	}
 
 	private void loadContributingMetamodels(String contributingModelsURIs) {
-		
+
 		hiddenAttributes = new ArrayList<>();
 		contributingEpackages = new ArrayList<>();
-		
 		EList<EObject> epackagesWithAttsToHide = attributesToHideMM
 				.getContents();
-		
 
 		String modelsURIs[] = contributingModelsURIs.split(",");
-		for (int i = 0; i < modelsURIs.length; i++) 
-		{
+		for (int i = 0; i < modelsURIs.length; i++) {
+			System.out
+					.println("Cuantos paquetes hay en el registro de paquetes del metamodelo virtual: "
+							+ virtualResourceSet.getPackageRegistry().size());
 			String modelURI = modelsURIs[i];
 			if (modelURI.startsWith("http")) {
 				EPackage contributingEcoreModelPackage = EPackage.Registry.INSTANCE
@@ -207,7 +216,6 @@ public class Viewtype extends ResourceImpl {
 				copier.copyReferences();
 				EPackage copiedPackage = (EPackage) copy;
 				EcoreUtil.remove(copiedPackage);
-				
 				contributingEpackages.add(contributingEcoreModelPackage);
 				for (int j = 0; j < epackagesWithAttsToHide.size(); j++) {
 					EPackage tempPack = (EPackage) epackagesWithAttsToHide
@@ -236,6 +244,7 @@ public class Viewtype extends ResourceImpl {
 										.add(originalEClass
 												.getEStructuralFeature(theAtt
 														.getName()));
+
 								eClassWithItemsToHide.getEStructuralFeatures()
 										.remove(theAtt);
 							}
@@ -252,9 +261,8 @@ public class Viewtype extends ResourceImpl {
 						.put(contributingEcoreModelPackage.getNsURI(),
 								copiedPackage);
 
-			}
-			else if (modelURI.endsWith("ecore"))
-			{
+			} else if (modelURI.endsWith("ecore")) {
+
 				Resource metamodelResource = virtualResourceSet.getResource(
 						URI.createPlatformResourceURI(modelURI, true), true);
 				EPackage mmPackage = (EPackage) metamodelResource.getContents()
@@ -272,9 +280,11 @@ public class Viewtype extends ResourceImpl {
 							.get(j);
 					if (tempPack.getNsURI().compareToIgnoreCase(
 							copiedPackage.getNsURI()) == 0) {
+
 						EList<EClassifier> eClassifiersWithItemsToHide = tempPack
 								.getEClassifiers();
 						for (EClassifier eClassifierWithItemsToHide : eClassifiersWithItemsToHide) {
+
 							EClassifier requiredEclassifier = copiedPackage
 									.getEClassifier(eClassifierWithItemsToHide
 											.getName());
@@ -296,6 +306,7 @@ public class Viewtype extends ResourceImpl {
 										.add(originalEClass
 												.getEStructuralFeature(theAtt
 														.getName()));
+
 								eClassWithItemsToHide.getEStructuralFeatures()
 										.remove(theAtt);
 							}
@@ -324,6 +335,7 @@ public class Viewtype extends ResourceImpl {
 				.findMember("/" + correspondenceModelURI).getLocationURI();
 		correspondenceModelResource.load(uri.toURL().openStream(),
 				new HashMap<Object, Object>());
+
 		correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI
 				.createURI(uri.toString()));
 
@@ -367,12 +379,12 @@ public class Viewtype extends ResourceImpl {
 			theR.setUpperBound(association.getUpperBound());
 			theR.setEType(theTargetEClass);
 
-			// Create the association annotation
 			EAnnotation theAnnotation = EcoreFactory.eINSTANCE
 					.createEAnnotation();
-			
+			theAnnotation.setSource("va");
 
 			theR.getEAnnotations().add(theAnnotation);
+
 			if (association.getSourceAttribute() != null
 					&& association.getSourceAttribute() != ""
 					&& association.getTargetAttribute() != null
@@ -396,7 +408,6 @@ public class Viewtype extends ResourceImpl {
 
 	}
 
-	// Save the virtualFile in a physical file
 	public void serialize(IFile file, String dslTechnology) throws IOException,
 			CoreException {
 		StringBuffer fileContent = new StringBuffer();
@@ -417,6 +428,7 @@ public class Viewtype extends ResourceImpl {
 
 		if (dslTechnology.compareToIgnoreCase("none") != 0
 				&& correspondenceModelBase == null) {
+
 			IPath modelBasePath = file.getFullPath().removeFileExtension()
 					.addFileExtension("ecl");
 
@@ -426,7 +438,9 @@ public class Viewtype extends ResourceImpl {
 			String laRuta = veamosA.concat(modelBasePath.toString());
 
 			correspondenceModelBase = modelBasePath.toString();
+
 			File fileModelBase = new File(laRuta);
+			System.out.println("Veamos: " + modelBasePath);
 			fileModelBase.createNewFile();
 
 			String correspondenceModelLine = "correspondenceModel="
@@ -457,12 +471,10 @@ public class Viewtype extends ResourceImpl {
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
 			throws IOException {
 		VirtualLinksFactory linksFactory = VirtualLinksFactory.eINSTANCE;
-		String queEs = outputStream.toString();
 		VirtualLinks vLinks = (VirtualLinks) correspondenceModelResource
 				.getContents().get(0);
 		vLinks.getVirtualLinks().clear();
 		vLinks.getLinkedElements().clear();
-
 		correspondenceModelResource.save(new HashMap<String, String>());
 		properties.store(outputStream, null);
 	}
@@ -490,7 +502,5 @@ public class Viewtype extends ResourceImpl {
 	private InputStream openContentStream(String contents) {
 		return new ByteArrayInputStream(contents.getBytes());
 	}
-
-	
 
 }

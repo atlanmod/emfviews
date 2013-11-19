@@ -4,11 +4,11 @@
    <extension
          point="org.eclipse.emf.ecore.extension_parser">
       <parser
-            class="fr.inria.emfviews.core.EmfViewsFactory"
+            class="fr.inria.atlanmod.emfviews.core.EmfViewsFactory"
             type="eview">
       </parser>
       <parser
-            class="fr.inria.emfviews.core.EmfViewsFactory"
+            class="fr.inria.atlanmod.emfviews.core.EmfViewsFactory"
             type="eviewtype">
       </parser>
    </extension>

@@ -1,13 +1,21 @@
-package fr.inria.emfviews.core;
+/*******************************************************************************
+ * Copyright (c) 2013 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Juan David Villa Calle - initial API and implementation
+ *******************************************************************************/
+package fr.inria.atlanmod.emfviews.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -38,8 +46,12 @@ public abstract class View extends ResourceImpl {
 
 	protected ResourceSet virtualResourceSet;
 
+	protected String contributingModelsURIs;
+
 	protected String compositionMetamodelURI;
-	
+
+	protected String contributingMetamodelsURIs;
+
 	protected String correspondenceModelURI;
 
 	protected XMIResourceImpl correspondenceModelResource;
@@ -49,48 +61,12 @@ public abstract class View extends ResourceImpl {
 	 */
 	protected EList<EObject> virtualContents;
 
-	public String getContributingMetamodelsUris() {
-		String contributingMetamodelsURIs = "";
-
-		Collection<Object> packages = virtualResourceSet.getPackageRegistry()
-				.values();
-		Iterator<Object> iter = packages.iterator();
-		int count = 0;
-		while (iter.hasNext()) {
-			EPackage pack = (EPackage) iter.next();
-			contributingMetamodelsURIs = contributingMetamodelsURIs.concat(pack
-					.getNsURI());
-			count++;
-			if (count < packages.size() - 2) {
-				contributingMetamodelsURIs = contributingMetamodelsURIs
-						.concat(",");
-			}
-
-		}
-
-		return contributingMetamodelsURIs;
-	}
-
-	public String getContributingModelsUris() {
-		List<Resource> contributingModels = getContributingModels();
-		String contributingModelsURIs = "";
-
-		for (int i = 0; i < contributingModels.size(); i++) {
-			contributingModelsURIs = contributingModelsURIs
-					.concat(contributingModels.get(i).getURI().toString().replace("platform:/resource/", ""));
-			if (i < contributingModels.size() - 1) {
-				contributingModelsURIs = contributingModelsURIs.concat(",");
-			}
-		}
-
-		return contributingModelsURIs;
-	}
-
 	public List<Resource> getContributingModels() {
 		ArrayList<Resource> contributingModels = new ArrayList<>();
 		EList<Resource> allResources = virtualResourceSet.getResources();
 		for (Resource resource : allResources) {
-			if (resource.getURI().toString().startsWith("platform")&& !resource.getURI().toString().endsWith("ecore") ) {
+			if (resource.getURI().toString().startsWith("platform")
+					&& !resource.getURI().toString().endsWith("ecore")) {
 				contributingModels.add(resource);
 			}
 
@@ -126,16 +102,26 @@ public abstract class View extends ResourceImpl {
 
 	public View() {
 		super();
+
+	}
+
+	public View(List<URI> contributingModels, List<URI> contributingMetamodels,
+			URI linksModel, URI compositionMetamodel) {
+		super();
+
+	}
+
+	public View(List<String> contributingModels,
+			List<String> contributingMetamodels, String compositionMetamodel) {
+		super();
 	}
 
 	protected void loadContributingModels(List<String> contributingModelsPaths) {
 
-		for (String modelURI : contributingModelsPaths)
-		{
+		for (String modelURI : contributingModelsPaths) {
 			Resource modelResource = virtualResourceSet.getResource(
 					URI.createPlatformResourceURI(modelURI, true), true);
 		}
-
 
 	}
 
@@ -162,10 +148,13 @@ public abstract class View extends ResourceImpl {
 	}
 
 	protected void setVirtualContents() {
+
 		List<Resource> contributingModels = getContributingModels();
-		List[] sublists = new List[getContributingModels().size()];
+
+		List[] sublists = new List[contributingModels.size()];
 
 		for (int i = 0; i < contributingModels.size(); i++) {
+
 			ArrayList oneOftheSublists = new ArrayList<>();
 			oneOftheSublists.add(translateToVirtualElement(contributingModels
 					.get(i).getContents().get(0)));
@@ -186,7 +175,7 @@ public abstract class View extends ResourceImpl {
 	public void serialize(IFile file) throws IOException, CoreException {
 		StringBuffer fileContent = new StringBuffer();
 		String contributingModelsLine = "contributingModels="
-				+ getContributingModelsUris();
+				+ contributingModelsURIs;
 		fileContent.append(contributingModelsLine);
 		fileContent.append("\n");
 
@@ -196,7 +185,7 @@ public abstract class View extends ResourceImpl {
 		fileContent.append("\n");
 
 		String contributingMetamodelsLine = "contributingMetamodels="
-				+ getContributingMetamodelsUris();
+				+ contributingMetamodelsURIs;
 		fileContent.append(contributingMetamodelsLine);
 		fileContent.append("\n");
 
@@ -223,9 +212,8 @@ public abstract class View extends ResourceImpl {
 		return new ByteArrayInputStream(contents.getBytes());
 	}
 
-
 	public void createCorrespondenceModel(URI modelURI) throws IOException {
-		
+
 		correspondenceModelURI = modelURI.toString();
 
 		VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
@@ -271,10 +259,10 @@ public abstract class View extends ResourceImpl {
 					.get(0);
 			String targetCLassName = targetElement.getName();
 			String targetPackagensURI = targetElement.getModelRef();
-
 			String sourceAtt = association.getSourceAttribute();
 			String targetAtt = association.getTargetAttribute();
 			if (sourceAtt != null && targetAtt != null) {
+
 				Resource sourceResource = getcontributingModel(sourcePackagensURI);
 				EList<EObject> sourceModelContents = sourceResource
 						.getContents();
@@ -285,7 +273,6 @@ public abstract class View extends ResourceImpl {
 					}
 
 				}
-
 				Resource targetResource = getcontributingModel(targetPackagensURI);
 				EList<EObject> targetModelContents = targetResource
 						.getContents();
@@ -296,6 +283,7 @@ public abstract class View extends ResourceImpl {
 					}
 
 				}
+
 				for (EObject tempSourceElement : sourceModelElementsThatConform) {
 					boolean matchFound = false;
 					String theSourceAttVal = (String) tempSourceElement
@@ -310,7 +298,7 @@ public abstract class View extends ResourceImpl {
 								.eGet(tempTargetElement.eClass()
 										.getEStructuralFeature(targetAtt));
 						if (theSourceAttVal.equalsIgnoreCase(tempTargetAttVal)) {
-							
+
 							matchFound = true;
 							Association associationModelLevel = vLinksFactory
 									.createAssociation();
@@ -324,7 +312,6 @@ public abstract class View extends ResourceImpl {
 									.getURIFragment(tempSourceElement));
 
 							associationModelLevel.setSourceElement(lSource);
-
 							LinkedElement lTarget = vLinksFactory
 									.createLinkedElement();
 							lTarget.setModelRef(targetPackagensURI);
@@ -333,8 +320,6 @@ public abstract class View extends ResourceImpl {
 
 							associationModelLevel.getTargetElements().add(
 									lTarget);
-
-							
 							virtualLinksModelLevel.getVirtualLinks().add(
 									associationModelLevel);
 
@@ -356,6 +341,7 @@ public abstract class View extends ResourceImpl {
 	protected Resource getcontributingModel(String packageURI) {
 		boolean packageFound = false;
 		Resource r = null;
+
 		List<Resource> contributingModels = getContributingModels();
 		for (int i = 0; i < contributingModels.size() && !packageFound; i++) {
 			Resource temp = contributingModels.get(i);
@@ -380,6 +366,22 @@ public abstract class View extends ResourceImpl {
 		}
 		vLinkManager.save();
 		properties.store(outputStream, null);
+	}
+
+	public String getContributingModelsUris() {
+		List<Resource> contributingModels = getContributingModels();
+		String contributingModelsURIs = "";
+
+		for (int i = 0; i < contributingModels.size(); i++) {
+			contributingModelsURIs = contributingModelsURIs
+					.concat(contributingModels.get(i).getURI().toString()
+							.replace("platform:/resource/", ""));
+			if (i < contributingModels.size() - 1) {
+				contributingModelsURIs = contributingModelsURIs.concat(",");
+			}
+		}
+
+		return contributingModelsURIs;
 	}
 
 }

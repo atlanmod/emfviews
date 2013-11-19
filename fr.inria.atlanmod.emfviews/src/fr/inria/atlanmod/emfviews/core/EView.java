@@ -1,4 +1,14 @@
-package fr.inria.emfviews.core;
+/*******************************************************************************
+ * Copyright (c) 2013 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Juan David Villa Calle - initial API and implementation
+ *******************************************************************************/
+package fr.inria.atlanmod.emfviews.core;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -6,9 +16,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -23,7 +31,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
@@ -37,20 +44,11 @@ import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 import fr.inria.atlanmod.emfviews.virtuallinksdelegator.VirtualLinksDelegator;
 
 public class EView extends View {
-	/**
-	 * Properties of the viewtype
-	 */
+
 	private Properties viewtypeProperties;
 
-	/**
-	 * The viewtype resource
-	 */
 	private Resource viewtype;
 
-	/**
-	 * 
-	 * @param uri
-	 */
 	public EView(URI uri) {
 		super(uri);
 	}
@@ -105,7 +103,6 @@ public class EView extends View {
 		setVirtualContents();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
@@ -114,10 +111,7 @@ public class EView extends View {
 		properties.load(inputStream);
 		virtualResourceSet = new ResourceSetImpl();
 
-		if (getResourceSet().getPackageRegistry().isEmpty()) {
-			readVirtualCompositionMMProperties();
-
-		}
+		readVirtualCompositionMMProperties();
 
 		loadContributingMetamodels(new ArrayList<String>(
 				Arrays.asList(viewtypeProperties.getProperty(
@@ -212,7 +206,6 @@ public class EView extends View {
 			String targetCLassName = targetElement.getName();
 			String targetPackagensURI = targetElement.getModelRef();
 
-			
 			String sourceAtt = association.getSourceAttribute();
 			String targetAtt = association.getTargetAttribute();
 			if (sourceAtt != null && targetAtt != null) {
@@ -229,7 +222,7 @@ public class EView extends View {
 					}
 
 				}
-				
+
 				Resource targetResource = getcontributingModel(targetPackagensURI);
 				TreeIterator<EObject> targetModelContents = targetResource
 						.getAllContents();
@@ -308,14 +301,11 @@ public class EView extends View {
 		fileContent.append(compositionMetamodelLine);
 		fileContent.append("\n");
 
-		
-
 		String correspondenceModelLine = "correspondenceModel="
 				+ correspondenceModelURI;
 
 		fileContent.append(correspondenceModelLine);
 
-		
 		fileContent.append("\n");
 		Viewtype vm = (Viewtype) viewtype;
 		String correspondenceModelBaseLine = "correspondenceModelBase="

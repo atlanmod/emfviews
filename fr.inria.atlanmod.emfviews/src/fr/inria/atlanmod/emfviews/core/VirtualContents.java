@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 INRIA.
+ * Copyright (c) 2013 INRIA.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  * Cauê Clasen - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.emfviews.core;
+package fr.inria.atlanmod.emfviews.core;
 
 import java.util.AbstractList;
 import java.util.List;
@@ -30,8 +30,7 @@ public class VirtualContents<E> extends AbstractList<E> implements EList<E> {
 	public E get(int index) {
 		if (index >= 0) {
 			for (int i = 0; i < this.subLists.length; i++) {
-				if (index < this.subLists[i].size())
-				{
+				if (index < this.subLists[i].size()) {
 					E v = this.subLists[i].get(index);
 
 					return v;
@@ -65,6 +64,7 @@ public class VirtualContents<E> extends AbstractList<E> implements EList<E> {
 
 	@Override
 	public E move(int newPosition, int oldPosition) {
+
 		return null;
 	}
 }
