@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ui
+Bundle-Name: EMFViews UI
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin

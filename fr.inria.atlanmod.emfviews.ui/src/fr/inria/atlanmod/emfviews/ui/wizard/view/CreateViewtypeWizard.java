@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Juan David Villa Calle - initial API and implementation
+ *******************************************************************************/
 package fr.inria.atlanmod.emfviews.ui.wizard.view;
 
 import java.io.File;
@@ -33,10 +43,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 
+import fr.inria.atlanmod.emfviews.core.EmfViewsFactory;
+import fr.inria.atlanmod.emfviews.core.Viewtype;
 import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
-import fr.inria.emfviews.core.EmfViewsFactory;
-import fr.inria.emfviews.core.Viewtype;
 
 public class CreateViewtypeWizard extends Wizard implements INewWizard,
 		IExecutableExtension {
@@ -92,7 +102,7 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard,
 	@Override
 	public void init(IWorkbench currentWorkbench,
 			IStructuredSelection structuredSelection) {
-		
+
 		this.selection = structuredSelection;
 
 	}
@@ -100,7 +110,6 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard,
 	@Override
 	public void setInitializationData(IConfigurationElement config,
 			String propertyName, Object data) throws CoreException {
-		
 
 	}
 
@@ -209,7 +218,6 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard,
 			e.printStackTrace();
 		}
 
-
 		try {
 			ArrayList<String> inputMetaModels = advancedPage
 					.getInputMetaModelPaths();
@@ -231,13 +239,11 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard,
 
 			return true;
 		} catch (Exception e) {
-			
 
 			e.printStackTrace();
 			return false;
 		}
 
-		
 	}
 
 	@Override

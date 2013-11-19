@@ -1,9 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2013 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Juan David Villa Calle - initial API and implementation
+ *******************************************************************************/
 package fr.inria.atlanmod.emfviews.editor.editors;
 
 import java.util.ArrayList;
 
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -24,18 +33,19 @@ import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 public class Overview extends SectionPart {
 
 	private List inputMetamodelsList;
-	
-	private ArrayList <String> inputMetaModelPaths;
-	
+
+	private ArrayList<String> inputMetaModelPaths;
+
 	/**
 	 * Create the SectionPart.
+	 * 
 	 * @param parent
 	 * @param toolkit
 	 * @param style
 	 */
 	public Overview(Composite parent, FormToolkit toolkit, int style) {
 		super(parent, toolkit, style);
-		inputMetaModelPaths=new ArrayList<String>();
+		inputMetaModelPaths = new ArrayList<String>();
 		createClient(getSection(), toolkit);
 	}
 
@@ -48,26 +58,31 @@ public class Overview extends SectionPart {
 
 		section.setClient(container);
 		container.setLayout(new GridLayout(3, false));
-		
-		GridData dataLists = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
-		
+
+		GridData dataLists = new GridData(GridData.FILL_BOTH
+				| GridData.VERTICAL_ALIGN_BEGINNING);
+
 		inputMetamodelsList = createModelControl(
 				container,
 				Messages.getString("VirtualModelFileScreen.InputMetamodels"), //$NON-NLS-1$ 
-				new ModelSelection(container.getShell(), Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"), inputMetaModelPaths,ModelSelection.INPUTMETAMODEL), dataLists); //$NON-NLS-1$2$
+				new ModelSelection(
+						container.getShell(),
+						Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"), inputMetaModelPaths, ModelSelection.INPUTMETAMODEL), dataLists); //$NON-NLS-1$2$
 	}
-	
-	private List createModelControl(final Composite parent,final String entryLabel,final AbstractSelection dialog, GridData listLayoutData)
-	{
+
+	private List createModelControl(final Composite parent,
+			final String entryLabel, final AbstractSelection dialog,
+			GridData listLayoutData) {
 		final Label typeLabel = new Label(parent, SWT.NONE);
 		GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 		data.verticalIndent = 5;
 		typeLabel.setLayoutData(data);
 		typeLabel.setText(entryLabel);
-		final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+		final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL
+				| SWT.H_SCROLL | SWT.MULTI);
 		listLayoutData.verticalIndent = 5;
 		list.setLayoutData(listLayoutData);
-		
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.verticalSpacing = 15;
@@ -77,21 +92,21 @@ public class Overview extends SectionPart {
 		data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 		data.verticalIndent = 5;
 		composite.setLayoutData(data);
-		
-		final Button addIn = createButton(composite, Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
-		final Button removeIn = createButton(composite, Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
+
+		final Button addIn = createButton(composite,
+				Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
+		final Button removeIn = createButton(composite,
+				Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
 		removeIn.setEnabled(false);
-		addIn.addSelectionListener(new SelectionAdapter()
-		{
+		addIn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				dialog.create();
 				if (dialog.open() == Dialog.OK) {
 					Object[] result = dialog.getResult();
-					int modelType=Integer.parseInt(result[0].toString());
-					switch (modelType) 
-					{
-					
+					int modelType = Integer.parseInt(result[0].toString());
+					switch (modelType) {
+
 					case ModelSelection.INPUTMETAMODEL:
 						inputMetaModelPaths.add(result[1].toString());
 						break;
@@ -99,13 +114,12 @@ public class Overview extends SectionPart {
 					default:
 						break;
 					}
-					
 
 				}
 				updateLists();
 			}
 		});
-		
+
 		removeIn.addSelectionListener(new SelectionAdapter() {
 			/**
 			 * {@inheritDoc}
@@ -117,7 +131,7 @@ public class Overview extends SectionPart {
 				int[] indices = list.getSelectionIndices();
 				for (int i = 0; i < indices.length; i++) {
 					int j = indices[i];
-					
+
 				}
 				updateLists();
 				removeIn.setEnabled(list.getSelection().length > 0);
@@ -125,7 +139,7 @@ public class Overview extends SectionPart {
 		});
 		return list;
 	}
-	
+
 	private Button createButton(Composite parent, String text) {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setAlignment(SWT.CENTER);
@@ -135,19 +149,14 @@ public class Overview extends SectionPart {
 		button.setLayoutData(data);
 		return button;
 	}
-	
-	private void updateLists()
-	{
 
-				inputMetamodelsList.removeAll();
-				for(String path:inputMetaModelPaths)
-				{
-					inputMetamodelsList.add(path);
-				}
-				
-				
-				
+	private void updateLists() {
+
+		inputMetamodelsList.removeAll();
+		for (String path : inputMetaModelPaths) {
+			inputMetamodelsList.add(path);
+		}
+
 	}
-		
-		
+
 }

@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Juan David Villa Calle - initial API and implementation
+ *******************************************************************************/
 package fr.inria.atlanmod.emfviews.ui;
 
 import java.net.MalformedURLException;
@@ -15,7 +25,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class EmfViewsUIPlugin extends AbstractUIPlugin {
 
 	/** The plugin id. */
-	public static final String PLUGIN_ID = "fr.inria.virtualemf.ui"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "fr.inria.atlanmod.emfviews.ui"; //$NON-NLS-1$
 
 	/** The shared instance. */
 	private static EmfViewsUIPlugin plugin;

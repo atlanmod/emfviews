@@ -8,7 +8,7 @@
             contributorClass="fr.inria.atlanmod.emfviews.editor.editors.MultiPageEditorContributor"
             extensions="eviewtype"
             icon="icons/virtualLogo.png"
-            id="fr.inria.virtualemf.editor.editors.MultiPageEditor"
+            id="fr.inria.atlanmod.emfviews.editor.editors.ViewtypeEditor"
             name="EMF Views Editor">
       </editor>
    </extension>

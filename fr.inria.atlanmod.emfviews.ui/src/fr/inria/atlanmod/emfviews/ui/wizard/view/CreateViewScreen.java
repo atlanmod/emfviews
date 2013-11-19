@@ -1,5 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2013 INRIA.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Juan David Villa Calle - initial API and implementation
+ *******************************************************************************/
 package fr.inria.atlanmod.emfviews.ui.wizard.view;
-
 
 import java.util.ArrayList;
 
@@ -27,7 +36,6 @@ public class CreateViewScreen extends WizardPage {
 
 	public static final String VIRTUALMODELTYPE_METAMODEL = "metamodel"; //$NON-NLS-1$
 
-
 	private ArrayList<String> inputModelPaths;
 
 	public ArrayList<String> getInputModelPaths() {
@@ -54,7 +62,6 @@ public class CreateViewScreen extends WizardPage {
 
 	private List compositionMetaModelList;
 
-	
 	public CreateViewScreen(String virtualCompositionMetamodel) {
 
 		super(Messages.getString("VirtualModelFileScreen.Page.Name"));
@@ -119,7 +126,6 @@ public class CreateViewScreen extends WizardPage {
 		container.layout();
 		setControl(container);
 	}
-
 
 	private List createModelControl(final Composite parent,
 			final String entryLabel, final AbstractSelection dialog,
@@ -189,7 +195,7 @@ public class CreateViewScreen extends WizardPage {
 			public void widgetSelected(SelectionEvent evt) {
 				int[] indices = list.getSelectionIndices();
 				for (int i = 0; i < indices.length; i++) {
-					//int j = indices[i];
+					// int j = indices[i];
 
 				}
 				updateLists();
@@ -201,7 +207,7 @@ public class CreateViewScreen extends WizardPage {
 	}
 
 	private void updateLists() {
-		
+
 		inputmodelsList.removeAll();
 		compositionMetaModelList.removeAll();
 		for (String path : inputModelPaths) {
@@ -248,6 +254,5 @@ public class CreateViewScreen extends WizardPage {
 		button.setLayoutData(data);
 		return button;
 	}
-
 
 }

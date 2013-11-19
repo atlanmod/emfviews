@@ -1,4 +1,6 @@
-emfviews
+EMF Views
 ========
 
-EMF Views
+What is EMF Views?
+
+

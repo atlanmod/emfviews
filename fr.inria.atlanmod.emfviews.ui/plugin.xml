@@ -7,7 +7,7 @@
             allPopups="false"
             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          <command
-               commandId="fr.inria.virtualemf.ui.commands.derivevirtualmfromvirtualmm"
+               commandId="fr.inria.atlanmod.emfviews.ui.commands.createeview"
                label="%command.label"
                style="push"
                tooltip="%command.tooltip">
@@ -17,20 +17,20 @@
    <extension
          point="org.eclipse.ui.commandImages">
       <image
-            commandId="fr.inria.virtualemf.ui.commands.derivevirtualmfromvirtualmm"
+            commandId="fr.inria.atlanmod.emfviews.ui.commands.createeview"
             icon="icons/virtualLogo.png">
       </image>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            categoryId="fr.inria.virtualemf.ui.categories.derivevirtualmfromvirtualmm"
-            id="fr.inria.virtualemf.ui.commands.derivevirtualmfromvirtualmm"
+            categoryId="fr.inria.atlanmod.emfviews.ui.categories.createeview"
+            id="fr.inria.atlanmod.emfviews.ui.commands.createeview"
             name="%command.name">
       </command>
       <category
             description="%category.description"
-            id="fr.inria.virtualemf.ui.categories.derivevirtualmfromvirtualmm"
+            id="fr.inria.atlanmod.emfviews.ui.categories.createeview"
             name="%category.name">
       </category>
    </extension>
@@ -38,7 +38,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="fr.inria.atlanmod.emfviews.ui.commands.ViewWizardHandler"
-            commandId="fr.inria.virtualemf.ui.commands.derivevirtualmfromvirtualmm">
+            commandId="fr.inria.atlanmod.emfviews.ui.commands.createeview">
          <activeWhen>
             <iterate
                   ifEmpty="false">
@@ -56,25 +56,25 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            category="virtualEmf"
+            category="emfviewscategory"
             class="fr.inria.atlanmod.emfviews.ui.wizard.view.CreateViewWizard"
             icon="icons/VirtualModelWizard.png"
-            id="virtualModelFileWizard"
+            id="viewWizard"
             name="EMF View">
       </wizard>
       <wizard
-            category="virtualEmf"
+            category="emfviewscategory"
             class="fr.inria.atlanmod.emfviews.ui.wizard.emfviewsproject.EmfViewsProjectCreator"
             icon="icons/VirtualModelWizard.png"
-            id="virtualEmfProjectWizard"
+            id="emfViewsProjectWizard"
             name="EMF Views project">
       </wizard>
       <category
-            id="virtualEmf"
+            id="emfviewscategory"
             name="EMF Views">
       </category>
       <wizard
-            category="virtualEmf"
+            category="emfviewscategory"
             class="fr.inria.atlanmod.emfviews.ui.wizard.view.CreateViewtypeWizard"
             icon="icons/VirtualModelWizard.png"
             id="virtualMetamodelFileWizard"
