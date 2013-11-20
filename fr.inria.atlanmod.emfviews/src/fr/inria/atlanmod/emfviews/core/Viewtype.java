@@ -80,8 +80,6 @@ public class Viewtype extends ResourceImpl {
 	private String correspondenceModelBase;
 
 	public String getCorrespondenceModelBase() {
-		System.out.println("Cuantas veces se retorna: "
-				+ correspondenceModelBase);
 		return correspondenceModelBase;
 	}
 
@@ -440,7 +438,6 @@ public class Viewtype extends ResourceImpl {
 			correspondenceModelBase = modelBasePath.toString();
 
 			File fileModelBase = new File(laRuta);
-			System.out.println("Veamos: " + modelBasePath);
 			fileModelBase.createNewFile();
 
 			String correspondenceModelLine = "correspondenceModel="
