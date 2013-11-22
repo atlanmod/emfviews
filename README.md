@@ -25,4 +25,4 @@ Who is behind this project?
 * [Juan David Villa Calle](https://github.com/juandavidvillacalle "Juan David Villa Calle")
 * [Hugo Bruneliere](https://github.com/Hugo-Bruneliere "Jordi Cabot")
 
-Juan David and Hugo work in [Atlandmod](http://www.emn.fr/z-info/atlanmod), a research team of Inria.
+Juan David and Hugo work in [Atlanmod](http://www.emn.fr/z-info/atlanmod), a research team of Inria.
