@@ -18,3 +18,16 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.gef.ui.parts
+Export-Package: fr.inria.atlanmod.emfviews.editor.editors;
+  uses:="org.eclipse.jface.action,
+   org.eclipse.emf.ecore.resource,
+   org.eclipse.ui.texteditor,
+   org.eclipse.core.runtime,
+   org.eclipse.ui,
+   org.eclipse.swt.events,
+   org.eclipse.core.resources,
+   org.eclipse.jface.viewers,
+   org.eclipse.ui.part,
+   org.eclipse.swt.widgets,
+   org.eclipse.ui.forms,
+   org.eclipse.ui.forms.widgets"
