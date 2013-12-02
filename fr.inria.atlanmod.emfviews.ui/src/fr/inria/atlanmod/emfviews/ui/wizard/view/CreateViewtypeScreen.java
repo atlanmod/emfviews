@@ -12,11 +12,14 @@ package fr.inria.atlanmod.emfviews.ui.wizard.view;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -46,11 +49,6 @@ public class CreateViewtypeScreen extends WizardPage {
 	 */
 	private Combo comboLinksDsl;
 
-	// TODO Replace constants with extension points values
-	public static final String NO_LINKSDSL = "none"; //$NON-NLS-1$
-
-	public static final String ECL_LINKSDSL = "ecl"; //$NON-NLS-1$
-
 	public String[] availableLinksDsls;
 
 	public CreateViewtypeScreen(ISelection selection) {
@@ -61,15 +59,15 @@ public class CreateViewtypeScreen extends WizardPage {
 				.getExtensionPoint(
 						"fr.inria.atlanmod.emfviews.virtuallinksdelegator.type")
 				.getExtensions();
-		availableLinksDsls = new String[extensions.length + 1];
-		availableLinksDsls[0] = NO_LINKSDSL;
-		int i = 1;
+		availableLinksDsls = new String[extensions.length];
+		int i = 0;
 		for (IExtension iExtension : extensions) {
 			IConfigurationElement[] configElements = iExtension
 					.getConfigurationElements();
 			for (IConfigurationElement iConfigurationElement : configElements) {
 				availableLinksDsls[i] = iConfigurationElement
 						.getAttribute("fileExtension");
+				i=i++;
 			}
 		}
 
@@ -131,7 +129,7 @@ public class CreateViewtypeScreen extends WizardPage {
 				.setText("Select a dsl to create virtual links"); //$NON-NLS-1$
 		comboLinksDsl = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
 		comboLinksDsl.setItems(availableLinksDsls);
-		comboLinksDsl.setText(NO_LINKSDSL);
+		comboLinksDsl.setText(availableLinksDsls[0]);
 		data = new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING);
 		comboLinksDsl.setLayoutData(data);
 
@@ -185,6 +183,7 @@ public class CreateViewtypeScreen extends WizardPage {
 					}
 
 				}
+				removeIn.setEnabled(true);
 				updateLists();
 			}
 		});
@@ -198,11 +197,18 @@ public class CreateViewtypeScreen extends WizardPage {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				int[] indices = list.getSelectionIndices();
-				for (int i = 0; i < indices.length; i++) {
+				if(indices.length>0)
+				{
+					for (int i = 0; i < indices.length; i++) 
+					{
+						
+						inputMetaModelPaths.remove(list.getItem(i));
 
+					}
+					updateLists();
+					removeIn.setEnabled(list.getSelection().length > 0);
 				}
-				updateLists();
-				removeIn.setEnabled(list.getSelection().length > 0);
+				
 			}
 		});
 
