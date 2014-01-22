@@ -94,6 +94,8 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 	private ArrayList<Object> structuralFeaturesToHide;
 
 	boolean firstTimeToSave = true;
+	
+	CheckboxTreeViewer treeViewer;
 
 	/**
 	 * Creates a multi-page editor example.
@@ -127,7 +129,7 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 			toolkit.paintBordersFor(body);
 			body.setLayout(new GridLayout(1, true));
 
-			CheckboxTreeViewer treeViewer = new CheckboxTreeViewer(body,
+			treeViewer = new CheckboxTreeViewer(body,
 					SWT.BORDER);
 			Tree tree = treeViewer.getTree();
 			tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1,
@@ -605,7 +607,10 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 		Properties properties = new Properties();
 		for (String line : lines) {
 			String[] property = line.split("=");
-			properties.setProperty(property[0], property[1]);
+			if(property.length==2)
+				properties.setProperty(property[0], property[1]);
+			else
+				properties.setProperty(property[0], "");
 		}
 
 		return properties;
@@ -636,6 +641,59 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 			updateLists();
 			updateLinksDslText();
 
+		}
+		else if(newPageIndex==2)
+		{
+			//ArrayList<EPackage> contributingMetamodels=viewtype.getContributingEpackages();
+			System.out.println(treeViewer.getInput().toString());
+			ArrayList treeViewerContents=(ArrayList) treeViewer.getInput();
+			
+			int numPacksInTree=treeViewerContents.size();
+			if(inputMetaModelPaths.size()<numPacksInTree)
+			{
+				ArrayList packsToRemove=new ArrayList();
+				
+				
+				boolean packageNeedsDeletion=true;
+				
+				for (Object tempTreePack : treeViewerContents) 
+				{
+					
+					for(int i=0; i<inputMetaModelPaths.size();i++)
+					{
+						if(inputMetaModelPaths.get(i).compareToIgnoreCase(((EPackage)tempTreePack).getNsURI())==0)
+						{
+							packageNeedsDeletion=false;
+							//searchedEpackage=null;
+						}
+							
+					}
+					//TODO Aqui tambien se van a eliminar los metamodelos que se llamen desde un archivo local.
+					if(packageNeedsDeletion)
+					{
+						packsToRemove.add(tempTreePack);
+						packageNeedsDeletion=true;
+						
+					}
+						
+				}
+				for (Object packToRemove : packsToRemove) 
+				{
+					treeViewerContents.remove(packToRemove);
+				}
+				
+				
+				
+				treeViewer.setInput(treeViewerContents);
+				
+				
+			}
+			else if(inputMetaModelPaths.size()>numPacksInTree)
+			{
+				
+			}
+			
+			
 		}
 	}
 

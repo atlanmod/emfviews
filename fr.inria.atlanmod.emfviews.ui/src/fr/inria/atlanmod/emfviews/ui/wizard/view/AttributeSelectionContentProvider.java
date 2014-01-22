@@ -73,7 +73,10 @@ public class AttributeSelectionContentProvider implements ITreeContentProvider {
 	@Override
 	public Object getParent(Object element) {
 
-		return emfContentProvider.getParent(element);
+		Object parent=null;
+		if(element instanceof EObject)
+			parent=emfContentProvider.getParent(element);
+		return parent;
 	}
 
 	@Override
