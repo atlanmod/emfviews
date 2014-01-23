@@ -86,6 +86,8 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 	private Text linksDslText;
 
 	private String linksDslFile;
+	
+	private Button btnAddMetamodel;
 
 	private Button btnRemoveMetamodel;
 
@@ -212,7 +214,7 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 		toolkit.paintBordersFor(composite_1);
 		composite_1.setLayout(new GridLayout(1, false));
 
-		Button btnAddMetamodel = toolkit.createButton(composite_1, "Add",
+		btnAddMetamodel = toolkit.createButton(composite_1, "Add",
 				SWT.NONE);
 		GridData gd_btnAddMetamodel = new GridData(SWT.LEFT, SWT.CENTER, true,
 				false, 1, 1);
@@ -253,11 +255,18 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 								.getProperty("correspondenceModelBase");
 						String filtersMetamodel = properties
 								.getProperty("filtersMetamodel");
+						String metamodelUri=result[1].toString();
+						if(metamodelUri.startsWith("platform:/resource/"))
+						{
+							metamodelUri = metamodelUri.replace("platform:/resource/", "");
+						}
 						if (metamodels.length() > 0)
-							metamodels = metamodels + ","
-									+ result[1].toString();
+						{
+							metamodels = metamodels + "," + metamodelUri;
+						}
 						else
-							metamodels = result[1].toString();
+							metamodels = metamodelUri;
+						
 						String updatedVMM = updateViewtype(
 								"contributingMetamodels=" + metamodels,
 								"correspondenceModel=" + correspondenceModel,
