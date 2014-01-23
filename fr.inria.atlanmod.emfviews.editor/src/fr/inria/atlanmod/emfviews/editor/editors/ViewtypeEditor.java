@@ -251,6 +251,8 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 								.getProperty("correspondenceModel");
 						String correspondenceModelBase = properties
 								.getProperty("correspondenceModelBase");
+						String filtersMetamodel = properties
+								.getProperty("filtersMetamodel");
 						if (metamodels.length() > 0)
 							metamodels = metamodels + ","
 									+ result[1].toString();
@@ -260,7 +262,8 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 								"contributingMetamodels=" + metamodels,
 								"correspondenceModel=" + correspondenceModel,
 								"correspondenceModelBase="
-										+ correspondenceModelBase);
+										+ correspondenceModelBase,
+								"filtersMetamodel="+filtersMetamodel		);
 						theDoc.set(updatedVMM);
 						break;
 
@@ -317,6 +320,8 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 						.getProperty("correspondenceModel");
 				String correspondenceModelBase = properties
 						.getProperty("correspondenceModelBase");
+				String filtersMetamodel = properties
+						.getProperty("filtersMetamodel");
 				String mm = "";
 				for (int i = 0; i < inputMetaModelPaths.size(); i++) {
 					if (i < inputMetaModelPaths.size() - 1) {
@@ -327,7 +332,8 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 				}
 				String updatedVMM = updateViewtype("contributingMetamodels="
 						+ mm, "correspondenceModel=" + correspondenceModel,
-						"correspondenceModelBase=" + correspondenceModelBase);
+						"correspondenceModelBase=" + correspondenceModelBase,
+						"filtersMetamodel=" + filtersMetamodel);
 				theDoc.set(updatedVMM);
 			}
 		});
@@ -390,12 +396,14 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 							.getProperty("contributingMetamodels");
 					String correspondenceModel = properties
 							.getProperty("correspondenceModel");
+					String filtersMetamodel = properties
+							.getProperty("filtersMetamodel");
 
 					String updatedVMM = updateViewtype(
 							"contributingMetamodels=" + metamodels,
 							"correspondenceModel=" + correspondenceModel,
 							"correspondenceModelBase="
-									+ correspondenceModelBasePath);
+									+ correspondenceModelBasePath,"filtersMetamodel="+filtersMetamodel);
 					theDoc.set(updatedVMM);
 				}
 			}
@@ -421,13 +429,17 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 
 	private String updateViewtype(String contributingMetamodelsProperty,
 			String correspondenceModelProperty,
-			String correspondenceModelBaseProperty) {
+			String correspondenceModelBaseProperty,
+			String filtersMetamodelProperty) {
 		StringBuffer fileContent = new StringBuffer();
 		fileContent.append(contributingMetamodelsProperty);
 		fileContent.append("\n");
 		fileContent.append(correspondenceModelProperty);
 		fileContent.append("\n");
 		fileContent.append(correspondenceModelBaseProperty);
+		fileContent.append("\n");
+		fileContent.append(filtersMetamodelProperty);
+		
 		return fileContent.toString();
 	}
 
