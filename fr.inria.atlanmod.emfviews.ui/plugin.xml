@@ -57,13 +57,6 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             category="emfviewscategory"
-            class="fr.inria.atlanmod.emfviews.ui.wizard.view.CreateViewWizard"
-            icon="icons/VirtualModelWizard.png"
-            id="viewWizard"
-            name="EMF View">
-      </wizard>
-      <wizard
-            category="emfviewscategory"
             class="fr.inria.atlanmod.emfviews.ui.wizard.emfviewsproject.EmfViewsProjectCreator"
             icon="icons/VirtualModelWizard.png"
             id="emfViewsProjectWizard"
