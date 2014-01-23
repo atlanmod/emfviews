@@ -1,7 +1,8 @@
 EMF Views
 ========
 
-New: Brand new Enterprise Architecture Views Tutorial
+New: Brand new Enterprise Architecture Views Tutorial.
+
 Visit the [webpage of the project](http://emfviews.jdvillacalle.com/) for the newest demos and documentation.
 
 What is this project about?
