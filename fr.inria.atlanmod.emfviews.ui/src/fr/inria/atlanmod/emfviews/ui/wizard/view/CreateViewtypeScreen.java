@@ -206,7 +206,8 @@ public class CreateViewtypeScreen extends WizardPage {
 
 					}
 					updateLists();
-					removeIn.setEnabled(list.getSelection().length > 0);
+					//removeIn.setEnabled(list.getSelection().length > 0);
+					removeIn.setEnabled(inputMetamodelsList.getItemCount()> 0);
 				}
 				
 			}
