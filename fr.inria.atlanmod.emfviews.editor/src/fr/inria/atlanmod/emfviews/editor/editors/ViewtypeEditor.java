@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -31,6 +32,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.dialogs.Dialog;
@@ -643,18 +646,18 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 	protected void pageChange(int newPageIndex) {
 		super.pageChange(newPageIndex);
 
+		String editorText = viewtypeTextEditor.getDocumentProvider()
+				.getDocument(viewtypeTextEditor.getEditorInput()).get();
+		Properties properties = createPropertiesFromViewtypeInTextEditor(editorText);
+		String metamodels = properties
+				.getProperty("contributingMetamodels");
+		String[] splitMetamodels = metamodels.split(",");
+		inputMetaModelPaths = new ArrayList<>();
+		
+		for (String metamodel : splitMetamodels) {
+			inputMetaModelPaths.add(metamodel);
+		}
 		if (newPageIndex == 1) {
-
-			String editorText = viewtypeTextEditor.getDocumentProvider()
-					.getDocument(viewtypeTextEditor.getEditorInput()).get();
-			Properties properties = createPropertiesFromViewtypeInTextEditor(editorText);
-			String metamodels = properties
-					.getProperty("contributingMetamodels");
-			String[] splitMetamodels = metamodels.split(",");
-			inputMetaModelPaths = new ArrayList<>();
-			for (String metamodel : splitMetamodels) {
-				inputMetaModelPaths.add(metamodel);
-			}
 
 			String correspondenceModelBase = properties
 					.getProperty("correspondenceModelBase");
@@ -666,7 +669,7 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 		else if(newPageIndex==2)
 		{
 			//ArrayList<EPackage> contributingMetamodels=viewtype.getContributingEpackages();
-			System.out.println(treeViewer.getInput().toString());
+			//System.out.println(treeViewer.getInput().toString());
 			ArrayList treeViewerContents=(ArrayList) treeViewer.getInput();
 			
 			int numPacksInTree=treeViewerContents.size();
@@ -674,26 +677,41 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 			{
 				ArrayList packsToRemove=new ArrayList();
 				
-				
-				boolean packageNeedsDeletion=true;
-				
 				for (Object tempTreePack : treeViewerContents) 
 				{
-					
+					boolean packageNeedsDeletion=true;
 					for(int i=0; i<inputMetaModelPaths.size();i++)
 					{
-						if(inputMetaModelPaths.get(i).compareToIgnoreCase(((EPackage)tempTreePack).getNsURI())==0)
+						if(inputMetaModelPaths.get(i).startsWith("http"))
 						{
-							packageNeedsDeletion=false;
-							//searchedEpackage=null;
+							if(inputMetaModelPaths.get(i).compareToIgnoreCase(((EPackage)tempTreePack).getNsURI())==0)
+							{
+								packageNeedsDeletion=false;
+								//searchedEpackage=null;
+							}
 						}
+						else
+						{
+							ResourceSet virtualResourceSet = new ResourceSetImpl();
+							Resource metamodelResource = virtualResourceSet.getResource(
+									URI.createPlatformResourceURI(inputMetaModelPaths.get(i), true), true);
+							EPackage mmPackage = (EPackage) metamodelResource.getContents()
+									.get(0);
+							if(mmPackage.getNsURI().compareToIgnoreCase(((EPackage)tempTreePack).getNsURI())==0)
+							{
+								packageNeedsDeletion=false;
+								//searchedEpackage=null;
+							}
+							
+						}
+						
+						
 							
 					}
-					//TODO Aqui tambien se van a eliminar los metamodelos que se llamen desde un archivo local.
+					
 					if(packageNeedsDeletion)
 					{
 						packsToRemove.add(tempTreePack);
-						packageNeedsDeletion=true;
 						
 					}
 						
@@ -703,15 +721,72 @@ public class ViewtypeEditor extends MultiPageEditorPart implements
 					treeViewerContents.remove(packToRemove);
 				}
 				
-				
-				
 				treeViewer.setInput(treeViewerContents);
 				
+				IEditorInput editorInput = getEditorInput();
+				FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
+				EmfViewsFactory vFac = new EmfViewsFactory();
+				org.eclipse.emf.common.util.URI emfURI = org.eclipse.emf.common.util.URI
+						.createURI(fileEditorInput.getPath().toString());
+				Resource viewtypeResource = vFac.createResource(emfURI);
+				
+				java.net.URI uri = fileEditorInput.getURI();
+				try {
+					viewtypeResource.load(uri.toURL().openStream(),
+							new HashMap<Object, Object>());
+					ArrayList<EClass> containingClasses = new ArrayList<>();
+					ArrayList<EObject> realAttrsToDelete = new ArrayList<>();
+					Viewtype theVirtualMM = (Viewtype) viewtypeResource;
+					
+					ArrayList<EObject> hiddenAtts = theVirtualMM.getHiddenAttributes();
+					for (EObject eObject : hiddenAtts) {
+
+						EStructuralFeature temp = (EStructuralFeature) eObject;
+
+						
+						String lookedupPackageUri=temp.getEContainingClass().getEPackage().getNsURI();
+						
+						for(Object tempTreePack : treeViewerContents)
+						{
+							EPackage tempPack=(EPackage)tempTreePack;
+							if(tempPack.getNsURI().compareToIgnoreCase(lookedupPackageUri)==0)
+							{
+								EClass lookeupClass=(EClass) tempPack.getEClassifier(temp.getEContainingClass().getName());
+								containingClasses.add(lookeupClass);
+								
+								EStructuralFeature theAtt=lookeupClass.getEStructuralFeature(temp.getName());
+								realAttrsToDelete.add(theAtt);
+							}
+						}				
+					}
+					treeViewer.setExpandedElements(containingClasses.toArray());
+					treeViewer.setCheckedElements(realAttrsToDelete.toArray());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 			}
 			else if(inputMetaModelPaths.size()>numPacksInTree)
 			{
-				
+				for (String inputmetamodelPath : inputMetaModelPaths)
+				{
+					boolean packIsFound=false;
+					for (Object tempTreePack : treeViewerContents)
+					{
+					
+						EPackage tempPack=(EPackage)tempTreePack;
+						if(tempPack.getNsURI().compareToIgnoreCase(inputmetamodelPath)==0);
+						{
+							packIsFound=true;
+							
+						}
+					}
+					if(!packIsFound)
+					{
+						ResourceSet theMMResourceSet= new ResourceSetImpl();
+					}
+				}
 			}
 			
 			

@@ -201,9 +201,6 @@ public class Viewtype extends ResourceImpl {
 
 		String modelsURIs[] = contributingModelsURIs.split(",");
 		for (int i = 0; i < modelsURIs.length; i++) {
-			System.out
-					.println("Cuantos paquetes hay en el registro de paquetes del metamodelo virtual: "
-							+ virtualResourceSet.getPackageRegistry().size());
 			String modelURI = modelsURIs[i];
 			if (modelURI.startsWith("http")) {
 				EPackage contributingEcoreModelPackage = EPackage.Registry.INSTANCE
