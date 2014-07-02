@@ -1,0 +1,4 @@
+contributingModels=myFirstViewTutorial/models/publication.xmi,myFirstViewTutorial/models/book.xmi
+compositionMetamodel=myFirstViewTutorial/viewtypes/publicationsAndBooks.eviewtype
+correspondenceModel=myFirstViewTutorial/views/myPublicationsAndBooks.xmi
+correspondenceModelBase=myFirstViewTutorial/viewtypes/publicationsAndBooks.ecl

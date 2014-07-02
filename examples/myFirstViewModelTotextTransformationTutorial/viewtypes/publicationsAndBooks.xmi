@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks xsi:type="virtualLinks:Association" name="book" upperBound="1" associationTypeName="book" sourceElement="//@linkedElements.0" targetElements="//@linkedElements.1"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="chapter" upperBound="1" associationTypeName="chapter" sourceElement="//@linkedElements.2" targetElements="//@linkedElements.3"/>
+  <linkedElements elementRef="//Publication" modelRef="http://publication/1.0" name="Publication"/>
+  <linkedElements elementRef="//Book" modelRef="http://book/1.0" name="Book"/>
+  <linkedElements elementRef="//PubSection" modelRef="http://publication/1.0" name="PubSection"/>
+  <linkedElements elementRef="//Chapter" modelRef="http://book/1.0" name="Chapter"/>
+</virtualLinks:VirtualLinks>
