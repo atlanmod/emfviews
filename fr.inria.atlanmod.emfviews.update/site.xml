@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/fr.inria.atlanmod.emfviews.feature_1.0.0.201311221252.jar" id="fr.inria.atlanmod.emfviews.feature" version="1.0.0.201311221252">
+   <feature url="features/fr.inria.atlanmod.emfviews.feature_1.0.0.201403051502.jar" id="fr.inria.atlanmod.emfviews.feature" version="1.0.0.201403051502">
       <category name="emfviews"/>
    </feature>
    <category-def name="emfviews" label="EMF Views">
