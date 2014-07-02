@@ -24,7 +24,7 @@ So far, these are the projects:
 * fr.inria.atlanmod.emfviews.virtuallinksdelegator. This project delegates the creation of virtual links to concrete implementations
 * fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate. This project allows to generate links from the Epsilon Comparison Language (ECL).
 
-Tutorials:
+Examples:
 
 * myFirstViewTutorial. Create your first Viewtype and View.
 * myFirstViewTransformationTutorial. Create your first M2M transformation using a View as input
