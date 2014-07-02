@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Virtuallinksocldelegate
+Bundle-SymbolicName: fr.inria.atlanmod.emfviews.virtuallinksocldelegate
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: fr.inria.atlanmod.emfviews.virtuallinksocldelegate.Activator
+Bundle-Vendor: atlanmod
+Require-Bundle: org.eclipse.core.runtime,
+ fr.inria.atlanmod.emfviews.vlink-mm,
+ org.eclipse.ocl,
+ org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: fr.inria.atlanmod.emfviews.virtuallinksocldelegate
+Import-Package: fr.inria.atlanmod.emfviews.util,
+ org.eclipse.ocl.ecore
