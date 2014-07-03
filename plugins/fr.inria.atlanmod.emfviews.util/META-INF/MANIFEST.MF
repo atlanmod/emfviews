@@ -1,13 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Util
-Bundle-SymbolicName: fr.inria.atlanmod.emfviews.util
-Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: fr.inria.atlanmod.emfviews.util;singleton:=true
+Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.util.Activator
 Require-Bundle: org.eclipse.core.runtime,
- fr.inria.atlanmod.emfviews.vlink-mm;bundle-version="1.0.0",
+ fr.inria.atlanmod.emfviews.vlink-mm;bundle-version="0.2",
  org.eclipse.core.resources;bundle-version="3.8.101",
  org.eclipse.emf.ecore.xmi
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: fr.inria.atlanmod.emfviews.util
+Bundle-Vendor: Atlanmod

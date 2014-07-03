@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirtualLinksHandler
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.virtuallinksdelegator;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.virtuallinksdelegator.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.registry
@@ -12,3 +12,4 @@ Export-Package: fr.inria.atlanmod.emfviews.virtuallinksdelegator
 Import-Package: org.eclipse.emf.common.util,
  org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.resource
+Bundle-Vendor: Atlanmod

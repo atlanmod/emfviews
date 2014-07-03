@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EMFViews UI
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -40,3 +40,4 @@ Export-Package: fr.inria.atlanmod.emfviews.ui;uses:="org.eclipse.jface.resource,
    org.eclipse.core.resources,
    org.eclipse.jface.viewers,
    org.eclipse.swt.widgets"
+Bundle-Vendor: Atlanmod

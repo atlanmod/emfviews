@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: FirstEpsilonPlugin
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.epsilon.ecl.engine,
  org.eclipse.epsilon.eol.engine;bundle-version="1.0.0",
  fr.inria.atlanmod.emfviews.vlink-mm,
  org.eclipse.emf.ecore.xmi,
- fr.inria.atlanmod.emfviews.virtuallinksdelegator;bundle-version="1.0.0",
+ fr.inria.atlanmod.emfviews.virtuallinksdelegator;bundle-version="0.2",
  org.eclipse.epsilon.emc.emf,
  org.eclipse.epsilon.eol.dt,
  org.eclipse.emf.ecore,
@@ -21,3 +21,4 @@ Bundle-ClassPath: lib/,
  .
 Export-Package: fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate
 Import-Package: org.eclipse.core.resources
+Bundle-Vendor: Atlanmod

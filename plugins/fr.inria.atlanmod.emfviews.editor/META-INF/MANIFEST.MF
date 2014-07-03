@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Viewtype Editor
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.editor;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.editor.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -34,3 +34,4 @@ Export-Package: fr.inria.atlanmod.emfviews.editor.editors;
    org.eclipse.swt.widgets,
    org.eclipse.ui.forms,
    org.eclipse.ui.forms.widgets"
+Bundle-Vendor: Atlanmod

@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Virtuallinksocldelegate
-Bundle-SymbolicName: fr.inria.atlanmod.emfviews.virtuallinksocldelegate
-Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: fr.inria.atlanmod.emfviews.virtuallinksocldelegate;singleton:=true
+Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.virtuallinksocldelegate.Activator
-Bundle-Vendor: atlanmod
+Bundle-Vendor: Atlanmod
 Require-Bundle: org.eclipse.core.runtime,
  fr.inria.atlanmod.emfviews.vlink-mm,
  org.eclipse.ocl,
