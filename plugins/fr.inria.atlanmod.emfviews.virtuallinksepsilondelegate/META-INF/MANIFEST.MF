@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.epsilon.eol.dt,
  org.eclipse.emf.ecore,
  org.eclipse.uml2;bundle-version="4.1.2",
- fr.inria.atlanmod.emfviews.util
+ fr.inria.atlanmod.emfviews.util,
+ org.eclipse.uml2.uml.resources;bundle-version="4.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/,

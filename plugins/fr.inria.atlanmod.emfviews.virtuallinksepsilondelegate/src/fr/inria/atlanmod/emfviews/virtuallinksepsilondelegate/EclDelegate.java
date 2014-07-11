@@ -43,6 +43,7 @@ import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import fr.inria.atlanmod.emfviews.util.EmfViewsUtil;
 import fr.inria.atlanmod.emfviews.virtualLinks.Association;
@@ -285,6 +286,8 @@ public class EclDelegate implements IVirtualLinksDelegate {
 	protected EmfModel createEmfModelByURI(String name, String model,
 			String metamodel, boolean readOnLoad, boolean storeOnDisposal)
 			throws EolModelLoadingException, URISyntaxException {
+		if(metamodel.contains("UML"))
+			UMLResourcesUtil.init(null);
 		EmfModel emfModel = new EmfModel();
 		StringProperties properties = new StringProperties();
 		properties.put(EmfModel.PROPERTY_NAME, name);
