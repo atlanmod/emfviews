@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -62,20 +60,28 @@ public class EView extends View {
 
 		try
 		{
+			
 			String linksModelPath=viewProperties.getProperty("correspondenceModel");
-			java.net.URI  linksModelURI = EmfViewsUtil.toURI(linksModelPath);
-			if (viewProperties.getProperty("correspondenceModelBase") != null) 
+			java.net.URI  linksModelURI =null;
+			VirtualLinks viewtypeLevelVirtualLinks = null;
+			if(linksModelPath!=null)
 			{
-				generateCorrespondenceLinks(linksModelURI);
+				linksModelURI = EmfViewsUtil.toURI(linksModelPath);
+				if (viewProperties.getProperty("correspondenceModelBase") != null) 
+				{
+					generateCorrespondenceLinks(linksModelURI);
+				}
+				
+				viewtypeLevelVirtualLinks = (VirtualLinks)((((Viewtype) viewtype).getCorrespondenceModelResource()).getContents().get(0));
+				
 			}
-			VirtualLinks viewtypeLevelVirtualLinks = (VirtualLinks)((((Viewtype) viewtype).getCorrespondenceModelResource()).getContents().get(0));
 			
 			this.vLinkManager = new VirtualLinkManager(linksModelPath, this);
-			generateFilterLinks(viewtypeLevelVirtualLinks, virtualResourceSet,vLinkManager.getLinks(),linksModelURI);
-			
+			if(viewtypeLevelVirtualLinks!=null)
+				generateFilterLinks(viewtypeLevelVirtualLinks, virtualResourceSet,vLinkManager.getLinks(),linksModelURI);
 			vLinkManager.initialize();
-
 			setVirtualContents();
+			
 		} 
 		catch (URISyntaxException e1) 
 		{

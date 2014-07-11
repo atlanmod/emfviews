@@ -165,14 +165,23 @@ public class MetamodelManager {
 				for (EClass cec : lcec) {
 					List<EClass> lvec = compositionClassesByName.get(cec
 							.getName());
-					for (EClass vec : lvec) {
+					if(lvec!=null)
+					{
+						for (EClass vec : lvec) {
 						if ((vec.getEPackage().getNsURI()
 								.equals(cec.getEPackage().getNsURI()))||(vec.getEPackage().getNsURI()
 										.equals(cec.getEPackage().getNsURI()+"/viewtype"))) {
-							this.concreteToVirtualClass.put(cec, vec);
-							mapFeatures(cec, vec);
+								this.concreteToVirtualClass.put(cec, vec);
+								mapFeatures(cec, vec);
+							}
 						}
 					}
+					else
+					{
+						this.concreteToVirtualClass.put(cec, cec);
+						mapFeatures(cec, cec);
+					}
+
 				}
 			} 
 			else
