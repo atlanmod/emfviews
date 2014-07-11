@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks xsi:type="virtualLinks:Association" name="MatchProcessWithProcess" upperBound="1" associationTypeName="MatchProcessWithProcess" sourceElement="//@linkedElements.0" targetElements="//@linkedElements.1"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="requirement2reqif" upperBound="1" associationTypeName="requirement2reqif" sourceElement="//@linkedElements.2" targetElements="//@linkedElements.3"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="requirement2reqif" upperBound="1" associationTypeName="requirement2reqif" sourceElement="//@linkedElements.4" targetElements="//@linkedElements.5"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="requirement2reqif" upperBound="1" associationTypeName="requirement2reqif" sourceElement="//@linkedElements.6" targetElements="//@linkedElements.7"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="dataEntity2umlClass" upperBound="1" associationTypeName="dataEntity2umlClass" sourceElement="//@linkedElements.8" targetElements="//@linkedElements.9"/>
+  <linkedElements elementRef="//@architectures.1/@processes.0" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"/>
+  <linkedElements elementRef="_48wAUN6xEeCbzp_EHZybUg" modelRef="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"/>
+  <linkedElements elementRef="//@architectures.0/@strategicElements.0" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"/>
+  <linkedElements elementRef="rmf-19428170-0b70-4b81-9fd2-0cdec5778a49" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd"/>
+  <linkedElements elementRef="//@architectures.0/@strategicElements.1" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"/>
+  <linkedElements elementRef="rmf-1cbc7d55-9dbc-40ab-aa09-46ae4596f515" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd"/>
+  <linkedElements elementRef="//@architectures.0/@strategicElements.2" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"/>
+  <linkedElements elementRef="rmf-0f485e2a-2ce7-410d-9643-fcddfebe3780" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd"/>
+  <linkedElements elementRef="//@architectures.2/@entities.5" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"/>
+  <linkedElements elementRef="_Zo_fhGYjEeO6Uodv9TXNZQ" modelRef="http://www.eclipse.org/uml2/4.0.0/UML"/>
+</virtualLinks:VirtualLinks>

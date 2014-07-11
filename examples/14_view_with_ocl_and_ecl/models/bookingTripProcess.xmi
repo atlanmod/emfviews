@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<bpmn:Definitions xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" id="_u_K84N6xEeCbzp_EHZybUg">
+  <rootElements xsi:type="bpmn:Process" id="_48wAUN6xEeCbzp_EHZybUg" name="Booking a trip">
+    <flowElements xsi:type="bpmn:StartEvent" id="_IA8bct62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:Task" id="_IA8bc962EeCbzp_EHZybUg" name="Request a trip"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_IA8bdt62EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:StartEvent" id="_IA8bd962EeCbzp_EHZybUg" name=""/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9Cgt62EeCbzp_EHZybUg" name="Search flights"/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9Cg962EeCbzp_EHZybUg" name="Search hotel rooms"/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9ChN62EeCbzp_EHZybUg" name="Evaluate flights within customer criteria"/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9Chd62EeCbzp_EHZybUg" name="Evaluate hotels within customer criteria"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA-Qpt62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA-3sd62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA-3st62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA-3s962EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA-3tN62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA-3td62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA_ewN62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA-QpN62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9Ch962EeCbzp_EHZybUg" name="Package flights and hotels for customer review"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA_ewd62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9pkN62EeCbzp_EHZybUg" name="Present flights and hotels to customer"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_IA-Qod62EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA_ewt62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:Task" id="_IA8bdN62EeCbzp_EHZybUg" name="Choose alternative"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_IA_exN62EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_IBAF0d62EeCbzp_EHZybUg" name="" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_IBAF0t62EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:IntermediateCatchEvent" id="_IA9pkt62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:IntermediateCatchEvent" id="_IA9pk962EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:IntermediateCatchEvent" id="_IA9plN62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IA_ew962EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IBAs4962EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IBBT8N62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IBBT8d62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9pld62EeCbzp_EHZybUg" name="Cancelling a reservation" boundaryEventRefs="_IA8bdt62EeCbzp_EHZybUg _IA-Qod62EeCbzp_EHZybUg _IA_exN62EeCbzp_EHZybUg _IBAF0d62EeCbzp_EHZybUg _IBAF0t62EeCbzp_EHZybUg _IBCiE962EeCbzp_EHZybUg _23-58d62EeCbzp_EHZybUg _23-58t62EeCbzp_EHZybUg _23_hAN62EeCbzp_EHZybUg _T0CPMN7bEeCaEPqSoky6bw _T0CPMd7bEeCaEPqSoky6bw"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_IBCiE962EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IBB7AN62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IBCiEN62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IBCiEt62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:ManualTask" id="_IA9pl962EeCbzp_EHZybUg" name="Request credit card information"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_IBBT8t62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_23-58d62EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_239r0t62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_23-58t62EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_23_hAN62EeCbzp_EHZybUg" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:EndEvent" id="_239r0N62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_23-S4d62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:IntermediateCatchEvent" id="_239r0d62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:SequenceFlow" id="_23-58N62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:EndEvent" id="_3OfiMN7GEeCZXrARZ9_WHg"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_T0CPMN7bEeCaEPqSoky6bw" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+    <flowElements xsi:type="bpmn:BoundaryEvent" id="_T0CPMd7bEeCaEPqSoky6bw" attachedToRef="_IA9pld62EeCbzp_EHZybUg"/>
+  </rootElements>
+</bpmn:Definitions>
