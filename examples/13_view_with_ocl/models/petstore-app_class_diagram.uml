@@ -1,0 +1,1756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:ejb30.javax.ejb="http:///ejb30/javax/ejb.ecore" xmlns:ejb30.javax.interceptor="http:///ejb30/javax/interceptor.ecore" xmlns:ejb32.javax.ejb="http:///ejb32/javax/ejb.ecore" xmlns:hibernatecore.org.hibernate.validator.constraints="http:///hibernatecore/org/hibernate/validator/constraints.ecore" xmlns:javaxannotation.javax.annotation="http:///javaxannotation/javax/annotation.ecore" xmlns:javaxannotation.javax.annotation.sql="http:///javaxannotation/javax/annotation/sql.ecore" xmlns:javaxcdi.javax.enterprise.context="http:///javaxcdi/javax/enterprise/context.ecore" xmlns:javaxcdi.javax.enterprise.inject="http:///javaxcdi/javax/enterprise/inject.ecore" xmlns:javaxinject.javax.inject="http:///javaxinject/javax/inject.ecore" xmlns:javaxinterceptor.javax.interceptor="http:///javaxinterceptor/javax/interceptor.ecore" xmlns:javaxvalidation.javax.validation="http:///javaxvalidation/javax/validation.ecore" xmlns:javaxvalidation.javax.validation.constraints="http:///javaxvalidation/javax/validation/constraints.ecore" xmlns:javaxws.javax.ws.rs="http:///javaxws/javax/ws/rs.ecore" xmlns:javaxws.javax.ws.rs.core="http:///javaxws/javax/ws/rs/core.ecore" xmlns:jaxb.javax.xml.bind.annotation="http:///jaxb/javax/xml/bind/annotation.ecore" xmlns:jdk7.java.lang="http:///jdk7/java/lang.ecore" xmlns:jpa2.javax.persistence="http:///jpa2/javax/persistence.ecore" xmlns:petstoreapp.org.agoncal.application.petstore.constraint="http:///petstoreapp/org/agoncal/application/petstore/constraint.ecore" xmlns:petstoreapp.org.agoncal.application.petstore.util="http:///petstoreapp/org/agoncal/application/petstore/util.ecore" xmlns:petstoreapp.org.agoncal.application.petstore.web="http:///petstoreapp/org/agoncal/application/petstore/web.ecore" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xsi:schemaLocation="http:///ejb30/javax/ejb.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kZVzuEeOeT6Yid9wPBg http:///ejb30/javax/interceptor.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-mBVzuEeOeT6Yid9wPBg http:///ejb32/javax/ejb.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.2_profile.profile.uml#_eXXi9RSyEeOYN7EciD9SDQ http:///hibernatecore/org/hibernate/validator/constraints.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/hibernate-core_profile.profile.uml#_7-lfCVCLEeOXLNnshAPZow http:///javaxannotation/javax/annotation.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.annotation_profile.profile.uml#_emC4JRSyEeOYN7EciD9SDQ http:///javaxannotation/javax/annotation/sql.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.annotation_profile.profile.uml#_emDgCBSyEeOYN7EciD9SDQ http:///javaxcdi/javax/enterprise/context.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5upQxSyEeOYN7EciD9SDQ http:///javaxcdi/javax/enterprise/inject.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5vQUhSyEeOYN7EciD9SDQ http:///javaxinject/javax/inject.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miFRSyEeOYN7EciD9SDQ http:///javaxinterceptor/javax/interceptor.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.interceptor_profile.profile.uml#_fE8apRSyEeOYN7EciD9SDQ http:///javaxvalidation/javax/validation.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.validation_profile.profile.uml#_fVhNRRSyEeOYN7EciD9SDQ http:///javaxvalidation/javax/validation/constraints.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.validation_profile.profile.uml#_fVhNoRSyEeOYN7EciD9SDQ http:///javaxws/javax/ws/rs.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.ws_profile.profile.uml#_fieEJxSyEeOYN7EciD9SDQ http:///javaxws/javax/ws/rs/core.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.ws_profile.profile.uml#_fieFmxSyEeOYN7EciD9SDQ http:///jaxb/javax/xml/bind/annotation.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jaxb_profile.profile.uml#_f-QBORSyEeOYN7EciD9SDQ http:///jdk7/java/lang.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jdk7_profile.profile.uml#_5qyj8RSlEeO3--m29CbC5A http:///jpa2/javax/persistence.ecore platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jpa2_profile.profile.uml#_TEHZ9SWxEeOCj6LiK5WXEg http:///petstoreapp/org/agoncal/application/petstore/constraint.ecore petstore-app_profile.profile.uml#_ZcNmy2YjEeO6Uodv9TXNZQ http:///petstoreapp/org/agoncal/application/petstore/util.ecore petstore-app_profile.profile.uml#_ZcNm92YjEeO6Uodv9TXNZQ http:///petstoreapp/org/agoncal/application/petstore/web.ecore petstore-app_profile.profile.uml#_ZcNnKWYjEeO6Uodv9TXNZQ">
+  <uml:Model xmi:id="_Zo_egGYjEeO6Uodv9TXNZQ" name="petstore-app">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_Zo_egWYjEeO6Uodv9TXNZQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_Zo_egmYjEeO6Uodv9TXNZQ" name="org">
+      <packagedElement xmi:type="uml:Package" xmi:id="_Zo_eg2YjEeO6Uodv9TXNZQ" name="agoncal">
+        <packagedElement xmi:type="uml:Package" xmi:id="_Zo_ehGYjEeO6Uodv9TXNZQ" name="application">
+          <packagedElement xmi:type="uml:Package" xmi:id="_Zo_ehWYjEeO6Uodv9TXNZQ" name="petstore">
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_ehmYjEeO6Uodv9TXNZQ" name="constraint"/>
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_eh2YjEeO6Uodv9TXNZQ" name="domain">
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_eiGYjEeO6Uodv9TXNZQ" name="CreditCard">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_eiWYjEeO6Uodv9TXNZQ" name="creditCardNumber">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_eimYjEeO6Uodv9TXNZQ" name="creditCardType" type="_Zo_fp2YjEeO6Uodv9TXNZQ"/>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_ei2YjEeO6Uodv9TXNZQ" name="creditCardExpDate">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ejGYjEeO6Uodv9TXNZQ" name="CreditCard"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ejWYjEeO6Uodv9TXNZQ" name="CreditCard">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ejmYjEeO6Uodv9TXNZQ" name="creditCardNumber">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ej2YjEeO6Uodv9TXNZQ" name="creditCardType" type="_Zo_fp2YjEeO6Uodv9TXNZQ"/>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ekGYjEeO6Uodv9TXNZQ" name="creditCardExpDate">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ekWYjEeO6Uodv9TXNZQ" name="getCreditCardNumber"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ekmYjEeO6Uodv9TXNZQ" name="setCreditCardNumber">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ek2YjEeO6Uodv9TXNZQ" name="creditCardNumber">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_elGYjEeO6Uodv9TXNZQ" name="getCreditCardType"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_elWYjEeO6Uodv9TXNZQ" name="setCreditCardType">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_elmYjEeO6Uodv9TXNZQ" name="creditCardType" type="_Zo_fp2YjEeO6Uodv9TXNZQ"/>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_el2YjEeO6Uodv9TXNZQ" name="getCreditCardExpDate"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_emGYjEeO6Uodv9TXNZQ" name="setCreditCardExpDate">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_emWYjEeO6Uodv9TXNZQ" name="creditCardExpDate">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_emmYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_em2YjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_enGYjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_enWYjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_enmYjEeO6Uodv9TXNZQ" name="OrderLine">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_en2YjEeO6Uodv9TXNZQ" name="id">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_eoGYjEeO6Uodv9TXNZQ" name="quantity">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_eoWYjEeO6Uodv9TXNZQ" name="item">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eomYjEeO6Uodv9TXNZQ" name="OrderLine"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eo2YjEeO6Uodv9TXNZQ" name="OrderLine">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_epGYjEeO6Uodv9TXNZQ" name="quantity">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_epWYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_epmYjEeO6Uodv9TXNZQ" name="getSubTotal"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ep2YjEeO6Uodv9TXNZQ" name="getId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eqGYjEeO6Uodv9TXNZQ" name="getQuantity"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eqWYjEeO6Uodv9TXNZQ" name="setQuantity">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_eqmYjEeO6Uodv9TXNZQ" name="quantity">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eq2YjEeO6Uodv9TXNZQ" name="getItem"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_erGYjEeO6Uodv9TXNZQ" name="setItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_erWYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ermYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_er2YjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_esGYjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_esWYjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_esmYjEeO6Uodv9TXNZQ" name="Order">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_es2YjEeO6Uodv9TXNZQ" name="id">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_etGYjEeO6Uodv9TXNZQ" name="orderDate">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_etWYjEeO6Uodv9TXNZQ" name="customer">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_etmYjEeO6Uodv9TXNZQ" name="orderLines">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_et2YjEeO6Uodv9TXNZQ" name="deliveryAddress">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_euGYjEeO6Uodv9TXNZQ" name="creditCard">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_euWYjEeO6Uodv9TXNZQ" name="FIND_ALL" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eumYjEeO6Uodv9TXNZQ" name="Order"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eu2YjEeO6Uodv9TXNZQ" name="Order">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_evGYjEeO6Uodv9TXNZQ" name="customer">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_evWYjEeO6Uodv9TXNZQ" name="creditCard">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_evmYjEeO6Uodv9TXNZQ" name="deliveryAddress">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ev2YjEeO6Uodv9TXNZQ" name="setDefaultData"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ewGYjEeO6Uodv9TXNZQ" name="getTotal"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ewWYjEeO6Uodv9TXNZQ" name="getId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ewmYjEeO6Uodv9TXNZQ" name="getOrderDate"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ew2YjEeO6Uodv9TXNZQ" name="getCustomer"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_exGYjEeO6Uodv9TXNZQ" name="setCustomer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_exWYjEeO6Uodv9TXNZQ" name="customer">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_exmYjEeO6Uodv9TXNZQ" name="getOrderLines"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ex2YjEeO6Uodv9TXNZQ" name="setOrderLines">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_eyGYjEeO6Uodv9TXNZQ" name="orderLines">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eyWYjEeO6Uodv9TXNZQ" name="getDeliveryAddress"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_eymYjEeO6Uodv9TXNZQ" name="setDeliveryAddress">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ey2YjEeO6Uodv9TXNZQ" name="deliveryAddress">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ezGYjEeO6Uodv9TXNZQ" name="getCreditCard"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ezWYjEeO6Uodv9TXNZQ" name="setCreditCard">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ezmYjEeO6Uodv9TXNZQ" name="creditCard">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ez2YjEeO6Uodv9TXNZQ" name="getCreditCardNumber"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e0GYjEeO6Uodv9TXNZQ" name="setCreditCardNumber">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e0WYjEeO6Uodv9TXNZQ" name="creditCardNumber">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e0mYjEeO6Uodv9TXNZQ" name="getCreditCardType"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e02YjEeO6Uodv9TXNZQ" name="setCreditCardType">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e1GYjEeO6Uodv9TXNZQ" name="creditCardType" type="_Zo_fp2YjEeO6Uodv9TXNZQ"/>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e1WYjEeO6Uodv9TXNZQ" name="getCreditCardExpiryDate"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e1mYjEeO6Uodv9TXNZQ" name="setCreditCardExpiryDate">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e12YjEeO6Uodv9TXNZQ" name="creditCardExpiryDate">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e2GYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e2WYjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e2mYjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e22YjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_e3GYjEeO6Uodv9TXNZQ" name="Item">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e3WYjEeO6Uodv9TXNZQ" name="id">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e3mYjEeO6Uodv9TXNZQ" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e32YjEeO6Uodv9TXNZQ" name="description">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e4GYjEeO6Uodv9TXNZQ" name="unitCost">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#float"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e4WYjEeO6Uodv9TXNZQ" name="imagePath">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e4mYjEeO6Uodv9TXNZQ" name="product">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e42YjEeO6Uodv9TXNZQ" name="FIND_BY_PRODUCT_ID" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e5GYjEeO6Uodv9TXNZQ" name="SEARCH" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_e5WYjEeO6Uodv9TXNZQ" name="FIND_ALL" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e5mYjEeO6Uodv9TXNZQ" name="Item"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e52YjEeO6Uodv9TXNZQ" name="Item">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e6GYjEeO6Uodv9TXNZQ" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e6WYjEeO6Uodv9TXNZQ" name="unitCost">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#float"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e6mYjEeO6Uodv9TXNZQ" name="imagePath">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e62YjEeO6Uodv9TXNZQ" name="product">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e7GYjEeO6Uodv9TXNZQ" name="description">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e7WYjEeO6Uodv9TXNZQ" name="getId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e7mYjEeO6Uodv9TXNZQ" name="getName"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e72YjEeO6Uodv9TXNZQ" name="setName">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e8GYjEeO6Uodv9TXNZQ" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e8WYjEeO6Uodv9TXNZQ" name="getUnitCost"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e8mYjEeO6Uodv9TXNZQ" name="setUnitCost">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e82YjEeO6Uodv9TXNZQ" name="unitCost">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#float"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e9GYjEeO6Uodv9TXNZQ" name="getImagePath"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e9WYjEeO6Uodv9TXNZQ" name="setImagePath">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e9mYjEeO6Uodv9TXNZQ" name="imagePath">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e92YjEeO6Uodv9TXNZQ" name="getProduct"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e-GYjEeO6Uodv9TXNZQ" name="setProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e-WYjEeO6Uodv9TXNZQ" name="product">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e-mYjEeO6Uodv9TXNZQ" name="getDescription"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e-2YjEeO6Uodv9TXNZQ" name="setDescription">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e_GYjEeO6Uodv9TXNZQ" name="description">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e_WYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_e_mYjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_e_2YjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fAGYjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_fAWYjEeO6Uodv9TXNZQ" name="Category">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fAmYjEeO6Uodv9TXNZQ" name="id">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fA2YjEeO6Uodv9TXNZQ" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fBGYjEeO6Uodv9TXNZQ" name="description">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fBWYjEeO6Uodv9TXNZQ" name="products">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fBmYjEeO6Uodv9TXNZQ" name="FIND_BY_NAME" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fB2YjEeO6Uodv9TXNZQ" name="FIND_ALL" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fCGYjEeO6Uodv9TXNZQ" name="Category"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fCWYjEeO6Uodv9TXNZQ" name="Category">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fCmYjEeO6Uodv9TXNZQ" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fC2YjEeO6Uodv9TXNZQ" name="description">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fDGYjEeO6Uodv9TXNZQ" name="getId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fDWYjEeO6Uodv9TXNZQ" name="getName"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fDmYjEeO6Uodv9TXNZQ" name="setName">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fD2YjEeO6Uodv9TXNZQ" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fEGYjEeO6Uodv9TXNZQ" name="getDescription"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fEWYjEeO6Uodv9TXNZQ" name="setDescription">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fEmYjEeO6Uodv9TXNZQ" name="description">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fE2YjEeO6Uodv9TXNZQ" name="addProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fFGYjEeO6Uodv9TXNZQ" name="product">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fFWYjEeO6Uodv9TXNZQ" name="getProducts"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fFmYjEeO6Uodv9TXNZQ" name="setProducts">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fF2YjEeO6Uodv9TXNZQ" name="products">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fGGYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fGWYjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fGmYjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fG2YjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_fHGYjEeO6Uodv9TXNZQ" name="CartItem">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fHWYjEeO6Uodv9TXNZQ" name="item">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fHmYjEeO6Uodv9TXNZQ" name="quantity">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fH2YjEeO6Uodv9TXNZQ" name="CartItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fIGYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fIWYjEeO6Uodv9TXNZQ" name="quantity">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fImYjEeO6Uodv9TXNZQ" name="getSubTotal"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fI2YjEeO6Uodv9TXNZQ" name="getItem"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fJGYjEeO6Uodv9TXNZQ" name="setItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fJWYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fJmYjEeO6Uodv9TXNZQ" name="getQuantity"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fJ2YjEeO6Uodv9TXNZQ" name="setQuantity">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fKGYjEeO6Uodv9TXNZQ" name="quantity">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fKWYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fKmYjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fK2YjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fLGYjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_fLWYjEeO6Uodv9TXNZQ" name="Product">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fLmYjEeO6Uodv9TXNZQ" name="id">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fL2YjEeO6Uodv9TXNZQ" name="name">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fMGYjEeO6Uodv9TXNZQ" name="description">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fMWYjEeO6Uodv9TXNZQ" name="category">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fMmYjEeO6Uodv9TXNZQ" name="items">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fM2YjEeO6Uodv9TXNZQ" name="FIND_BY_CATEGORY_NAME" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fNGYjEeO6Uodv9TXNZQ" name="FIND_ALL" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fNWYjEeO6Uodv9TXNZQ" name="Product"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fNmYjEeO6Uodv9TXNZQ" name="Product">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fN2YjEeO6Uodv9TXNZQ" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fOGYjEeO6Uodv9TXNZQ" name="description">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fOWYjEeO6Uodv9TXNZQ" name="category">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fOmYjEeO6Uodv9TXNZQ" name="getId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fO2YjEeO6Uodv9TXNZQ" name="getName"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fPGYjEeO6Uodv9TXNZQ" name="setName">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fPWYjEeO6Uodv9TXNZQ" name="name">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fPmYjEeO6Uodv9TXNZQ" name="getDescription"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fP2YjEeO6Uodv9TXNZQ" name="setDescription">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fQGYjEeO6Uodv9TXNZQ" name="description">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fQWYjEeO6Uodv9TXNZQ" name="getCategory"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fQmYjEeO6Uodv9TXNZQ" name="setCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fQ2YjEeO6Uodv9TXNZQ" name="category">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fRGYjEeO6Uodv9TXNZQ" name="addItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fRWYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fRmYjEeO6Uodv9TXNZQ" name="getItems"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fR2YjEeO6Uodv9TXNZQ" name="setItems">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fSGYjEeO6Uodv9TXNZQ" name="items">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fSWYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fSmYjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fS2YjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fTGYjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_fTWYjEeO6Uodv9TXNZQ" name="Customer">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fTmYjEeO6Uodv9TXNZQ" name="id">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fT2YjEeO6Uodv9TXNZQ" name="login">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fUGYjEeO6Uodv9TXNZQ" name="password">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fUWYjEeO6Uodv9TXNZQ" name="firstname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fUmYjEeO6Uodv9TXNZQ" name="lastname">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fU2YjEeO6Uodv9TXNZQ" name="telephone">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fVGYjEeO6Uodv9TXNZQ" name="email">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fVWYjEeO6Uodv9TXNZQ" name="homeAddress">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fVmYjEeO6Uodv9TXNZQ" name="dateOfBirth">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fV2YjEeO6Uodv9TXNZQ" name="age">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fWGYjEeO6Uodv9TXNZQ" name="FIND_BY_LOGIN" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fWWYjEeO6Uodv9TXNZQ" name="FIND_BY_LOGIN_PASSWORD" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fWmYjEeO6Uodv9TXNZQ" name="FIND_ALL" isStatic="true">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fW2YjEeO6Uodv9TXNZQ" name="Customer"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fXGYjEeO6Uodv9TXNZQ" name="Customer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fXWYjEeO6Uodv9TXNZQ" name="firstname">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fXmYjEeO6Uodv9TXNZQ" name="lastname">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fX2YjEeO6Uodv9TXNZQ" name="login">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fYGYjEeO6Uodv9TXNZQ" name="password">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fYWYjEeO6Uodv9TXNZQ" name="email">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fYmYjEeO6Uodv9TXNZQ" name="address">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fY2YjEeO6Uodv9TXNZQ" name="calculateAge"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fZGYjEeO6Uodv9TXNZQ" name="matchPassword">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fZWYjEeO6Uodv9TXNZQ" name="pwd">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fZmYjEeO6Uodv9TXNZQ" name="getId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fZ2YjEeO6Uodv9TXNZQ" name="getLogin"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_faGYjEeO6Uodv9TXNZQ" name="setLogin">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_faWYjEeO6Uodv9TXNZQ" name="login">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_famYjEeO6Uodv9TXNZQ" name="getPassword"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fa2YjEeO6Uodv9TXNZQ" name="setPassword">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fbGYjEeO6Uodv9TXNZQ" name="password">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fbWYjEeO6Uodv9TXNZQ" name="getFirstname"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fbmYjEeO6Uodv9TXNZQ" name="setFirstname">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fb2YjEeO6Uodv9TXNZQ" name="firstname">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fcGYjEeO6Uodv9TXNZQ" name="getLastname"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fcWYjEeO6Uodv9TXNZQ" name="setLastname">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fcmYjEeO6Uodv9TXNZQ" name="lastname">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fc2YjEeO6Uodv9TXNZQ" name="getTelephone"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fdGYjEeO6Uodv9TXNZQ" name="setTelephone">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fdWYjEeO6Uodv9TXNZQ" name="telephone">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fdmYjEeO6Uodv9TXNZQ" name="getEmail"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fd2YjEeO6Uodv9TXNZQ" name="setEmail">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_feGYjEeO6Uodv9TXNZQ" name="email">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_feWYjEeO6Uodv9TXNZQ" name="getHomeAddress"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_femYjEeO6Uodv9TXNZQ" name="setHomeAddress">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fe2YjEeO6Uodv9TXNZQ" name="homeAddress">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ffGYjEeO6Uodv9TXNZQ" name="getDateOfBirth"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ffWYjEeO6Uodv9TXNZQ" name="setDateOfBirth">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ffmYjEeO6Uodv9TXNZQ" name="dateOfBirth">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ff2YjEeO6Uodv9TXNZQ" name="getAge"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fgGYjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fgWYjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fgmYjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fg2YjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_fhGYjEeO6Uodv9TXNZQ" name="Address">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fhWYjEeO6Uodv9TXNZQ" name="street1">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fhmYjEeO6Uodv9TXNZQ" name="street2">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fh2YjEeO6Uodv9TXNZQ" name="city">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fiGYjEeO6Uodv9TXNZQ" name="state">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fiWYjEeO6Uodv9TXNZQ" name="zipcode">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fimYjEeO6Uodv9TXNZQ" name="country">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fi2YjEeO6Uodv9TXNZQ" name="Address"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fjGYjEeO6Uodv9TXNZQ" name="Address">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fjWYjEeO6Uodv9TXNZQ" name="street1">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fjmYjEeO6Uodv9TXNZQ" name="city">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fj2YjEeO6Uodv9TXNZQ" name="zipcode">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fkGYjEeO6Uodv9TXNZQ" name="country">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fkWYjEeO6Uodv9TXNZQ" name="getStreet1"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fkmYjEeO6Uodv9TXNZQ" name="setStreet1">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fk2YjEeO6Uodv9TXNZQ" name="street1">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_flGYjEeO6Uodv9TXNZQ" name="getStreet2"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_flWYjEeO6Uodv9TXNZQ" name="setStreet2">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_flmYjEeO6Uodv9TXNZQ" name="street2">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fl2YjEeO6Uodv9TXNZQ" name="getCity"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fmGYjEeO6Uodv9TXNZQ" name="setCity">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fmWYjEeO6Uodv9TXNZQ" name="city">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fmmYjEeO6Uodv9TXNZQ" name="getState"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fm2YjEeO6Uodv9TXNZQ" name="setState">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fnGYjEeO6Uodv9TXNZQ" name="state">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fnWYjEeO6Uodv9TXNZQ" name="getZipcode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fnmYjEeO6Uodv9TXNZQ" name="setZipcode">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fn2YjEeO6Uodv9TXNZQ" name="zipcode">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_foGYjEeO6Uodv9TXNZQ" name="getCountry"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_foWYjEeO6Uodv9TXNZQ" name="setCountry">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fomYjEeO6Uodv9TXNZQ" name="country">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fo2YjEeO6Uodv9TXNZQ" name="equals">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fpGYjEeO6Uodv9TXNZQ" name="o">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fpWYjEeO6Uodv9TXNZQ" name="hashCode"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fpmYjEeO6Uodv9TXNZQ" name="toString"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Enumeration" xmi:id="_Zo_fp2YjEeO6Uodv9TXNZQ" name="CreditCardType">
+                <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_Zo_fqGYjEeO6Uodv9TXNZQ" name="VISA"/>
+                <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_Zo_fqWYjEeO6Uodv9TXNZQ" name="MASTER_CARD"/>
+                <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_Zo_fqmYjEeO6Uodv9TXNZQ" name="AMERICAN_EXPRESS"/>
+              </packagedElement>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zu55QGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zu55QWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jpa2_profile.profile.uml#_TEHZ8iWxEeOCj6LiK5WXEg"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jpa2_profile.profile.uml#_TEHZ8CWxEeOCj6LiK5WXEg"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZxkywmYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zxkyw2YjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.validation_profile.profile.uml#_fVhNQhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.validation_profile.profile.uml#_fVhNQBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZxkyzGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZxkyzWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jdk7_profile.profile.uml#_5qyjwhSlEeO3--m29CbC5A"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jdk7_profile.profile.uml#_5qyjwBSlEeO3--m29CbC5A"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zxq5aGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zxq5aWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jaxb_profile.profile.uml#_f-QBMhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jaxb_profile.profile.uml#_f-QBMBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zx3GvGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zx3GvWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/hibernate-core_profile.profile.uml#_7-lXklCLEeOXLNnshAPZow"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/hibernate-core_profile.profile.uml#_7-lXkFCLEeOXLNnshAPZow"/>
+              </profileApplication>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_fq2YjEeO6Uodv9TXNZQ" name="exception">
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_frGYjEeO6Uodv9TXNZQ" name="ValidationException">
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_frWYjEeO6Uodv9TXNZQ" name="ValidationException">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_frmYjEeO6Uodv9TXNZQ" name="message">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zx9NWWYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zx9NWmYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYlzuEeOeT6Yid9wPBg"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYFzuEeOeT6Yid9wPBg"/>
+              </profileApplication>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_fr2YjEeO6Uodv9TXNZQ" name="rest">
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_fsGYjEeO6Uodv9TXNZQ" name="CatalogRestService">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fsWYjEeO6Uodv9TXNZQ" name="catalogService">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_fsmYjEeO6Uodv9TXNZQ" name="uriInfo"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fs2YjEeO6Uodv9TXNZQ" name="findAllCategories"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ftGYjEeO6Uodv9TXNZQ" name="findCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ftWYjEeO6Uodv9TXNZQ" name="categoryId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_ftmYjEeO6Uodv9TXNZQ" name="createCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ft2YjEeO6Uodv9TXNZQ" name="xmlCategory">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fuGYjEeO6Uodv9TXNZQ" name="updateCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fuWYjEeO6Uodv9TXNZQ" name="xmlCategory">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fumYjEeO6Uodv9TXNZQ" name="removeCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fu2YjEeO6Uodv9TXNZQ" name="categoryId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fvGYjEeO6Uodv9TXNZQ" name="findAllProducts"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fvWYjEeO6Uodv9TXNZQ" name="findProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fvmYjEeO6Uodv9TXNZQ" name="productId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fv2YjEeO6Uodv9TXNZQ" name="createProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fwGYjEeO6Uodv9TXNZQ" name="xmlProduct">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fwWYjEeO6Uodv9TXNZQ" name="updateProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fwmYjEeO6Uodv9TXNZQ" name="xmlProduct">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fw2YjEeO6Uodv9TXNZQ" name="removeProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fxGYjEeO6Uodv9TXNZQ" name="productId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fxWYjEeO6Uodv9TXNZQ" name="findAllItems"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fxmYjEeO6Uodv9TXNZQ" name="findItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fx2YjEeO6Uodv9TXNZQ" name="itemId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fyGYjEeO6Uodv9TXNZQ" name="createItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fyWYjEeO6Uodv9TXNZQ" name="xmlItem">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fymYjEeO6Uodv9TXNZQ" name="updateItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fy2YjEeO6Uodv9TXNZQ" name="xmlItem">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fzGYjEeO6Uodv9TXNZQ" name="removeItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_fzWYjEeO6Uodv9TXNZQ" name="itemId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_fzmYjEeO6Uodv9TXNZQ" name="ApplicationConfig">
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_fz2YjEeO6Uodv9TXNZQ" name="getClasses"/>
+              </packagedElement>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zx9NXWYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zx9NXmYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.ws_profile.profile.uml#_fieEIhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.ws_profile.profile.uml#_fieEIBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zx9NYGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zx9NYWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.annotation_profile.profile.uml#_emC4IhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.annotation_profile.profile.uml#_emC4IBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zx9NY2YjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyDT4GYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyJanWYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyJanmYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jdk7_profile.profile.uml#_5qyjwhSlEeO3--m29CbC5A"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jdk7_profile.profile.uml#_5qyjwBSlEeO3--m29CbC5A"/>
+              </profileApplication>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_f0GYjEeO6Uodv9TXNZQ" name="security">
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_f0WYjEeO6Uodv9TXNZQ" name="SimpleLoginModule">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f0mYjEeO6Uodv9TXNZQ" name="callbackHandler"/>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f02YjEeO6Uodv9TXNZQ" name="customerService">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f1GYjEeO6Uodv9TXNZQ" name="beanManager"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f1WYjEeO6Uodv9TXNZQ" name="getCustomerService"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f1mYjEeO6Uodv9TXNZQ" name="initialize">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f12YjEeO6Uodv9TXNZQ" name="subject">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f2GYjEeO6Uodv9TXNZQ" name="callbackHandler"/>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f2WYjEeO6Uodv9TXNZQ" name="stringMap">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f2mYjEeO6Uodv9TXNZQ" name="stringMap1">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f22YjEeO6Uodv9TXNZQ" name="login"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f3GYjEeO6Uodv9TXNZQ" name="commit"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f3WYjEeO6Uodv9TXNZQ" name="abort"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f3mYjEeO6Uodv9TXNZQ" name="logout"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_f32YjEeO6Uodv9TXNZQ" name="SimpleCallbackHandler">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f4GYjEeO6Uodv9TXNZQ" name="credentials">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f4WYjEeO6Uodv9TXNZQ" name="handle">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f4mYjEeO6Uodv9TXNZQ" name="callbacks">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_f42YjEeO6Uodv9TXNZQ" name="LoginContextProducer">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f5GYjEeO6Uodv9TXNZQ" name="callbackHandler">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f5WYjEeO6Uodv9TXNZQ" name="produceLoginContext">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f5mYjEeO6Uodv9TXNZQ" name="loginConfigFileName">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f52YjEeO6Uodv9TXNZQ" name="loginModuleName">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyJaoGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyJaoWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jdk7_profile.profile.uml#_5qyjwhSlEeO3--m29CbC5A"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jdk7_profile.profile.uml#_5qyjwBSlEeO3--m29CbC5A"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyJap2YjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyJaqGYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyJaq2YjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyJarGYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5upIhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5upIBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_f6GYjEeO6Uodv9TXNZQ" name="service">
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_f6WYjEeO6Uodv9TXNZQ" name="DBPopulator">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f6mYjEeO6Uodv9TXNZQ" name="fish">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f62YjEeO6Uodv9TXNZQ" name="dog">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f7GYjEeO6Uodv9TXNZQ" name="reptile">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f7WYjEeO6Uodv9TXNZQ" name="cat">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f7mYjEeO6Uodv9TXNZQ" name="bird">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f72YjEeO6Uodv9TXNZQ" name="marc">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f8GYjEeO6Uodv9TXNZQ" name="bill">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f8WYjEeO6Uodv9TXNZQ" name="steve">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f8mYjEeO6Uodv9TXNZQ" name="user">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f82YjEeO6Uodv9TXNZQ" name="admin">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f9GYjEeO6Uodv9TXNZQ" name="catalogService">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f9WYjEeO6Uodv9TXNZQ" name="customerService">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f9mYjEeO6Uodv9TXNZQ" name="populateDB"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f92YjEeO6Uodv9TXNZQ" name="clearDB"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f-GYjEeO6Uodv9TXNZQ" name="initCatalog"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f-WYjEeO6Uodv9TXNZQ" name="initCustomers"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_f-mYjEeO6Uodv9TXNZQ" name="CustomerService">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_f-2YjEeO6Uodv9TXNZQ" name="em"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f_GYjEeO6Uodv9TXNZQ" name="doesLoginAlreadyExist">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f_WYjEeO6Uodv9TXNZQ" name="login">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_f_mYjEeO6Uodv9TXNZQ" name="createCustomer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_f_2YjEeO6Uodv9TXNZQ" name="customer">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gAGYjEeO6Uodv9TXNZQ" name="findCustomer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gAWYjEeO6Uodv9TXNZQ" name="login">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gAmYjEeO6Uodv9TXNZQ" name="findCustomer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gA2YjEeO6Uodv9TXNZQ" name="login">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gBGYjEeO6Uodv9TXNZQ" name="password">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gBWYjEeO6Uodv9TXNZQ" name="findAllCustomers"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gBmYjEeO6Uodv9TXNZQ" name="updateCustomer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gB2YjEeO6Uodv9TXNZQ" name="customer">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gCGYjEeO6Uodv9TXNZQ" name="removeCustomer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gCWYjEeO6Uodv9TXNZQ" name="customer">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gCmYjEeO6Uodv9TXNZQ" name="OrderService">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gC2YjEeO6Uodv9TXNZQ" name="em"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gDGYjEeO6Uodv9TXNZQ" name="createOrder">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gDWYjEeO6Uodv9TXNZQ" name="customer">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gDmYjEeO6Uodv9TXNZQ" name="creditCard">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gD2YjEeO6Uodv9TXNZQ" name="cartItems">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gEGYjEeO6Uodv9TXNZQ" name="findOrder">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gEWYjEeO6Uodv9TXNZQ" name="orderId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gEmYjEeO6Uodv9TXNZQ" name="findAllOrders"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gE2YjEeO6Uodv9TXNZQ" name="removeOrder">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gFGYjEeO6Uodv9TXNZQ" name="order">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gFWYjEeO6Uodv9TXNZQ" name="CatalogService">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gFmYjEeO6Uodv9TXNZQ" name="em"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gF2YjEeO6Uodv9TXNZQ" name="findCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gGGYjEeO6Uodv9TXNZQ" name="categoryId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gGWYjEeO6Uodv9TXNZQ" name="findCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gGmYjEeO6Uodv9TXNZQ" name="categoryName">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gG2YjEeO6Uodv9TXNZQ" name="findAllCategories"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gHGYjEeO6Uodv9TXNZQ" name="createCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gHWYjEeO6Uodv9TXNZQ" name="category">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gHmYjEeO6Uodv9TXNZQ" name="updateCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gH2YjEeO6Uodv9TXNZQ" name="category">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gIGYjEeO6Uodv9TXNZQ" name="removeCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gIWYjEeO6Uodv9TXNZQ" name="category">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gImYjEeO6Uodv9TXNZQ" name="removeCategory">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gI2YjEeO6Uodv9TXNZQ" name="categoryId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gJGYjEeO6Uodv9TXNZQ" name="findProducts">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gJWYjEeO6Uodv9TXNZQ" name="categoryName">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gJmYjEeO6Uodv9TXNZQ" name="findProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gJ2YjEeO6Uodv9TXNZQ" name="productId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gKGYjEeO6Uodv9TXNZQ" name="findAllProducts"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gKWYjEeO6Uodv9TXNZQ" name="createProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gKmYjEeO6Uodv9TXNZQ" name="product">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gK2YjEeO6Uodv9TXNZQ" name="updateProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gLGYjEeO6Uodv9TXNZQ" name="product">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gLWYjEeO6Uodv9TXNZQ" name="removeProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gLmYjEeO6Uodv9TXNZQ" name="product">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gL2YjEeO6Uodv9TXNZQ" name="removeProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gMGYjEeO6Uodv9TXNZQ" name="productId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gMWYjEeO6Uodv9TXNZQ" name="findItems">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gMmYjEeO6Uodv9TXNZQ" name="productId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gM2YjEeO6Uodv9TXNZQ" name="findItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gNGYjEeO6Uodv9TXNZQ" name="itemId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gNWYjEeO6Uodv9TXNZQ" name="searchItems">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gNmYjEeO6Uodv9TXNZQ" name="keyword">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gN2YjEeO6Uodv9TXNZQ" name="findAllItems"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gOGYjEeO6Uodv9TXNZQ" name="createItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gOWYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gOmYjEeO6Uodv9TXNZQ" name="updateItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gO2YjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gPGYjEeO6Uodv9TXNZQ" name="removeItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gPWYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gPmYjEeO6Uodv9TXNZQ" name="removeItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gP2YjEeO6Uodv9TXNZQ" name="itemId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyJas2YjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyJatGYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.2_profile.profile.uml#_eXXi8hSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.2_profile.profile.uml#_eXXi8BSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhI2YjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhJGYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.annotation_profile.profile.uml#_emC4IhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.annotation_profile.profile.uml#_emC4IBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhJmYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhJ2YjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhLGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhLWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYlzuEeOeT6Yid9wPBg"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYFzuEeOeT6Yid9wPBg"/>
+              </profileApplication>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_gQGYjEeO6Uodv9TXNZQ" name="util">
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gQWYjEeO6Uodv9TXNZQ" name="LoggingInterceptor">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gQmYjEeO6Uodv9TXNZQ" name="logger">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gQ2YjEeO6Uodv9TXNZQ" name="logMethod">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gRGYjEeO6Uodv9TXNZQ" name="ic"/>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gRWYjEeO6Uodv9TXNZQ" name="DatabaseProducer">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gRmYjEeO6Uodv9TXNZQ" name="em"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gR2YjEeO6Uodv9TXNZQ" name="LoggingProducer">
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gSGYjEeO6Uodv9TXNZQ" name="produceLogger">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gSWYjEeO6Uodv9TXNZQ" name="injectionPoint"/>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gSmYjEeO6Uodv9TXNZQ" name="ConfigPropertyProducer">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gS2YjEeO6Uodv9TXNZQ" name="props" isStatic="true">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gTGYjEeO6Uodv9TXNZQ" name="produceConfigProperty">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gTWYjEeO6Uodv9TXNZQ" name="ip"/>
+                </ownedOperation>
+              </packagedElement>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhOGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhOWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.interceptor_profile.profile.uml#_fE8aohSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.interceptor_profile.profile.uml#_fE8aoBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhO2YjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhPGYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhPmYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhP2YjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYlzuEeOeT6Yid9wPBg"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYFzuEeOeT6Yid9wPBg"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhQWYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhQmYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5upIhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5upIBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhRGYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhRWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jpa2_profile.profile.uml#_TEHZ8iWxEeOCj6LiK5WXEg"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/jpa2_profile.profile.uml#_TEHZ8CWxEeOCj6LiK5WXEg"/>
+              </profileApplication>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Package" xmi:id="_Zo_gTmYjEeO6Uodv9TXNZQ" name="web">
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gT2YjEeO6Uodv9TXNZQ" name="ShoppingCartController">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gUGYjEeO6Uodv9TXNZQ" name="loggedInCustomer">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gUWYjEeO6Uodv9TXNZQ" name="catalogBean">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gUmYjEeO6Uodv9TXNZQ" name="orderBean">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gU2YjEeO6Uodv9TXNZQ" name="conversation"/>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gVGYjEeO6Uodv9TXNZQ" name="cartItems">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gVWYjEeO6Uodv9TXNZQ" name="creditCard">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gVmYjEeO6Uodv9TXNZQ" name="order">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gV2YjEeO6Uodv9TXNZQ" name="addItemToCart"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gWGYjEeO6Uodv9TXNZQ" name="removeItemFromCart"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gWWYjEeO6Uodv9TXNZQ" name="updateQuantity"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gWmYjEeO6Uodv9TXNZQ" name="checkout"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gW2YjEeO6Uodv9TXNZQ" name="confirmOrder"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gXGYjEeO6Uodv9TXNZQ" name="getCartItems"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gXWYjEeO6Uodv9TXNZQ" name="shoppingCartIsEmpty"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gXmYjEeO6Uodv9TXNZQ" name="getTotal"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gX2YjEeO6Uodv9TXNZQ" name="getCustomer"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gYGYjEeO6Uodv9TXNZQ" name="getCreditCard"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gYWYjEeO6Uodv9TXNZQ" name="setCreditCard">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gYmYjEeO6Uodv9TXNZQ" name="creditCard">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gY2YjEeO6Uodv9TXNZQ" name="getOrder"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gZGYjEeO6Uodv9TXNZQ" name="setOrder">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gZWYjEeO6Uodv9TXNZQ" name="order">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gZmYjEeO6Uodv9TXNZQ" name="getConversation"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gZ2YjEeO6Uodv9TXNZQ" name="getCreditCardTypes"/>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gaGYjEeO6Uodv9TXNZQ" name="Controller">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gaWYjEeO6Uodv9TXNZQ" name="logger">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gamYjEeO6Uodv9TXNZQ" name="getMessage">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ga2YjEeO6Uodv9TXNZQ" name="facesContext">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gbGYjEeO6Uodv9TXNZQ" name="msgKey">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gbWYjEeO6Uodv9TXNZQ" name="args">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gbmYjEeO6Uodv9TXNZQ" name="addInformationMessage">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gb2YjEeO6Uodv9TXNZQ" name="message">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gcGYjEeO6Uodv9TXNZQ" name="args">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gcWYjEeO6Uodv9TXNZQ" name="addWarningMessage">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gcmYjEeO6Uodv9TXNZQ" name="message">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gc2YjEeO6Uodv9TXNZQ" name="args">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gdGYjEeO6Uodv9TXNZQ" name="addErrorMessage">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gdWYjEeO6Uodv9TXNZQ" name="message">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gdmYjEeO6Uodv9TXNZQ" name="args">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gd2YjEeO6Uodv9TXNZQ" name="getParam">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_geGYjEeO6Uodv9TXNZQ" name="param">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_geWYjEeO6Uodv9TXNZQ" name="getParamId">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gemYjEeO6Uodv9TXNZQ" name="param">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_ge2YjEeO6Uodv9TXNZQ" name="ExceptionInterceptor">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gfGYjEeO6Uodv9TXNZQ" name="log">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gfWYjEeO6Uodv9TXNZQ" name="catchException">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gfmYjEeO6Uodv9TXNZQ" name="ic"/>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gf2YjEeO6Uodv9TXNZQ" name="addErrorMessage">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_ggGYjEeO6Uodv9TXNZQ" name="message">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_ggWYjEeO6Uodv9TXNZQ" name="CatalogController">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_ggmYjEeO6Uodv9TXNZQ" name="catalogService">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gg2YjEeO6Uodv9TXNZQ" name="categoryName">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_ghGYjEeO6Uodv9TXNZQ" name="productId">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_ghWYjEeO6Uodv9TXNZQ" name="itemId">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_ghmYjEeO6Uodv9TXNZQ" name="keyword">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gh2YjEeO6Uodv9TXNZQ" name="product">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_giGYjEeO6Uodv9TXNZQ" name="item">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_giWYjEeO6Uodv9TXNZQ" name="products">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gimYjEeO6Uodv9TXNZQ" name="items">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gi2YjEeO6Uodv9TXNZQ" name="doFindProducts"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gjGYjEeO6Uodv9TXNZQ" name="doFindItems"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gjWYjEeO6Uodv9TXNZQ" name="doFindItem"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gjmYjEeO6Uodv9TXNZQ" name="doSearch"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gj2YjEeO6Uodv9TXNZQ" name="getProduct"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gkGYjEeO6Uodv9TXNZQ" name="setProduct">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gkWYjEeO6Uodv9TXNZQ" name="product">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gkmYjEeO6Uodv9TXNZQ" name="getItem"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gk2YjEeO6Uodv9TXNZQ" name="setItem">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_glGYjEeO6Uodv9TXNZQ" name="item">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_glWYjEeO6Uodv9TXNZQ" name="getProducts"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_glmYjEeO6Uodv9TXNZQ" name="getItems"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gl2YjEeO6Uodv9TXNZQ" name="getKeyword"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gmGYjEeO6Uodv9TXNZQ" name="setKeyword">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gmWYjEeO6Uodv9TXNZQ" name="keyword">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gmmYjEeO6Uodv9TXNZQ" name="getCategoryName"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gm2YjEeO6Uodv9TXNZQ" name="setCategoryName">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gnGYjEeO6Uodv9TXNZQ" name="categoryName">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gnWYjEeO6Uodv9TXNZQ" name="getProductId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gnmYjEeO6Uodv9TXNZQ" name="setProductId">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gn2YjEeO6Uodv9TXNZQ" name="productId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_goGYjEeO6Uodv9TXNZQ" name="getItemId"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_goWYjEeO6Uodv9TXNZQ" name="setItemId">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gomYjEeO6Uodv9TXNZQ" name="itemId">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_go2YjEeO6Uodv9TXNZQ" name="LocaleBean">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gpGYjEeO6Uodv9TXNZQ" name="locale">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gpWYjEeO6Uodv9TXNZQ" name="getLocale"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gpmYjEeO6Uodv9TXNZQ" name="getLanguage"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gp2YjEeO6Uodv9TXNZQ" name="setLanguage">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gqGYjEeO6Uodv9TXNZQ" name="language">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gqWYjEeO6Uodv9TXNZQ" name="Credentials">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gqmYjEeO6Uodv9TXNZQ" name="login">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gq2YjEeO6Uodv9TXNZQ" name="password">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_grGYjEeO6Uodv9TXNZQ" name="password2">
+                  <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_grWYjEeO6Uodv9TXNZQ" name="getLogin"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_grmYjEeO6Uodv9TXNZQ" name="setLogin">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gr2YjEeO6Uodv9TXNZQ" name="login">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gsGYjEeO6Uodv9TXNZQ" name="getPassword"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gsWYjEeO6Uodv9TXNZQ" name="setPassword">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gsmYjEeO6Uodv9TXNZQ" name="password">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gs2YjEeO6Uodv9TXNZQ" name="getPassword2"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gtGYjEeO6Uodv9TXNZQ" name="setPassword2">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gtWYjEeO6Uodv9TXNZQ" name="password2">
+                    <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Zo_gtmYjEeO6Uodv9TXNZQ" name="AccountController">
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gt2YjEeO6Uodv9TXNZQ" name="customerService">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_guGYjEeO6Uodv9TXNZQ" name="credentials">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_guWYjEeO6Uodv9TXNZQ" name="conversation"/>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gumYjEeO6Uodv9TXNZQ" name="loggedinCustomer">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedAttribute xmi:type="uml:Property" xmi:id="_Zo_gu2YjEeO6Uodv9TXNZQ" name="loginContext">
+                  <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                </ownedAttribute>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gvGYjEeO6Uodv9TXNZQ" name="doLogin"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gvWYjEeO6Uodv9TXNZQ" name="doCreateNewAccount"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gvmYjEeO6Uodv9TXNZQ" name="doCreateCustomer"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gv2YjEeO6Uodv9TXNZQ" name="doLogout"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gwGYjEeO6Uodv9TXNZQ" name="doUpdateAccount"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gwWYjEeO6Uodv9TXNZQ" name="isLoggedIn"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gwmYjEeO6Uodv9TXNZQ" name="getLoggedinCustomer"/>
+                <ownedOperation xmi:type="uml:Operation" xmi:id="_Zo_gw2YjEeO6Uodv9TXNZQ" name="setLoggedinCustomer">
+                  <ownedParameter xmi:type="uml:Parameter" xmi:id="_Zo_gxGYjEeO6Uodv9TXNZQ" name="loggedinCustomer">
+                    <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+                  </ownedParameter>
+                </ownedOperation>
+              </packagedElement>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyPhSmYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyPhS2YjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.inject_profile.profile.uml#_e-miEBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyVnwWYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyVnwmYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5upIhSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.cdi_profile.profile.uml#_e5upIBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyVnzWYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyVnzmYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.interceptor_profile.profile.uml#_fE8aohSyEeOYN7EciD9SDQ"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/javax.interceptor_profile.profile.uml#_fE8aoBSyEeOYN7EciD9SDQ"/>
+              </profileApplication>
+              <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZyVn0mYjEeO6Uodv9TXNZQ">
+                <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZyVn02YjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+                  <references xmi:type="ecore:EPackage" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYlzuEeOeT6Yid9wPBg"/>
+                </eAnnotations>
+                <appliedProfile xmi:type="uml:Profile" href="platform:/plugin/eu.artist.migration.umlprofilestore/umlprofiles/ejb3.0_profile.profile.uml#_aD-kYFzuEeOeT6Yid9wPBg"/>
+              </profileApplication>
+            </packagedElement>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_Zo_gxWYjEeO6Uodv9TXNZQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Zo_gxmYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://JAVA_PROFILE/javaProfile.uml#_wKnZMrxtEeKKDZg25Hwffg"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://JAVA_PROFILE/javaProfile.uml#_LICG-bmhEeKP6JNTocDZqQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_ZpFlIGYjEeO6Uodv9TXNZQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ZpFlIWYjEeO6Uodv9TXNZQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="petstore-app_profile.profile.uml#_ZcNmwmYjEeO6Uodv9TXNZQ"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="petstore-app_profile.profile.uml#_ZcNmwGYjEeO6Uodv9TXNZQ"/>
+    </profileApplication>
+  </uml:Model>
+  <uml:PackageImport xmi:id="_Zo_gx2YjEeO6Uodv9TXNZQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </uml:PackageImport>
+  <jpa2.javax.persistence:Embeddable xmi:id="_ZxkywGYjEeO6Uodv9TXNZQ" base_Type="_Zo_eiGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxkywWYjEeO6Uodv9TXNZQ" name="&quot;credit_card_number&quot;" length="30" base_Property="_Zo_eiWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_ZxkyxGYjEeO6Uodv9TXNZQ" base_Property="_Zo_eiWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_ZxkyxWYjEeO6Uodv9TXNZQ" min="1" max="30" base_Property="_Zo_eiWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxkyxmYjEeO6Uodv9TXNZQ" name="&quot;credit_card_type&quot;" base_Property="_Zo_eimYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zxkyx2YjEeO6Uodv9TXNZQ" base_Property="_Zo_eimYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Enumerated xmi:id="_ZxkyyGYjEeO6Uodv9TXNZQ" value="STRING" base_Property="_Zo_eimYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxkyyWYjEeO6Uodv9TXNZQ" name="&quot;credit_card_expiry_date&quot;" length="5" base_Property="_Zo_ei2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_ZxkyymYjEeO6Uodv9TXNZQ" base_Property="_Zo_ei2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zxkyy2YjEeO6Uodv9TXNZQ" min="1" max="5" base_Property="_Zo_ei2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxkyzmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_emmYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxkyz2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_enGYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxky0GYjEeO6Uodv9TXNZQ" base_Operation="_Zo_enWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Entity xmi:id="_Zxky0WYjEeO6Uodv9TXNZQ" base_Type="_Zo_enmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Id xmi:id="_Zxky0mYjEeO6Uodv9TXNZQ" base_Property="_Zo_en2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:GeneratedValue xmi:id="_Zxky02YjEeO6Uodv9TXNZQ" base_Property="_Zo_en2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zxq5YGYjEeO6Uodv9TXNZQ" nullable="false" base_Property="_Zo_eoGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:OneToOne xmi:id="_Zxq5YWYjEeO6Uodv9TXNZQ" base_Property="_Zo_eoWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:JoinColumn xmi:id="_Zxq5YmYjEeO6Uodv9TXNZQ" name="&quot;item_fk&quot;" nullable="false" base_Property="_Zo_eoWYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxq5Y2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_ermYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxq5ZGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_esGYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxq5ZWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_esWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Entity xmi:id="_Zxq5ZmYjEeO6Uodv9TXNZQ" base_Type="_Zo_esmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Table xmi:id="_Zxq5Z2YjEeO6Uodv9TXNZQ" name="&quot;t_order&quot;" base_Type="_Zo_esmYjEeO6Uodv9TXNZQ"/>
+  <jaxb.javax.xml.bind.annotation:XmlRootElement xmi:id="_Zxq5amYjEeO6Uodv9TXNZQ" base_Type="_Zo_esmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:NamedQueries xmi:id="_Zxq5a2YjEeO6Uodv9TXNZQ" base_Type="_Zo_esmYjEeO6Uodv9TXNZQ">
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_Zxq5bGYjEeO6Uodv9TXNZQ" name="&quot;Order.findAll&quot;" query="&quot;SELECT o FROM Order o&quot;"/>
+  </jpa2.javax.persistence:NamedQueries>
+  <jpa2.javax.persistence:Id xmi:id="_Zxq5bWYjEeO6Uodv9TXNZQ" base_Property="_Zo_es2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:GeneratedValue xmi:id="_Zxq5bmYjEeO6Uodv9TXNZQ" base_Property="_Zo_es2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zxq5b2YjEeO6Uodv9TXNZQ" name="&quot;order_date&quot;" updatable="false" base_Property="_Zo_etGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Temporal xmi:id="_Zxq5cGYjEeO6Uodv9TXNZQ" base_Property="_Zo_etGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:ManyToOne xmi:id="_Zxq5cWYjEeO6Uodv9TXNZQ" base_Property="_Zo_etWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:JoinColumn xmi:id="_Zxq5cmYjEeO6Uodv9TXNZQ" name="&quot;customer_fk&quot;" nullable="false" base_Property="_Zo_etWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:OneToMany xmi:id="_Zxq5c2YjEeO6Uodv9TXNZQ" fetch="EAGER" base_Property="_Zo_etmYjEeO6Uodv9TXNZQ">
+    <cascade>ALL</cascade>
+  </jpa2.javax.persistence:OneToMany>
+  <jpa2.javax.persistence:JoinTable xmi:id="_Zxq5dGYjEeO6Uodv9TXNZQ" name="&quot;t_order_order_line&quot;" base_Property="_Zo_etmYjEeO6Uodv9TXNZQ">
+    <joinColumns xmi:type="jpa2.javax.persistence:JoinColumn" xmi:id="_Zxq5dWYjEeO6Uodv9TXNZQ" name="&quot;order_fk&quot;"/>
+    <inverseJoinColumns xmi:type="jpa2.javax.persistence:JoinColumn" xmi:id="_Zxq5dmYjEeO6Uodv9TXNZQ" name="&quot;order_line_fk&quot;"/>
+  </jpa2.javax.persistence:JoinTable>
+  <jpa2.javax.persistence:Embedded xmi:id="_Zxq5d2YjEeO6Uodv9TXNZQ" base_Property="_Zo_et2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Embedded xmi:id="_Zxq5eGYjEeO6Uodv9TXNZQ" base_Property="_Zo_euGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:PrePersist xmi:id="_Zxq5eWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_ev2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxq5emYjEeO6Uodv9TXNZQ" base_Operation="_Zo_e2GYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxq5e2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_e2mYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zxq5fGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_e22YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Entity xmi:id="_Zxq5fWYjEeO6Uodv9TXNZQ" base_Type="_Zo_e3GYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:NamedQueries xmi:id="_ZxxAAGYjEeO6Uodv9TXNZQ" base_Type="_Zo_e3GYjEeO6Uodv9TXNZQ">
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_ZxxAAWYjEeO6Uodv9TXNZQ" name="&quot;Item.findByProductId&quot;" query="&quot;SELECT i FROM Item i WHERE i.product.id = :productId&quot;"/>
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_ZxxAAmYjEeO6Uodv9TXNZQ" name="&quot;Item.search&quot;" query="&quot;SELECT i FROM Item i WHERE UPPER(i.name) LIKE :keyword OR UPPER(i.product.name) LIKE :keyword ORDER BY i.product.category.name, i.product.name&quot;"/>
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_ZxxAA2YjEeO6Uodv9TXNZQ" name="&quot;Item.findAll&quot;" query="&quot;SELECT i FROM Item i&quot;"/>
+  </jpa2.javax.persistence:NamedQueries>
+  <jaxb.javax.xml.bind.annotation:XmlRootElement xmi:id="_ZxxABGYjEeO6Uodv9TXNZQ" base_Type="_Zo_e3GYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Id xmi:id="_ZxxABWYjEeO6Uodv9TXNZQ" base_Property="_Zo_e3WYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:GeneratedValue xmi:id="_ZxxABmYjEeO6Uodv9TXNZQ" base_Property="_Zo_e3WYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxxAB2YjEeO6Uodv9TXNZQ" nullable="false" length="30" base_Property="_Zo_e3mYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_ZxxACGYjEeO6Uodv9TXNZQ" base_Property="_Zo_e3mYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_ZxxACWYjEeO6Uodv9TXNZQ" min="1" max="30" base_Property="_Zo_e3mYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxxACmYjEeO6Uodv9TXNZQ" length="3000" base_Property="_Zo_e32YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxxAC2YjEeO6Uodv9TXNZQ" nullable="false" base_Property="_Zo_e4GYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.constraint:Price xmi:id="_ZxxADGYjEeO6Uodv9TXNZQ" base_Property="_Zo_e4GYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.constraint:NotEmpty xmi:id="_ZxxADWYjEeO6Uodv9TXNZQ" base_Property="_Zo_e4WYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:ManyToOne xmi:id="_ZxxADmYjEeO6Uodv9TXNZQ" base_Property="_Zo_e4mYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:JoinColumn xmi:id="_ZxxAD2YjEeO6Uodv9TXNZQ" name="&quot;product_fk&quot;" nullable="false" base_Property="_Zo_e4mYjEeO6Uodv9TXNZQ"/>
+  <jaxb.javax.xml.bind.annotation:XmlTransient xmi:id="_ZxxAEGYjEeO6Uodv9TXNZQ" base_Property="_Zo_e4mYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAEWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_e_WYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAEmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_e_2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAE2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fAGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Entity xmi:id="_ZxxAFGYjEeO6Uodv9TXNZQ" base_Type="_Zo_fAWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:NamedQueries xmi:id="_ZxxAFWYjEeO6Uodv9TXNZQ" base_Type="_Zo_fAWYjEeO6Uodv9TXNZQ">
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_ZxxAFmYjEeO6Uodv9TXNZQ" name="&quot;Category.findByName&quot;" query="&quot;SELECT c FROM Category c WHERE c.name = :pname&quot;"/>
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_ZxxAF2YjEeO6Uodv9TXNZQ" name="&quot;Category.findAll&quot;" query="&quot;SELECT c FROM Category c&quot;"/>
+  </jpa2.javax.persistence:NamedQueries>
+  <jaxb.javax.xml.bind.annotation:XmlRootElement xmi:id="_ZxxAGGYjEeO6Uodv9TXNZQ" base_Type="_Zo_fAWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Id xmi:id="_ZxxAGWYjEeO6Uodv9TXNZQ" base_Property="_Zo_fAmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:GeneratedValue xmi:id="_ZxxAGmYjEeO6Uodv9TXNZQ" base_Property="_Zo_fAmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxxAG2YjEeO6Uodv9TXNZQ" nullable="false" length="30" base_Property="_Zo_fA2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_ZxxAHGYjEeO6Uodv9TXNZQ" base_Property="_Zo_fA2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_ZxxAHWYjEeO6Uodv9TXNZQ" min="1" max="30" base_Property="_Zo_fA2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxxAHmYjEeO6Uodv9TXNZQ" nullable="false" base_Property="_Zo_fBGYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.constraint:NotEmpty xmi:id="_ZxxAH2YjEeO6Uodv9TXNZQ" base_Property="_Zo_fBGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:OneToMany xmi:id="_ZxxAIGYjEeO6Uodv9TXNZQ" mappedBy="&quot;category&quot;" base_Property="_Zo_fBWYjEeO6Uodv9TXNZQ">
+    <cascade>ALL</cascade>
+  </jpa2.javax.persistence:OneToMany>
+  <jpa2.javax.persistence:OrderBy xmi:id="_ZxxAIWYjEeO6Uodv9TXNZQ" value="&quot;name ASC&quot;" base_Property="_Zo_fBWYjEeO6Uodv9TXNZQ"/>
+  <jaxb.javax.xml.bind.annotation:XmlTransient xmi:id="_ZxxAImYjEeO6Uodv9TXNZQ" base_Property="_Zo_fBWYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAI2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fGGYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAJGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fGmYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAJWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fG2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_ZxxAJmYjEeO6Uodv9TXNZQ" base_Property="_Zo_fHWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_ZxxAJ2YjEeO6Uodv9TXNZQ" base_Property="_Zo_fHmYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Min xmi:id="_ZxxAKGYjEeO6Uodv9TXNZQ" value="1" base_Property="_Zo_fHmYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAKWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fKWYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAKmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fK2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZxxAK2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fLGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Entity xmi:id="_ZxxALGYjEeO6Uodv9TXNZQ" base_Type="_Zo_fLWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:NamedQueries xmi:id="_ZxxALWYjEeO6Uodv9TXNZQ" base_Type="_Zo_fLWYjEeO6Uodv9TXNZQ">
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_ZxxALmYjEeO6Uodv9TXNZQ" name="&quot;Product.findByCategoryName&quot;" query="&quot;SELECT p FROM Product p WHERE p.category.name = :pname&quot;"/>
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_ZxxAL2YjEeO6Uodv9TXNZQ" name="&quot;Product.findAll&quot;" query="&quot;SELECT p FROM Product p&quot;"/>
+  </jpa2.javax.persistence:NamedQueries>
+  <jaxb.javax.xml.bind.annotation:XmlRootElement xmi:id="_ZxxAMGYjEeO6Uodv9TXNZQ" base_Type="_Zo_fLWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Id xmi:id="_ZxxAMWYjEeO6Uodv9TXNZQ" base_Property="_Zo_fLmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:GeneratedValue xmi:id="_ZxxAMmYjEeO6Uodv9TXNZQ" base_Property="_Zo_fLmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxxAM2YjEeO6Uodv9TXNZQ" nullable="false" length="30" base_Property="_Zo_fL2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_ZxxANGYjEeO6Uodv9TXNZQ" base_Property="_Zo_fL2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_ZxxANWYjEeO6Uodv9TXNZQ" min="1" max="30" base_Property="_Zo_fL2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_ZxxANmYjEeO6Uodv9TXNZQ" nullable="false" base_Property="_Zo_fMGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:ManyToOne xmi:id="_Zx3GoGYjEeO6Uodv9TXNZQ" base_Property="_Zo_fMWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:JoinColumn xmi:id="_Zx3GoWYjEeO6Uodv9TXNZQ" name="&quot;category_fk&quot;" nullable="false" base_Property="_Zo_fMWYjEeO6Uodv9TXNZQ"/>
+  <jaxb.javax.xml.bind.annotation:XmlTransient xmi:id="_Zx3GomYjEeO6Uodv9TXNZQ" base_Property="_Zo_fMWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:OneToMany xmi:id="_Zx3Go2YjEeO6Uodv9TXNZQ" mappedBy="&quot;product&quot;" base_Property="_Zo_fMmYjEeO6Uodv9TXNZQ">
+    <cascade>ALL</cascade>
+  </jpa2.javax.persistence:OneToMany>
+  <jpa2.javax.persistence:OrderBy xmi:id="_Zx3GpGYjEeO6Uodv9TXNZQ" value="&quot;name ASC&quot;" base_Property="_Zo_fMmYjEeO6Uodv9TXNZQ"/>
+  <jaxb.javax.xml.bind.annotation:XmlTransient xmi:id="_Zx3GpWYjEeO6Uodv9TXNZQ" base_Property="_Zo_fMmYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx3GpmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fSWYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx3Gp2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fS2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx3GqGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fTGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Entity xmi:id="_Zx3GqWYjEeO6Uodv9TXNZQ" name="&quot;Customer&quot;" base_Type="_Zo_fTWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:NamedQueries xmi:id="_Zx3GqmYjEeO6Uodv9TXNZQ" base_Type="_Zo_fTWYjEeO6Uodv9TXNZQ">
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_Zx3Gq2YjEeO6Uodv9TXNZQ" name="&quot;Customer.findByLogin&quot;" query="&quot;SELECT c FROM Customer c WHERE c.login = :login&quot;"/>
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_Zx3GrGYjEeO6Uodv9TXNZQ" name="&quot;Customer.findByLoginAndPassword&quot;" query="&quot;SELECT c FROM Customer c WHERE c.login = :login AND c.password = :password&quot;"/>
+    <value xmi:type="jpa2.javax.persistence:NamedQuery" xmi:id="_Zx3GrWYjEeO6Uodv9TXNZQ" name="&quot;Customer.findAll&quot;" query="&quot;SELECT c FROM Customer c&quot;"/>
+  </jpa2.javax.persistence:NamedQueries>
+  <jaxb.javax.xml.bind.annotation:XmlRootElement xmi:id="_Zx3GrmYjEeO6Uodv9TXNZQ" base_Type="_Zo_fTWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Id xmi:id="_Zx3Gr2YjEeO6Uodv9TXNZQ" base_Property="_Zo_fTmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:GeneratedValue xmi:id="_Zx3GsGYjEeO6Uodv9TXNZQ" base_Property="_Zo_fTmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx3GsWYjEeO6Uodv9TXNZQ" unique="true" nullable="false" length="10" base_Property="_Zo_fT2YjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.constraint:Login xmi:id="_Zx3GsmYjEeO6Uodv9TXNZQ" base_Property="_Zo_fT2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx3Gs2YjEeO6Uodv9TXNZQ" nullable="false" length="10" base_Property="_Zo_fUGYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zx3GtGYjEeO6Uodv9TXNZQ" base_Property="_Zo_fUGYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zx3GtWYjEeO6Uodv9TXNZQ" min="1" max="10" base_Property="_Zo_fUGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx3GtmYjEeO6Uodv9TXNZQ" nullable="false" base_Property="_Zo_fUWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zx3Gt2YjEeO6Uodv9TXNZQ" base_Property="_Zo_fUWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zx3GuGYjEeO6Uodv9TXNZQ" min="2" max="50" base_Property="_Zo_fUWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx3GuWYjEeO6Uodv9TXNZQ" nullable="false" base_Property="_Zo_fUmYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zx3GumYjEeO6Uodv9TXNZQ" base_Property="_Zo_fUmYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zx3Gu2YjEeO6Uodv9TXNZQ" min="2" max="50" base_Property="_Zo_fUmYjEeO6Uodv9TXNZQ"/>
+  <hibernatecore.org.hibernate.validator.constraints:Email xmi:id="_Zx3GvmYjEeO6Uodv9TXNZQ" base_Property="_Zo_fVGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Embedded xmi:id="_Zx3Gv2YjEeO6Uodv9TXNZQ" base_Property="_Zo_fVWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation:Valid xmi:id="_Zx3GwGYjEeO6Uodv9TXNZQ" base_Property="_Zo_fVWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx9NQGYjEeO6Uodv9TXNZQ" name="&quot;date_of_birth&quot;" base_Property="_Zo_fVmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Temporal xmi:id="_Zx9NQWYjEeO6Uodv9TXNZQ" base_Property="_Zo_fVmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Transient xmi:id="_Zx9NQmYjEeO6Uodv9TXNZQ" base_Property="_Zo_fV2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:PostLoad xmi:id="_Zx9NQ2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fY2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:PostPersist xmi:id="_Zx9NRGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fY2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:PostUpdate xmi:id="_Zx9NRWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fY2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx9NRmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fgGYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx9NR2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fgmYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx9NSGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fg2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Embeddable xmi:id="_Zx9NSWYjEeO6Uodv9TXNZQ" base_Type="_Zo_fhGYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx9NSmYjEeO6Uodv9TXNZQ" nullable="false" base_Property="_Zo_fhWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zx9NS2YjEeO6Uodv9TXNZQ" base_Property="_Zo_fhWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zx9NTGYjEeO6Uodv9TXNZQ" min="5" max="50" base_Property="_Zo_fhWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx9NTWYjEeO6Uodv9TXNZQ" nullable="false" length="100" base_Property="_Zo_fh2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zx9NTmYjEeO6Uodv9TXNZQ" base_Property="_Zo_fh2YjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zx9NT2YjEeO6Uodv9TXNZQ" min="2" max="50" base_Property="_Zo_fh2YjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx9NUGYjEeO6Uodv9TXNZQ" name="&quot;zip_code&quot;" nullable="false" length="10" base_Property="_Zo_fiWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zx9NUWYjEeO6Uodv9TXNZQ" base_Property="_Zo_fiWYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zx9NUmYjEeO6Uodv9TXNZQ" min="1" max="10" base_Property="_Zo_fiWYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:Column xmi:id="_Zx9NU2YjEeO6Uodv9TXNZQ" nullable="false" length="50" base_Property="_Zo_fimYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:NotNull xmi:id="_Zx9NVGYjEeO6Uodv9TXNZQ" base_Property="_Zo_fimYjEeO6Uodv9TXNZQ"/>
+  <javaxvalidation.javax.validation.constraints:Size xmi:id="_Zx9NVWYjEeO6Uodv9TXNZQ" min="2" max="50" base_Property="_Zo_fimYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx9NVmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fo2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx9NV2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fpWYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_Zx9NWGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fpmYjEeO6Uodv9TXNZQ"/>
+  <ejb30.javax.ejb:ApplicationException xmi:id="_Zx9NW2YjEeO6Uodv9TXNZQ" rollback="true" base_Type="_Zo_frGYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_Zx9NXGYjEeO6Uodv9TXNZQ" base_Type="_Zo_fsGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_Zx9NX2YjEeO6Uodv9TXNZQ" value="&quot;/catalog&quot;" base_Type="_Zo_fsGYjEeO6Uodv9TXNZQ"/>
+  <javaxannotation.javax.annotation:ManagedBean xmi:id="_Zx9NYmYjEeO6Uodv9TXNZQ" base_Type="_Zo_fsGYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyDT4WYjEeO6Uodv9TXNZQ" base_Property="_Zo_fsWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs.core:Context xmi:id="_ZyDT4mYjEeO6Uodv9TXNZQ" base_Property="_Zo_fsmYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:GET xmi:id="_ZyDT42YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fs2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyDT5GYjEeO6Uodv9TXNZQ" value="&quot;/categories&quot;" base_Operation="_Zo_fs2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Produces xmi:id="_ZyDT5WYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fs2YjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Produces>
+  <javaxws.javax.ws.rs:GET xmi:id="_ZyDT5mYjEeO6Uodv9TXNZQ" base_Operation="_Zo_ftGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyDT52YjEeO6Uodv9TXNZQ" value="&quot;/category/{id}&quot;" base_Operation="_Zo_ftGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Produces xmi:id="_ZyDT6GYjEeO6Uodv9TXNZQ" base_Operation="_Zo_ftGYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Produces>
+  <javaxws.javax.ws.rs:PathParam xmi:id="_ZyDT6WYjEeO6Uodv9TXNZQ" value="&quot;id&quot;" base_Parameter="_Zo_ftWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:POST xmi:id="_ZyDT6mYjEeO6Uodv9TXNZQ" base_Operation="_Zo_ftmYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyDT62YjEeO6Uodv9TXNZQ" value="&quot;/category&quot;" base_Operation="_Zo_ftmYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Consumes xmi:id="_ZyDT7GYjEeO6Uodv9TXNZQ" base_Operation="_Zo_ftmYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Consumes>
+  <javaxws.javax.ws.rs:PUT xmi:id="_ZyDT7WYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fuGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyDT7mYjEeO6Uodv9TXNZQ" value="&quot;/category&quot;" base_Operation="_Zo_fuGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Consumes xmi:id="_ZyDT72YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fuGYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Consumes>
+  <javaxws.javax.ws.rs:DELETE xmi:id="_ZyDT8GYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fumYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyDT8WYjEeO6Uodv9TXNZQ" value="&quot;/category/{id}&quot;" base_Operation="_Zo_fumYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:PathParam xmi:id="_ZyDT8mYjEeO6Uodv9TXNZQ" value="&quot;id&quot;" base_Parameter="_Zo_fu2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:GET xmi:id="_ZyDT82YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fvGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyDT9GYjEeO6Uodv9TXNZQ" value="&quot;/products&quot;" base_Operation="_Zo_fvGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Produces xmi:id="_ZyDT9WYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fvGYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Produces>
+  <javaxws.javax.ws.rs:GET xmi:id="_ZyDT9mYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fvWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJagGYjEeO6Uodv9TXNZQ" value="&quot;/product/{id}&quot;" base_Operation="_Zo_fvWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Produces xmi:id="_ZyJagWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fvWYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Produces>
+  <javaxws.javax.ws.rs:PathParam xmi:id="_ZyJagmYjEeO6Uodv9TXNZQ" value="&quot;id&quot;" base_Parameter="_Zo_fvmYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:POST xmi:id="_ZyJag2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fv2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJahGYjEeO6Uodv9TXNZQ" value="&quot;/product&quot;" base_Operation="_Zo_fv2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Consumes xmi:id="_ZyJahWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fv2YjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Consumes>
+  <javaxws.javax.ws.rs:PUT xmi:id="_ZyJahmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fwWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJah2YjEeO6Uodv9TXNZQ" value="&quot;/product&quot;" base_Operation="_Zo_fwWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Consumes xmi:id="_ZyJaiGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fwWYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Consumes>
+  <javaxws.javax.ws.rs:DELETE xmi:id="_ZyJaiWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fw2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJaimYjEeO6Uodv9TXNZQ" value="&quot;/product/{id}&quot;" base_Operation="_Zo_fw2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:PathParam xmi:id="_ZyJai2YjEeO6Uodv9TXNZQ" value="&quot;id&quot;" base_Parameter="_Zo_fxGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:GET xmi:id="_ZyJajGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fxWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJajWYjEeO6Uodv9TXNZQ" value="&quot;/items&quot;" base_Operation="_Zo_fxWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Produces xmi:id="_ZyJajmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fxWYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Produces>
+  <javaxws.javax.ws.rs:GET xmi:id="_ZyJaj2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fxmYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJakGYjEeO6Uodv9TXNZQ" value="&quot;/item/{id}&quot;" base_Operation="_Zo_fxmYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Produces xmi:id="_ZyJakWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fxmYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Produces>
+  <javaxws.javax.ws.rs:PathParam xmi:id="_ZyJakmYjEeO6Uodv9TXNZQ" value="&quot;id&quot;" base_Parameter="_Zo_fx2YjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:POST xmi:id="_ZyJak2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fyGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJalGYjEeO6Uodv9TXNZQ" value="&quot;/item&quot;" base_Operation="_Zo_fyGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Consumes xmi:id="_ZyJalWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fyGYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Consumes>
+  <javaxws.javax.ws.rs:PUT xmi:id="_ZyJalmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fymYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJal2YjEeO6Uodv9TXNZQ" value="&quot;/item&quot;" base_Operation="_Zo_fymYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Consumes xmi:id="_ZyJamGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fymYjEeO6Uodv9TXNZQ">
+    <value xsi:nil="true"/>
+  </javaxws.javax.ws.rs:Consumes>
+  <javaxws.javax.ws.rs:DELETE xmi:id="_ZyJamWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_fzGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:Path xmi:id="_ZyJammYjEeO6Uodv9TXNZQ" value="&quot;/item/{id}&quot;" base_Operation="_Zo_fzGYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:PathParam xmi:id="_ZyJam2YjEeO6Uodv9TXNZQ" value="&quot;id&quot;" base_Parameter="_Zo_fzWYjEeO6Uodv9TXNZQ"/>
+  <javaxws.javax.ws.rs:ApplicationPath xmi:id="_ZyJanGYjEeO6Uodv9TXNZQ" value="&quot;/rs&quot;" base_Type="_Zo_fzmYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZyJan2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_fz2YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZyJaomYjEeO6Uodv9TXNZQ" base_Operation="_Zo_f1mYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZyJao2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_f22YjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZyJapGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_f3GYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZyJapWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_f3WYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZyJapmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_f3mYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Named xmi:id="_ZyJaqWYjEeO6Uodv9TXNZQ" base_Type="_Zo_f32YjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyJaqmYjEeO6Uodv9TXNZQ" base_Property="_Zo_f4GYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.context:RequestScoped xmi:id="_ZyJarWYjEeO6Uodv9TXNZQ" base_Property="_Zo_f4GYjEeO6Uodv9TXNZQ"/>
+  <jdk7.java.lang:Override xmi:id="_ZyJarmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_f4WYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyJar2YjEeO6Uodv9TXNZQ" base_Property="_Zo_f5GYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.inject:Produces xmi:id="_ZyJasGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_f5WYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:ConfigProperty xmi:id="_ZyJasWYjEeO6Uodv9TXNZQ" value="&quot;loginConfigFile&quot;" base_Parameter="_Zo_f5mYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:ConfigProperty xmi:id="_ZyJasmYjEeO6Uodv9TXNZQ" value="&quot;loginModuleName&quot;" base_Parameter="_Zo_f52YjEeO6Uodv9TXNZQ"/>
+  <ejb32.javax.ejb:Singleton xmi:id="_ZyPhIGYjEeO6Uodv9TXNZQ" base_Type="_Zo_f6WYjEeO6Uodv9TXNZQ"/>
+  <ejb32.javax.ejb:Startup xmi:id="_ZyPhIWYjEeO6Uodv9TXNZQ" base_Type="_Zo_f6WYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyPhImYjEeO6Uodv9TXNZQ" base_Type="_Zo_f6WYjEeO6Uodv9TXNZQ"/>
+  <javaxannotation.javax.annotation.sql:DataSourceDefinition xmi:id="_ZyPhJWYjEeO6Uodv9TXNZQ" name="&quot;java:global/jdbc/applicationPetstoreDS&quot;" className="&quot;org.apache.derby.jdbc.EmbeddedDataSource&quot;" user="&quot;app&quot;" password="&quot;app&quot;" databaseName="&quot;applicationPetstoreDB&quot;" base_Type="_Zo_f6WYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyPhKGYjEeO6Uodv9TXNZQ" base_Property="_Zo_f9GYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyPhKWYjEeO6Uodv9TXNZQ" base_Property="_Zo_f9WYjEeO6Uodv9TXNZQ"/>
+  <javaxannotation.javax.annotation:PostConstruct xmi:id="_ZyPhKmYjEeO6Uodv9TXNZQ" base_Operation="_Zo_f9mYjEeO6Uodv9TXNZQ"/>
+  <javaxannotation.javax.annotation:PreDestroy xmi:id="_ZyPhK2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_f92YjEeO6Uodv9TXNZQ"/>
+  <ejb30.javax.ejb:Stateless xmi:id="_ZyPhLmYjEeO6Uodv9TXNZQ" base_Type="_Zo_f-mYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyPhL2YjEeO6Uodv9TXNZQ" base_Type="_Zo_f-mYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyPhMGYjEeO6Uodv9TXNZQ" base_Property="_Zo_f-2YjEeO6Uodv9TXNZQ"/>
+  <ejb30.javax.ejb:Stateless xmi:id="_ZyPhMWYjEeO6Uodv9TXNZQ" base_Type="_Zo_gCmYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyPhMmYjEeO6Uodv9TXNZQ" base_Type="_Zo_gCmYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyPhM2YjEeO6Uodv9TXNZQ" base_Property="_Zo_gC2YjEeO6Uodv9TXNZQ"/>
+  <ejb30.javax.ejb:Stateless xmi:id="_ZyPhNGYjEeO6Uodv9TXNZQ" base_Type="_Zo_gFWYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyPhNWYjEeO6Uodv9TXNZQ" base_Type="_Zo_gFWYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyPhNmYjEeO6Uodv9TXNZQ" base_Property="_Zo_gFmYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyPhN2YjEeO6Uodv9TXNZQ" base_Type="_Zo_gQWYjEeO6Uodv9TXNZQ"/>
+  <javaxinterceptor.javax.interceptor:Interceptor xmi:id="_ZyPhOmYjEeO6Uodv9TXNZQ" base_Type="_Zo_gQWYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyPhPWYjEeO6Uodv9TXNZQ" base_Property="_Zo_gQmYjEeO6Uodv9TXNZQ"/>
+  <ejb30.javax.interceptor:AroundInvoke xmi:id="_ZyPhQGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_gQ2YjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.inject:Produces xmi:id="_ZyPhQ2YjEeO6Uodv9TXNZQ" base_Property="_Zo_gRmYjEeO6Uodv9TXNZQ"/>
+  <jpa2.javax.persistence:PersistenceContext xmi:id="_ZyPhRmYjEeO6Uodv9TXNZQ" unitName="&quot;applicationPetstorePU&quot;" base_Property="_Zo_gRmYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.inject:Produces xmi:id="_ZyPhR2YjEeO6Uodv9TXNZQ" base_Operation="_Zo_gSGYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.inject:Produces xmi:id="_ZyPhSGYjEeO6Uodv9TXNZQ" base_Operation="_Zo_gTGYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:ConfigProperty xmi:id="_ZyPhSWYjEeO6Uodv9TXNZQ" base_Operation="_Zo_gTGYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Named xmi:id="_ZyVnwGYjEeO6Uodv9TXNZQ" base_Type="_Zo_gT2YjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.context:ConversationScoped xmi:id="_ZyVnw2YjEeO6Uodv9TXNZQ" base_Type="_Zo_gT2YjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyVnxGYjEeO6Uodv9TXNZQ" base_Type="_Zo_gT2YjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.web:CatchException xmi:id="_ZyVnxWYjEeO6Uodv9TXNZQ" base_Type="_Zo_gT2YjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVnxmYjEeO6Uodv9TXNZQ" base_Property="_Zo_gUGYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.web:LoggedIn xmi:id="_ZyVnx2YjEeO6Uodv9TXNZQ" base_Property="_Zo_gUGYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVnyGYjEeO6Uodv9TXNZQ" base_Property="_Zo_gUWYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVnyWYjEeO6Uodv9TXNZQ" base_Property="_Zo_gUmYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVnymYjEeO6Uodv9TXNZQ" base_Property="_Zo_gU2YjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyVny2YjEeO6Uodv9TXNZQ" base_Type="_Zo_gaGYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVnzGYjEeO6Uodv9TXNZQ" base_Property="_Zo_gaWYjEeO6Uodv9TXNZQ"/>
+  <javaxinterceptor.javax.interceptor:Interceptor xmi:id="_ZyVnz2YjEeO6Uodv9TXNZQ" base_Type="_Zo_ge2YjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.web:CatchException xmi:id="_ZyVn0GYjEeO6Uodv9TXNZQ" base_Type="_Zo_ge2YjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVn0WYjEeO6Uodv9TXNZQ" base_Property="_Zo_gfGYjEeO6Uodv9TXNZQ"/>
+  <ejb30.javax.interceptor:AroundInvoke xmi:id="_ZyVn1GYjEeO6Uodv9TXNZQ" base_Operation="_Zo_gfWYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Named xmi:id="_ZyVn1WYjEeO6Uodv9TXNZQ" base_Type="_Zo_ggWYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.context:SessionScoped xmi:id="_ZyVn1mYjEeO6Uodv9TXNZQ" base_Type="_Zo_ggWYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyVn12YjEeO6Uodv9TXNZQ" base_Type="_Zo_ggWYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.web:CatchException xmi:id="_ZyVn2GYjEeO6Uodv9TXNZQ" base_Type="_Zo_ggWYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVn2WYjEeO6Uodv9TXNZQ" base_Property="_Zo_ggmYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Named xmi:id="_ZyVn2mYjEeO6Uodv9TXNZQ" base_Type="_Zo_go2YjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.context:SessionScoped xmi:id="_ZyVn22YjEeO6Uodv9TXNZQ" base_Type="_Zo_go2YjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyVn3GYjEeO6Uodv9TXNZQ" base_Type="_Zo_go2YjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.inject:Produces xmi:id="_ZyVn3WYjEeO6Uodv9TXNZQ" base_Property="_Zo_gpGYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Named xmi:id="_ZyVn3mYjEeO6Uodv9TXNZQ" base_Type="_Zo_gqWYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.context:RequestScoped xmi:id="_ZyVn32YjEeO6Uodv9TXNZQ" base_Type="_Zo_gqWYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Named xmi:id="_ZyVn4GYjEeO6Uodv9TXNZQ" base_Type="_Zo_gtmYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.context:SessionScoped xmi:id="_ZyVn4WYjEeO6Uodv9TXNZQ" base_Type="_Zo_gtmYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.util:Loggable xmi:id="_ZyVn4mYjEeO6Uodv9TXNZQ" base_Type="_Zo_gtmYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.web:CatchException xmi:id="_ZyVn42YjEeO6Uodv9TXNZQ" base_Type="_Zo_gtmYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVn5GYjEeO6Uodv9TXNZQ" base_Property="_Zo_gt2YjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVn5WYjEeO6Uodv9TXNZQ" base_Property="_Zo_guGYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVn5mYjEeO6Uodv9TXNZQ" base_Property="_Zo_guWYjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.inject:Produces xmi:id="_ZyVn52YjEeO6Uodv9TXNZQ" base_Property="_Zo_gumYjEeO6Uodv9TXNZQ"/>
+  <petstoreapp.org.agoncal.application.petstore.web:LoggedIn xmi:id="_ZyVn6GYjEeO6Uodv9TXNZQ" base_Property="_Zo_gumYjEeO6Uodv9TXNZQ"/>
+  <javaxinject.javax.inject:Inject xmi:id="_ZyVn6WYjEeO6Uodv9TXNZQ" base_Property="_Zo_gu2YjEeO6Uodv9TXNZQ"/>
+  <javaxcdi.javax.enterprise.context:SessionScoped xmi:id="_ZyVn6mYjEeO6Uodv9TXNZQ" base_Property="_Zo_gu2YjEeO6Uodv9TXNZQ"/>
+</xmi:XMI>
