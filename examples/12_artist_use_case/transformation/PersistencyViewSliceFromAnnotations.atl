@@ -1,0 +1,86 @@
+-- @nsURI Profile=http://www.eclipse.org/uml2/4.0.0/UML
+-- @nsURI UML=http://www.eclipse.org/uml2/4.0.0/UML
+
+module PersistencyViewSliceFromAnnotations;
+create OUT1 : UML from IN1 : UML, IN2 : Profile;
+
+uses profileLibrary;
+
+helper def: stereo : UML!Stereoype = OclUndefined;
+helper def: jpaProfile : UML!Profile = Profile!Profile.allInstances().first();
+helper def: stereotypes : Sequence(UML!Stereotype) = Profile!Stereotype.allInstances();
+helper def: entity : UML!Stereotype = thisModule.stereotypes -> any(s | s.name = 'Entity');
+helper def: embeddable : UML!Stereotype = thisModule.stereotypes -> any(s | s.name = 'Embeddable');
+helper def: column : UML!Stereotype = thisModule.stereotypes -> any(s | s.name = 'Column');
+helper def: id : UML!Stereotype = thisModule.stereotypes -> any(s | s.name = 'Id');
+
+
+helper def : model : UML!Model = OclUndefined;
+helper def : string : UML!DataType = OclUndefined;
+helper def : integer : UML!DataType = OclUndefined;
+helper def : boolean : UML!DataType = OclUndefined;
+helper def : float : UML!DataType = OclUndefined;
+helper def : long : UML!DataType = OclUndefined;
+
+entrypoint rule CreateModel(){
+	to m : UML!Model(
+		name <- 'Persistency Layer'
+	), s : UML!DataType(
+		name <- 'String'
+	), s1 : UML!DataType(
+		name <- 'Integer'
+	), s2 : UML!DataType(
+		name <- 'Boolean'
+	), s3 : UML!DataType(
+		name <- 'Float'
+	), s4 : UML!DataType(
+		name <- 'Long'
+	)
+	do{
+		thisModule.model <- m;
+		thisModule.model.ownedType <- Set{s,s1,s2,s3,s4};
+		thisModule.string <- s;
+		thisModule.integer <- s1;
+		thisModule.boolean <- s2;
+		thisModule.float <- s3;
+	    thisModule.long <- s4;
+	}
+}
+
+
+rule Class2Class {
+	from
+		a : UML!Class (a.isStereotypeApplied(thisModule.entity) or a.isStereotypeApplied(thisModule.embeddable))
+	to 
+		b : UML!Class (
+			name <- a.name,
+			ownedAttribute <- a.ownedAttribute -> select(att | att.isStereotypeApplied(thisModule.column) or att.isStereotypeApplied(thisModule.id))
+			
+		)
+	do{
+		thisModule.model.ownedType <- b;	
+	}
+}
+
+
+rule Property2Property {
+	from
+		a : UML!Property (a.isStereotypeApplied(thisModule.column) or a.isStereotypeApplied(thisModule.id))
+	to 
+		b : UML!Property (
+			name <- a.name
+		)
+}
+
+rule Enum2Enum {
+	from
+		a : UML!Enumeration
+	to 
+		b : UML!Enumeration (
+			name <- a.name		
+		)
+	do{
+		thisModule.model.ownedType <- b;	
+	}
+}
+

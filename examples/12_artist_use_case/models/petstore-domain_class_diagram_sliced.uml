@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_mSOQgOTCEeOVA51XyETaIA" name="Persistency Layer">
+  <packagedElement xmi:type="uml:DataType" xmi:id="_mSOQgeTCEeOVA51XyETaIA" name="String"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_mSOQguTCEeOVA51XyETaIA" name="Integer"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_mSOQg-TCEeOVA51XyETaIA" name="Boolean"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_mSOQhOTCEeOVA51XyETaIA" name="Long"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_mSOQheTCEeOVA51XyETaIA" name="Float"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQhuTCEeOVA51XyETaIA" name="CreditCard">
+    <ownedAttribute xmi:id="_mSOQh-TCEeOVA51XyETaIA" name="creditCardNumber"/>
+    <ownedAttribute xmi:id="_mSOQiOTCEeOVA51XyETaIA" name="creditCardType"/>
+    <ownedAttribute xmi:id="_mSOQieTCEeOVA51XyETaIA" name="creditCardExpDate"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQiuTCEeOVA51XyETaIA" name="OrderLine">
+    <ownedAttribute xmi:id="_mSOQi-TCEeOVA51XyETaIA" name="id"/>
+    <ownedAttribute xmi:id="_mSOQjOTCEeOVA51XyETaIA" name="quantity"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQjeTCEeOVA51XyETaIA" name="Order">
+    <ownedAttribute xmi:id="_mSOQjuTCEeOVA51XyETaIA" name="id"/>
+    <ownedAttribute xmi:id="_mSOQj-TCEeOVA51XyETaIA" name="orderDate"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQkOTCEeOVA51XyETaIA" name="Item">
+    <ownedAttribute xmi:id="_mSOQkeTCEeOVA51XyETaIA" name="id"/>
+    <ownedAttribute xmi:id="_mSOQkuTCEeOVA51XyETaIA" name="name"/>
+    <ownedAttribute xmi:id="_mSOQk-TCEeOVA51XyETaIA" name="description"/>
+    <ownedAttribute xmi:id="_mSOQlOTCEeOVA51XyETaIA" name="unitCost"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQleTCEeOVA51XyETaIA" name="Category">
+    <ownedAttribute xmi:id="_mSOQluTCEeOVA51XyETaIA" name="id"/>
+    <ownedAttribute xmi:id="_mSOQl-TCEeOVA51XyETaIA" name="name"/>
+    <ownedAttribute xmi:id="_mSOQmOTCEeOVA51XyETaIA" name="description"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQmeTCEeOVA51XyETaIA" name="Product">
+    <ownedAttribute xmi:id="_mSOQmuTCEeOVA51XyETaIA" name="id"/>
+    <ownedAttribute xmi:id="_mSOQm-TCEeOVA51XyETaIA" name="name"/>
+    <ownedAttribute xmi:id="_mSOQnOTCEeOVA51XyETaIA" name="description"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQneTCEeOVA51XyETaIA" name="Customer">
+    <ownedAttribute xmi:id="_mSOQnuTCEeOVA51XyETaIA" name="id"/>
+    <ownedAttribute xmi:id="_mSOQn-TCEeOVA51XyETaIA" name="login"/>
+    <ownedAttribute xmi:id="_mSOQoOTCEeOVA51XyETaIA" name="password"/>
+    <ownedAttribute xmi:id="_mSOQoeTCEeOVA51XyETaIA" name="firstname"/>
+    <ownedAttribute xmi:id="_mSOQouTCEeOVA51XyETaIA" name="lastname"/>
+    <ownedAttribute xmi:id="_mSOQo-TCEeOVA51XyETaIA" name="dateOfBirth"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_mSOQpOTCEeOVA51XyETaIA" name="Address">
+    <ownedAttribute xmi:id="_mSOQpeTCEeOVA51XyETaIA" name="street1"/>
+    <ownedAttribute xmi:id="_mSOQpuTCEeOVA51XyETaIA" name="city"/>
+    <ownedAttribute xmi:id="_mSOQp-TCEeOVA51XyETaIA" name="zipcode"/>
+    <ownedAttribute xmi:id="_mSOQqOTCEeOVA51XyETaIA" name="country"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_mSOQqeTCEeOVA51XyETaIA" name="CreditCardType"/>
+</uml:Model>
