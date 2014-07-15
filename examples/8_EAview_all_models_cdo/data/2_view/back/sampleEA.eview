@@ -1,0 +1,3 @@
+contributingModels=cdo:http://localhost:2036?repositoryName=VoyageDiscount&resourceName=data.togaf&userName=afontaine&password=ICy5YqxZB1uWSwcVLSNLcA==,cdo:http://localhost:2036?repositoryName=BPMN&resourceName=data.togaf&userName=afontaine&password=ICy5YqxZB1uWSwcVLSNLcA==,file:C:/newEmfViews2/secondinstanceworkspace/enterpriseArchitectureData/models/processRequirements.xmi
+compositionMetamodel=file:C:/newEmfViews2/secondinstanceworkspace/8_EAview_all_models_cdo/data/1_viewtype/extendedEA.eviewtype
+correspondenceModel=file:C:/newEmfViews2/secondinstanceworkspace/8_EAview_all_models_cdo/data/2_view/sampleEA.xmi
