@@ -149,4 +149,8 @@ public class EView extends View {
 
 		setVirtualContents();
 	}
+	
+	public Viewtype getViewtype() {
+		return (Viewtype)viewtype;
+	}
 }
