@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="linkend" name="linkend" schema="schema/linkend.exsd"/>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="fr.inria.atlanmod.emfviews.ui"
+            name="Emf Views">
+      </category>
+      <view
+            category="fr.inria.atlanmod.emfviews.ui"
+            class="fr.inria.atlanmod.emfviews.ui.linkingview.view.LinksView"
+            icon="icons/virtualLogo.png"
+            id="fr.inria.atlanmod.emfviews.ui.linkingview.view"
+            name="Links View"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>
