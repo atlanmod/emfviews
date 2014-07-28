@@ -45,7 +45,6 @@ public class EView extends View {
 	{
 
 		viewProperties.load(inputStream);
-
 		loadViewtype();
 
 		loadContributingMetamodels(new ArrayList<String>(
