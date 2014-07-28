@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="fr.inria.atlanmod.emfviews.ui.linkingview.linkend">
+      <editorContribution
+            class="fr.inria.atlanmod.emfviews.ui.linkingviewprordelegate.ProrDelegate"
+            editorId="org.eclipse.rmf.reqif10.pror.SpecificationEditor">
+      </editorContribution>
+   </extension>
+
+</plugin>
