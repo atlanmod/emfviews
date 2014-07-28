@@ -56,9 +56,7 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard,
 
 	private AttributesSelectionPage attSelectionPage;
 
-	/**
-	 * 
-	 */
+	
 	private IStructuredSelection selection;
 
 	public CreateViewtypeWizard() {
@@ -156,16 +154,16 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard,
 
 			}
 
-			try {
-				EmfViewsUtil.persistLinksModel(filterLinks,
-						org.eclipse.emf.common.util.URI
-								.createURI(viewTypeFolderFullPath
-										.addFileExtension("xmi").toString()));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+		}
+		
+		try {
+			EmfViewsUtil.persistLinksModel(filterLinks,
+					org.eclipse.emf.common.util.URI
+							.createURI(viewTypeFolderFullPath
+									.addFileExtension("xmi").toString()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		try {
