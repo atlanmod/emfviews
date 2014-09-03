@@ -1,11 +1,6 @@
 EMF Views
 ========
 
-Visit the [webpage of the project](http://emfviews.jdvillacalle.com/) for the newest demos and documentation.
-
-News:
-
-* Brand new Enterprise Architecture Views Tutorial.
 
 What is this project about?
 ---------------------------
