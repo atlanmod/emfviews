@@ -1,0 +1,65 @@
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container marketing">
+	
+	<div class="row featurette">
+        <div class="col-md-12">
+          	<h2 class="featurette-heading">Get started <!--<span class="text-muted">See for yourself.</span>--></h2>
+          	
+          	<p>Based on the unquestionable success/usefulness of database views to solve similar problems in databases, EMF Views aims to bring the same concept to the modeling world.</p>
+          	
+          	<p >And this is where more complex situations appear. Some users only need to see some parts of one model, others have to get the full model extended with data from another model, or simply access to a combination of information coming from different interconnected models. Up to now, creating such “perspectives” transparently in EMF was not really trivial: so let’s introduce you toEMF Views!</p>
+
+			<p>Based on the unquestionable success/usefulness of database views to solve similar problems in databases, EMF Views aims to bring the same concept to the modeling world. Thanks to the three main constructs (inspired from SQL) offered by the tool, designers can create new model views: SELECTing a subset of elements from a model, PROJECTing only some of the properties of those elements and/or JOINing them with elements from other models. A model view is a special type of model whose instances are directly computed at runtime based on the model view definition and concerned actual model(s).</p>
+
+			<p>EMF Views, is currently being developed in the context of the TEAP industrial project, by showing different possible applications of model views including:
+			</p>
+			<ul>
+				<li>
+					Software architect/developer views relating UML design models and Java code models (cf. Eclipse MoDisco);
+				</li>
+				<li>
+					Enterprise architect views linking (BPMN) business process models, (ReqIF) requirements models and (TOGAF) architecture models;
+				</li>
+				<li>
+					Generate text artifacts from your views (Support for Epsilon Query Language -EGL-);
+				</li>
+				<li>
+					View transformation using dedicated technologies (Support for Atlas Transformation Language -ATL- & Epsilon Transformation Language -ETL-).
+				</li>
+			</ul>
+        </div>
+    </div>
+	<div class="row featurette">
+       	<div class="col-md-12">
+       		<h2 >Components of EMF Views <!--<span class="text-muted">See for yourself.</span>--></h2>
+       		<p>Today’s modellers usually work with a set of independent models where each model belongs to one domain or specialized body of knowledge. In order to enable collaboration between several modellers, each modeller must use the same terms to eliminate possible ambiguities that might arise if each one decided to define its own terminology. Therefore, standards, such as UML, BPMN, ReqIf or TOGAF, exist in different domains to define a common set of concepts which are used to guarantee interoperability.
+			</p>
+			<p>On top of these standards, several tools are built and therefore several models belonging to different domains are common in a modeller’s everyday’s work. In this scenario, occasions arise when useful information might be scattered in models from different domains. In these cases, modelers continue working with their existing models and standards but need to created new artifacts (Traces, Weaving models, Transformations) to exploit the relations between them.
+			</p>	
+			<p>Based on the concepts of virtual views on databases, our approach uses the existing models to create new views on top of them in a non intrusive manner.
+			</p>
+    	</div>
+    </div>
+    <div class="row featurette">
+       	<div class="col-md-12">
+       		<h3 >Viewtype <!--<span class="text-muted">See for yourself.</span>--></h2>
+       		<p>A viewtype defines the type of elements that can be present in a view. The contents of a viewtype come from existing concepts defined in one or several existing standards. Therefore the first step in defining a viewtype is to select the standards from which it will be created.
+			</p>
+			<p>Once the base concepts are selected, a modeller can PROJECT only some of the properties of those concepts. This means that if for security reasons there are attributes and references that are restricted, then the modeller will choose not to project them on the viewtype. In addition to working with projected original concepts, modellers need to JOIN these concepts.
+    	</div>
+    </div>
+    <div class="row featurette">
+       	<div class="col-md-12">
+       		<h3 >View <!--<span class="text-muted">See for yourself.</span>--></h2>
+       		<p>Once a model viewtype has been defined, conforming model views can be created. A model view is a special type of model whose instances are directly computed at runtime based on the model viewtype and the concerned actual model(s)..
+			</p>
+    	</div>
+    </div>
+    <!-- FOOTER -->
+      <footer>
+        
+        <p>Code licensed under the <a href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License.</a> Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.
+<a href="http://www.emn.fr/z-info/atlanmod/index.php/Main_Page">AtlanMod</a> </p>
+      </footer>    		
+</div><!-- /.container -->
