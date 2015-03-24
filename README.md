@@ -7,6 +7,13 @@ What is this project about?
 
 Some users only need to see some parts of a model,  others have to get the full model extended with data from another model, and others simply access to a combination of information coming from different models. Based on the unquestionable success/usefulness of database views to solve similar problems in databases, EMF Views aims to bring the same concept to the modeling world. 
 
+Screencasts
+-----------
+These screencasts provide a smattering of the capabilities of this project:
+* [EMF Views](https://www.youtube.com/watch?v=KoCiV8fvNj8)
+* [Virtual Views](https://www.youtube.com/watch?v=JRjCqyTM2x8)
+* [Demo EMFViews](https://www.youtube.com/watch?v=Lo4kz6Hx3Kg)
+
 What can you find in this repository?
 -------------------------------------
 
