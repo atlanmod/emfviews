@@ -1,0 +1,4 @@
+contributingModels=1_EAdata/models/1_travelAgencyEA.xmi,1_EAdata/models/2_bookingTripProcess.xmi,1_EAdata/models/3_bookingTripRequirements.xmi
+compositionMetamodel=2_EAview/1_viewtype/myEAviewpoint.eviewtype
+correspondenceModel=2_EAview/2_view/myEAview.xmi
+correspondenceModelBase=2_EAview/1_viewtype/myEAviewpoint.ecl

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<reqif:ReqIF xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:reqif="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd">
+  <coreContent>
+    <datatypes xsi:type="reqif:DatatypeDefinitionString" identifier="rmf-be1f5cf9-aa29-446d-b223-c1b558f1de0f" longName="T_String32k"/>
+    <specTypes xsi:type="reqif:SpecObjectType" identifier="rmf-beb01ff3-0389-4b51-a412-6f7feabeeb89" longName="Requirement Type">
+      <specAttributes xsi:type="reqif:AttributeDefinitionString" identifier="rmf-5c987695-18e6-48cb-9902-788802b679b2" longName="Description"/>
+    </specTypes>
+    <specTypes xsi:type="reqif:SpecificationType" identifier="rmf-eac7d3bd-65a8-456e-9d14-be903289dd69" longName="Specification Type">
+      <specAttributes xsi:type="reqif:AttributeDefinitionString" identifier="rmf-1a77e82d-90b1-46d8-bf95-64506108923a" longName="Description"/>
+    </specTypes>
+    <specObjects identifier="rmf-19428170-0b70-4b81-9fd2-0cdec5778a49">
+      <values xsi:type="reqif:AttributeValueString" theValue="Cancellation of a reservation must be mailed using  public key cryptography"/>
+    </specObjects>
+    <specObjects identifier="rmf-1cbc7d55-9dbc-40ab-aa09-46ae4596f515">
+      <values xsi:type="reqif:AttributeValueString" theValue="Store encrypted credit card data associated with customer account for recurring payments"/>
+    </specObjects>
+    <specObjects identifier="rmf-0f485e2a-2ce7-410d-9643-fcddfebe3780">
+      <values xsi:type="reqif:AttributeValueString" theValue="Update customer transaction record"/>
+    </specObjects>
+    <specifications identifier="rmf-27eec2e3-ee00-4ea5-b1c0-1f8b0d0e09cf" longName="Specification Document">
+      <values xsi:type="reqif:AttributeValueString" theValue="Requirements Document"/>
+    </specifications>
+  </coreContent>
+</reqif:ReqIF>

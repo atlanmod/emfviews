@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/emfviews.dsl/src-gen" editDirectory="/emfviews.dsl.edit/src"
+    editorDirectory="/emfviews.dsl.editor/src" modelPluginID="emfviews.dsl" forceOverwrite="true"
+    modelName="Sqlview" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="emfviews.dsl.edit"
+    editorPluginID="emfviews.dsl.editor" runtimeVersion="2.10">
+  <genPackages prefix="Sqlview" basePackage="emfviews.dsl" disposableProviderFactory="true"
+      fileExtensions="sqlview" ecorePackage="Sqlview.ecore#/">
+    <genClasses ecoreClass="Sqlview.ecore#//Model">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sqlview.ecore#//Model/viewName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Model/metamodel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Model/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Metamodel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sqlview.ecore#//Metamodel/metamodelURL"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Metamodel/metamodelName"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Expression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Expression/select"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Expression/from"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Expression/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Select">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sqlview.ecore#//Select/select"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Select/metamodel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Select/class"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Select/attribute"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//From">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Sqlview.ecore#//From/metamodel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//From/class"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Attribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sqlview.ecore#//Attribute/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Class">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sqlview.ecore#//Class/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//MetamodelName">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sqlview.ecore#//MetamodelName/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Condition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Condition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Comparison">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Comparison/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Comparison/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Left">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Left/metamodel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Left/class"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Left/attributeWhereLeft"/>
+    </genClasses>
+    <genClasses ecoreClass="Sqlview.ecore#//Right">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Right/metamodel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Right/class"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Sqlview.ecore#//Right/attributeWhereRight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Sqlview.ecore#//Right/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

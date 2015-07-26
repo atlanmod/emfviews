@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="contentfwk" nsURI="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0">
+  <eClassifiers xsi:type="ecore:EClass" name="BusinessArchitecture">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="drivers"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="goals"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objectives"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="units"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actors"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roles"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="functions"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="services"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="controls"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="events"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="locations"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="products"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contracts"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="measures"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="servicesQuality"/>
+  </eClassifiers>
+</ecore:EPackage>
