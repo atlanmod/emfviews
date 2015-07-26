@@ -1,0 +1,63 @@
+-- @path VL=/SQL2EMFViews/metamodels/VirtualLinksMM2.ecore
+-- @path SQL=/SQL2EMFViews/metamodels/Sqlview.ecore
+
+module SQL2VirtualLinks;
+create OUT : VL from IN : SQL;
+
+helper def : getURLFromMetamodel(param : String) : String=
+	SQL!Model.allInstances()->first().metamodel->select(e|e.metamodelName->first().name=param)->first().metamodelURL
+;
+rule Model2VirtualLinks {
+  from 
+  	s : SQL!Model
+  to
+  	t : VL!VirtualLinks (
+		virtualLinks <- s.expression.first()."from"->first().join, --Join2Association
+		linkedElements <- s.expression.first()."from"->first().join->collect(e|e.joinLeft->first().classLeft)
+		->append(s.expression.first()."from"->first().join->collect(e|e.joinRight->first().classRight))
+    )
+	do{
+	
+	}
+}
+rule Join2Association {
+  from 
+  	s : SQL!Join
+  to
+  	t : VL!Association (
+   		name <- s.relation->first().name,
+		associationTypeName <- s.relation->first().name,
+		upperBound <- 1,
+		sourceElement <- s.joinLeft->first().classLeft,
+		targetElements <- s.joinRight->first().classRight
+    )
+	do{
+	
+	}
+}
+rule ClassLeft2LinkedElement {
+  from 
+  	s : SQL!Class(s.refImmediateComposite().oclIsTypeOf(SQL!JoinLeft))
+  to
+  	t : VL!LinkedElement (
+   		elementRef <- '//'.concat(s.name),
+		modelRef <- thisModule.getURLFromMetamodel(s.refImmediateComposite().metamodelLeft->first().name),
+		name <- s.name
+    )
+	do{
+		
+	}
+}
+rule ClassRight2LinkedElement {
+  from 
+  	s : SQL!Class(s.refImmediateComposite().oclIsTypeOf(SQL!JoinRight))
+  to
+  	t : VL!LinkedElement (
+   		elementRef <- '//'.concat(s.name),
+		modelRef <- thisModule.getURLFromMetamodel(s.refImmediateComposite().metamodelRight->first().name),
+		name <- s.name
+    )
+	do{
+		
+	}
+}
