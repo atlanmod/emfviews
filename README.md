@@ -26,15 +26,28 @@ So far, these are the projects:
 * fr.inria.atlanmod.emfviews.virtuallinksdelegator. This project delegates the creation of virtual links to concrete implementations
 * fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate. This project allows to generate links from the Epsilon Comparison Language (ECL).
 
+Plugins concerning the DSL to define viewpoints:
+* emfviews.dsl
+* emfviews.dsl.sdk
+* emfviews.dsl.tests
+* emfviews.dsl.ui
+
+ATL project:
+* SQL2VirtualLinks: transformation to generate virtual links model from DSL model
+
 Examples:
 
 * myFirstViewTutorial. Create your first Viewtype and View.
 * myFirstViewTransformationTutorial. Create your first M2M transformation using a View as input
 * enterpriseEAtutorial. Create more complex views in an Enterprise Architecture context.
+* 1_EAdata: metamodels and models to be used in the viewpoint and view
+* 2_EAview: Example to create views from EA, BPMN, reqif
+* EMFViewsSQLTest: Example of view definiton with the DSL
 
 Who is behind this project?
 ---------------------------
+* [Hugo Bruneliere](https://github.com/Hugo-Bruneliere "Hugo Bruneliere")
+* [Jokin Garcia Perez](https://github.com/jokingarcia "Jokin Garcia Perez")
 * [Juan David Villa Calle](https://github.com/juandavidvillacalle "Juan David Villa Calle")
-* [Hugo Bruneliere](https://github.com/Hugo-Bruneliere "Jordi Cabot")
 
-Juan David and Hugo work in [Atlanmod](http://www.emn.fr/z-info/atlanmod), a research team of Inria.
+Jokin and Hugo work in [Atlanmod](http://www.emn.fr/z-info/atlanmod), a research team of Inria.
