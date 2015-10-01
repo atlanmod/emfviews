@@ -10,7 +10,8 @@ Some users only need to see some parts of a model,  others have to get the full 
 Screencasts
 -----------
 These screencasts provide a smattering of the capabilities of this project:
-* [SQL-like DSL to EMF Views] (http://youtu.be/cds_DU_VJcM)
+* [ER 2015 - SQL_EMFViews user perspective] (https://youtu.be/TabEjn4Jr4Q)
+* [SQL-like DSL to EMF Views internals] (http://youtu.be/cds_DU_VJcM)
 * [EMF Views](https://www.youtube.com/watch?v=KoCiV8fvNj8)
 * [Virtual Views](https://www.youtube.com/watch?v=JRjCqyTM2x8)
 * [Demo EMFViews](https://www.youtube.com/watch?v=Lo4kz6Hx3Kg)
