@@ -1,0 +1,6 @@
+contributingMetamodels=Monoge_DCNS_simplified/metamodels/Original_Metamodel.ecore
+correspondenceModel=Monoge_DCNS_simplified/viewtypes/extendedMMviewpoint.xmi
+correspondenceModelBase=Monoge_DCNS_simplified/viewtypes/extendedMMviewpoint.ecl
+filtersMetamodel=/Monoge_DCNS_simplified/viewtypes/extendedMMviewpoint.ecore
+originalMetamodel=http://Original_Metamodel/1.0
+viewpointModel=platform:/resource/Monoge_DCNS_simplified/resources/extendedMMviewpoint.xmi

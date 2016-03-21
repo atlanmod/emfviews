@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ASCII"?>
+<eview:EViewDefinition
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:eview="http://atlanmod.fr/eview"
+    name="SmartEA integration">
+  <conformsTo
+      uri="smartEAintegration/viewtype/extendedReqIf.eviewtype"/>
+  <contributingModels
+      name="reqif"
+      uri="smartEAintegration/models/processRequirements.xmi"/>
+  <contributingModels
+      name="togaf"
+      uri="smartEAintegration/models/travelAgencyEnterpriseArchitecture.xmi"/>
+  <contributingModels
+      name="bpmn"
+      uri="smartEAintegration/models/bookingTripProcess.xmi"/>
+  <linksModel
+      href="/smartEAintegration/view/links.xmi#/"/>
+</eview:EViewDefinition>

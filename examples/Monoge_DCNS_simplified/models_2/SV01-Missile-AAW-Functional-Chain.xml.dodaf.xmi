@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
+  <ownedElements xsi:type="dodaf:SystemEntity" xmi:id="_3838" name="Situation Assessment"/>
+  <ownedElements xsi:type="dodaf:SystemEntity" xmi:id="_3846" name="Weapon Control"/>
+  <ownedElements xsi:type="dodaf:SystemEntity" xmi:id="_3847" name="Kill Assessment"/>
+  <ownedElements xsi:type="dodaf:SystemEntity" xmi:id="_3840" name="Weapon Allocation"/>
+  <ownedElements xsi:type="dodaf:SystemEntity" xmi:id="_3839" name="Threat Evaluation"/>
+  <ownedElements xsi:type="dodaf:SystemEntity" xmi:id="_3851" name="Missile Launching System"/>
+  <ownedElements xsi:type="dodaf:SystemEntity" xmi:id="_3834" name="MFR"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3881" name="System_Interface_9" toSystemEntity="_3847" fromSystemEntity="_3838"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3880" name="System_Interface_8" toSystemEntity="_3846" fromSystemEntity="_3847"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3877" name="System_Interface_7" toSystemEntity="_3840" fromSystemEntity="_3851"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3876" name="System_Interface_6" toSystemEntity="_3851" fromSystemEntity="_3840"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3859" name="System_Interface_5" toSystemEntity="_3851" fromSystemEntity="_3846"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3858" name="System_Interface_4" toSystemEntity="_3846" fromSystemEntity="_3840"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3857" name="System_Interface_3" toSystemEntity="_3840" fromSystemEntity="_3839"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3856" name="System_Interface_2" toSystemEntity="_3839" fromSystemEntity="_3838"/>
+  <ownedElements xsi:type="dodaf:SystemInterface" xmi:id="_3854" name="System_Interface_1" toSystemEntity="_3838" fromSystemEntity="_3834"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3895" name="Tactical Track Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3896" name="Missile Engagement Cmd"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3897" name="Track To Engage"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3898" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3899" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3900" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3901" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3902" name="Tactical Track Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3903" name="Tactical Track Evt"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3904" name="Threat Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3905" name="Firing Plan"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3906" name="Kill Assessment Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3907" name="Target Data"/>
+</dodaf:Model>

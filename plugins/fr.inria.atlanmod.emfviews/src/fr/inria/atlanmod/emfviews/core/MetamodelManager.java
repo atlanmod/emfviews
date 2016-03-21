@@ -73,16 +73,16 @@ public class MetamodelManager {
 					.getResourceSet().getPackageRegistry().values();
 			ArrayList<EPackage> packs = new ArrayList<>();
 			for (Object object : listOfVirtualMMPackages) {
+
 				if (object instanceof EPackage) {
 					EPackage tempPack = (EPackage) object;
 					if (tempPack.getName().compareToIgnoreCase("ecore") != 0) {
 						packs.add(tempPack);
 					}
 				}
+
 			}
-			
-			ArrayList<EClassifier> classifiers = new ArrayList<EClassifier>();
-			
+			ArrayList<EClassifier> classifiers = new ArrayList();
 			for (EPackage tempPack : packs) {
 				classifiers.addAll(tempPack.getEClassifiers());
 			}
@@ -138,6 +138,7 @@ public class MetamodelManager {
 	}
 
 	private void buildMaps() {
+
 		Map<String, List<EClass>> contributingClassesByName = new HashMap<String, List<EClass>>();
 		Map<String, List<EClass>> compositionClassesByName = null;
 
@@ -165,40 +166,25 @@ public class MetamodelManager {
 				for (EClass cec : lcec) {
 					List<EClass> lvec = compositionClassesByName.get(cec
 							.getName());
-					if(lvec!=null)
-					{
-						for (EClass vec : lvec) {
-						if ((vec.getEPackage().getNsURI()
-								.equals(cec.getEPackage().getNsURI()))||(vec.getEPackage().getNsURI()
-										.equals(cec.getEPackage().getNsURI()+"/viewtype"))) {
-								this.concreteToVirtualClass.put(cec, vec);
-								mapFeatures(cec, vec);
-							}
+					for (EClass vec : lvec) {
+						if (vec.getEPackage().getNsURI()
+								.equals(cec.getEPackage().getNsURI())) {
+							this.concreteToVirtualClass.put(cec, vec);
+							mapFeatures(cec, vec);
 						}
 					}
-					else
-					{
-						this.concreteToVirtualClass.put(cec, cec);
-						mapFeatures(cec, cec);
-					}
-
 				}
-			} 
-			else
-			{
+			} else {
 				EClass cec = lcec.get(0);
-					if(compositionClassesByName.get(cec.getName())!=null)
-					{
-						EClass vec = compositionClassesByName.get(cec.getName()).get(0);
-						this.concreteToVirtualClass.put(cec, vec);
-						mapFeatures(cec, vec);
-					}
-				
-				
+				EClass vec = compositionClassesByName.get(cec.getName()).get(0);
+				this.concreteToVirtualClass.put(cec, vec);
+				mapFeatures(cec, vec);
 			}
-		}	
+		}
 		for (List<EClass> lec : compositionClassesByName.values()) {
 			for (EClass ec : lec) {
+				if (ec.getName().equalsIgnoreCase("laneset")) {
+				}
 				for (EStructuralFeature sf : ec.getEStructuralFeatures()) {
 					if (virtualToConcreteFeature.get(sf) == null)
 						if (virtualAssociations.get(sf.getName()) == null) {

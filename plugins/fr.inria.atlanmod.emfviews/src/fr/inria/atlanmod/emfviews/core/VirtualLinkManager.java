@@ -13,65 +13,54 @@ package fr.inria.atlanmod.emfviews.core;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 import fr.inria.atlanmod.emfviews.elements.VirtualElement;
-import fr.inria.atlanmod.emfviews.util.EmfViewsUtil;
+import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
 public class VirtualLinkManager {
 
-	private View view;
+	private View virtualModel;
 
-	private VirtualLinks links;
-	
+	private VirtualLinks correspondenceModel;
+
 	private Map<EObject, VirtualElement> virtualLinks = new HashMap<EObject, VirtualElement>();
-	
-	public VirtualLinkManager(String linksModelURI, View vModel)
+
+	public VirtualLinkManager(String correspondenceModelURI, View vModel)
 			throws MalformedURLException, IOException {
-		this.view = vModel;
+		this.virtualModel = vModel;
 
 		VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
 
-		XMIResourceImpl linksModel = new XMIResourceImpl();
-	
-		try 
-		{
-			if(linksModelURI!=null)
-			{
-				linksModel.load(EmfViewsUtil.toURI(linksModelURI).toURL().openStream(),
-						new HashMap<Object, Object>());
+		XMIResourceImpl correspondenceModel = new XMIResourceImpl();
 
-				VirtualLinks virtualLinks = (VirtualLinks) linksModel
-						.getContents().get(0);
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-				this.links = virtualLinks;
-			}
-				
-		} 
-		catch (URISyntaxException e1)
-		{
-			e1.printStackTrace();
-		}	
-			
+		java.net.URI uri = workspace.getRoot()
+				.findMember("/" + correspondenceModelURI).getLocationURI();
+		correspondenceModel.load(uri.toURL().openStream(),
+				new HashMap<Object, Object>());
+
+		VirtualLinks virtualLinks = (VirtualLinks) correspondenceModel
+				.getContents().get(0);
+
+		this.correspondenceModel = virtualLinks;
 	}
 
 	public void initialize() {
-		LinksProjector projector = new LinksProjector(view);
-		if(links!=null)
-			projector.load(links);
-	}
-
-	public VirtualLinks getLinks()
-	{
-		return links;
+		LinksProjector projector = new LinksProjector(virtualModel);
+		projector.load(correspondenceModel);
 	}
 
 	public void setVirtualLink(EObject concreteElement,
@@ -79,18 +68,26 @@ public class VirtualLinkManager {
 		virtualLinks.put(concreteElement, virtualElement);
 	}
 
+	public Map<EObject, VirtualElement> getVirtualLinks() {
+		return virtualLinks;
+	}
+
+	public boolean isVirtuallyLinked(EObject concreteElement) {
+		return virtualLinks.containsKey(concreteElement);
+	}
+
 	public EObject getVirtualElement(EObject e) {
 		VirtualElement vElem = virtualLinks.get(e);
 		if (vElem == null) {
-			vElem = new ReproduceElementImpl(view, e);
+			vElem = new ReproduceElementImpl(virtualModel, e);
 			virtualLinks.put(e, vElem);
 		}
 		return vElem;
 	}
 
 	public void save() {
-		LinksProjector projector = new LinksProjector(view);
-		projector.save(links);
+		LinksProjector projector = new LinksProjector(virtualModel);
+		projector.save(correspondenceModel);
 	}
 
 }

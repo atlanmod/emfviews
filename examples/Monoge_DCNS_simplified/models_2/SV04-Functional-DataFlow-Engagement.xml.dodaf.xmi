@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3689" name="Torpedo Engagement"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3686" name="Gun Engagement"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3685" name="Missile Engagement"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3896" name="Missile Engagement Cmd"/>
+  <ownedElements xsi:type="dodaf:AndConnector" xmi:id="_3723"/>
+  <ownedElements xsi:type="dodaf:AndConnector" xmi:id="_3724"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3869" name="Firing Plan" extSource="_3685"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3867" name="Track To Engage" extDest="_3685"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3725" name="Torpedo Engagement Status" extSource="_3689"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3726" name="Gun Engagement Status" extSource="_3686"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3727" name="Missile Engagement Status" extSource="_3685"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3728" name="Torpedo Engagement Cmd" extDest="_3689"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3729" name="Gun Engagement Cmd" extDest="_3686"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3730" name="Missile Engagement Cmd" extDest="_3685"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3705" name="Engagement Status &amp; Data"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3706" name="Engagement Cmd"/>
+</dodaf:Model>

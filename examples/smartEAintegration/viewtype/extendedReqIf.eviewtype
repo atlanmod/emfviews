@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<eviewtype:EViewtypeDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eviewtype="http://atlanmod.fr/eviewtype">
+  <linksModel href="/smartEAintegration/viewtype/links.xmi#/"/>
+  <contributingMetamodels name="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" uri="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd"/>
+  <contributingMetamodels name="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" uri="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"/>
+  <contributingMetamodels name="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" uri="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"/>
+</eviewtype:EViewtypeDefinition>

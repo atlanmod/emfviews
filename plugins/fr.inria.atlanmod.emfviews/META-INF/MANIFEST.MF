@@ -1,31 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: EMF Views
+Bundle-Name: VirtualModel
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews;singleton:=true
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi;bundle-version="2.7.0",
- fr.inria.atlanmod.emfviews.vlink-mm;bundle-version="0.2",
+ fr.inria.atlanmod.emfviews.vlink-mm;bundle-version="1.0.0",
  org.eclipse.core.resources;bundle-version="3.8.1",
- fr.inria.atlanmod.emfviews.virtuallinksdelegator;bundle-version="0.2",
- org.eclipse.core.runtime;bundle-version="3.9.0",
- org.eclipse.uml2.uml;bundle-version="4.1.2",
- fr.inria.atlanmod.emfviews.virtuallinksocldelegate,
- fr.inria.atlanmod.emfviews.util,
- org.eclipse.emf.cdo;bundle-version="4.2.0",
- org.eclipse.emf.cdo.common;bundle-version="4.2.0",
- org.eclipse.emf.cdo.net4j;bundle-version="4.1.0",
- org.eclipse.emf.cdo.server;bundle-version="4.2.0",
- org.eclipse.emf.cdo.server.db;bundle-version="4.2.0",
- org.eclipse.emf.cdo.server.net4j;bundle-version="4.1.0",
- org.eclipse.net4j;bundle-version="4.2.0",
- org.eclipse.net4j.db;bundle-version="4.2.0",
- org.eclipse.net4j.tcp;bundle-version="4.1.0",
- org.eclipse.net4j.util;bundle-version="3.3.0"
+ fr.inria.atlanmod.emfviews.virtuallinksdelegator;bundle-version="1.0.0",
+ org.eclipse.core.runtime;bundle-version="3.9.1"
 Export-Package: fr.inria.atlanmod.emfviews.core,
  fr.inria.atlanmod.emfviews.elements,
  fr.inria.atlanmod.emfviews.rules
-Bundle-Vendor: Atlanmod
-Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .

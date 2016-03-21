@@ -22,54 +22,31 @@ import org.eclipse.emf.ecore.resource.Resource;
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 import fr.inria.atlanmod.emfviews.rules.TranslationRule;
 import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.elements.FilterElement;
 
 public class LinksProjector {
 
-	private View view;
+	private View virtualModel;
 
-	public LinksProjector(View view) 
-	{
-		this.view = view;
+	public LinksProjector(View vModel) {
+
+		this.virtualModel = vModel;
+
 	}
 
-	public void load(VirtualLinks virtualLinks)
-	{
+	public void load(VirtualLinks virtualLinks) {
 
 		List<Association> associations = new ArrayList<Association>();
-		List<Filter> filters = new ArrayList<Filter>();
 		EList<VirtualLink> links = virtualLinks.getVirtualLinks();
-		for (VirtualLink link : links)
-		{
+		for (VirtualLink link : links) {
 			if (link instanceof Association) {
 				associations.add((Association) link);
 			}
-			else if(link instanceof Filter)
-			{
-				filters.add((Filter)link);
-			}
 		}
 		loadAssociations(associations);
-		loadFilters(filters);
 
-	}
-	
-	private void loadFilters(List<Filter> filters)
-	{
-		for(Filter filter : filters)
-		{
-			LinkedElement filterElementLink=filter.getFilteredElement();
-			String filterElemetRef = filterElementLink.getElementRef();
-			String filterElementModelURI = filterElementLink.getModelRef(); 
-			EObject filteredElement = getReferencedObject(filterElemetRef, filterElementModelURI);
-			FilterElement filterElement = new FilterElement(filteredElement);
-			view.getVirtualLinkManager().setVirtualLink(filteredElement, filterElement);
-			
-		}
 	}
 
 	private void loadAssociations(List<Association> associations) {
@@ -92,11 +69,11 @@ public class LinksProjector {
 						targetModelURI));
 			}
 
-			ReproduceElementImpl vElement = (ReproduceElementImpl) view
+			ReproduceElementImpl vElement = (ReproduceElementImpl) virtualModel
 					.getVirtualLinkManager().getVirtualElement(sourceElement);
 
 			String virtualFeatureName = association.getName();
-			EStructuralFeature virtualFeature = view
+			EStructuralFeature virtualFeature = virtualModel
 					.getMetamodelManager().getVirtualAssociation(vElement,
 							virtualFeatureName);
 
@@ -108,14 +85,14 @@ public class LinksProjector {
 
 	private EObject getReferencedObject(String elementRef, String packageNsuri) {
 		EObject referencedElement = null;
-		List<Resource> contributingModels = view
+		List<Resource> contributingModels = virtualModel
 				.getContributingModels();
 		boolean elemFound = false;
 		for (int i = 0; i < contributingModels.size() && !elemFound; i++) {
 			Resource r = contributingModels.get(i);
 			EObject firstElem = r.getContents().get(0);
 			if (firstElem.eClass().getEPackage().getNsURI()
-					.compareToIgnoreCase(packageNsuri) == 0 && !r.getURI().toString().endsWith("profile.uml")) {
+					.compareToIgnoreCase(packageNsuri) == 0) {
 				referencedElement = r.getEObject(elementRef);
 				elemFound = true;
 			}

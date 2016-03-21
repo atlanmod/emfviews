@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks xsi:type="virtualLinks:Association" name="requirementA" associationTypeName="requirement" sourceElement="//@linkedElements.0" targetElements="//@linkedElements.1"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="requirementB" associationTypeName="requirement" sourceElement="//@linkedElements.2" targetElements="//@linkedElements.3"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="processC" associationTypeName="process" sourceElement="//@linkedElements.4" targetElements="//@linkedElements.5"/>
+  <linkedElements elementRef="_SjmiUA2qEeSNdrISD01J9A" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" name="referenceFromSpecObjectElementFromreqifModel"/>
+  <linkedElements elementRef="//@architectures.0/@strategicElements.1" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" name="referenceToRequirementElementFromcontentfwkModel"/>
+  <linkedElements elementRef="_R_Ub8BYuEeSDcYdXqn9v1g" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" name="referenceFromSpecObjectElementFromreqifModel"/>
+  <linkedElements elementRef="//@architectures.0/@strategicElements.2" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" name="referenceToRequirementElementFromcontentfwkModel"/>
+  <linkedElements elementRef="_R_Ub8BYuEeSDcYdXqn9v1g" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" name="referenceFromSpecObjectElementFromreqifModel"/>
+  <linkedElements elementRef="_48wAUN6xEeCbzp_EHZybUg" modelRef="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" name="referenceToProcessElementFrombpmnModel"/>
+  <linkedElements elementRef="_-buOFA2pEeSNdrISD01J9A" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" name="referenceFromSpecObjectElementFromreqifModel"/>
+  <linkedElements elementRef="//@architectures.0/@strategicElements.0" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" name="referenceToRequirementElementFromcontentfwkModel"/>
+</virtualLinks:VirtualLinks>

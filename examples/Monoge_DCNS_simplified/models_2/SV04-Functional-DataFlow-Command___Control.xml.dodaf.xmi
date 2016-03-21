@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3743" name="Network Management"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3742" name="Warfare Management"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3741" name="Situation Assessment"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3903" name="Tactical Track Evt"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3895" name="Tactical Track Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3902" name="Tactical Track Data"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3872" name="Track To Engage" extSource="_3742"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3873" name="Firing Plan" extDest="_3742"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3793" name="Engagement Order" extDest="_3742" extSource="_3743"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3794" name="Local Sensing Data" extDest="_3743" extSource="_3741"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3795" name="Remote Sensing Data" extDest="_3741" extSource="_3743"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3777" name="Comm Data Out" extSource="_3743"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3778" name="Comm Data In" extDest="_3743"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3770" name="Tactical Track Evt" extDest="_3742" extSource="_3741"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3732" name="Tactical Track Data" extDest="_3742" extSource="_3741"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3701" name="Sensing Control" extSource="_3741"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3702" name="Engagement Cmd" extSource="_3742"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3703" name="Sensing Data" extDest="_3741"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3704" name="Engagement Status &amp; Data" extDest="_3742"/>
+</dodaf:Model>

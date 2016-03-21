@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks xsi:type="virtualLinks:Association" name="MatchProcessWithProcess" upperBound="1" associationTypeName="MatchProcessWithProcess" sourceElement="//@linkedElements.0" targetElements="//@linkedElements.1"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="requirement" upperBound="1" associationTypeName="requirement" sourceElement="//@linkedElements.3" targetElements="//@linkedElements.2"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="process" upperBound="1" sourceElement="//@linkedElements.3" targetElements="//@linkedElements.1"/>
+  <linkedElements elementRef="//Process" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" name="Process"/>
+  <linkedElements elementRef="//Process" modelRef="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" name="Process"/>
+  <linkedElements elementRef="//Requirement" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" name="Requirement"/>
+  <linkedElements elementRef="//SpecObject" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" name="SpecObject"/>
+</virtualLinks:VirtualLinks>

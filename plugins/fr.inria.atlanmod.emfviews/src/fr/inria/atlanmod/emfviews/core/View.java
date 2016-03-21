@@ -15,62 +15,58 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.net4j.CDONet4jSessionConfiguration;
-import org.eclipse.emf.cdo.net4j.CDONet4jUtil;
-import org.eclipse.emf.cdo.session.CDOSession;
-import org.eclipse.emf.cdo.transaction.CDOTransaction;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.net4j.Net4jUtil;
-import org.eclipse.net4j.tcp.ITCPConnector;
-import org.eclipse.net4j.tcp.TCPUtil;
-import org.eclipse.net4j.util.container.ContainerUtil;
-import org.eclipse.net4j.util.container.IManagedContainer;
-import org.eclipse.net4j.util.security.PasswordCredentialsProvider;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
+import fr.inria.atlanmod.emfviews.virtualLinks.Association;
+import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtuallinksdelegator.VirtualLinksDelegator;
-import fr.inria.atlanmod.emfviews.virtuallinksocldelegate.OclforEmfDelegate;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
-public abstract class View extends ResourceImpl 
-{
-	protected Properties viewProperties=new Properties();
+public abstract class View extends ResourceImpl {
+	protected Properties properties;
 
-	protected ResourceSet virtualResourceSet=new ResourceSetImpl();
-	
-	protected MetamodelManager metamodelManager;
-	
-	protected VirtualLinkManager vLinkManager;
+	protected ResourceSet virtualResourceSet;
 
+	protected String contributingModelsURIs;
+
+	protected String compositionMetamodelURI;
+
+	protected String contributingMetamodelsURIs;
+
+	protected String correspondenceModelURI;
+
+	protected XMIResourceImpl correspondenceModelResource;
+
+	/**
+	 * The contents of the virtual model
+	 */
 	protected EList<EObject> virtualContents;
-	
-	public View(URI uri) {
-		super(uri);
-	}
-
-	public View() {
-		super();
-	}
 
 	public List<Resource> getContributingModels() {
 		ArrayList<Resource> contributingModels = new ArrayList<>();
 		EList<Resource> allResources = virtualResourceSet.getResources();
-		
 		for (Resource resource : allResources) {
-			if ((resource.getURI().toString().startsWith("platform")||resource.getURI().toString().startsWith("file")||resource.getURI().toString().startsWith("cdo")
-					)&& !resource.getURI().toString().endsWith("ecore")) {
+			if (resource.getURI().toString().startsWith("platform")
+					&& !resource.getURI().toString().endsWith("ecore")) {
 				contributingModels.add(resource);
 			}
 
@@ -83,150 +79,50 @@ public abstract class View extends ResourceImpl
 		return metamodelManager;
 	}
 
+	/**
+	 * Utility for the virtual links
+	 */
+	protected VirtualLinkManager vLinkManager;
+
 	public VirtualLinkManager getVirtualLinkManager() {
 		return vLinkManager;
 	}
+
+	protected MetamodelManager metamodelManager;
 
 	@Override
 	public EList<EObject> getContents() {
 		return virtualContents;
 	}
-	
-	public void registerUmlProfileSubpackages(EPackage profilePackage)
-	{
-		EList<EPackage> subPackages=profilePackage.getESubpackages();
-		if(subPackages.size()>0)
-		{
-			Iterator<EPackage> subPackIterator=subPackages.iterator();
-			while(subPackIterator.hasNext())
-			{
-				EPackage subPackage=subPackIterator.next();
-				virtualResourceSet.getPackageRegistry().put(subPackage.getNsURI(), subPackage);
-				registerUmlProfileSubpackages(subPackage);
-			}
-			
-		}
-			
+
+	public View(URI uri) {
+		super(uri);
+
 	}
 
-	public void generateCorrespondenceLinks(java.net.URI  linksModelURI)
-	{
-		try
-		{
-			VirtualLinksDelegator vld = new VirtualLinksDelegator(
-					viewProperties.getProperty("correspondenceModelBase"));
+	public View() {
+		super();
 
-			vld.createVirtualModelLinks(org.eclipse.emf.common.util.URI
-					.createURI(linksModelURI.toString()),
-					getContributingModels());
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
 	}
-	
-	public void generateFilterLinks(VirtualLinks viewtypeLevelVirtualLinks,
-			ResourceSet virtualResourceSet, VirtualLinks correspondenceModel, java.net.URI linksModelURI) {
-		
-		OclforEmfDelegate oclForEmfDelegate = new OclforEmfDelegate(viewtypeLevelVirtualLinks, virtualResourceSet,vLinkManager.getLinks());
-		oclForEmfDelegate.createViewFilterLinks();
-		oclForEmfDelegate.persistLinksModel(org.eclipse.emf.common.util.URI.createURI(linksModelURI.toString()));
-		
+
+	public View(List<URI> contributingModels, List<URI> contributingMetamodels,
+			URI linksModel, URI compositionMetamodel) {
+		super();
+
 	}
-	
+
+	public View(List<String> contributingModels,
+			List<String> contributingMetamodels, String compositionMetamodel) {
+		super();
+	}
+
 	protected void loadContributingModels(List<String> contributingModelsPaths) {
 
-		for (String modelURI : contributingModelsPaths)
-		{
-			URI theModelUri= URI.createURI(modelURI);
-			String modelUriSchema=theModelUri.scheme();
-			Resource modelResource =null;
-			
-			if(modelUriSchema==null)
-			{
-				theModelUri=URI.createPlatformResourceURI(modelURI, true);
-				modelResource = virtualResourceSet.getResource(theModelUri, true);
-			}
-			else if(modelUriSchema.equals("cdo"))
-			{
-				loadCdoResource(theModelUri);
-			}
-			else if(modelUriSchema.equals("file"))
-			{
-				if(theModelUri.toString().endsWith("profile.uml"))
-				{
-					
-					modelResource = virtualResourceSet.getResource(theModelUri, true);
-					EObject umlProfile=modelResource.getContents().get(0);
-					EList<EObject> umlProfileContents = umlProfile.eContents();
-					EObject firstUmlAnotation=umlProfileContents.get(0);
-					EObject firstPackage=firstUmlAnotation.eContents().get(0);
-					EPackage profilePackage = (EPackage)firstPackage;
-					virtualResourceSet.getPackageRegistry().put(profilePackage.getNsURI(), profilePackage);
-					registerUmlProfileSubpackages(profilePackage);	
-				}
-				else
-				{
-					modelResource = virtualResourceSet.getResource(theModelUri, true);
-				}	
-			}
+		for (String modelURI : contributingModelsPaths) {
+			Resource modelResource = virtualResourceSet.getResource(
+					URI.createPlatformResourceURI(modelURI, true), true);
 		}
 
-	}
-	
-	public void loadCdoResource(URI modelResourceUri)
-	{
-		IManagedContainer container=ContainerUtil.createContainer();
-		String rawUri=modelResourceUri.toString();
-		
-	    //Parameters extraction
-		String serverLocation=rawUri.substring(rawUri.indexOf("http://")+7,rawUri.indexOf("?"));
-	    String repositoryName=rawUri.substring(rawUri.indexOf("repositoryName")+15, rawUri.indexOf("&", rawUri.indexOf("repositoryName")));
-	    String modelName=null;
-	    if(rawUri.indexOf("&", rawUri.indexOf("resourceName"))!=-1)
-	    	modelName=rawUri.substring(rawUri.indexOf("resourceName")+13, rawUri.indexOf("&", rawUri.indexOf("resourceName")));
-	    else
-	    	modelName=rawUri.substring(rawUri.indexOf("resourceName")+13, rawUri.length());
-	    String userName=null;
-	    String password=null;
-	    PasswordCredentialsProvider credentialsProvider = null;
-	    if(rawUri.indexOf("&", rawUri.indexOf("resourceName"))!=-1)
-	    {
-	    	userName=rawUri.substring(rawUri.indexOf("userName")+9, rawUri.indexOf("&", rawUri.indexOf("userName")));
-	    	password=rawUri.substring(rawUri.indexOf("password")+9, rawUri.length());
-		    credentialsProvider = new PasswordCredentialsProvider(userName,password);
-	    }
-	    	
-		Net4jUtil.prepareContainer(container); // Register Net4j factories
-		TCPUtil.prepareContainer(container); // Register TCP factories
-		CDONet4jUtil.prepareContainer(container); // Register CDO factories
-		container.activate();
-		
-		// Create connector
-	    ITCPConnector connector = TCPUtil.getConnector(container, serverLocation); //$NON-NLS-1$
-		
-	    // Create configuration
-	    CDONet4jSessionConfiguration configuration = CDONet4jUtil.createNet4jSessionConfiguration();
-	    configuration.setConnector(connector);
-	    configuration.setRepositoryName(repositoryName); //$NON-NLS-1$
-	    if(credentialsProvider!=null)
-	    	configuration.setCredentialsProvider(credentialsProvider);
-	    
-	    // Open session
-	    CDOSession session = configuration.openNet4jSession();
-	    
-	    
-	    // Open transaction
-	    CDOTransaction transaction = session.openTransaction(session.getBranchManager().getMainBranch().getBranch("Master"));
-	    // Get or create resource
-	    CDOResource resource = transaction.getResource(modelName); 
-	    EList<EObject> resourceContents=resource.getContents();
-	    EPackage cdoPackageInstance=resourceContents.get(0).eClass().getEPackage();
-	    virtualResourceSet.getResources().add(resource);
-	    
-	    virtualResourceSet.getPackageRegistry().put(cdoPackageInstance.getNsURI(), cdoPackageInstance);
-	       
 	}
 
 	protected void loadContributingMetamodels(
@@ -238,15 +134,14 @@ public abstract class View extends ResourceImpl
 						EPackage.Registry.INSTANCE.getEPackage(metamodelURI));
 
 			} else if (metamodelURI.endsWith("ecore")) {
-				
 				Resource metamodelResource = virtualResourceSet
-						.getResource(URI.createURI(
-								metamodelURI), true);
-				
+						.getResource(URI.createPlatformResourceURI(
+								metamodelURI, true), true);
 				EList<EObject> contents = metamodelResource.getContents();
 				EPackage thePack = (EPackage) contents.iterator().next();
 				virtualResourceSet.getPackageRegistry().put(thePack.getNsURI(),
 						thePack);
+
 			}
 		}
 
@@ -277,8 +172,189 @@ public abstract class View extends ResourceImpl
 		}
 	}
 
+	public void serialize(IFile file) throws IOException, CoreException {
+		StringBuffer fileContent = new StringBuffer();
+		String contributingModelsLine = "contributingModels="
+				+ contributingModelsURIs;
+		fileContent.append(contributingModelsLine);
+		fileContent.append("\n");
+
+		String compositionMetamodelLine = "compositionMetamodel="
+				+ compositionMetamodelURI;
+		fileContent.append(compositionMetamodelLine);
+		fileContent.append("\n");
+
+		String contributingMetamodelsLine = "contributingMetamodels="
+				+ contributingMetamodelsURIs;
+		fileContent.append(contributingMetamodelsLine);
+		fileContent.append("\n");
+
+		String correspondenceModelLine = "correspondenceModel="
+				+ correspondenceModelURI;
+
+		fileContent.append(correspondenceModelLine);
+
+		String correspondenceModelBaseLine = "correspondenceModelBase="
+				+ correspondenceModelURI;
+		fileContent.append(correspondenceModelBaseLine);
+
+		InputStream stream = openContentStream(fileContent.toString());
+		if (file.exists()) {
+			file.setContents(stream, true, true, null);
+		} else {
+			file.create(stream, true, null);
+		}
+		stream.close();
+
+	}
+
 	public InputStream openContentStream(String contents) {
 		return new ByteArrayInputStream(contents.getBytes());
+	}
+
+	public void createCorrespondenceModel(URI modelURI) throws IOException {
+
+		correspondenceModelURI = modelURI.toString();
+
+		VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+		VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
+		VirtualLinks virtualLinksModelLevel = vLinksFactory
+				.createVirtualLinks();
+
+		correspondenceModelResource = new XMIResourceImpl();
+
+		correspondenceModelResource.setURI(modelURI);
+		correspondenceModelResource.getContents().add(virtualLinksModelLevel);
+
+		XMIResourceImpl correspondenceBetweenMetaModelResource = new XMIResourceImpl();
+
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
+		java.net.URI uri = workspace.getRoot()
+				.findMember("/" + correspondenceModelURI).getLocationURI();
+		correspondenceModelResource.load(uri.toURL().openStream(),
+				new HashMap<Object, Object>());
+
+		correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI
+				.createURI(uri.toString()));
+
+		List<Association> associations = new ArrayList<Association>();
+
+		VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource
+				.getContents().get(0);
+		EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
+		for (VirtualLink virtualLink : allVirtualLinks) {
+			if (virtualLink instanceof Association) {
+				Association association = (Association) virtualLink;
+				associations.add(association);
+			}
+
+		}
+		for (Association association : associations) {
+			LinkedElement sourceElement = association.getSourceElement();
+			String sourceCLassName = sourceElement.getName();
+			String sourcePackagensURI = sourceElement.getModelRef();
+
+			LinkedElement targetElement = association.getTargetElements()
+					.get(0);
+			String targetCLassName = targetElement.getName();
+			String targetPackagensURI = targetElement.getModelRef();
+			String sourceAtt = association.getSourceAttribute();
+			String targetAtt = association.getTargetAttribute();
+			if (sourceAtt != null && targetAtt != null) {
+
+				Resource sourceResource = getcontributingModel(sourcePackagensURI);
+				EList<EObject> sourceModelContents = sourceResource
+						.getContents();
+				ArrayList<EObject> sourceModelElementsThatConform = new ArrayList<>();
+				for (EObject eObject : sourceModelContents) {
+					if (eObject.eClass().getName() == sourceCLassName) {
+						sourceModelElementsThatConform.add(eObject);
+					}
+
+				}
+				Resource targetResource = getcontributingModel(targetPackagensURI);
+				EList<EObject> targetModelContents = targetResource
+						.getContents();
+				ArrayList<EObject> targetModelElementsThatConform = new ArrayList<>();
+				for (EObject eObject : targetModelContents) {
+					if (eObject.eClass().getName() == targetCLassName) {
+						targetModelElementsThatConform.add(eObject);
+					}
+
+				}
+
+				for (EObject tempSourceElement : sourceModelElementsThatConform) {
+					boolean matchFound = false;
+					String theSourceAttVal = (String) tempSourceElement
+							.eGet(tempSourceElement.eClass()
+									.getEStructuralFeature(sourceAtt));
+
+					for (int i = 0; i < targetModelElementsThatConform.size()
+							&& !matchFound; i++) {
+						EObject tempTargetElement = targetModelElementsThatConform
+								.get(i);
+						String tempTargetAttVal = (String) tempSourceElement
+								.eGet(tempTargetElement.eClass()
+										.getEStructuralFeature(targetAtt));
+						if (theSourceAttVal.equalsIgnoreCase(tempTargetAttVal)) {
+
+							matchFound = true;
+							Association associationModelLevel = vLinksFactory
+									.createAssociation();
+							associationModelLevel
+									.setName(association.getName());
+
+							LinkedElement lSource = vLinksFactory
+									.createLinkedElement();
+							lSource.setModelRef(sourcePackagensURI);
+							lSource.setElementRef(sourceResource
+									.getURIFragment(tempSourceElement));
+
+							associationModelLevel.setSourceElement(lSource);
+							LinkedElement lTarget = vLinksFactory
+									.createLinkedElement();
+							lTarget.setModelRef(targetPackagensURI);
+							lTarget.setElementRef(targetResource
+									.getURIFragment(tempTargetElement));
+
+							associationModelLevel.getTargetElements().add(
+									lTarget);
+							virtualLinksModelLevel.getVirtualLinks().add(
+									associationModelLevel);
+
+							virtualLinksModelLevel.getLinkedElements().add(
+									lSource);
+							virtualLinksModelLevel.getLinkedElements().add(
+									lTarget);
+						}
+					}
+
+				}
+			}
+		}
+
+		correspondenceModelResource.save(null);
+
+	}
+
+	protected Resource getcontributingModel(String packageURI) {
+		boolean packageFound = false;
+		Resource r = null;
+
+		List<Resource> contributingModels = getContributingModels();
+		for (int i = 0; i < contributingModels.size() && !packageFound; i++) {
+			Resource temp = contributingModels.get(i);
+			EClassifier rootClass = (EClassifier) temp.getContents().get(0)
+					.eClass();
+			if (rootClass.getEPackage().getNsURI()
+					.compareToIgnoreCase(packageURI) == 0) {
+				packageFound = true;
+				r = temp;
+			}
+
+		}
+		return r;
 	}
 
 	@Override
@@ -289,9 +365,23 @@ public abstract class View extends ResourceImpl
 			r.save(options);
 		}
 		vLinkManager.save();
-		viewProperties.store(outputStream, null);
+		properties.store(outputStream, null);
 	}
 
+	public String getContributingModelsUris() {
+		List<Resource> contributingModels = getContributingModels();
+		String contributingModelsURIs = "";
 
+		for (int i = 0; i < contributingModels.size(); i++) {
+			contributingModelsURIs = contributingModelsURIs
+					.concat(contributingModels.get(i).getURI().toString()
+							.replace("platform:/resource/", ""));
+			if (i < contributingModels.size() - 1) {
+				contributingModelsURIs = contributingModelsURIs.concat(",");
+			}
+		}
+
+		return contributingModelsURIs;
+	}
 
 }

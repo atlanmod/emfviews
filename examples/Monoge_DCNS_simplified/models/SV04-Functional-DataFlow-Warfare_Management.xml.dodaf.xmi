@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dodaf="http://www.mia-software.com/dodaf/">
+  <dodaf:SystemFunction name="Weapon Allocation"/>
+  <dodaf:SystemFunction name="Kill Assessment"/>
+  <dodaf:SystemFunction name="Weapon Control"/>
+  <dodaf:SystemFunction name="Threat Evaluation"/>
+  <dodaf:SystemDataExchange name="Threat Data"/>
+  <dodaf:SystemDataExchange name="Target Data"/>
+  <dodaf:SystemDataExchange name="Kill Assessment Data"/>
+  <dodaf:DataFlow name="Track To Engage" extSource="/0"/>
+  <dodaf:DataFlow name="Firing Plan" extDest="/0"/>
+  <dodaf:DataFlow name="Kill Assessment Data" extDest="/2" extSource="/1"/>
+  <dodaf:DataFlow name="Target Data" extDest="/2" extSource="/0"/>
+  <dodaf:DataFlow name="Engagement Order" extDest="/0"/>
+  <dodaf:DataFlow name="Tactical Track Evt" extDest="/3"/>
+  <dodaf:DataFlow name="Tactical Track Data" extDest="/1"/>
+  <dodaf:DataFlow name="Threat Data" extDest="/0" extSource="/3"/>
+  <dodaf:DataFlow name="Engagement Status &amp; Data" extDest="/2"/>
+  <dodaf:DataFlow name="Engagement Cmd" extSource="/2"/>
+  <dodaf:DataFlow name="Tactical Track Data" extDest="/3"/>
+</xmi:XMI>

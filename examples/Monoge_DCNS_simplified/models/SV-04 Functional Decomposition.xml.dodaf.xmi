@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1321" name="Echoes"/>
+  <ownedElements xsi:type="dodaf:SV04FunctionalDecomposition" xmi:id="_1320" name="Functional Decomposition"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1323" name="Sonar"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1324" name="Satellite"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1325" name="Equipments" children="_1321 _1323"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1326" name="Positioning" children="_1324"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1327" name="Camera"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1328" name="UAV" children="_1325 _1326 _1327"/>
+</dodaf:Model>

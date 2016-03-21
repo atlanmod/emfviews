@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3671" name="IFF"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3670" name="SONAR"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3669" name="RADAR"/>
+  <ownedElements xsi:type="dodaf:AndConnector" xmi:id="_3711"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3712" name="SONAR data" extSource="_3670"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3713" name="RADAR data" extSource="_3669"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3714" name="IFF data" extSource="_3671"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3715" name="Sensing Control" extDest="_3670"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3716" name="Sensing Control" extDest="_3669"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3699" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_3700" name="Sensing Control" extDest="_3671"/>
+</dodaf:Model>

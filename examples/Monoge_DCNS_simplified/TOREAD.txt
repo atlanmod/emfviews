@@ -1,0 +1,14 @@
+This project is an example of a metamodel extension using Monoge. Once that the extension
+has been defined with the DSL (monoge.dsl...) and the saved model of the definition
+transformed into virtuallinks model (with Mel2VirtualLinks.atl), the generated viewpoint.xmi
+ has to be copied into this project, into the "resources" folder. 
+
+In the .eviewtype they have to be specified the url of the original MM and the path to
+the viewpoint in the resources folder, like this:
+
+contributingMetamodels=Monoge_DoDAF2NAF/metamodels/DODAF.ecore
+correspondenceModel=Monoge_DoDAF2NAF/viewtypes/DODAFextension4NAF.xmi
+correspondenceModelBase=Monoge_DoDAF2NAF/viewtypes/DODAFextension4NAF.ecl
+filtersMetamodel=/Monoge_DoDAF2NAF/viewtypes/DODAFextension4NAF.ecore
+originalMetamodel=http://DODAF/1.0
+viewpointModel=platform:/resource/Monoge_DoDAF2NAF/resources/extendedMMviewpoint.xmi

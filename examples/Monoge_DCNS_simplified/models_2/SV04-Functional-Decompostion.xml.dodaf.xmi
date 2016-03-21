@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3669" name="RADAR"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3670" name="SONAR"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3671" name="IFF"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3748" name="RWO Tracking"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3750" name="Recognition &amp; Identification"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3762" name="Resource Management"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3749" name="Tactical Picture Management"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3678" name="Threat Evaluation"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3679" name="Weapon Control"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3680" name="Kill Assessment"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3768" name="Weapon Allocation"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3741" name="Situation Assessment" children="_3748 _3750 _3762 _3749"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3742" name="Warfare Management" children="_3678 _3679 _3680 _3768"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3743" name="Network Management"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3685" name="Missile Engagement"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3686" name="Gun Engagement"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3689" name="Torpedo Engagement"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3662" name="Sensing" children="_3669 _3670 _3671"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3663" name="Command &amp; Control" children="_3741 _3742 _3743"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3664" name="Engagement" children="_3685 _3686 _3689"/>
+  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_3771" name="Communication"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3898" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3900" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3899" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3901" name="Sensing Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3895" name="Tactical Track Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3902" name="Tactical Track Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3903" name="Tactical Track Evt"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3904" name="Threat Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3896" name="Missile Engagement Cmd"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3906" name="Kill Assessment Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3907" name="Target Data"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3897" name="Track To Engage"/>
+  <ownedElements xsi:type="dodaf:SystemDataExchange" xmi:id="_3905" name="Firing Plan"/>
+  <ownedElements xsi:type="dodaf:SV04FunctionalDecomposition" xmi:id="_3806" name="Combat System Functional Decomposition"/>
+</dodaf:Model>

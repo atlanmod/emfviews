@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks:VirtualLinks>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Refine" upperBound="1" associationTypeName="Refine" sourceElement="/1" targetAttribute="SV04FunctionalDecomposition"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Refine" upperBound="1" associationTypeName="Refine" sourceElement="/2" targetAttribute="SystemFunction"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Refine" upperBound="1" associationTypeName="Refine" sourceElement="/3" targetAttribute="DataFlow"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Refine" upperBound="1" associationTypeName="Refine" sourceElement="/4" targetAttribute="SystemEntity"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Refine" upperBound="1" associationTypeName="Refine" sourceElement="/5" targetAttribute="SystemInterface"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Refine" upperBound="1" associationTypeName="Refine" sourceElement="/6" targetAttribute="SystemDataExchange"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddReference" upperBound="1" associationTypeName="AddReference" targetElements="/7" sourceAttribute="SystemFunction" targetAttribute="parent;association"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddReference" upperBound="-1" associationTypeName="AddReference" targetElements="/8" sourceAttribute="SystemFunction" targetAttribute="children;association"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddReference" upperBound="1" associationTypeName="AddReference" targetElements="/9" sourceAttribute="SystemFunction" targetAttribute="extSource;association"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddReference" upperBound="1" associationTypeName="AddReference" targetElements="/10" sourceAttribute="SystemFunction" targetAttribute="extDest;association"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddReference" upperBound="1" associationTypeName="AddReference" targetElements="/11" sourceAttribute="SystemEntity" targetAttribute="fromSystemEntity;association"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddReference" upperBound="1" associationTypeName="AddReference" targetElements="/12" sourceAttribute="SystemEntity" targetAttribute="toSystemEntity;association"/>
+  </virtualLinks:VirtualLinks>
+  <virtualLinks:LinkedElement elementRef="//NamedElement" modelRef="http://Original_Metamodel/1.0" name="NamedElement"/>
+  <virtualLinks:LinkedElement elementRef="//NamedElement" modelRef="http://Original_Metamodel/1.0" name="NamedElement"/>
+  <virtualLinks:LinkedElement elementRef="//NamedElement" modelRef="http://Original_Metamodel/1.0" name="NamedElement"/>
+  <virtualLinks:LinkedElement elementRef="//NamedElement" modelRef="http://Original_Metamodel/1.0" name="NamedElement"/>
+  <virtualLinks:LinkedElement elementRef="//NamedElement" modelRef="http://Original_Metamodel/1.0" name="NamedElement"/>
+  <virtualLinks:LinkedElement elementRef="//NamedElement" modelRef="http://Original_Metamodel/1.0" name="NamedElement"/>
+  <virtualLinks:LinkedElement elementRef="//SystemFunction" modelRef="http://Original_Metamodel/1.0" name="SystemFunction"/>
+  <virtualLinks:LinkedElement elementRef="//SystemFunction" modelRef="http://Original_Metamodel/1.0" name="SystemFunction"/>
+  <virtualLinks:LinkedElement elementRef="//DataFlow" modelRef="http://Original_Metamodel/1.0" name="DataFlow"/>
+  <virtualLinks:LinkedElement elementRef="//DataFlow" modelRef="http://Original_Metamodel/1.0" name="DataFlow"/>
+  <virtualLinks:LinkedElement elementRef="//SystemInterface" modelRef="http://Original_Metamodel/1.0" name="SystemInterface"/>
+  <virtualLinks:LinkedElement elementRef="//SystemInterface" modelRef="http://Original_Metamodel/1.0" name="SystemInterface"/>
+</xmi:XMI>
