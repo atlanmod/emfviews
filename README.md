@@ -46,6 +46,12 @@ Examples:
 * 2_EAview: Example to create views from EA, BPMN, reqif
 * EMFViewsSQLTest: Example of view definiton with the DSL
 
+Installation
+------------
+* Import the projects of the "plugins" folder into the workspace
+* Copy the plugins of the "dropins" folder into the "dropins" folder of your Eclipse
+* Run a "Runtime Eclipse" with the workspace to try the plugins. In the "examples" folder there are several example projects to test the project
+
 Who is behind this project?
 ---------------------------
 * [Hugo Bruneliere](https://github.com/Hugo-Bruneliere "Hugo Bruneliere")
