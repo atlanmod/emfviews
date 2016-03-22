@@ -57,6 +57,7 @@ Dependencies
 Needed to install the following plugins:
 * ATL
 * Epsilon
+* Xtext
 
 Who is behind this project?
 ---------------------------
