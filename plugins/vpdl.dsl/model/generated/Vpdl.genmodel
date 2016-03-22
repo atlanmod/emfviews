@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/vpdl.dsl/src-gen" editDirectory="/vpdl.dsl.edit/src"
+    editorDirectory="/vpdl.dsl.editor/src" modelPluginID="vpdl.dsl" forceOverwrite="true"
+    modelName="Vpdl" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="5.0" copyrightFields="false" editPluginID="vpdl.dsl.edit" editorPluginID="vpdl.dsl.editor"
+    runtimeVersion="2.10">
+  <genPackages prefix="Sqlview" basePackage="emfviews.dsl" disposableProviderFactory="true"
+      fileExtensions="vpdl" ecorePackage="Vpdl.ecore#/">
+    <genClasses ecoreClass="Vpdl.ecore#//Model">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//Model/viewName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Model/metamodel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Model/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Metamodel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//Metamodel/metamodelURL"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Metamodel/metamodelName"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Expression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Expression/select"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Expression/from"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Expression/condition"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Select">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//Select/select"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Select/selectAttribute"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//SelectAttribute">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Vpdl.ecore#//SelectAttribute/metamodel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//SelectAttribute/class"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//SelectAttribute/attribute"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//From">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//From/join"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Join">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Join/joinLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Join/joinRight"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Join/relation"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//JoinLeft">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Vpdl.ecore#//JoinLeft/metamodelLeft"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//JoinLeft/classLeft"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//JoinRight">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Vpdl.ecore#//JoinRight/metamodelRight"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//JoinRight/classRight"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Attribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//Attribute/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Class">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//Class/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//MetamodelName">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//MetamodelName/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Relation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//Relation/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Condition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Condition/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//EclExpression">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//EclExpression/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Comparison">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Comparison/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Comparison/right"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Left">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Left/metamodel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Left/class"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Left/attributeWhereLeft"/>
+    </genClasses>
+    <genClasses ecoreClass="Vpdl.ecore#//Right">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Right/metamodel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Right/class"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Vpdl.ecore#//Right/attributeWhereRight"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Vpdl.ecore#//Right/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

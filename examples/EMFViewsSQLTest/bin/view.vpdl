@@ -1,0 +1,12 @@
+create view myEAviewpoint on
+'http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0' as togaf,
+'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI' as bpmn,
+'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd' as reqif
+select togaf.EnterpriseArchitecture.architectures, togaf.StrategicArchitecture.strategicElements,
+  togaf.BusinessArchitecture.processes, togaf.Process.processCritiality, togaf.Process.isAutomated, 
+  togaf.Requirement.statementOfRequirement, togaf.Requirement.rationale, togaf.Requirement.acceptanceCriteria,
+  bpmn.Process.isClosed, bpmn.Process.isExecutable, bpmn.Process.processType
+from togaf.Process join bpmn.Process as detailedProcess,
+  togaf.Requirement join reqif.SpecObject as detailedRequirement
+where togaf.Process.name=bpmn.Process.name and
+ togaf.Process.isAutomated = 'false'

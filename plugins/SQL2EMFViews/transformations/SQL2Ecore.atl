@@ -1,0 +1,43 @@
+-- @path SQL=/SQL2EMFViews/metamodels/Sqlview.ecore
+-- @nsURI Ecore=http://www.eclipse.org/emf/2002/Ecore
+
+module SQL2Ecore;
+create OUT : Ecore from IN : SQL;
+
+helper def: getMetamodelURL(param : String) : String =
+	SQL!Metamodel.allInstancesFrom('IN')
+		->select(e|e.metamodelName.first().toString().split('!')->last().toString()=param).first().metamodelURL.first()
+		.toString().substring(2, SQL!Metamodel.allInstancesFrom('IN')
+		->select(e|e.metamodelName.first().toString().split('!')->last().toString()=param).first().metamodelURL.first()
+		.toString().size()-1)
+;
+
+rule Select2EPackage {
+	from
+		s	:	SQL!Select
+	to
+		t	:	Ecore!EPackage(
+			name <- s.metamodel.first().name,
+			nsURI <- thisModule.getMetamodelURL(s.metamodel.first().name),
+			eClassifiers <- s.class
+		)
+	
+}
+
+rule Class2EClass {
+	from
+		s	:	SQL!Class (s.refImmediateComposite().oclIsTypeOf(SQL!Select))
+	to
+		t	:	Ecore!EClass(
+			name <- s.name,
+			eAttributes <- s.refImmediateComposite().attribute
+		)		
+}
+rule Attribute2EAttribute {
+	from
+		s	:	SQL!Attribute (s.refImmediateComposite().oclIsTypeOf(SQL!Select))
+	to
+		t	:	Ecore!EAttribute(
+			name <- s.name
+		)		
+}
