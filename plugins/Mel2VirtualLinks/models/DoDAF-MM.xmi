@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ASCII"?>
+<extension:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:extension="http://www.dsl.monoge/Extension" extensionName="DoDAFextension">
+  <metamodel name="DoDAF"/>
+  <metamodel name="UML"/>
+  <prefix name="dodaf"/>
+  <prefix name="uml"/>
+  <extensions xsi:type="extension:Refine" classNew="NamedElement" classOriginal="Element">
+    <prefix href="DoDAF-MM.extension#|0"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="NamedElement">
+    <prefix href="DoDAF-MM.extension#|1"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="name">
+      <type>
+        <type>String</type>
+      </type>
+      <cardinality>1..1</cardinality>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:AddProperty" property="id">
+      <type>
+        <type>String</type>
+      </type>
+      <cardinality>1..1</cardinality>
+    </modifyOperators>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SV04FunctionalDecomposition" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM.extension#|2"/>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemFunction" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM.extension#|3"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="SystemFunction">
+    <prefix href="DoDAF-MM.extension#|4"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="parent">
+      <type>
+        <prefix href="DoDAF-MM.extension#|5"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:AddProperty" property="children">
+      <type>
+        <prefix href="DoDAF-MM.extension#|6"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..*</cardinality>
+    </modifyOperators>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="DataFlow" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM.extension#|7"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="DataFlow">
+    <prefix href="DoDAF-MM.extension#|8"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="extSource">
+      <type>
+        <prefix href="DoDAF-MM.extension#|9"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:AddProperty" property="extDest">
+      <type>
+        <prefix href="DoDAF-MM.extension#|10"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="AndConnector" classOriginal="Element">
+    <prefix href="DoDAF-MM.extension#|11"/>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemEntity" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM.extension#|12"/>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemInterface" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM.extension#|13"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="SystemInterface">
+    <prefix href="DoDAF-MM.extension#|14"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="fromSystemEntity">
+      <type>
+        <prefix href="DoDAF-MM.extension#|15"/>
+        <class>SystemEntity</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:AddProperty" property="toSystemEntity">
+      <type>
+        <prefix href="DoDAF-MM.extension#|16"/>
+        <class>SystemEntity</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemDataExchange" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM.extension#|17"/>
+  </extensions>
+</extension:Model>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ASCII"?>
+<extension:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:extension="http://www.dsl.monoge/Extension" extensionName="extension1">
+  <metamodel name="UML"/>
+  <metamodel name="BPMN"/>
+  <prefix name="uml"/>
+  <prefix name="bpmn"/>
+  <extensions xsi:type="extension:Create" class="X"/>
+  <extensions xsi:type="extension:Refine" classNew="Y" classOriginal="C">
+    <prefix href="extension1.extension#|0"/>
+  </extensions>
+  <extensions xsi:type="extension:Generalize" classNew="Z">
+    <prefix href="extension1.extension#|1"/>
+    <prefix href="extension1.extension#|2"/>
+    <class>A</class>
+    <class>B</class>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="A">
+    <prefix href="extension1.extension#|3"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="propertyA" type="String"/>
+    <modifyOperators xsi:type="extension:AddConstraint" constraint="constraint" value="&quot;one e1&quot;"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="C">
+    <prefix href="extension1.extension#|4"/>
+    <modifyOperators xsi:type="extension:ModifyProperty" property="propertyC">
+      <value attribute="attribute" value="&quot;name&quot;"/>
+      <value attribute="value" value="&quot;propertyC2&quot;"/>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:FilterConstraint" constraint="constraint2"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="B">
+    <prefix href="extension1.extension#|5"/>
+    <modifyOperators xsi:type="extension:FilterProperty" property="propertyB"/>
+  </extensions>
+  <extensions xsi:type="extension:FilterClass" class="D">
+    <prefix href="extension1.extension#|6"/>
+  </extensions>
+</extension:Model>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<extension:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:extension="http://www.dsl.monoge/Extension" extensionName="DoDAFextension">
+  <metamodel name="DoDAF"/>
+  <prefix name="dodaf"/>
+  <extensions xsi:type="extension:ModifyClass" class="SystemFunctionSymbol">
+    <prefix href="DoDAFextension.extension#|0"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="FunctionType" type="String"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="DataFlowSymbol">
+    <prefix href="DoDAFextension.extension#|1"/>
+    <modifyOperators xsi:type="extension:FilterProperty" property="SASymHasFromArrow"/>
+    <modifyOperators xsi:type="extension:FilterProperty" property="SASymHasToArrow"/>
+  </extensions>
+</extension:Model>

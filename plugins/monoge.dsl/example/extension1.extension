@@ -1,0 +1,26 @@
+//Definition of my extension
+define extension1 extending UML:uml, BPMN:bpmn{
+	add class X
+	add class Y specializing uml.C
+	add class Z supertyping uml.A, uml.B
+	modify class uml.A {
+		add property propertyA type String
+		add constraint constraint "one e1"
+	}
+	modify class bpmn.C{
+		modify property propertyC attribute="name", value="propertyC2"
+		filter constraint constraint2
+	}
+	modify class uml.B{
+		filter property propertyB
+	} 
+	filter class uml.D
+	
+}
+
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks:VirtualLinks>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Refine" upperBound="1" associationTypeName="Refine" sourceElement="/1" targetAttribute="Y"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="Generalize" upperBound="1" associationTypeName="Generalize" targetElements="/10 /11" targetAttribute="Z"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="FilterClass" upperBound="1" associationTypeName="FilterClass" sourceElement="/2"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddProperty" upperBound="1" associationTypeName="AddProperty" targetElements="/3" sourceAttribute="String" targetAttribute="propertyA"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddConstraint" upperBound="1" associationTypeName="AddConstraint" sourceElement="/4" sourceAttribute="constraint" targetAttribute="&quot;one e1&quot;"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="AddReference" lowerBound="1" upperBound="-1" associationTypeName="AddReference" targetElements="/5" sourceAttribute="B" targetAttribute="refB;composition"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="ModifyProperty" upperBound="1" associationTypeName="ModifyProperty" sourceElement="/6" sourceAttribute="propertyC" targetAttribute="attribute:&quot;name&quot;value:&quot;propertyC2&quot;"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="FilterConstraint" upperBound="1" associationTypeName="FilterConstraint" sourceElement="/7" sourceAttribute="constraint2"/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="FilterProperty" upperBound="1" associationTypeName="FilterProperty" sourceElement="/8" sourceAttribute="propertyB" targetAttribute=""/>
+    <virtualLinks xsi:type="virtualLinks:Association" name="FilterProperty" upperBound="1" associationTypeName="FilterProperty" sourceElement="/9" sourceAttribute="refA" targetAttribute=""/>
+  </virtualLinks:VirtualLinks>
+  <virtualLinks:LinkedElement elementRef="//C" modelRef="http://Original_Metamodel/1.0" name="C"/>
+  <virtualLinks:LinkedElement elementRef="//D" modelRef="http://Original_Metamodel/1.0" name="D"/>
+  <virtualLinks:LinkedElement elementRef="//A" modelRef="http://Original_Metamodel/1.0" name="A"/>
+  <virtualLinks:LinkedElement elementRef="//A" modelRef="http://Original_Metamodel/1.0" name="A"/>
+  <virtualLinks:LinkedElement elementRef="//A" modelRef="http://Original_Metamodel/1.0" name="A"/>
+  <virtualLinks:LinkedElement elementRef="//C" modelRef="http://Original_Metamodel/1.0" name="C"/>
+  <virtualLinks:LinkedElement elementRef="//C" modelRef="http://Original_Metamodel/1.0" name="C"/>
+  <virtualLinks:LinkedElement elementRef="//B" modelRef="http://Original_Metamodel/1.0" name="B"/>
+  <virtualLinks:LinkedElement elementRef="//B" modelRef="http://Original_Metamodel/1.0" name="B"/>
+  <virtualLinks:LinkedElement elementRef="//A" modelRef="http://Original_Metamodel/1.0" name="A"/>
+  <virtualLinks:LinkedElement elementRef="//B" modelRef="http://Original_Metamodel/1.0" name="B"/>
+</xmi:XMI>

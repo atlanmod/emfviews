@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ASCII"?>
+<extension:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:extension="http://www.dsl.monoge/Extension" extensionName="DoDAFextension">
+  <metamodel name="DoDAF"/>
+  <prefix name="dodaf"/>
+  <extensions xsi:type="extension:Refine" classNew="NamedElement" classOriginal="Element">
+    <prefix href="DoDAF-MM_2.extension#|0"/>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SV04FunctionalDecomposition" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM_2.extension#|1"/>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemFunction" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM_2.extension#|2"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="SystemFunction">
+    <prefix href="DoDAF-MM_2.extension#|3"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="parent">
+      <type>
+        <prefix href="DoDAF-MM_2.extension#|4"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:AddProperty" property="children">
+      <type>
+        <prefix href="DoDAF-MM_2.extension#|5"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..*</cardinality>
+    </modifyOperators>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="DataFlow" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM_2.extension#|6"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="DataFlow">
+    <prefix href="DoDAF-MM_2.extension#|7"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="extSource">
+      <type>
+        <prefix href="DoDAF-MM_2.extension#|8"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:AddProperty" property="extDest">
+      <type>
+        <prefix href="DoDAF-MM_2.extension#|9"/>
+        <class>SystemFunction</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemEntity" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM_2.extension#|10"/>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemInterface" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM_2.extension#|11"/>
+  </extensions>
+  <extensions xsi:type="extension:ModifyClass" class="SystemInterface">
+    <prefix href="DoDAF-MM_2.extension#|12"/>
+    <modifyOperators xsi:type="extension:AddProperty" property="fromSystemEntity">
+      <type>
+        <prefix href="DoDAF-MM_2.extension#|13"/>
+        <class>SystemEntity</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+    <modifyOperators xsi:type="extension:AddProperty" property="toSystemEntity">
+      <type>
+        <prefix href="DoDAF-MM_2.extension#|14"/>
+        <class>SystemEntity</class>
+      </type>
+      <cardinality>0..1</cardinality>
+    </modifyOperators>
+  </extensions>
+  <extensions xsi:type="extension:Refine" classNew="SystemDataExchange" classOriginal="NamedElement">
+    <prefix href="DoDAF-MM_2.extension#|15"/>
+  </extensions>
+</extension:Model>
