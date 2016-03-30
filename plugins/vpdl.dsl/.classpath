@@ -5,5 +5,42 @@
 	<classpathentry kind="src" path="xtend-gen"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/ant.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/antlr-runtime-3.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/apache-commons.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/apache-commons-lang.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/com.google.common_1.0.0.201004262004.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/google-collections-0.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/guava-10.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/junit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.ant.core-3.2.200.v20100427.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.core.runtime-3.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.common_2.5.0.v200906151043.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.compare.diff_0.8.1.v200902100450.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.compare.match_0.8.1.v200902100450.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.compare_0.8.1.v200902100450.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.compare_3.0.0.201212180932.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.ecore.source_2.10.2.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.ecore.xmi_2.5.0.v200906151043.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.emf.ecore_2.5.0.v200906151043.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.common_3.3.1.v201209061455.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.core.emf_3.1.1.v201009141132.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.core_3.1.1.v201009141132.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.dsls_3.4.0.v201305211502.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.emftvm.trace_3.5.0.v201405260755.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.emftvm_3.5.0.v201405260755.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.engine.emfvm_3.1.1.v201009141132.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.m2m.atl.engine_3.4.0.v201305211502.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.mofscript.fileresourcemodel.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.mofscript.model.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.mofscript.parser.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.mofscript.runtime.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.osgi_3.6.0.v20100128-1430_NLSONLY.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.uml2.common_2.0.1.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.uml2.types_2.0.0.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.eclipse.uml2.uml_5.0.1.v20140910-1354.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/org.json.simple-0.3-incubating.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/resources-5.0.0-v20140602-0749.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jokin Garcia/Dropbox/workspace_VPDL/lib/standard-1.0.0-v20140602-0749.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

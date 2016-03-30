@@ -3,10 +3,15 @@
  */
 package emfviews.dsl.generator;
 
+import armines.execution.RunTransfoJava;
+
 import com.google.common.collect.Iterables;
+
 import emfviews.dsl.sqlview.Metamodel;
 import emfviews.dsl.sqlview.Model;
+
 import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
@@ -32,6 +37,17 @@ public class VpdlGenerator implements IGenerator {
     fsa.generateFile("myEAviewpoint.ecl", _compileEcl);
     CharSequence _compileXmi = this.compileXmi(resource);
     fsa.generateFile("myEAviewpoint.xmi", _compileXmi);
+    //Generate .xmi
+    RunTransfoJava rtj = new RunTransfoJava();
+   //change the extension of vpdl to .xmi
+    String inputModel = resource.getURI().toString().split("\\.")[0].concat(".xmi");
+    System.out.println("inputModel: "+ inputModel);
+    String filename = resource.getURI().toString().split("\\/")[resource.getURI().toString().split("\\/").length-1].toString();
+    String outputModel = resource.getURI().toString().substring(0, resource.getURI().toString().indexOf(filename)).concat("myEAviewpoint.xmi");
+    System.out.println("outputModel: "+ outputModel);
+	rtj.runTransformation("http://www.dsl.emfviews/Sqlview", "http://www.dsl.emfviews/virtualLinks", "/transformations/SQL2VirtualLinks.asm",
+			inputModel, outputModel);
+
     CharSequence _compileEcore = this.compileEcore(resource);
     fsa.generateFile("myEAviewpoint.ecore", _compileEcore);
   }
