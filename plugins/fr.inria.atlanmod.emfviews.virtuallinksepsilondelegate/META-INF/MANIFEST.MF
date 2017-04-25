@@ -18,8 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.uml2.uml.resources;bundle-version="4.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: lib/,
- .
+Bundle-ClassPath: .
 Export-Package: fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate
 Import-Package: org.eclipse.core.resources
 Bundle-Vendor: Atlanmod
