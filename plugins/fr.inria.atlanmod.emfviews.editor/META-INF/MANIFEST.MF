@@ -15,12 +15,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.ecore.editor,
  org.eclipse.jface,
  fr.inria.atlanmod.emfviews,
- org.eclipse.emf.ecore,
- fr.inria.atlanmod.emfviews.util
+ org.eclipse.emf.ecore
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: fr.inria.atlanmod.emfviews.virtualLinks,
- org.eclipse.gef.ui.parts
+ fr.inria.atlanmod.emfviews.virtualLinks.util,
+ org.eclipse.gef.ui.parts;resolution:=optional
 Export-Package: fr.inria.atlanmod.emfviews.editor.editors;
   uses:="org.eclipse.jface.action,
    org.eclipse.emf.ecore.resource,

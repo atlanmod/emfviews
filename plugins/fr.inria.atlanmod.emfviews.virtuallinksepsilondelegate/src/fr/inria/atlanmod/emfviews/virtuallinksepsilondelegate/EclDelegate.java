@@ -45,12 +45,12 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
-import fr.inria.atlanmod.emfviews.util.EmfViewsUtil;
 import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinksdelegator.IVirtualLinksDelegate;
 
 public class EclDelegate implements IVirtualLinksDelegate {
