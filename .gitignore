@@ -1,5 +1,6 @@
 *.class
 *._trace
 *.classpath
-*.metadata/
 *.xtendbin
+.metadata/
+.settings/
