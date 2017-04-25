@@ -5,8 +5,13 @@
       version="0.2.0.qualifier"
       provider-name="Atlanmod">
 
-   <description url="http://emfviews.jdvillacalle.com">
-      Some users only need to see some parts of a model,  others have to get the full model extended with data from another model, and others simply access to a combination of information coming from different models. Based on the unquestionable success/usefulness of database views to solve similar problems in databases, EMF Views aims to bring the same concept to the modeling world.
+   <description url="https://github.com/atlanmod/emfviews">
+      Some users only need to see some parts of a model,  others have
+to get the full model extended with data from another model,
+and others simply access to a combination of information coming
+from different models. Based on the unquestionable success/usefulness
+of database views to solve similar problems in databases, EMF
+Views aims to bring the same concept to the modeling world.
    </description>
 
    <copyright>
@@ -130,32 +135,18 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <import plugin="org.eclipse.emf.ecore.editor"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.gef"/>
       <import plugin="org.eclipse.emf.ecore.editor" version="2.8.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.ecore.xmi" version="2.8.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.edit.ui"/>
-      <import plugin="org.eclipse.equinox.registry"/>
-      <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.epsilon.ecl.engine"/>
       <import plugin="org.eclipse.epsilon.eol.engine" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.epsilon.emc.emf"/>
       <import plugin="org.eclipse.epsilon.eol.dt"/>
-      <import plugin="org.eclipse.uml2" version="4.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.ecore.xmi" version="2.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.uml2.uml" version="4.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.cdo" version="4.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.cdo.common" version="4.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.cdo.net4j" version="4.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.8.101" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ocl"/>
       <import plugin="org.eclipse.ocl.ecore"/>
-      <import plugin="org.eclipse.emf.cdo.server" version="4.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.cdo.server.db" version="4.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.cdo.server.net4j" version="4.1.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.net4j" version="4.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.net4j.db" version="4.2.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.net4j.tcp" version="4.1.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.net4j.util" version="3.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.uml2" version="4.1.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.uml2.uml.resources" version="4.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
