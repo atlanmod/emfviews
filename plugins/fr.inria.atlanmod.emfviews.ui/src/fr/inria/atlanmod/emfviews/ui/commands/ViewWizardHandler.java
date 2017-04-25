@@ -24,24 +24,25 @@ import fr.inria.atlanmod.emfviews.ui.wizard.view.CreateViewWizard;
 
 public class ViewWizardHandler extends AbstractHandler implements IHandler {
 
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IStructuredSelection selection = (IStructuredSelection) PlatformUI
-				.getWorkbench().getActiveWorkbenchWindow()
-				.getSelectionService().getSelection();
-		IFile virtualMetamodel = (IFile) selection.getFirstElement();
-		launchVirtualModelWizard(virtualMetamodel);
-		return null;
-	}
+  @Override
+  public Object execute(ExecutionEvent event) throws ExecutionException {
+    IStructuredSelection selection = (IStructuredSelection) PlatformUI
+        .getWorkbench().getActiveWorkbenchWindow().getSelectionService()
+        .getSelection();
+    IFile virtualMetamodel = (IFile) selection.getFirstElement();
+    launchVirtualModelWizard(virtualMetamodel);
+    return null;
+  }
 
-	public void launchVirtualModelWizard(IFile virtualMetamodel) {
-		CreateViewWizard wizard = new CreateViewWizard(virtualMetamodel);
-		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(
-				virtualMetamodel.getParent()));
-		WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getShell(), wizard);
-		dialog.setMinimumPageSize(686, 100);
-		dialog.open();
-	}
+  public void launchVirtualModelWizard(IFile virtualMetamodel) {
+    CreateViewWizard wizard = new CreateViewWizard(virtualMetamodel);
+    wizard.init(PlatformUI.getWorkbench(),
+        new StructuredSelection(virtualMetamodel.getParent()));
+    WizardDialog dialog = new WizardDialog(
+        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+        wizard);
+    dialog.setMinimumPageSize(686, 100);
+    dialog.open();
+  }
 
 }

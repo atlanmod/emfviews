@@ -16,19 +16,19 @@ import org.eclipse.swt.widgets.TreeItem;
 
 public class AttributeSelectionAdapter extends SelectionAdapter {
 
-	ViewtypeEditor mpe;
+  ViewtypeEditor mpe;
 
-	public AttributeSelectionAdapter(ViewtypeEditor mpe) {
-		super();
-		this.mpe = mpe;
+  public AttributeSelectionAdapter(ViewtypeEditor mpe) {
+    super();
+    this.mpe = mpe;
 
-	}
+  }
 
-	@Override
-	public void widgetSelected(SelectionEvent e) {
-		TreeItem item = (TreeItem) e.item;
-		mpe.updateAttributesToHide(item);
+  @Override
+  public void widgetSelected(SelectionEvent e) {
+    TreeItem item = (TreeItem) e.item;
+    mpe.updateAttributesToHide(item);
 
-	}
+  }
 
 }

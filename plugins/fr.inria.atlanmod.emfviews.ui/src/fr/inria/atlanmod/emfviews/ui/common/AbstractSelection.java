@@ -22,76 +22,73 @@ import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 
 public class AbstractSelection extends SelectionStatusDialog {
 
-	protected static final String NAMING_REGEX = "[a-zA-Z0-9]+"; //$NON-NLS-1$
+  protected static final String NAMING_REGEX = "[a-zA-Z0-9]+"; //$NON-NLS-1$
 
-	private IStatus status;
+  private IStatus status;
 
-	public AbstractSelection(Shell parent, String title) {
-		super(parent);
-		setTitle(title);
-		setStatusLineAboveButtons(true);
-		setShellStyle(SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM
-				| SWT.RESIZE);
-	}
+  public AbstractSelection(Shell parent, String title) {
+    super(parent);
+    setTitle(title);
+    setStatusLineAboveButtons(true);
+    setShellStyle(
+        SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
+  }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.dialogs.SelectionStatusDialog#create()
-	 */
-	@Override
-	public void create() {
-		status = new Status(IStatus.OK, EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK,
-				"", //$NON-NLS-1$
-				null);
-		updateStatus(status);
-		super.create();
-	}
+  /**
+   * {@inheritDoc}
+   * 
+   * @see org.eclipse.ui.dialogs.SelectionStatusDialog#create()
+   */
+  @Override
+  public void create() {
+    status = new Status(IStatus.OK, EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK, "", //$NON-NLS-1$
+        null);
+    updateStatus(status);
+    super.create();
+  }
 
-	/**
-	 * Displays an error.
-	 * 
-	 * @param message
-	 *            the message
-	 */
-	protected void nok(String message) {
-		if (Platform.isRunning()) {
+  /**
+   * Displays an error.
+   * 
+   * @param message
+   *          the message
+   */
+  protected void nok(String message) {
+    if (Platform.isRunning()) {
 
-			status = new Status(IStatus.ERROR, EmfViewsUIPlugin.PLUGIN_ID,
-					IStatus.ERROR, message, null);
-			updateStatus(status);
-		}
-		getOkButton().setEnabled(false);
+      status = new Status(IStatus.ERROR, EmfViewsUIPlugin.PLUGIN_ID,
+          IStatus.ERROR, message, null);
+      updateStatus(status);
+    }
+    getOkButton().setEnabled(false);
 
-	}
+  }
 
-	/**
-	 * Updates the status to OK.
-	 */
-	protected void ok() {
-		status = new Status(IStatus.OK, EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK,
-				"", //$NON-NLS-1$
-				null);
-		updateStatus(status);
-		getOkButton().setEnabled(true);
-	}
+  /**
+   * Updates the status to OK.
+   */
+  protected void ok() {
+    status = new Status(IStatus.OK, EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK, "", //$NON-NLS-1$
+        null);
+    updateStatus(status);
+    getOkButton().setEnabled(true);
+  }
 
-	/**
-	 * Displays a warning.
-	 * 
-	 * @param message
-	 *            the warning message
-	 */
-	protected void warn(String message) {
-		status = new Status(IStatus.WARNING, EmfViewsUIPlugin.PLUGIN_ID,
-				message);
-		updateStatus(status);
-		getOkButton().setEnabled(true);
-	}
+  /**
+   * Displays a warning.
+   * 
+   * @param message
+   *          the warning message
+   */
+  protected void warn(String message) {
+    status = new Status(IStatus.WARNING, EmfViewsUIPlugin.PLUGIN_ID, message);
+    updateStatus(status);
+    getOkButton().setEnabled(true);
+  }
 
-	@Override
-	protected void computeResult() {
+  @Override
+  protected void computeResult() {
 
-	}
+  }
 
 }

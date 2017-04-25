@@ -32,227 +32,230 @@ import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 
 public class CreateViewScreen extends WizardPage {
 
-	public static final String VIRTUALMODELTYPE_MODEL = "model"; //$NON-NLS-1$
+  public static final String VIRTUALMODELTYPE_MODEL = "model"; //$NON-NLS-1$
 
-	public static final String VIRTUALMODELTYPE_METAMODEL = "metamodel"; //$NON-NLS-1$
+  public static final String VIRTUALMODELTYPE_METAMODEL = "metamodel"; //$NON-NLS-1$
 
-	private ArrayList<String> inputModelPaths;
+  private ArrayList<String> inputModelPaths;
 
-	public ArrayList<String> getInputModelPaths() {
-		return inputModelPaths;
-	}
+  public ArrayList<String> getInputModelPaths() {
+    return inputModelPaths;
+  }
 
-	public ArrayList<String> getCompositionMetaModelPath() {
-		return compositionMetaModelPath;
-	}
+  public ArrayList<String> getCompositionMetaModelPath() {
+    return compositionMetaModelPath;
+  }
 
-	public ArrayList<String> getLinksModelPath() {
-		return linksModelPath;
-	}
+  public ArrayList<String> getLinksModelPath() {
+    return linksModelPath;
+  }
 
-	private ArrayList<String> compositionMetaModelPath;
+  private ArrayList<String> compositionMetaModelPath;
 
-	private ArrayList<String> linksModelPath;
+  private ArrayList<String> linksModelPath;
 
-	/**
-	 * The contributing models (Pero es la lista donde se muestran al usuario
-	 * las uris de los modelos)
-	 */
-	private List inputmodelsList;
+  /**
+   * The contributing models (Pero es la lista donde se muestran al usuario las
+   * uris de los modelos)
+   */
+  private List inputmodelsList;
 
-	private List compositionMetaModelList;
+  private List compositionMetaModelList;
 
-	public CreateViewScreen(String virtualCompositionMetamodel) {
+  public CreateViewScreen(String virtualCompositionMetamodel) {
 
-		super(Messages.getString("VirtualModelFileScreen.Page.Name"));
-		setTitle(Messages.getString("VirtualModelFileScreen.Title")); //$NON-NLS-1$
-		setDescription(Messages
-				.getString("VirtualModelFileScreen.Page.Description")); //$NON-NLS-1$
-		setImageDescriptor(EmfViewsUIPlugin
-				.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+    super(Messages.getString("VirtualModelFileScreen.Page.Name"));
+    setTitle(Messages.getString("VirtualModelFileScreen.Title")); //$NON-NLS-1$
+    setDescription(
+        Messages.getString("VirtualModelFileScreen.Page.Description")); //$NON-NLS-1$
+    setImageDescriptor(
+        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
 
-		this.setPageComplete(false);
-		inputModelPaths = new ArrayList<String>();
-		compositionMetaModelPath = new ArrayList<String>();
-		compositionMetaModelPath.add(virtualCompositionMetamodel);
-		linksModelPath = new ArrayList<String>();
-	}
+    this.setPageComplete(false);
+    inputModelPaths = new ArrayList<String>();
+    compositionMetaModelPath = new ArrayList<String>();
+    compositionMetaModelPath.add(virtualCompositionMetamodel);
+    linksModelPath = new ArrayList<String>();
+  }
 
-	private void addBlank(Composite container) {
-		Composite blank = new Composite(container, SWT.NULL);
-		blank.setLayout(new GridLayout());
-	}
+  private void addBlank(Composite container) {
+    Composite blank = new Composite(container, SWT.NULL);
+    blank.setLayout(new GridLayout());
+  }
 
-	private void addSeparator(Composite container) {
-		Label separator = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 3;
-		data.verticalIndent = 5;
-		separator.setLayoutData(data);
-	}
+  private void addSeparator(Composite container) {
+    Label separator = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+    data.horizontalSpan = 3;
+    data.verticalIndent = 5;
+    separator.setLayoutData(data);
+  }
 
-	@Override
-	public void createControl(Composite parent) {
-		final Composite container = new Composite(parent, SWT.NULL);
-		initializeDialogUnits(container);
-		GridData data = new GridData(GridData.FILL_BOTH);
-		container.setLayoutData(data);
-		GridLayout layout = new GridLayout(3, false);
+  @Override
+  public void createControl(Composite parent) {
+    final Composite container = new Composite(parent, SWT.NULL);
+    initializeDialogUnits(container);
+    GridData data = new GridData(GridData.FILL_BOTH);
+    container.setLayoutData(data);
+    GridLayout layout = new GridLayout(3, false);
 
-		container.setLayout(layout);
+    container.setLayout(layout);
 
-		addBlank(container);
+    addBlank(container);
 
-		addSeparator(container);
+    addSeparator(container);
 
-		GridData dataLists = new GridData(GridData.FILL_BOTH
-				| GridData.VERTICAL_ALIGN_BEGINNING);
+    GridData dataLists = new GridData(
+        GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
 
-		compositionMetaModelList = createModelControl(
-				container,
-				Messages.getString("VirtualModelFileScreen.CompositionMetamodel"), //$NON-NLS-1$ 
-				new ModelSelection(
-						container.getShell(),
-						Messages.getString("VirtualModelFileScreen.CompositionMetamodelCreation"), compositionMetaModelPath, ModelSelection.COMPOSITIONMETAMODEL), dataLists); //$NON-NLS-1$ //$NON-NLS-2$
-		inputmodelsList = createModelControl(
-				container,
-				Messages.getString("VirtualModelFileScreen.InputModels"), //$NON-NLS-1$ 
-				new ModelSelection(
-						container.getShell(),
-						Messages.getString("VirtualModelFileScreen.InputModelCreation"), inputModelPaths, ModelSelection.INPUTMODEL), dataLists); //$NON-NLS-1$ //$NON-NLS-2$
+    compositionMetaModelList = createModelControl(container,
+        Messages.getString("VirtualModelFileScreen.CompositionMetamodel"), //$NON-NLS-1$
+        new ModelSelection(container.getShell(),
+            Messages.getString(
+                "VirtualModelFileScreen.CompositionMetamodelCreation"), //$NON-NLS-1$
+            compositionMetaModelPath, ModelSelection.COMPOSITIONMETAMODEL),
+        dataLists); //$NON-NLS-2$
+    inputmodelsList = createModelControl(container,
+        Messages.getString("VirtualModelFileScreen.InputModels"), //$NON-NLS-1$
+        new ModelSelection(container.getShell(),
+            Messages.getString("VirtualModelFileScreen.InputModelCreation"), //$NON-NLS-1$
+            inputModelPaths, ModelSelection.INPUTMODEL),
+        dataLists); //$NON-NLS-2$
 
-		updateLists();
+    updateLists();
 
-		container.layout();
-		setControl(container);
-	}
+    container.layout();
+    setControl(container);
+  }
 
-	private List createModelControl(final Composite parent,
-			final String entryLabel, final AbstractSelection dialog,
-			GridData listLayoutData) {
+  private List createModelControl(final Composite parent,
+                                  final String entryLabel,
+                                  final AbstractSelection dialog,
+                                  GridData listLayoutData) {
 
-		final Label typeLabel = new Label(parent, SWT.NONE);
-		GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+    final Label typeLabel = new Label(parent, SWT.NONE);
+    GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
 
-		data.verticalIndent = 5;
-		typeLabel.setLayoutData(data);
-		typeLabel.setText(entryLabel);
+    data.verticalIndent = 5;
+    typeLabel.setLayoutData(data);
+    typeLabel.setText(entryLabel);
 
-		final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL
-				| SWT.H_SCROLL | SWT.MULTI);
-		listLayoutData.verticalIndent = 5;
-		list.setLayoutData(listLayoutData);
+    final List list = new List(parent,
+        SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+    listLayoutData.verticalIndent = 5;
+    list.setLayoutData(listLayoutData);
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.verticalSpacing = 15;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
-		data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
-		data.verticalIndent = 5;
-		composite.setLayoutData(data);
+    Composite composite = new Composite(parent, SWT.NONE);
+    GridLayout layout = new GridLayout();
+    layout.verticalSpacing = 15;
+    layout.marginHeight = 0;
+    layout.marginWidth = 0;
+    composite.setLayout(layout);
+    data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+    data.verticalIndent = 5;
+    composite.setLayoutData(data);
 
-		final Button addIn = createButton(composite,
-				Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
-		final Button removeIn = createButton(composite,
-				Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
-		removeIn.setEnabled(false);
-		addIn.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent evt) {
-				dialog.create();
-				if (dialog.open() == Dialog.OK) {
-					Object[] result = dialog.getResult();
-					int modelType = Integer.parseInt(result[0].toString());
-					switch (modelType) {
-					case ModelSelection.INPUTMODEL:
-						inputModelPaths.add(result[1].toString());
-						break;
-					case ModelSelection.COMPOSITIONMETAMODEL:
-						compositionMetaModelPath.add(result[1].toString());
-						break;
-					case ModelSelection.LINKSMODEL:
-						linksModelPath.add(result[1].toString());
-						break;
+    final Button addIn = createButton(composite,
+        Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
+    final Button removeIn = createButton(composite,
+        Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
+    removeIn.setEnabled(false);
+    addIn.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent evt) {
+        dialog.create();
+        if (dialog.open() == Dialog.OK) {
+          Object[] result = dialog.getResult();
+          int modelType = Integer.parseInt(result[0].toString());
+          switch (modelType) {
+          case ModelSelection.INPUTMODEL:
+            inputModelPaths.add(result[1].toString());
+            break;
+          case ModelSelection.COMPOSITIONMETAMODEL:
+            compositionMetaModelPath.add(result[1].toString());
+            break;
+          case ModelSelection.LINKSMODEL:
+            linksModelPath.add(result[1].toString());
+            break;
 
-					default:
-						break;
-					}
+          default:
+            break;
+          }
 
-				}
-				updateLists();
-			}
-		});
+        }
+        updateLists();
+      }
+    });
 
-		removeIn.addSelectionListener(new SelectionAdapter() {
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent evt) {
-				int[] indices = list.getSelectionIndices();
-				for (int i = 0; i < indices.length; i++) {
-					// int j = indices[i];
+    removeIn.addSelectionListener(new SelectionAdapter() {
+      /**
+       * {@inheritDoc}
+       * 
+       * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+       */
+      @Override
+      public void widgetSelected(SelectionEvent evt) {
+        int[] indices = list.getSelectionIndices();
+        for (int i = 0; i < indices.length; i++) {
+          // int j = indices[i];
 
-				}
-				updateLists();
-				removeIn.setEnabled(list.getSelection().length > 0);
-			}
-		});
+        }
+        updateLists();
+        removeIn.setEnabled(list.getSelection().length > 0);
+      }
+    });
 
-		return list;
-	}
+    return list;
+  }
 
-	private void updateLists() {
+  private void updateLists() {
 
-		inputmodelsList.removeAll();
-		compositionMetaModelList.removeAll();
-		for (String path : inputModelPaths) {
-			inputmodelsList.add(path);
-		}
-		for (String path : compositionMetaModelPath) {
-			compositionMetaModelList.add(path);
-		}
-		checkValid();
+    inputmodelsList.removeAll();
+    compositionMetaModelList.removeAll();
+    for (String path : inputModelPaths) {
+      inputmodelsList.add(path);
+    }
+    for (String path : compositionMetaModelPath) {
+      compositionMetaModelList.add(path);
+    }
+    checkValid();
 
-	}
+  }
 
-	private void checkValid() {
-		setPageComplete(checkModelsConsistancy());
-	}
+  private void checkValid() {
+    setPageComplete(checkModelsConsistancy());
+  }
 
-	private boolean checkModelsConsistancy() {
+  private boolean checkModelsConsistancy() {
 
-		if (inputModelPaths.isEmpty()) {
-			setErrorMessage(Messages
-					.getString("VirtualModelFileWizard.INPUT_MODELS_ISSUE")); //$NON-NLS-1$
-			return false;
-		}
+    if (inputModelPaths.isEmpty()) {
+      setErrorMessage(
+          Messages.getString("VirtualModelFileWizard.INPUT_MODELS_ISSUE")); //$NON-NLS-1$
+      return false;
+    }
 
-		if (compositionMetaModelPath.isEmpty()) {
+    if (compositionMetaModelPath.isEmpty()) {
 
-			setErrorMessage(Messages
-					.getString("VirtualModelFileWizard.INPUT_COMPOSITION_METAMODEL_ISSUE")); //$NON-NLS-1$
-			return false;
-		}
+      setErrorMessage(Messages.getString(
+          "VirtualModelFileWizard.INPUT_COMPOSITION_METAMODEL_ISSUE")); //$NON-NLS-1$
+      return false;
+    }
 
-		setErrorMessage(null);
-		return true;
+    setErrorMessage(null);
+    return true;
 
-	}
+  }
 
-	private Button createButton(Composite parent, String text) {
-		Button button = new Button(parent, SWT.PUSH);
-		button.setAlignment(SWT.CENTER);
-		button.setText(text);
-		button.setFont(parent.getFont());
-		GridData data = new GridData();
-		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
-		button.setLayoutData(data);
-		return button;
-	}
+  private Button createButton(Composite parent, String text) {
+    Button button = new Button(parent, SWT.PUSH);
+    button.setAlignment(SWT.CENTER);
+    button.setText(text);
+    button.setFont(parent.getFont());
+    GridData data = new GridData();
+    data.widthHint = convertHorizontalDLUsToPixels(
+        IDialogConstants.BUTTON_WIDTH);
+    button.setLayoutData(data);
+    return button;
+  }
 
 }

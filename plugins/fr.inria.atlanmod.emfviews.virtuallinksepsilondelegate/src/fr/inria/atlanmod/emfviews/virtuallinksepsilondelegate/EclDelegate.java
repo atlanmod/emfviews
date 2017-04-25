@@ -54,252 +54,246 @@ import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinksdelegator.IVirtualLinksDelegate;
 
 public class EclDelegate implements IVirtualLinksDelegate {
-	
-	@Override
-	public void createVirtualMetamodelLinks(String linksDslFilePath,
-			URI modelLinksURI) throws Exception {
 
-		VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-		VirtualLinks virtualLinks = EmfViewsUtil.createLinksModel();
+  @Override
+  public void createVirtualMetamodelLinks(String linksDslFilePath,
+                                          URI modelLinksURI)
+      throws Exception {
 
-		EclModule eclModule = new EclModule();
-		
-		java.net.URI uri= EmfViewsUtil.toURI(linksDslFilePath);
-		
-		File f = new File(uri.getSchemeSpecificPart());
-		FileReader fr = new FileReader(f);
-		BufferedReader br = null;
-		String sCurrentLine = "";
-		StringBuffer sb = new StringBuffer();
+    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
+    VirtualLinks virtualLinks = EmfViewsUtil.createLinksModel();
 
-		br = new BufferedReader(fr);
+    EclModule eclModule = new EclModule();
 
-		Map<String, String> metamodelsMap = new HashMap();
+    java.net.URI uri = EmfViewsUtil.toURI(linksDslFilePath);
 
-		while ((sCurrentLine = br.readLine()) != null) {
-			if (sCurrentLine.startsWith("//alias")) {
-				String metamodelAlias = sCurrentLine.substring(
-						sCurrentLine.indexOf("_") + 1,
-						sCurrentLine.indexOf("="));
-				String packageUri = sCurrentLine.substring(sCurrentLine
-						.indexOf("=") + 1);
-				metamodelsMap.put(metamodelAlias, packageUri);
-			}
-			sb.append(sCurrentLine);
-			sb.append("\n");
-		}
-		br.close();
-		eclModule.parse(sb.toString());
-		AST ast = eclModule.getAst();
-		for (AST matchRuleAst : AstUtil.getChildren(ast, EclParser.MATCH)) {
-			// The rule AST
-			String ruleName = matchRuleAst.getFirstChild().getText();
+    File f = new File(uri.getSchemeSpecificPart());
+    FileReader fr = new FileReader(f);
+    BufferedReader br = null;
+    String sCurrentLine = "";
+    StringBuffer sb = new StringBuffer();
 
-			// The left parameter
-			AST leftParameterAst = matchRuleAst.getFirstChild()
-					.getNextSibling();
+    br = new BufferedReader(fr);
 
-			String leftParameterType = leftParameterAst.getFirstChild()
-					.getNextSibling().getText();
-			String[] leftParameterTypeParts = leftParameterType.split("!");
-			String sourceMetamodelAlias = leftParameterTypeParts[0];
-			String sourceElementName = leftParameterTypeParts[1];
+    Map<String, String> metamodelsMap = new HashMap();
 
-			AST rightParameterAst = leftParameterAst.getNextSibling();
-			String rightParameterType = rightParameterAst.getFirstChild()
-					.getNextSibling().getText();
-			String[] rightParameterTypeParts = rightParameterType.split("!");
-			String targetMetamodelAlias = rightParameterTypeParts[0];
-			String targetElementName = rightParameterTypeParts[1];
+    while ((sCurrentLine = br.readLine()) != null) {
+      if (sCurrentLine.startsWith("//alias")) {
+        String metamodelAlias = sCurrentLine.substring(
+            sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
+        String packageUri = sCurrentLine
+            .substring(sCurrentLine.indexOf("=") + 1);
+        metamodelsMap.put(metamodelAlias, packageUri);
+      }
+      sb.append(sCurrentLine);
+      sb.append("\n");
+    }
+    br.close();
+    eclModule.parse(sb.toString());
+    AST ast = eclModule.getAst();
+    for (AST matchRuleAst : AstUtil.getChildren(ast, EclParser.MATCH)) {
+      // The rule AST
+      String ruleName = matchRuleAst.getFirstChild().getText();
 
-			Association vAsso = vLinksFactory.createAssociation();
-			vAsso.setName(ruleName);
-			vAsso.setAssociationTypeName(ruleName);
+      // The left parameter
+      AST leftParameterAst = matchRuleAst.getFirstChild().getNextSibling();
 
-			vAsso.setLowerBound(0);
-			vAsso.setUpperBound(1);
+      String leftParameterType = leftParameterAst.getFirstChild()
+          .getNextSibling().getText();
+      String[] leftParameterTypeParts = leftParameterType.split("!");
+      String sourceMetamodelAlias = leftParameterTypeParts[0];
+      String sourceElementName = leftParameterTypeParts[1];
 
-			LinkedElement sourceElement = vLinksFactory.createLinkedElement();
+      AST rightParameterAst = leftParameterAst.getNextSibling();
+      String rightParameterType = rightParameterAst.getFirstChild()
+          .getNextSibling().getText();
+      String[] rightParameterTypeParts = rightParameterType.split("!");
+      String targetMetamodelAlias = rightParameterTypeParts[0];
+      String targetElementName = rightParameterTypeParts[1];
 
-			sourceElement.setElementRef("//" + sourceElementName);
+      Association vAsso = vLinksFactory.createAssociation();
+      vAsso.setName(ruleName);
+      vAsso.setAssociationTypeName(ruleName);
 
-			sourceElement.setModelRef(metamodelsMap.get(sourceMetamodelAlias));
-			sourceElement.setName(sourceElementName);
+      vAsso.setLowerBound(0);
+      vAsso.setUpperBound(1);
 
-			vAsso.setSourceElement(sourceElement);
+      LinkedElement sourceElement = vLinksFactory.createLinkedElement();
 
-			LinkedElement targetElement = vLinksFactory.createLinkedElement();
-			targetElement.setElementRef("//" + targetElementName);
-			targetElement.setModelRef(metamodelsMap.get(targetMetamodelAlias));
-			targetElement.setName(targetElementName);
+      sourceElement.setElementRef("//" + sourceElementName);
 
-			vAsso.getTargetElements().add(targetElement);
+      sourceElement.setModelRef(metamodelsMap.get(sourceMetamodelAlias));
+      sourceElement.setName(sourceElementName);
 
-			virtualLinks.getLinkedElements().add(sourceElement);
-			virtualLinks.getLinkedElements().add(targetElement);
-			virtualLinks.getVirtualLinks().add(vAsso);
+      vAsso.setSourceElement(sourceElement);
 
-		}
-		EmfViewsUtil.persistLinksModel(virtualLinks, modelLinksURI);
-	}
-	
+      LinkedElement targetElement = vLinksFactory.createLinkedElement();
+      targetElement.setElementRef("//" + targetElementName);
+      targetElement.setModelRef(metamodelsMap.get(targetMetamodelAlias));
+      targetElement.setName(targetElementName);
 
+      vAsso.getTargetElements().add(targetElement);
 
-	@Override
-	public void createVirtualModelLinks(String linksDslFile, URI linksModel,
-			List<Resource> inputModelsResourcesList) throws Exception {
-		
-		java.net.URI linksDslUri =EmfViewsUtil.toURI(linksDslFile);
+      virtualLinks.getLinkedElements().add(sourceElement);
+      virtualLinks.getLinkedElements().add(targetElement);
+      virtualLinks.getVirtualLinks().add(vAsso);
 
-		File f = new File(linksDslUri.getSchemeSpecificPart());
-		FileReader fr = new FileReader(f);
-		BufferedReader br = null;
-		String sCurrentLine = "";
+    }
+    EmfViewsUtil.persistLinksModel(virtualLinks, modelLinksURI);
+  }
 
-		br = new BufferedReader(fr);
+  @Override
+  public void createVirtualModelLinks(String linksDslFile, URI linksModel,
+                                      List<Resource> inputModelsResourcesList)
+      throws Exception {
 
-		Map<String, Resource> inputModelsAliasMapToResource = new HashMap<String, Resource>();
-		Map<String, String> inputmodelsAliasMapMetamodelUri = new HashMap<String, String>();
+    java.net.URI linksDslUri = EmfViewsUtil.toURI(linksDslFile);
 
-		while (((sCurrentLine = br.readLine()) != null)
-				&& sCurrentLine.startsWith("//alias")) {
-			String metamodelAlias = sCurrentLine.substring(
-					sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
-			String packageUri = sCurrentLine.substring(sCurrentLine
-					.indexOf("=") + 1);
+    File f = new File(linksDslUri.getSchemeSpecificPart());
+    FileReader fr = new FileReader(f);
+    BufferedReader br = null;
+    String sCurrentLine = "";
 
-			Resource correctResource = null;
-			boolean foundCorrectResource = false;
-			for (int i = 0; i < inputModelsResourcesList.size()
-					&& !foundCorrectResource; i++) {
-				Resource r = inputModelsResourcesList.get(i);
-				EClassifier rootClassifier = (EClassifier) r.getContents()
-						.get(0).eClass();
-				if (rootClassifier.getEPackage().getNsURI()
-						.compareToIgnoreCase(packageUri) == 0 && !r.getURI().toString().endsWith("profile.uml")) {
-					correctResource = r;
-					foundCorrectResource = true;
-				}
+    br = new BufferedReader(fr);
 
-			}
-			inputModelsAliasMapToResource.put(metamodelAlias, correctResource);
+    Map<String, Resource> inputModelsAliasMapToResource = new HashMap<String, Resource>();
+    Map<String, String> inputmodelsAliasMapMetamodelUri = new HashMap<String, String>();
 
-			inputmodelsAliasMapMetamodelUri.put(metamodelAlias, packageUri);
+    while (((sCurrentLine = br.readLine()) != null)
+        && sCurrentLine.startsWith("//alias")) {
+      String metamodelAlias = sCurrentLine
+          .substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
+      String packageUri = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
 
-		}
-		br.close();
-		VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-		VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-		VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
+      Resource correctResource = null;
+      boolean foundCorrectResource = false;
+      for (int i = 0; i < inputModelsResourcesList.size()
+          && !foundCorrectResource; i++) {
+        Resource r = inputModelsResourcesList.get(i);
+        EClassifier rootClassifier = (EClassifier) r.getContents().get(0)
+            .eClass();
+        if (rootClassifier.getEPackage().getNsURI()
+            .compareToIgnoreCase(packageUri) == 0
+            && !r.getURI().toString().endsWith("profile.uml")) {
+          correctResource = r;
+          foundCorrectResource = true;
+        }
 
-		XMIResourceImpl correspondenceModelResource = new XMIResourceImpl();
+      }
+      inputModelsAliasMapToResource.put(metamodelAlias, correctResource);
 
-		correspondenceModelResource.setURI(linksModel);
-		correspondenceModelResource.getContents().add(virtualLinks);
+      inputmodelsAliasMapMetamodelUri.put(metamodelAlias, packageUri);
 
-		EclModule module = new EclModule();
-		module.parse(f);
-		if (module.getParseProblems().size() > 0) {
-			System.err.println("Parse errors occured...");
-			for (ParseProblem problem : module.getParseProblems()) {
-				System.err.println(problem.toString());
-			}
-			System.exit(-1);
-		}
-		EclOperationFactory operationFactory = new EclOperationFactory();
-		module.getContext().setOperationFactory(operationFactory);
+    }
+    br.close();
+    VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
+    VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
 
-		Iterator<Map.Entry<String, Resource>> iter = inputModelsAliasMapToResource
-				.entrySet().iterator();
-		while (iter.hasNext()) {
-			Entry<String, Resource> tempEntry = iter.next();
-			Resource modelResource = tempEntry.getValue();
-			EmfModel inputModel=null;
-			if(!modelResource.getURI().toString().startsWith("cdo"))
-			{
-			inputModel = createEmfModelByURI(tempEntry.getKey(),
-					modelResource.getURI().toString(),
-					inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()),
-					true, false);
-			}
-			else
-			{
-				inputModel = new EmfModel();
-				inputModel.setResource(modelResource);
-				StringProperties properties = new StringProperties();
-				properties.put(EmfModel.PROPERTY_NAME, tempEntry.getKey());
-				properties.put(EmfModel.PROPERTY_METAMODEL_URI, inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()));
-				properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
-				inputModel.load(properties, null);
-				inputModel.setCachingEnabled(true);
-				TreeIterator<EObject> modelContents=modelResource.getAllContents();
-				ArrayList<EObject> allModelContents=new ArrayList<>();
-				while (modelContents.hasNext()) {
-					allModelContents.add(modelContents.next());
-					
-				}
-				inputModel.allContents().addAll(allModelContents);
-				
-				
-			}
-			module.getContext().getModelRepository().addModel(inputModel);
-		}
+    XMIResourceImpl correspondenceModelResource = new XMIResourceImpl();
 
-		MatchTrace mt = (MatchTrace) module.execute();
+    correspondenceModelResource.setURI(linksModel);
+    correspondenceModelResource.getContents().add(virtualLinks);
 
-		List<Match> matches = mt.getMatches();
+    EclModule module = new EclModule();
+    module.parse(f);
+    if (module.getParseProblems().size() > 0) {
+      System.err.println("Parse errors occured...");
+      for (ParseProblem problem : module.getParseProblems()) {
+        System.err.println(problem.toString());
+      }
+      System.exit(-1);
+    }
+    EclOperationFactory operationFactory = new EclOperationFactory();
+    module.getContext().setOperationFactory(operationFactory);
 
-		for (Match match : matches) {
-			if (match.isMatching()) {
-				EObject left = (EObject) match.getLeft();
-				EObject right = (EObject) match.getRight();
+    Iterator<Map.Entry<String, Resource>> iter = inputModelsAliasMapToResource
+        .entrySet().iterator();
+    while (iter.hasNext()) {
+      Entry<String, Resource> tempEntry = iter.next();
+      Resource modelResource = tempEntry.getValue();
+      EmfModel inputModel = null;
+      if (!modelResource.getURI().toString().startsWith("cdo")) {
+        inputModel = createEmfModelByURI(tempEntry.getKey(),
+            modelResource.getURI().toString(),
+            inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()), true,
+            false);
+      } else {
+        inputModel = new EmfModel();
+        inputModel.setResource(modelResource);
+        StringProperties properties = new StringProperties();
+        properties.put(EmfModel.PROPERTY_NAME, tempEntry.getKey());
+        properties.put(EmfModel.PROPERTY_METAMODEL_URI,
+            inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()));
+        properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
+        inputModel.load(properties, null);
+        inputModel.setCachingEnabled(true);
+        TreeIterator<EObject> modelContents = modelResource.getAllContents();
+        ArrayList<EObject> allModelContents = new ArrayList<>();
+        while (modelContents.hasNext()) {
+          allModelContents.add(modelContents.next());
 
-				Association vAsso = vLinksFactory.createAssociation();
-				vAsso.setName(match.getRule().getName());
-				vAsso.setAssociationTypeName(match.getRule().getName());
-				vAsso.setLowerBound(0);
-				vAsso.setUpperBound(1);
+        }
+        inputModel.allContents().addAll(allModelContents);
 
-				LinkedElement lSource = vLinksFactory.createLinkedElement();
-				lSource.setModelRef(left.eClass().getEPackage().getNsURI());
+      }
+      module.getContext().getModelRepository().addModel(inputModel);
+    }
 
-				lSource.setElementRef(left.eResource().getURIFragment(left));
-				vAsso.setSourceElement(lSource);
+    MatchTrace mt = (MatchTrace) module.execute();
 
-				LinkedElement lTarget = vLinksFactory.createLinkedElement();
-				lTarget.setModelRef(right.eClass().getEPackage().getNsURI());
-				lTarget.setElementRef(right.eResource().getURIFragment(right));
-				vAsso.getTargetElements().add(lTarget);
+    List<Match> matches = mt.getMatches();
 
-				virtualLinks.getVirtualLinks().add(vAsso);
-				virtualLinks.getLinkedElements().add(lSource);
-				virtualLinks.getLinkedElements().add(lTarget);
+    for (Match match : matches) {
+      if (match.isMatching()) {
+        EObject left = (EObject) match.getLeft();
+        EObject right = (EObject) match.getRight();
 
-			}
-		}
-		correspondenceModelResource.setURI(linksModel);
-		correspondenceModelResource.getContents().add(virtualLinks);
-		correspondenceModelResource.save(new HashMap<String, String>());
+        Association vAsso = vLinksFactory.createAssociation();
+        vAsso.setName(match.getRule().getName());
+        vAsso.setAssociationTypeName(match.getRule().getName());
+        vAsso.setLowerBound(0);
+        vAsso.setUpperBound(1);
 
-	}
+        LinkedElement lSource = vLinksFactory.createLinkedElement();
+        lSource.setModelRef(left.eClass().getEPackage().getNsURI());
 
-	protected EmfModel createEmfModelByURI(String name, String model,
-			String metamodel, boolean readOnLoad, boolean storeOnDisposal)
-			throws EolModelLoadingException, URISyntaxException {
-		if(metamodel.contains("UML"))
-			UMLResourcesUtil.init(null);
-		EmfModel emfModel = new EmfModel();
-		StringProperties properties = new StringProperties();
-		properties.put(EmfModel.PROPERTY_NAME, name);
-		properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodel);
-		properties.put(EmfModel.PROPERTY_MODEL_URI, model);
-		properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
-		properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
-		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
-		emfModel.load(properties, null);
-		return emfModel;
-	}
-	
+        lSource.setElementRef(left.eResource().getURIFragment(left));
+        vAsso.setSourceElement(lSource);
 
+        LinkedElement lTarget = vLinksFactory.createLinkedElement();
+        lTarget.setModelRef(right.eClass().getEPackage().getNsURI());
+        lTarget.setElementRef(right.eResource().getURIFragment(right));
+        vAsso.getTargetElements().add(lTarget);
+
+        virtualLinks.getVirtualLinks().add(vAsso);
+        virtualLinks.getLinkedElements().add(lSource);
+        virtualLinks.getLinkedElements().add(lTarget);
+
+      }
+    }
+    correspondenceModelResource.setURI(linksModel);
+    correspondenceModelResource.getContents().add(virtualLinks);
+    correspondenceModelResource.save(new HashMap<String, String>());
+
+  }
+
+  protected EmfModel createEmfModelByURI(String name, String model,
+                                         String metamodel, boolean readOnLoad,
+                                         boolean storeOnDisposal)
+      throws EolModelLoadingException, URISyntaxException {
+    if (metamodel.contains("UML"))
+      UMLResourcesUtil.init(null);
+    EmfModel emfModel = new EmfModel();
+    StringProperties properties = new StringProperties();
+    properties.put(EmfModel.PROPERTY_NAME, name);
+    properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodel);
+    properties.put(EmfModel.PROPERTY_MODEL_URI, model);
+    properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
+    properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
+    properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
+    emfModel.load(properties, null);
+    return emfModel;
+  }
 
 }

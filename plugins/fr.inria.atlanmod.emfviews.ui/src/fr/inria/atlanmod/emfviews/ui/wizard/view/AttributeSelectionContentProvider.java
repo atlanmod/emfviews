@@ -22,68 +22,67 @@ import org.eclipse.jface.viewers.Viewer;
 
 public class AttributeSelectionContentProvider implements ITreeContentProvider {
 
-	ResourceSet virtualResourceSet;
-	ITreeContentProvider emfContentProvider;
+  ResourceSet virtualResourceSet;
+  ITreeContentProvider emfContentProvider;
 
-	public AttributeSelectionContentProvider() {
+  public AttributeSelectionContentProvider() {
 
-		emfContentProvider = new AdapterFactoryContentProvider(
-				new ReflectiveItemProviderAdapterFactory());
-	}
+    emfContentProvider = new AdapterFactoryContentProvider(
+        new ReflectiveItemProviderAdapterFactory());
+  }
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
+  @Override
+  public void dispose() {
+    // TODO Auto-generated method stub
 
-	}
+  }
 
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// TODO Auto-generated method stub
+  @Override
+  public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+    // TODO Auto-generated method stub
 
-	}
+  }
 
-	@Override
-	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof Collection<?>) {
-			return ((Collection<?>) inputElement).toArray();
-		}
+  @Override
+  public Object[] getElements(Object inputElement) {
+    if (inputElement instanceof Collection<?>) {
+      return ((Collection<?>) inputElement).toArray();
+    }
 
-		return getChildren(inputElement);
-	}
+    return getChildren(inputElement);
+  }
 
-	@Override
-	public Object[] getChildren(Object parentElement) {
-		Object[] result = new Object[0];
+  @Override
+  public Object[] getChildren(Object parentElement) {
+    Object[] result = new Object[0];
 
-		if (parentElement instanceof EPackage) {
-			EPackage pack = (EPackage) parentElement;
-			return pack.getEClassifiers().toArray();
-		} else if (parentElement instanceof EObject) {
-			result = emfContentProvider.getChildren(parentElement);
-		}
+    if (parentElement instanceof EPackage) {
+      EPackage pack = (EPackage) parentElement;
+      return pack.getEClassifiers().toArray();
+    } else if (parentElement instanceof EObject) {
+      result = emfContentProvider.getChildren(parentElement);
+    }
 
-		else if (!hasChildren(parentElement)) {
-		}
+    else if (!hasChildren(parentElement)) {}
 
-		return result;
+    return result;
 
-	}
+  }
 
-	@Override
-	public Object getParent(Object element) {
+  @Override
+  public Object getParent(Object element) {
 
-		Object parent=null;
-		if(element instanceof EObject)
-			parent=emfContentProvider.getParent(element);
-		return parent;
-	}
+    Object parent = null;
+    if (element instanceof EObject)
+      parent = emfContentProvider.getParent(element);
+    return parent;
+  }
 
-	@Override
-	public boolean hasChildren(Object element) {
-		if (element instanceof EObject)
-			return true;
-		return false;
-	}
+  @Override
+  public boolean hasChildren(Object element) {
+    if (element instanceof EObject)
+      return true;
+    return false;
+  }
 
 }

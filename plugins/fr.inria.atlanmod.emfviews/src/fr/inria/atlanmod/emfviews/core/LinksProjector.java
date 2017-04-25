@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Cauê Clasen - initial API and implementation
+ * Cauï¿½ Clasen - initial API and implementation
  *******************************************************************************/
 
 package fr.inria.atlanmod.emfviews.core;
@@ -28,82 +28,80 @@ import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 
 public class LinksProjector {
 
-	private View virtualModel;
+  private View virtualModel;
 
-	public LinksProjector(View vModel) {
+  public LinksProjector(View vModel) {
 
-		this.virtualModel = vModel;
+    this.virtualModel = vModel;
 
-	}
+  }
 
-	public void load(VirtualLinks virtualLinks) {
+  public void load(VirtualLinks virtualLinks) {
 
-		List<Association> associations = new ArrayList<Association>();
-		EList<VirtualLink> links = virtualLinks.getVirtualLinks();
-		for (VirtualLink link : links) {
-			if (link instanceof Association) {
-				associations.add((Association) link);
-			}
-		}
-		loadAssociations(associations);
+    List<Association> associations = new ArrayList<Association>();
+    EList<VirtualLink> links = virtualLinks.getVirtualLinks();
+    for (VirtualLink link : links) {
+      if (link instanceof Association) {
+        associations.add((Association) link);
+      }
+    }
+    loadAssociations(associations);
 
-	}
+  }
 
-	private void loadAssociations(List<Association> associations) {
+  private void loadAssociations(List<Association> associations) {
 
-		for (Association association : associations) {
-			LinkedElement sourceElementLink = association.getSourceElement();
-			String sourceElementRef = sourceElementLink.getElementRef();
-			String sourceModelURI = sourceElementLink.getModelRef();
+    for (Association association : associations) {
+      LinkedElement sourceElementLink = association.getSourceElement();
+      String sourceElementRef = sourceElementLink.getElementRef();
+      String sourceModelURI = sourceElementLink.getModelRef();
 
-			EObject sourceElement = getReferencedObject(sourceElementRef,
-					sourceModelURI);
+      EObject sourceElement = getReferencedObject(sourceElementRef,
+          sourceModelURI);
 
-			List<EObject> targetElements = new ArrayList<EObject>();
+      List<EObject> targetElements = new ArrayList<EObject>();
 
-			for (LinkedElement targetEnd : (List<LinkedElement>) association
-					.getTargetElements()) {
-				String targetElementRef = targetEnd.getElementRef();
-				String targetModelURI = targetEnd.getModelRef();
-				targetElements.add(getReferencedObject(targetElementRef,
-						targetModelURI));
-			}
+      for (LinkedElement targetEnd : (List<LinkedElement>) association
+          .getTargetElements()) {
+        String targetElementRef = targetEnd.getElementRef();
+        String targetModelURI = targetEnd.getModelRef();
+        targetElements
+            .add(getReferencedObject(targetElementRef, targetModelURI));
+      }
 
-			ReproduceElementImpl vElement = (ReproduceElementImpl) virtualModel
-					.getVirtualLinkManager().getVirtualElement(sourceElement);
+      ReproduceElementImpl vElement = (ReproduceElementImpl) virtualModel
+          .getVirtualLinkManager().getVirtualElement(sourceElement);
 
-			String virtualFeatureName = association.getName();
-			EStructuralFeature virtualFeature = virtualModel
-					.getMetamodelManager().getVirtualAssociation(vElement,
-							virtualFeatureName);
+      String virtualFeatureName = association.getName();
+      EStructuralFeature virtualFeature = virtualModel.getMetamodelManager()
+          .getVirtualAssociation(vElement, virtualFeatureName);
 
-			vElement.setVirtualAssociation(virtualFeature,
-					TranslationRule.NO_INDEX, targetElements);
-			vElement.toString();
-		}
-	}
+      vElement.setVirtualAssociation(virtualFeature, TranslationRule.NO_INDEX,
+          targetElements);
+      vElement.toString();
+    }
+  }
 
-	private EObject getReferencedObject(String elementRef, String packageNsuri) {
-		EObject referencedElement = null;
-		List<Resource> contributingModels = virtualModel
-				.getContributingModels();
-		boolean elemFound = false;
-		for (int i = 0; i < contributingModels.size() && !elemFound; i++) {
-			Resource r = contributingModels.get(i);
-			EObject firstElem = r.getContents().get(0);
-			if (firstElem.eClass().getEPackage().getNsURI()
-					.compareToIgnoreCase(packageNsuri) == 0) {
-				referencedElement = r.getEObject(elementRef);
-				elemFound = true;
-			}
+  private EObject getReferencedObject(String elementRef, String packageNsuri) {
+    EObject referencedElement = null;
+    List<Resource> contributingModels = virtualModel.getContributingModels();
+    boolean elemFound = false;
+    for (int i = 0; i < contributingModels.size() && !elemFound; i++) {
+      Resource r = contributingModels.get(i);
+      EObject firstElem = r.getContents().get(0);
+      if (firstElem.eClass().getEPackage().getNsURI()
+          .compareToIgnoreCase(packageNsuri) == 0) {
+        referencedElement = r.getEObject(elementRef);
+        elemFound = true;
+      }
 
-		}
-		return referencedElement;
+    }
+    return referencedElement;
 
-	}
+  }
 
-	public void save(VirtualLinks correspondenceModel) {
+  public void save(VirtualLinks correspondenceModel) {
 
-	}
+  }
 
 }

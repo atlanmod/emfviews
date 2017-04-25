@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Cauê Clasen - initial API and implementation
+ * Cauï¿½ Clasen - initial API and implementation
  *******************************************************************************/
 
 package fr.inria.atlanmod.emfviews.elements;
@@ -17,18 +17,18 @@ import fr.inria.atlanmod.emfviews.rules.TranslationRule;
 
 public abstract class VirtualElement extends EStoreEObjectImpl {
 
-	private TranslationRule translationRule;
+  private TranslationRule translationRule;
 
-	public VirtualElement() {
-		super();
-	}
+  public VirtualElement() {
+    super();
+  }
 
-	public TranslationRule getTranslationRule() {
-		return this.translationRule;
-	}
+  public TranslationRule getTranslationRule() {
+    return this.translationRule;
+  }
 
-	public void setTranslationRule(TranslationRule rule) {
-		this.translationRule = rule;
-	}
+  public void setTranslationRule(TranslationRule rule) {
+    this.translationRule = rule;
+  }
 
 }

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Cauê Clasen - initial API and implementation
+ * Cauï¿½ Clasen - initial API and implementation
  *******************************************************************************/
 
 package fr.inria.atlanmod.emfviews.core;
@@ -14,8 +14,8 @@ package fr.inria.atlanmod.emfviews.core;
 @SuppressWarnings("serial")
 public class ViewOperationException extends UnsupportedOperationException {
 
-	public ViewOperationException(String string) {
-		super(string);
-	}
+  public ViewOperationException(String string) {
+    super(string);
+  }
 
 }

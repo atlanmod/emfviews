@@ -32,122 +32,121 @@ import org.eclipse.jface.wizard.Wizard;
 import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 
-public class EmfViewsProjectCreator extends Wizard implements INewWizard,
-		IExecutableExtension {
-	protected WizardNewProjectCreationPage page;
+public class EmfViewsProjectCreator extends Wizard
+    implements INewWizard, IExecutableExtension {
+  protected WizardNewProjectCreationPage page;
 
-	protected IConfigurationElement configElement;
+  protected IConfigurationElement configElement;
 
-	public EmfViewsProjectCreator() {
-		super();
-		setNeedsProgressMonitor(true);
-		setWindowTitle(Messages.getString("VirtualEMFProjectCreator.Page.Name")); //$NON-NLS-1$
-	}
+  public EmfViewsProjectCreator() {
+    super();
+    setNeedsProgressMonitor(true);
+    setWindowTitle(Messages.getString("VirtualEMFProjectCreator.Page.Name")); //$NON-NLS-1$
+  }
 
-	/**
-	 * Adding the page to the wizard.
-	 */
-	@Override
-	public void addPages() {
-		page = new WizardNewProjectCreationPage(
-				Messages.getString("VirtualEMFProjectCreator.Page.Name")); //$NON-NLS-1$
-		page.setTitle(Messages.getString("VirtualEMFProjectCreator.Title")); //$NON-NLS-1$
-		page.setDescription(Messages
-				.getString("VirtualEMFProjectCreator.Page.Description")); //$NON-NLS-1$
-		page.setImageDescriptor(EmfViewsUIPlugin
-				.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
-		addPage(page);
-	}
+  /**
+   * Adding the page to the wizard.
+   */
+  @Override
+  public void addPages() {
+    page = new WizardNewProjectCreationPage(
+        Messages.getString("VirtualEMFProjectCreator.Page.Name")); //$NON-NLS-1$
+    page.setTitle(Messages.getString("VirtualEMFProjectCreator.Title")); //$NON-NLS-1$
+    page.setDescription(
+        Messages.getString("VirtualEMFProjectCreator.Page.Description")); //$NON-NLS-1$
+    page.setImageDescriptor(
+        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+    addPage(page);
+  }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
-	@Override
-	public boolean performFinish() {
-		IWorkspaceRunnable create = new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				IProject project = ResourcesPlugin.getWorkspace().getRoot()
-						.getProject(page.getProjectName());
-				IPath location = page.getLocationPath();
-				if (!project.exists()) {
-					IProjectDescription desc = project.getWorkspace()
-							.newProjectDescription(page.getProjectName());
-					if (location != null
-							&& ResourcesPlugin.getWorkspace().getRoot()
-									.getLocation().equals(location)) {
-						location = null;
-					}
-					desc.setLocation(location);
-					project.create(desc, monitor);
+  /**
+   * {@inheritDoc}
+   * 
+   * @see org.eclipse.jface.wizard.Wizard#performFinish()
+   */
+  @Override
+  public boolean performFinish() {
+    IWorkspaceRunnable create = new IWorkspaceRunnable() {
+      public void run(IProgressMonitor monitor) throws CoreException {
+        IProject project = ResourcesPlugin.getWorkspace().getRoot()
+            .getProject(page.getProjectName());
+        IPath location = page.getLocationPath();
+        if (!project.exists()) {
+          IProjectDescription desc = project.getWorkspace()
+              .newProjectDescription(page.getProjectName());
+          if (location != null && ResourcesPlugin.getWorkspace().getRoot()
+              .getLocation().equals(location)) {
+            location = null;
+          }
+          desc.setLocation(location);
+          project.create(desc, monitor);
 
-				}
-				if (!project.isOpen()) {
-					project.open(monitor);
-				}
+        }
+        if (!project.isOpen()) {
+          project.open(monitor);
+        }
 
-				String[] paths = { "views", //$NON-NLS-1$
-						"models",//$NON-NLS-1$
-						"viewtypes",//$NON-NLS-1$
-						"metamodels"//$NON-NLS-1$
+        String[] paths = { "views", //$NON-NLS-1$
+            "models", //$NON-NLS-1$
+            "viewtypes", //$NON-NLS-1$
+            "metamodels"//$NON-NLS-1$
 
-				};
-				addToProjectStructure(project, paths);
-				project.open(monitor);
-			}
-		};
-		try {
-			ResourcesPlugin.getWorkspace().run(create, null);
-			return true;
-		} catch (CoreException e) {
-			IStatus status = new Status(IStatus.ERROR,
-					EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
-			return false;
-		}
+        };
+        addToProjectStructure(project, paths);
+        project.open(monitor);
+      }
+    };
+    try {
+      ResourcesPlugin.getWorkspace().run(create, null);
+      return true;
+    } catch (CoreException e) {
+      IStatus status = new Status(IStatus.ERROR, EmfViewsUIPlugin.PLUGIN_ID,
+          IStatus.OK, e.getMessage(), e);
+      return false;
+    }
 
-	}
+  }
 
-	private void addToProjectStructure(IProject project, String[] paths) {
+  private void addToProjectStructure(IProject project, String[] paths) {
 
-		for (String path : paths) {
-			IFolder etcFolders = project.getFolder(path);
-			try {
-				createFolder(etcFolders);
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+    for (String path : paths) {
+      IFolder etcFolders = project.getFolder(path);
+      try {
+        createFolder(etcFolders);
+      } catch (CoreException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+  }
 
-	private static void createFolder(IFolder folder) throws CoreException {
-		IContainer parent = folder.getParent();
-		if (parent instanceof IFolder) {
-			createFolder((IFolder) parent);
-		}
-		if (!folder.exists()) {
-			folder.create(false, true, null);
-		}
-	}
+  private static void createFolder(IFolder folder) throws CoreException {
+    IContainer parent = folder.getParent();
+    if (parent instanceof IFolder) {
+      createFolder((IFolder) parent);
+    }
+    if (!folder.exists()) {
+      folder.create(false, true, null);
+    }
+  }
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
-	 *      org.eclipse.jface.viewers.IStructuredSelection)
-	 */
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-	}
+  /**
+   * {@inheritDoc}
+   * 
+   * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
+   *      org.eclipse.jface.viewers.IStructuredSelection)
+   */
+  public void init(IWorkbench workbench, IStructuredSelection selection) {}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
-	 *      java.lang.String, java.lang.Object)
-	 */
-	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) throws CoreException {
-		this.configElement = config;
-	}
+  /**
+   * {@inheritDoc}
+   * 
+   * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
+   *      java.lang.String, java.lang.Object)
+   */
+  public void setInitializationData(IConfigurationElement config,
+                                    String propertyName, Object data)
+      throws CoreException {
+    this.configElement = config;
+  }
 }

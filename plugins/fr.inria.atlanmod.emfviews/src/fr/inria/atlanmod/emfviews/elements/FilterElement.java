@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Cauê Clasen - initial API and implementation
+ * Cauï¿½ Clasen - initial API and implementation
  *******************************************************************************/
 
 package fr.inria.atlanmod.emfviews.elements;
@@ -15,13 +15,13 @@ import org.eclipse.emf.ecore.EObject;
 
 public class FilterElement extends VirtualElement {
 
-	EObject filteredElement;
+  EObject filteredElement;
 
-	public FilterElement(EObject obj) {
-		filteredElement = obj;
-	}
+  public FilterElement(EObject obj) {
+    filteredElement = obj;
+  }
 
-	public EObject getFilteredElement() {
-		return filteredElement;
-	}
+  public EObject getFilteredElement() {
+    return filteredElement;
+  }
 }

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Cauê Clasen - initial API and implementation
+ * Cauï¿½ Clasen - initial API and implementation
  *******************************************************************************/
 
 package fr.inria.atlanmod.emfviews.rules;
@@ -22,62 +22,61 @@ import fr.inria.atlanmod.emfviews.elements.MergeElementImpl;
 
 public class MergeRule extends TranslationRule {
 
-	public static TranslationRule INSTANCE = new MergeRule();
+  public static TranslationRule INSTANCE = new MergeRule();
 
-	public Object get(InternalEObject object, EStructuralFeature feature,
-			int index) {
+  public Object get(InternalEObject object, EStructuralFeature feature,
+                    int index) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public Object set(InternalEObject object, EStructuralFeature feature,
-			int index, Object value) {
+  @Override
+  public Object set(InternalEObject object, EStructuralFeature feature,
+                    int index, Object value) {
 
-		return null;
-	}
+    return null;
+  }
 
-	@Override
-	public boolean isSet(InternalEObject object, EStructuralFeature feature) {
+  @Override
+  public boolean isSet(InternalEObject object, EStructuralFeature feature) {
 
-		return false;
-	}
+    return false;
+  }
 
-	@Override
-	public void unset(InternalEObject object, EStructuralFeature feature) {
+  @Override
+  public void unset(InternalEObject object, EStructuralFeature feature) {
 
-	}
+  }
 
-	@Override
-	public int hashCode(InternalEObject object, EStructuralFeature feature) {
+  @Override
+  public int hashCode(InternalEObject object, EStructuralFeature feature) {
 
-		throw new ViewOperationException(
-				"hashCode not implemented for merged elements");
-	}
+    throw new ViewOperationException(
+        "hashCode not implemented for merged elements");
+  }
 
-	@Override
-	public InternalEObject getContainer(InternalEObject object) {
-		View vModel = (View) object.eResource();
-		MergeElementImpl mergeElement = (MergeElementImpl) object;
-		EObject cElement = mergeElement.getPreferableElement();
-		EObject cContainer = cElement.eContainer();
-		EObject vContainer = vModel.translateToVirtualElement(cContainer);
-		return (InternalEObject) vContainer;
-	}
+  @Override
+  public InternalEObject getContainer(InternalEObject object) {
+    View vModel = (View) object.eResource();
+    MergeElementImpl mergeElement = (MergeElementImpl) object;
+    EObject cElement = mergeElement.getPreferableElement();
+    EObject cContainer = cElement.eContainer();
+    EObject vContainer = vModel.translateToVirtualElement(cContainer);
+    return (InternalEObject) vContainer;
+  }
 
-	public EStructuralFeature getContainingFeature(InternalEObject object) {
-		View vModel = (View) object.eResource();
-		MergeElementImpl mergeElement = (MergeElementImpl) object;
-		EObject cElement = mergeElement.getPreferableElement();
-		EStructuralFeature vFeature = vModel.getMetamodelManager()
-				.translateToVirtualFeature(object,
-						cElement.eContainingFeature());
-		return vFeature;
-	}
+  public EStructuralFeature getContainingFeature(InternalEObject object) {
+    View vModel = (View) object.eResource();
+    MergeElementImpl mergeElement = (MergeElementImpl) object;
+    EObject cElement = mergeElement.getPreferableElement();
+    EStructuralFeature vFeature = vModel.getMetamodelManager()
+        .translateToVirtualFeature(object, cElement.eContainingFeature());
+    return vFeature;
+  }
 
-	@Override
-	public EObject create(EClass eClass) {
-		throw new ViewOperationException("EStore.move()");
-	}
+  @Override
+  public EObject create(EClass eClass) {
+    throw new ViewOperationException("EStore.move()");
+  }
 
 }

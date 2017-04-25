@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Cauê Clasen - initial API and implementation
+ * Cauï¿½ Clasen - initial API and implementation
  *******************************************************************************/
 
 package fr.inria.atlanmod.emfviews.core;
@@ -26,46 +26,48 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
 public class EmfViewsFactory extends ResourceFactoryImpl {
 
-	@Override
-	public Resource createResource(URI uri) {
-		if (uri.toString().endsWith(".eview")) {
-			IWorkspace workspace = ResourcesPlugin.getWorkspace();
-			java.net.URI uriInworkspace = workspace.getRoot()
-					.findMember(uri.toPlatformString(true)).getLocationURI();
+  @Override
+  public Resource createResource(URI uri) {
+    if (uri.toString().endsWith(".eview")) {
+      IWorkspace workspace = ResourcesPlugin.getWorkspace();
+      java.net.URI uriInworkspace = workspace.getRoot()
+          .findMember(uri.toPlatformString(true)).getLocationURI();
 
-			Properties properties = new Properties();
-			InputStream inStream;
-			try {
-				inStream = uriInworkspace.toURL().openStream();
-				properties.load(inStream);
-				inStream.close();
+      Properties properties = new Properties();
+      InputStream inStream;
+      try {
+        inStream = uriInworkspace.toURL().openStream();
+        properties.load(inStream);
+        inStream.close();
 
-				return new EView(uri);
+        return new EView(uri);
 
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
+      } catch (IOException e) {
+        e.printStackTrace();
+        return null;
+      }
 
-		} else if (uri.toString().endsWith(".eviewtype")) {
-			return new Viewtype(uri);
-		}
+    } else if (uri.toString().endsWith(".eviewtype")) {
+      return new Viewtype(uri);
+    }
 
-		else
-			return null;
+    else
+      return null;
 
-	}
+  }
 
-	public Resource createEView(List<String> contributingModels,
-			String compositionMetamodel, String correspondenceModelAbsolutePath)
-			throws MalformedURLException, IOException {
-		return new EView(contributingModels, compositionMetamodel,
-				correspondenceModelAbsolutePath);
-	}
+  public Resource createEView(List<String> contributingModels,
+                              String compositionMetamodel,
+                              String correspondenceModelAbsolutePath)
+      throws MalformedURLException, IOException {
+    return new EView(contributingModels, compositionMetamodel,
+        correspondenceModelAbsolutePath);
+  }
 
-	public Resource createViewtype(List<String> contributingMetamodels,
-			String filtersMMUri) throws FileNotFoundException, IOException {
-		return new Viewtype(contributingMetamodels, filtersMMUri);
-	}
+  public Resource createViewtype(List<String> contributingMetamodels,
+                                 String filtersMMUri)
+      throws FileNotFoundException, IOException {
+    return new Viewtype(contributingMetamodels, filtersMMUri);
+  }
 
 }

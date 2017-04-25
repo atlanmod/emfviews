@@ -40,232 +40,231 @@ import fr.inria.atlanmod.emfviews.ui.common.AbstractSelection;
 import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 
 public class CreateViewtypeScreen extends WizardPage {
-	private ArrayList<String> inputMetaModelPaths;
+  private ArrayList<String> inputMetaModelPaths;
 
-	private List inputMetamodelsList;
+  private List inputMetamodelsList;
 
-	/**
-	 * The dsl used to create the links
-	 */
-	private Combo comboLinksDsl;
+  /**
+   * The dsl used to create the links
+   */
+  private Combo comboLinksDsl;
 
-	public String[] availableLinksDsls;
+  public String[] availableLinksDsls;
 
-	public CreateViewtypeScreen(ISelection selection) {
-		super(Messages.getString("VirtualMetamodelFileScreen.Page.Name"));
+  public CreateViewtypeScreen(ISelection selection) {
+    super(Messages.getString("VirtualMetamodelFileScreen.Page.Name"));
 
-		IExtension[] extensions = Platform
-				.getExtensionRegistry()
-				.getExtensionPoint(
-						"fr.inria.atlanmod.emfviews.virtuallinksdelegator.type")
-				.getExtensions();
-		availableLinksDsls = new String[extensions.length];
-		int i = 0;
-		for (IExtension iExtension : extensions) {
-			IConfigurationElement[] configElements = iExtension
-					.getConfigurationElements();
-			for (IConfigurationElement iConfigurationElement : configElements) {
-				availableLinksDsls[i] = iConfigurationElement
-						.getAttribute("fileExtension");
-				i=i++;
-			}
-		}
+    IExtension[] extensions = Platform.getExtensionRegistry()
+        .getExtensionPoint(
+            "fr.inria.atlanmod.emfviews.virtuallinksdelegator.type")
+        .getExtensions();
+    availableLinksDsls = new String[extensions.length];
+    int i = 0;
+    for (IExtension iExtension : extensions) {
+      IConfigurationElement[] configElements = iExtension
+          .getConfigurationElements();
+      for (IConfigurationElement iConfigurationElement : configElements) {
+        availableLinksDsls[i] = iConfigurationElement
+            .getAttribute("fileExtension");
+        i = i++;
+      }
+    }
 
-		setTitle(Messages.getString("VirtualMetamodelFileScreen.Title")); //$NON-NLS-1$
-		setDescription(Messages
-				.getString("VirtualMetamodelFileScreen.Page.Description")); //$NON-NLS-1$
-		setImageDescriptor(EmfViewsUIPlugin
-				.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+    setTitle(Messages.getString("VirtualMetamodelFileScreen.Title")); //$NON-NLS-1$
+    setDescription(
+        Messages.getString("VirtualMetamodelFileScreen.Page.Description")); //$NON-NLS-1$
+    setImageDescriptor(
+        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
 
-		this.setPageComplete(false);
-		inputMetaModelPaths = new ArrayList<String>();
-	}
+    this.setPageComplete(false);
+    inputMetaModelPaths = new ArrayList<String>();
+  }
 
-	public String getdslForLinks() {
-		return comboLinksDsl.getText();
-	}
+  public String getdslForLinks() {
+    return comboLinksDsl.getText();
+  }
 
-	private void addSeparator(Composite container) {
-		Label separator = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 3;
-		data.verticalIndent = 5;
-		separator.setLayoutData(data);
-	}
+  private void addSeparator(Composite container) {
+    Label separator = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+    GridData data = new GridData(GridData.FILL_HORIZONTAL);
+    data.horizontalSpan = 3;
+    data.verticalIndent = 5;
+    separator.setLayoutData(data);
+  }
 
-	private void addBlank(Composite container) {
-		Composite blank = new Composite(container, SWT.NULL);
-		blank.setLayout(new GridLayout());
-	}
+  private void addBlank(Composite container) {
+    Composite blank = new Composite(container, SWT.NULL);
+    blank.setLayout(new GridLayout());
+  }
 
-	@Override
-	public void createControl(Composite parent) {
+  @Override
+  public void createControl(Composite parent) {
 
-		final Composite container = new Composite(parent, SWT.NULL);
-		initializeDialogUnits(container);
-		GridData data = new GridData(GridData.FILL_BOTH);
-		container.setLayoutData(data);
-		GridLayout layout = new GridLayout(3, false);
-		container.setLayout(layout);
+    final Composite container = new Composite(parent, SWT.NULL);
+    initializeDialogUnits(container);
+    GridData data = new GridData(GridData.FILL_BOTH);
+    container.setLayoutData(data);
+    GridLayout layout = new GridLayout(3, false);
+    container.setLayout(layout);
 
-		GridData dataLists = new GridData(GridData.FILL_BOTH
-				| GridData.VERTICAL_ALIGN_BEGINNING);
+    GridData dataLists = new GridData(
+        GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
 
-		inputMetamodelsList = createModelControl(
-				container,
-				Messages.getString("VirtualModelFileScreen.InputMetamodels"), //$NON-NLS-1$ 
-				new ModelSelection(
-						container.getShell(),
-						Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"), inputMetaModelPaths, ModelSelection.INPUTMETAMODEL), dataLists); //$NON-NLS-1$2$
+    inputMetamodelsList = createModelControl(container,
+        Messages.getString("VirtualModelFileScreen.InputMetamodels"), //$NON-NLS-1$
+        new ModelSelection(container.getShell(),
+            Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"), //$NON-NLS-1$
+            inputMetaModelPaths, ModelSelection.INPUTMETAMODEL),
+        dataLists); // 2$
 
-		container.layout();
-		setControl(container);
+    container.layout();
+    setControl(container);
 
-		addBlank(container);
+    addBlank(container);
 
-		addSeparator(container);
+    addSeparator(container);
 
-		new Label(container, SWT.NULL)
-				.setText("Select a dsl to create virtual links"); //$NON-NLS-1$
-		comboLinksDsl = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
-		comboLinksDsl.setItems(availableLinksDsls);
-		comboLinksDsl.setText(availableLinksDsls[0]);
-		data = new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING);
-		comboLinksDsl.setLayoutData(data);
+    new Label(container, SWT.NULL)
+        .setText("Select a dsl to create virtual links"); //$NON-NLS-1$
+    comboLinksDsl = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
+    comboLinksDsl.setItems(availableLinksDsls);
+    comboLinksDsl.setText(availableLinksDsls[0]);
+    data = new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING);
+    comboLinksDsl.setLayoutData(data);
 
-	}
+  }
 
-	private List createModelControl(final Composite parent,
-			final String entryLabel, final AbstractSelection dialog,
-			GridData listLayoutData) {
+  private List createModelControl(final Composite parent,
+                                  final String entryLabel,
+                                  final AbstractSelection dialog,
+                                  GridData listLayoutData) {
 
-		final Label typeLabel = new Label(parent, SWT.NONE);
-		GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
-		data.verticalIndent = 5;
-		typeLabel.setLayoutData(data);
-		typeLabel.setText(entryLabel);
+    final Label typeLabel = new Label(parent, SWT.NONE);
+    GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+    data.verticalIndent = 5;
+    typeLabel.setLayoutData(data);
+    typeLabel.setText(entryLabel);
 
-		final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL
-				| SWT.H_SCROLL | SWT.MULTI);
-		listLayoutData.verticalIndent = 5;
-		list.setLayoutData(listLayoutData);
+    final List list = new List(parent,
+        SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+    listLayoutData.verticalIndent = 5;
+    list.setLayoutData(listLayoutData);
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.verticalSpacing = 15;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
-		data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
-		data.verticalIndent = 5;
-		composite.setLayoutData(data);
+    Composite composite = new Composite(parent, SWT.NONE);
+    GridLayout layout = new GridLayout();
+    layout.verticalSpacing = 15;
+    layout.marginHeight = 0;
+    layout.marginWidth = 0;
+    composite.setLayout(layout);
+    data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+    data.verticalIndent = 5;
+    composite.setLayoutData(data);
 
-		final Button addIn = createButton(composite,
-				Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
-		final Button removeIn = createButton(composite,
-				Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
-		removeIn.setEnabled(false);
-		addIn.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent evt) {
-				dialog.create();
-				if (dialog.open() == Dialog.OK) {
-					Object[] result = dialog.getResult();
-					int modelType = Integer.parseInt(result[0].toString());
-					switch (modelType) {
+    final Button addIn = createButton(composite,
+        Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
+    final Button removeIn = createButton(composite,
+        Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
+    removeIn.setEnabled(false);
+    addIn.addSelectionListener(new SelectionAdapter() {
+      @Override
+      public void widgetSelected(SelectionEvent evt) {
+        dialog.create();
+        if (dialog.open() == Dialog.OK) {
+          Object[] result = dialog.getResult();
+          int modelType = Integer.parseInt(result[0].toString());
+          switch (modelType) {
 
-					case ModelSelection.INPUTMETAMODEL:
-						inputMetaModelPaths.add(result[1].toString());
-						break;
+          case ModelSelection.INPUTMETAMODEL:
+            inputMetaModelPaths.add(result[1].toString());
+            break;
 
-					default:
-						break;
-					}
+          default:
+            break;
+          }
 
-				}
-				removeIn.setEnabled(true);
-				updateLists();
-			}
-		});
+        }
+        removeIn.setEnabled(true);
+        updateLists();
+      }
+    });
 
-		removeIn.addSelectionListener(new SelectionAdapter() {
-			/**
-			 * {@inheritDoc}
-			 * 
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-			 */
-			@Override
-			public void widgetSelected(SelectionEvent evt) {
-				int[] indices = list.getSelectionIndices();
-				if(indices.length>0)
-				{
-					for (int i = 0; i < indices.length; i++) 
-					{
-						
-						inputMetaModelPaths.remove(list.getItem(i));
+    removeIn.addSelectionListener(new SelectionAdapter() {
+      /**
+       * {@inheritDoc}
+       * 
+       * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+       */
+      @Override
+      public void widgetSelected(SelectionEvent evt) {
+        int[] indices = list.getSelectionIndices();
+        if (indices.length > 0) {
+          for (int i = 0; i < indices.length; i++) {
 
-					}
-					updateLists();
-					//removeIn.setEnabled(list.getSelection().length > 0);
-					removeIn.setEnabled(inputMetamodelsList.getItemCount()> 0);
-				}
-				
-			}
-		});
+            inputMetaModelPaths.remove(list.getItem(i));
 
-		return list;
-	}
+          }
+          updateLists();
+          // removeIn.setEnabled(list.getSelection().length > 0);
+          removeIn.setEnabled(inputMetamodelsList.getItemCount() > 0);
+        }
 
-	private void updateLists() {
-		inputMetamodelsList.removeAll();
-		for (String path : inputMetaModelPaths) {
-			inputMetamodelsList.add(path);
-		}
+      }
+    });
 
-		checkValid();
+    return list;
+  }
 
-	}
+  private void updateLists() {
+    inputMetamodelsList.removeAll();
+    for (String path : inputMetaModelPaths) {
+      inputMetamodelsList.add(path);
+    }
 
-	private void checkValid() {
+    checkValid();
 
-		setPageComplete(checkModelsConsistancy());
-	}
+  }
 
-	private boolean checkModelsConsistancy() {
+  private void checkValid() {
 
-		if (inputMetaModelPaths.isEmpty()) {
-			setErrorMessage(Messages
-					.getString("VirtualModelFileWizard.INPUT_METAMODELS_ISSUE")); //$NON-NLS-1$
-			return false;
+    setPageComplete(checkModelsConsistancy());
+  }
 
-		}
-		setErrorMessage(null);
-		return true;
+  private boolean checkModelsConsistancy() {
 
-	}
+    if (inputMetaModelPaths.isEmpty()) {
+      setErrorMessage(
+          Messages.getString("VirtualModelFileWizard.INPUT_METAMODELS_ISSUE")); //$NON-NLS-1$
+      return false;
 
-	private Button createButton(Composite parent, String text) {
-		Button button = new Button(parent, SWT.PUSH);
-		button.setAlignment(SWT.CENTER);
-		button.setText(text);
-		button.setFont(parent.getFont());
-		GridData data = new GridData();
-		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
-		button.setLayoutData(data);
-		return button;
-	}
+    }
+    setErrorMessage(null);
+    return true;
 
-	public ArrayList<String> getInputMetaModelPaths() {
-		return inputMetaModelPaths;
-	}
+  }
 
-	public IWizardPage getNextPage() {
-		if (isPageComplete()) {
-			AttributesSelectionPage asp = (AttributesSelectionPage) getWizard()
-					.getPage("AttributeSelectionPage");
-			asp.setTreeContents();
-		}
-		return super.getNextPage();
-	}
+  private Button createButton(Composite parent, String text) {
+    Button button = new Button(parent, SWT.PUSH);
+    button.setAlignment(SWT.CENTER);
+    button.setText(text);
+    button.setFont(parent.getFont());
+    GridData data = new GridData();
+    data.widthHint = convertHorizontalDLUsToPixels(
+        IDialogConstants.BUTTON_WIDTH);
+    button.setLayoutData(data);
+    return button;
+  }
+
+  public ArrayList<String> getInputMetaModelPaths() {
+    return inputMetaModelPaths;
+  }
+
+  public IWizardPage getNextPage() {
+    if (isPageComplete()) {
+      AttributesSelectionPage asp = (AttributesSelectionPage) getWizard()
+          .getPage("AttributeSelectionPage");
+      asp.setTreeContents();
+    }
+    return super.getNextPage();
+  }
 
 }
