@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -52,7 +51,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
 
 /**
  * Executes ocl queries on the contributing models conforming to ecore.
- * 
+ *
  * @author juandavid
  *
  */
@@ -70,7 +69,7 @@ public class OclforEmfDelegate {
     this.viewVirtualLinks = viewVirtualLinks;
     EList<VirtualLink> allViewtypeVirtualLinks = viewtypeVirtualLinks
         .getVirtualLinks();
-    viewtypeFilters = new ArrayList<Filter>();
+    viewtypeFilters = new ArrayList<>();
     this.virtualResourceSet = virtualResourceSet;
 
     for (VirtualLink virtualLink : allViewtypeVirtualLinks) {
@@ -104,7 +103,8 @@ public class OclforEmfDelegate {
               .createQuery(parsedQuery);
           Object objectsToFilter = theQueryCreatedByOcl.evaluate();
           if (objectsToFilter instanceof Collection) {
-            createFilterLinks((Collection) objectsToFilter, viewtypeFilter);
+            createFilterLinks((Collection<EObject>) objectsToFilter,
+                viewtypeFilter);
           } else if (objectsToFilter instanceof EObject) {
             createFilterLink((EObject) objectsToFilter, viewtypeFilter);
           }
@@ -120,11 +120,11 @@ public class OclforEmfDelegate {
     }
   }
 
-  private void createFilterLinks(Collection objectsToFilter,
+  private void createFilterLinks(Collection<EObject> objectsToFilter,
                                  Filter viewtypeFilter) {
-    Iterator iter = objectsToFilter.iterator();
+    Iterator<EObject> iter = objectsToFilter.iterator();
     while (iter.hasNext()) {
-      EObject objectToFilter = (EObject) iter.next();
+      EObject objectToFilter = iter.next();
       createFilterLink(objectToFilter, viewtypeFilter);
 
     }
@@ -145,7 +145,7 @@ public class OclforEmfDelegate {
   }
 
   private Map<EClass, Set<? extends EObject>> createExtentMapHelper(Filter viewtypeFilter) {
-    Map<EClass, Set<? extends EObject>> extents = new HashMap<EClass, Set<? extends EObject>>();
+    Map<EClass, Set<? extends EObject>> extents = new HashMap<>();
 
     LinkedElement metaclassToFilter = viewtypeFilter.getFilteredElement();
 
@@ -166,8 +166,7 @@ public class OclforEmfDelegate {
     boolean foundModel = false;
     Resource correctResource = null;
     for (int i = 0; i < resources.size() && !foundModel; i++) {
-      EClassifier firstElement = (EClassifier) resources.get(i).getContents()
-          .get(0).eClass();
+      EClassifier firstElement = resources.get(i).getContents().get(0).eClass();
       if (firstElement.getEPackage().getNsURI()
           .compareToIgnoreCase(metamodelUri) == 0) {
         foundModel = true;
@@ -176,7 +175,7 @@ public class OclforEmfDelegate {
 
     }
 
-    Set<EObject> theEclassExtents = new HashSet<EObject>();
+    Set<EObject> theEclassExtents = new HashSet<>();
     // Lo segundo aqui es saber como puedo obtener todas las instancias. Lo
     // puedo hacer manual y luego tratar de encontrar una mejor manera.
     TreeIterator<EObject> resourceContents = correctResource.getAllContents();

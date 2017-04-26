@@ -12,8 +12,8 @@ package fr.inria.atlanmod.emfviews.ui.wizard.view;
 
 import java.util.ArrayList;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
-import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
+import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.common.AbstractSelection;
 import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 
@@ -72,10 +72,10 @@ public class CreateViewScreen extends WizardPage {
         EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
 
     this.setPageComplete(false);
-    inputModelPaths = new ArrayList<String>();
-    compositionMetaModelPath = new ArrayList<String>();
+    inputModelPaths = new ArrayList<>();
+    compositionMetaModelPath = new ArrayList<>();
     compositionMetaModelPath.add(virtualCompositionMetamodel);
-    linksModelPath = new ArrayList<String>();
+    linksModelPath = new ArrayList<>();
   }
 
   private void addBlank(Composite container) {
@@ -114,13 +114,13 @@ public class CreateViewScreen extends WizardPage {
             Messages.getString(
                 "VirtualModelFileScreen.CompositionMetamodelCreation"), //$NON-NLS-1$
             compositionMetaModelPath, ModelSelection.COMPOSITIONMETAMODEL),
-        dataLists); //$NON-NLS-2$
+        dataLists); // $NON-NLS-2$
     inputmodelsList = createModelControl(container,
         Messages.getString("VirtualModelFileScreen.InputModels"), //$NON-NLS-1$
         new ModelSelection(container.getShell(),
             Messages.getString("VirtualModelFileScreen.InputModelCreation"), //$NON-NLS-1$
             inputModelPaths, ModelSelection.INPUTMODEL),
-        dataLists); //$NON-NLS-2$
+        dataLists); // $NON-NLS-2$
 
     updateLists();
 
@@ -164,7 +164,7 @@ public class CreateViewScreen extends WizardPage {
       @Override
       public void widgetSelected(SelectionEvent evt) {
         dialog.create();
-        if (dialog.open() == Dialog.OK) {
+        if (dialog.open() == Window.OK) {
           Object[] result = dialog.getResult();
           int modelType = Integer.parseInt(result[0].toString());
           switch (modelType) {
@@ -190,7 +190,7 @@ public class CreateViewScreen extends WizardPage {
     removeIn.addSelectionListener(new SelectionAdapter() {
       /**
        * {@inheritDoc}
-       * 
+       *
        * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
        */
       @Override

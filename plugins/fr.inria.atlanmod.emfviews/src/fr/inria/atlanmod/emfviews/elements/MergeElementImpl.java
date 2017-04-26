@@ -27,7 +27,7 @@ import fr.inria.atlanmod.emfviews.rules.VirtualModelList;
 public class MergeElementImpl extends VirtualElement {
 
   private EObject preferableElement;
-  private List<EObject> concreteElements = new ArrayList<EObject>();
+  private List<EObject> concreteElements = new ArrayList<>();
   private EClass mergeClass = null;
 
   public MergeElementImpl(View vModel, List<EObject> concreteElements,
@@ -52,7 +52,7 @@ public class MergeElementImpl extends VirtualElement {
     this.eSetClass(eClass);
     eSetStore(this.getTranslationRule());
     setPreferableElement(preferableElement);
-    List<EClass> ecs = new ArrayList<EClass>();
+    List<EClass> ecs = new ArrayList<>();
     for (EObject eo : concreteElements) {
       try {
         ecs.add(eo.eClass());
@@ -85,7 +85,7 @@ public class MergeElementImpl extends VirtualElement {
   public List<EObject> getMergedList(EStructuralFeature feature) {
     EList<EObject>[] subLists = new EList[concreteElements.size()];
     for (int i = 0; i < subLists.length; i++) {}
-    return new VirtualModelList<EObject>(this, feature, subLists);
+    return new VirtualModelList<>(this, feature, subLists);
   }
 
   public List<EObject> getConcreteElements() {

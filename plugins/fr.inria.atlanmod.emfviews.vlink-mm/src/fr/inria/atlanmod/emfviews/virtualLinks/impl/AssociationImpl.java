@@ -56,7 +56,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getLowerBound()
    * @generated
    * @ordered
@@ -66,7 +66,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getLowerBound() <em>Lower Bound</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getLowerBound()
    * @generated
    * @ordered
@@ -76,7 +76,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The default value of the '{@link #getUpperBound() <em>Upper Bound</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getUpperBound()
    * @generated
    * @ordered
@@ -86,7 +86,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getUpperBound() <em>Upper Bound</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getUpperBound()
    * @generated
    * @ordered
@@ -96,7 +96,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The default value of the '{@link #getAssociationTypeName() <em>Association
    * Type Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getAssociationTypeName()
    * @generated
    * @ordered
@@ -106,7 +106,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getAssociationTypeName() <em>Association
    * Type Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getAssociationTypeName()
    * @generated
    * @ordered
@@ -116,7 +116,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getOpposite() <em>Opposite</em>}'
    * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getOpposite()
    * @generated
    * @ordered
@@ -126,7 +126,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getSourceElement() <em>Source
    * Element</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getSourceElement()
    * @generated
    * @ordered
@@ -137,7 +137,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
    * The cached value of the '{@link #getTargetElements() <em>Target
    * Elements</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
-   * 
+   *
    * @see #getTargetElements()
    * @generated
    * @ordered
@@ -147,7 +147,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The default value of the '{@link #getOclExpression() <em>Ocl
    * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getOclExpression()
    * @generated
    * @ordered
@@ -157,7 +157,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getOclExpression() <em>Ocl
    * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getOclExpression()
    * @generated
    * @ordered
@@ -167,7 +167,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The default value of the '{@link #getSourceAttribute() <em>Source
    * Attribute</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getSourceAttribute()
    * @generated
    * @ordered
@@ -177,7 +177,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getSourceAttribute() <em>Source
    * Attribute</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getSourceAttribute()
    * @generated
    * @ordered
@@ -187,7 +187,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The default value of the '{@link #getTargetAttribute() <em>Target
    * Attribute</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getTargetAttribute()
    * @generated
    * @ordered
@@ -197,7 +197,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   /**
    * The cached value of the '{@link #getTargetAttribute() <em>Target
    * Attribute</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getTargetAttribute()
    * @generated
    * @ordered
@@ -206,7 +206,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   protected AssociationImpl() {
@@ -215,7 +215,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -225,18 +225,20 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public int getLowerBound() {
     return lowerBound;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setLowerBound(int newLowerBound) {
     int oldLowerBound = lowerBound;
     lowerBound = newLowerBound;
@@ -248,18 +250,20 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public int getUpperBound() {
     return upperBound;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setUpperBound(int newUpperBound) {
     int oldUpperBound = upperBound;
     upperBound = newUpperBound;
@@ -271,18 +275,20 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getAssociationTypeName() {
     return associationTypeName;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setAssociationTypeName(String newAssociationTypeName) {
     String oldAssociationTypeName = associationTypeName;
     associationTypeName = newAssociationTypeName;
@@ -294,9 +300,10 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public Association getOpposite() {
     if (opposite != null && opposite.eIsProxy()) {
       InternalEObject oldOpposite = (InternalEObject) opposite;
@@ -313,7 +320,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   public Association basicGetOpposite() {
@@ -322,9 +329,10 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setOpposite(Association newOpposite) {
     Association oldOpposite = opposite;
     opposite = newOpposite;
@@ -335,9 +343,10 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public LinkedElement getSourceElement() {
     if (sourceElement != null && sourceElement.eIsProxy()) {
       InternalEObject oldSourceElement = (InternalEObject) sourceElement;
@@ -354,7 +363,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   public LinkedElement basicGetSourceElement() {
@@ -363,9 +372,10 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setSourceElement(LinkedElement newSourceElement) {
     LinkedElement oldSourceElement = sourceElement;
     sourceElement = newSourceElement;
@@ -377,13 +387,13 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EList<LinkedElement> getTargetElements() {
     if (targetElements == null) {
-      targetElements = new EObjectResolvingEList<LinkedElement>(
-          LinkedElement.class, this,
+      targetElements = new EObjectResolvingEList<>(LinkedElement.class, this,
           VirtualLinksPackage.ASSOCIATION__TARGET_ELEMENTS);
     }
     return targetElements;
@@ -391,18 +401,20 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getOclExpression() {
     return oclExpression;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setOclExpression(String newOclExpression) {
     String oldOclExpression = oclExpression;
     oclExpression = newOclExpression;
@@ -414,18 +426,20 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getSourceAttribute() {
     return sourceAttribute;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setSourceAttribute(String newSourceAttribute) {
     String oldSourceAttribute = sourceAttribute;
     sourceAttribute = newSourceAttribute;
@@ -437,18 +451,20 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getTargetAttribute() {
     return targetAttribute;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setTargetAttribute(String newTargetAttribute) {
     String oldTargetAttribute = targetAttribute;
     targetAttribute = newTargetAttribute;
@@ -460,7 +476,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -494,7 +510,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @SuppressWarnings("unchecked")
@@ -536,7 +552,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -575,7 +591,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -610,7 +626,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override

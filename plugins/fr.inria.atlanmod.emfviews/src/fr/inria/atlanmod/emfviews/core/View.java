@@ -149,17 +149,17 @@ public abstract class View extends ResourceImpl {
 
     List<Resource> contributingModels = getContributingModels();
 
-    List[] sublists = new List[contributingModels.size()];
+    List<EObject>[] sublists = new List[contributingModels.size()];
 
     for (int i = 0; i < contributingModels.size(); i++) {
 
-      ArrayList oneOftheSublists = new ArrayList<>();
+      ArrayList<EObject> oneOftheSublists = new ArrayList<>();
       oneOftheSublists.add(translateToVirtualElement(
           contributingModels.get(i).getContents().get(0)));
       sublists[i] = oneOftheSublists;
     }
 
-    this.virtualContents = new VirtualContents<EObject>(this, sublists);
+    this.virtualContents = new VirtualContents<>(this, sublists);
   }
 
   public EObject translateToVirtualElement(EObject e) {
@@ -229,13 +229,12 @@ public abstract class View extends ResourceImpl {
 
     java.net.URI uri = workspace.getRoot()
         .findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModelResource.load(uri.toURL().openStream(),
-        new HashMap<Object, Object>());
+    correspondenceModelResource.load(uri.toURL().openStream(), new HashMap<>());
 
     correspondenceModelResource
         .setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
 
-    List<Association> associations = new ArrayList<Association>();
+    List<Association> associations = new ArrayList<>();
 
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource
         .getContents().get(0);
@@ -330,7 +329,7 @@ public abstract class View extends ResourceImpl {
     List<Resource> contributingModels = getContributingModels();
     for (int i = 0; i < contributingModels.size() && !packageFound; i++) {
       Resource temp = contributingModels.get(i);
-      EClassifier rootClass = (EClassifier) temp.getContents().get(0).eClass();
+      EClassifier rootClass = temp.getContents().get(0).eClass();
       if (rootClass.getEPackage().getNsURI()
           .compareToIgnoreCase(packageURI) == 0) {
         packageFound = true;

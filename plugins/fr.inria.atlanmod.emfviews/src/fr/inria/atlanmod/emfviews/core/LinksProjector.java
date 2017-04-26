@@ -17,10 +17,10 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject.EStore;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
-import fr.inria.atlanmod.emfviews.rules.TranslationRule;
 import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
@@ -38,7 +38,7 @@ public class LinksProjector {
 
   public void load(VirtualLinks virtualLinks) {
 
-    List<Association> associations = new ArrayList<Association>();
+    List<Association> associations = new ArrayList<>();
     EList<VirtualLink> links = virtualLinks.getVirtualLinks();
     for (VirtualLink link : links) {
       if (link instanceof Association) {
@@ -59,7 +59,7 @@ public class LinksProjector {
       EObject sourceElement = getReferencedObject(sourceElementRef,
           sourceModelURI);
 
-      List<EObject> targetElements = new ArrayList<EObject>();
+      List<EObject> targetElements = new ArrayList<>();
 
       for (LinkedElement targetEnd : (List<LinkedElement>) association
           .getTargetElements()) {
@@ -76,7 +76,7 @@ public class LinksProjector {
       EStructuralFeature virtualFeature = virtualModel.getMetamodelManager()
           .getVirtualAssociation(vElement, virtualFeatureName);
 
-      vElement.setVirtualAssociation(virtualFeature, TranslationRule.NO_INDEX,
+      vElement.setVirtualAssociation(virtualFeature, EStore.NO_INDEX,
           targetElements);
       vElement.toString();
     }

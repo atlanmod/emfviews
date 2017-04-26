@@ -22,13 +22,14 @@ public class FormComposite extends Composite {
 
   /**
    * Create the composite.
-   * 
+   *
    * @param parent
    * @param style
    */
   public FormComposite(Composite parent, int style) {
     super(parent, style);
     addDisposeListener(new DisposeListener() {
+      @Override
       public void widgetDisposed(DisposeEvent e) {
         toolkit.dispose();
       }

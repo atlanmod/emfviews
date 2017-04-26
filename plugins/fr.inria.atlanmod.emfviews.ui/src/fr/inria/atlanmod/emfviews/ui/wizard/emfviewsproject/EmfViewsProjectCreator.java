@@ -61,12 +61,13 @@ public class EmfViewsProjectCreator extends Wizard
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.jface.wizard.Wizard#performFinish()
    */
   @Override
   public boolean performFinish() {
     IWorkspaceRunnable create = new IWorkspaceRunnable() {
+      @Override
       public void run(IProgressMonitor monitor) throws CoreException {
         IProject project = ResourcesPlugin.getWorkspace().getRoot()
             .getProject(page.getProjectName());
@@ -132,18 +133,20 @@ public class EmfViewsProjectCreator extends Wizard
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
    *      org.eclipse.jface.viewers.IStructuredSelection)
    */
+  @Override
   public void init(IWorkbench workbench, IStructuredSelection selection) {}
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
    *      java.lang.String, java.lang.Object)
    */
+  @Override
   public void setInitializationData(IConfigurationElement config,
                                     String propertyName, Object data)
       throws CoreException {

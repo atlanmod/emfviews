@@ -81,7 +81,7 @@ public class EView extends View {
     loadContributingMetamodels(contributingMMsURIs);
 
     viewtype = vFac.createResource(emfURI);
-    viewtype.load(uri.toURL().openStream(), new HashMap<Object, Object>());
+    viewtype.load(uri.toURL().openStream(), new HashMap<>());
 
     metamodelManager = new MetamodelManager(
         virtualResourceSet.getPackageRegistry().values(), viewtype, this);
@@ -113,13 +113,13 @@ public class EView extends View {
 
     readVirtualCompositionMMProperties();
 
-    loadContributingMetamodels(new ArrayList<String>(Arrays.asList(
+    loadContributingMetamodels(new ArrayList<>(Arrays.asList(
         viewtypeProperties.getProperty("contributingMetamodels").split(","))));
 
     metamodelManager = new MetamodelManager(
         virtualResourceSet.getPackageRegistry().values(), viewtype, this);
 
-    loadContributingModels(new ArrayList<String>(Arrays
+    loadContributingModels(new ArrayList<>(Arrays
         .asList(properties.getProperty("contributingModels").split(","))));
 
     if (properties.getProperty("correspondenceModelBase") != null) {
@@ -162,7 +162,7 @@ public class EView extends View {
         .createURI(virtualMMPath);
 
     viewtype = vFac.createResource(emfURI);
-    viewtype.load(uri.toURL().openStream(), new HashMap<Object, Object>());
+    viewtype.load(uri.toURL().openStream(), new HashMap<>());
   }
 
   @Override
@@ -180,7 +180,7 @@ public class EView extends View {
     XMIResourceImpl correspondenceBetweenMetaModelResource = vm
         .getCorrespondenceModelResource();
 
-    List<Association> associations = new ArrayList<Association>();
+    List<Association> associations = new ArrayList<>();
 
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceBetweenMetaModelResource
         .getContents().get(0);

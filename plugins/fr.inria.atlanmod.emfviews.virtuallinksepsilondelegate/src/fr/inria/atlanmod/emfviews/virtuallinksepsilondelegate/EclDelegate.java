@@ -10,8 +10,6 @@
  *******************************************************************************/
 package fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate;
 
-import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -23,15 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.epsilon.common.parse.AST;
+import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.ecl.EclModule;
@@ -41,8 +38,7 @@ import org.eclipse.epsilon.ecl.trace.Match;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.common.util.URI;
+import org.eclipse.epsilon.eol.models.Model;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import fr.inria.atlanmod.emfviews.virtualLinks.Association;
@@ -75,7 +71,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     br = new BufferedReader(fr);
 
-    Map<String, String> metamodelsMap = new HashMap();
+    Map<String, String> metamodelsMap = new HashMap<>();
 
     while ((sCurrentLine = br.readLine()) != null) {
       if (sCurrentLine.startsWith("//alias")) {
@@ -156,8 +152,8 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     br = new BufferedReader(fr);
 
-    Map<String, Resource> inputModelsAliasMapToResource = new HashMap<String, Resource>();
-    Map<String, String> inputmodelsAliasMapMetamodelUri = new HashMap<String, String>();
+    Map<String, Resource> inputModelsAliasMapToResource = new HashMap<>();
+    Map<String, String> inputmodelsAliasMapMetamodelUri = new HashMap<>();
 
     while (((sCurrentLine = br.readLine()) != null)
         && sCurrentLine.startsWith("//alias")) {
@@ -170,8 +166,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       for (int i = 0; i < inputModelsResourcesList.size()
           && !foundCorrectResource; i++) {
         Resource r = inputModelsResourcesList.get(i);
-        EClassifier rootClassifier = (EClassifier) r.getContents().get(0)
-            .eClass();
+        EClassifier rootClassifier = r.getContents().get(0).eClass();
         if (rootClassifier.getEPackage().getNsURI()
             .compareToIgnoreCase(packageUri) == 0
             && !r.getURI().toString().endsWith("profile.uml")) {
@@ -222,7 +217,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
         inputModel = new EmfModel();
         inputModel.setResource(modelResource);
         StringProperties properties = new StringProperties();
-        properties.put(EmfModel.PROPERTY_NAME, tempEntry.getKey());
+        properties.put(Model.PROPERTY_NAME, tempEntry.getKey());
         properties.put(EmfModel.PROPERTY_METAMODEL_URI,
             inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()));
         properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
@@ -286,12 +281,12 @@ public class EclDelegate implements IVirtualLinksDelegate {
       UMLResourcesUtil.init(null);
     EmfModel emfModel = new EmfModel();
     StringProperties properties = new StringProperties();
-    properties.put(EmfModel.PROPERTY_NAME, name);
+    properties.put(Model.PROPERTY_NAME, name);
     properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodel);
     properties.put(EmfModel.PROPERTY_MODEL_URI, model);
     properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
-    properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad + "");
-    properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
+    properties.put(Model.PROPERTY_READONLOAD, readOnLoad + "");
+    properties.put(Model.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
     emfModel.load(properties, null);
     return emfModel;
   }

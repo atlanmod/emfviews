@@ -45,7 +45,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
   /**
    * The cached value of the '{@link #getVirtualLinks() <em>Virtual Links</em>}'
    * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getVirtualLinks()
    * @generated
    * @ordered
@@ -56,7 +56,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
    * The cached value of the '{@link #getLinkedElements() <em>Linked
    * Elements</em>}' containment reference list. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @see #getLinkedElements()
    * @generated
    * @ordered
@@ -65,7 +65,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   protected VirtualLinksImpl() {
@@ -74,7 +74,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -84,26 +84,27 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EList<VirtualLink> getVirtualLinks() {
     if (virtualLinks == null) {
-      virtualLinks = new EObjectContainmentEList<VirtualLink>(VirtualLink.class,
-          this, VirtualLinksPackage.VIRTUAL_LINKS__VIRTUAL_LINKS);
+      virtualLinks = new EObjectContainmentEList<>(VirtualLink.class, this,
+          VirtualLinksPackage.VIRTUAL_LINKS__VIRTUAL_LINKS);
     }
     return virtualLinks;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EList<LinkedElement> getLinkedElements() {
     if (linkedElements == null) {
-      linkedElements = new EObjectContainmentEList<LinkedElement>(
-          LinkedElement.class, this,
+      linkedElements = new EObjectContainmentEList<>(LinkedElement.class, this,
           VirtualLinksPackage.VIRTUAL_LINKS__LINKED_ELEMENTS);
     }
     return linkedElements;
@@ -111,7 +112,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -130,7 +131,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -146,7 +147,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @SuppressWarnings("unchecked")
@@ -168,7 +169,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -186,7 +187,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override

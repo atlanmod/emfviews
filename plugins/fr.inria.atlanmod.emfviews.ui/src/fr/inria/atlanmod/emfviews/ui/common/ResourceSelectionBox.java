@@ -21,11 +21,13 @@ import java.util.Set;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.presentation.EcoreEditorPlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.ui.action.LoadResourceAction.LoadResourceDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -37,14 +39,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.emf.ecore.EPackage.Registry;
-import org.eclipse.jface.dialogs.Dialog;
 
 public class ResourceSelectionBox extends LoadResourceDialog {
 
   private Shell shell;
 
-  private Set<EPackage> registeredPackages = new LinkedHashSet<EPackage>();
+  private Set<EPackage> registeredPackages = new LinkedHashSet<>();
 
   public ResourceSelectionBox(Shell parent) {
     super(parent);
@@ -65,7 +65,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
   }
 
   private Collection<EPackage> getAllPackages(Resource resource) {
-    List<EPackage> result = new ArrayList<EPackage>();
+    List<EPackage> result = new ArrayList<>();
     for (TreeIterator<?> j = new EcoreUtil.ContentTreeIterator<Object>(
         resource.getContents()) {
       private static final long serialVersionUID = 1L;
@@ -102,6 +102,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
     browseRegisteredPackagesButton.setLayoutData(data);
 
     uriField.addModifyListener(new ModifyListener() {
+      @Override
       public void modifyText(ModifyEvent e) {
         String text = uriField.getText();
         if (text.contains(" ")) { //$NON-NLS-1$
@@ -123,7 +124,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
       public void widgetSelected(SelectionEvent event) {
         RegisteredPackageDialog dialog = new RegisteredPackageDialog(
             getShell());
-        if (dialog.open() == Dialog.OK) {
+        if (dialog.open() == Window.OK) {
           uriField.setText(dialog.getResultAsString());
         }
       }
@@ -132,7 +133,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.emf.common.ui.dialogs.ResourceDialog#getURIText()
    */
   @Override
@@ -146,7 +147,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
 
   /**
    * Sets the dialog text.
-   * 
+   *
    * @param text
    *          the text
    */
@@ -156,7 +157,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.jface.window.Window#getShell()
    */
   @Override
@@ -166,7 +167,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.emf.common.ui.dialogs.ResourceDialog#isMulti()
    */
   @Override

@@ -36,7 +36,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
    * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getName()
    * @generated
    * @ordered
@@ -46,7 +46,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
   /**
    * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
    * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getName()
    * @generated
    * @ordered
@@ -55,7 +55,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   protected VirtualLinkImpl() {
@@ -64,7 +64,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -74,18 +74,20 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getName() {
     return name;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setName(String newName) {
     String oldName = name;
     name = newName;
@@ -96,7 +98,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -110,7 +112,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -125,7 +127,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -140,7 +142,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -154,7 +156,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override

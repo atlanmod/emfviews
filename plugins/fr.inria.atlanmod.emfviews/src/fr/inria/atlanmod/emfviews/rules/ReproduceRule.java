@@ -44,7 +44,7 @@ public class ReproduceRule extends TranslationRule {
       Object value = vElement.getConcreteElement().eGet(cFeature);
       if (feature instanceof EReference) {
         if (feature.isMany()) {
-          value = new VirtualModelList<EObject>(object, feature,
+          value = new VirtualModelList<>(object, feature,
               (EList<EObject>) value);
           if (index != NO_INDEX) {
             value = ((VirtualModelList<EObject>) value).get(index);
@@ -82,7 +82,7 @@ public class ReproduceRule extends TranslationRule {
     if (feature instanceof EReference) {
       if (feature.getUpperBound() != 1) {
         if (index != NO_INDEX) {
-          oldValue = new VirtualModelList<EObject>(object, feature,
+          oldValue = new VirtualModelList<>(object, feature,
               (EList<EObject>) cElement.eGet(cFeature));
           value = ((ReproduceElementImpl) value).getConcreteElement();
           cElement.eSet(cFeature, value);
@@ -169,6 +169,7 @@ public class ReproduceRule extends TranslationRule {
     return (InternalEObject) vContainer;
   }
 
+  @Override
   public EStructuralFeature getContainingFeature(InternalEObject object) {
     View vModel = (View) object.eResource();
     EObject cElement = ((ReproduceElementImpl) object).getConcreteElement();

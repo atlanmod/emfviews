@@ -12,7 +12,7 @@ package fr.inria.atlanmod.emfviews.editor.editors;
 
 import java.util.ArrayList;
 
-import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -38,14 +38,14 @@ public class Overview extends SectionPart {
 
   /**
    * Create the SectionPart.
-   * 
+   *
    * @param parent
    * @param toolkit
    * @param style
    */
   public Overview(Composite parent, FormToolkit toolkit, int style) {
     super(parent, toolkit, style);
-    inputMetaModelPaths = new ArrayList<String>();
+    inputMetaModelPaths = new ArrayList<>();
     createClient(getSection(), toolkit);
   }
 
@@ -103,7 +103,7 @@ public class Overview extends SectionPart {
       @Override
       public void widgetSelected(SelectionEvent evt) {
         dialog.create();
-        if (dialog.open() == Dialog.OK) {
+        if (dialog.open() == Window.OK) {
           Object[] result = dialog.getResult();
           int modelType = Integer.parseInt(result[0].toString());
           switch (modelType) {
@@ -124,7 +124,7 @@ public class Overview extends SectionPart {
     removeIn.addSelectionListener(new SelectionAdapter() {
       /**
        * {@inheritDoc}
-       * 
+       *
        * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
        */
       @Override

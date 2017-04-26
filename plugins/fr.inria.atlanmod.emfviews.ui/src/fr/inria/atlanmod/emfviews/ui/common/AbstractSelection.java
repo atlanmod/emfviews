@@ -36,7 +36,7 @@ public class AbstractSelection extends SelectionStatusDialog {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.ui.dialogs.SelectionStatusDialog#create()
    */
   @Override
@@ -49,7 +49,7 @@ public class AbstractSelection extends SelectionStatusDialog {
 
   /**
    * Displays an error.
-   * 
+   *
    * @param message
    *          the message
    */
@@ -76,7 +76,7 @@ public class AbstractSelection extends SelectionStatusDialog {
 
   /**
    * Displays a warning.
-   * 
+   *
    * @param message
    *          the warning message
    */

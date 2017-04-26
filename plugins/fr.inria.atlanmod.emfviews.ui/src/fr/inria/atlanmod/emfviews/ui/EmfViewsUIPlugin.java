@@ -33,7 +33,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
   /**
    * Gets the image at the given plug-in relative path.
    */
-  private static Map<String, Image> path2image = new HashMap<String, Image>();
+  private static Map<String, Image> path2image = new HashMap<>();
 
   /** Resource bundle. */
   private ResourceBundle resourceBundle;
@@ -51,7 +51,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
   /**
    * Returns the string from the plugin's resource bundle, or 'key' if not
    * found.
-   * 
+   *
    * @param key
    *          the default value
    * @return the string from the plugin's resource bundle, or 'key' if not found
@@ -67,7 +67,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
 
   /**
    * Returns the plugin's resource bundle.
-   * 
+   *
    * @return the plugin's resource bundle
    */
   public ResourceBundle getResourceBundle() {
@@ -76,7 +76,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
 
   /**
    * Looks for an image in the icons folder.
-   * 
+   *
    * @param path
    *          the image path
    * @return the searched Image
@@ -100,7 +100,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
 
   /**
    * Returns the image descriptor with the given relative path.
-   * 
+   *
    * @param name
    *          the image name
    * @return the image descriptor

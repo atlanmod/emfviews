@@ -67,7 +67,7 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
 
   /**
    * Returns the uri result as a String.
-   * 
+   *
    * @return the uri result as a String
    */
   public String getResultAsString() {
@@ -103,7 +103,7 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
   }
 
   private Collection<EPackage> getAllPackages(Resource resource) {
-    List<EPackage> result = new ArrayList<EPackage>();
+    List<EPackage> result = new ArrayList<>();
     for (TreeIterator<?> j = new EcoreUtil.ContentTreeIterator<Object>(
         resource.getContents()) {
       private static final long serialVersionUID = 1L;
@@ -145,7 +145,7 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.ui.dialogs.ElementListSelectionDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
    */
   @Override

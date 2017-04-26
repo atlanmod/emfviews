@@ -32,16 +32,16 @@ public class MetamodelManager {
 
   private Resource compositionMetamodel;
 
-  private List<EPackage> contributingMetamodels = new ArrayList<EPackage>();
+  private List<EPackage> contributingMetamodels = new ArrayList<>();
 
-  private Map<String, EClass> mergeClassesByName = new HashMap<String, EClass>();
+  private Map<String, EClass> mergeClassesByName = new HashMap<>();
 
-  private Map<EStructuralFeature, EStructuralFeature> virtualToConcreteFeature = new HashMap<EStructuralFeature, EStructuralFeature>();
-  private Map<EStructuralFeature, EStructuralFeature> concreteToVirtualFeature = new HashMap<EStructuralFeature, EStructuralFeature>();
-  private Map<EStructuralFeature, EStructuralFeature> concreteToMergedFeature = new HashMap<EStructuralFeature, EStructuralFeature>();
-  private Map<String, List<EStructuralFeature>> virtualAssociations = new HashMap<String, List<EStructuralFeature>>();
+  private Map<EStructuralFeature, EStructuralFeature> virtualToConcreteFeature = new HashMap<>();
+  private Map<EStructuralFeature, EStructuralFeature> concreteToVirtualFeature = new HashMap<>();
+  private Map<EStructuralFeature, EStructuralFeature> concreteToMergedFeature = new HashMap<>();
+  private Map<String, List<EStructuralFeature>> virtualAssociations = new HashMap<>();
 
-  private Map<EClass, EClass> concreteToVirtualClass = new HashMap<EClass, EClass>();
+  private Map<EClass, EClass> concreteToVirtualClass = new HashMap<>();
 
   private View virtualModel;
 
@@ -61,7 +61,7 @@ public class MetamodelManager {
   }
 
   private Map<String, List<EClass>> produceCompositionClasses() {
-    Map<String, List<EClass>> compositionClassesByName = new HashMap<String, List<EClass>>();
+    Map<String, List<EClass>> compositionClassesByName = new HashMap<>();
 
     if (virtualModel != null && virtualModel.getResourceSet() != null
         && virtualModel.getResourceSet().getPackageRegistry() != null
@@ -81,7 +81,7 @@ public class MetamodelManager {
         }
 
       }
-      ArrayList<EClassifier> classifiers = new ArrayList();
+      ArrayList<EClassifier> classifiers = new ArrayList<>();
       for (EPackage tempPack : packs) {
         classifiers.addAll(tempPack.getEClassifiers());
       }
@@ -94,7 +94,7 @@ public class MetamodelManager {
           } else {
             if (compositionClassesByName
                 .get(((EClass) obj).getName()) == null) {
-              List<EClass> ecs = new ArrayList<EClass>();
+              List<EClass> ecs = new ArrayList<>();
               ecs.add((EClass) obj);
               compositionClassesByName.put(((EClass) obj).getName(), ecs);
             } else {
@@ -114,7 +114,7 @@ public class MetamodelManager {
           } else {
             if (compositionClassesByName
                 .get(((EClass) obj).getName()) == null) {
-              List<EClass> ecs = new ArrayList<EClass>();
+              List<EClass> ecs = new ArrayList<>();
               ecs.add((EClass) obj);
               compositionClassesByName.put(((EClass) obj).getName(), ecs);
             } else {
@@ -132,7 +132,7 @@ public class MetamodelManager {
 
   private void buildMaps() {
 
-    Map<String, List<EClass>> contributingClassesByName = new HashMap<String, List<EClass>>();
+    Map<String, List<EClass>> contributingClassesByName = new HashMap<>();
     Map<String, List<EClass>> compositionClassesByName = null;
 
     compositionClassesByName = produceCompositionClasses();
@@ -142,7 +142,7 @@ public class MetamodelManager {
 
         if (obj instanceof EClass) {
           if (contributingClassesByName.get(((EClass) obj).getName()) == null) {
-            List<EClass> ecs = new ArrayList<EClass>();
+            List<EClass> ecs = new ArrayList<>();
             ecs.add((EClass) obj);
             contributingClassesByName.put(((EClass) obj).getName(), ecs);
           } else {
@@ -178,7 +178,7 @@ public class MetamodelManager {
         for (EStructuralFeature sf : ec.getEStructuralFeatures()) {
           if (virtualToConcreteFeature.get(sf) == null)
             if (virtualAssociations.get(sf.getName()) == null) {
-              List<EStructuralFeature> sfs = new ArrayList<EStructuralFeature>();
+              List<EStructuralFeature> sfs = new ArrayList<>();
               sfs.add(sf);
               virtualAssociations.put(sf.getName(), sfs);
             } else {

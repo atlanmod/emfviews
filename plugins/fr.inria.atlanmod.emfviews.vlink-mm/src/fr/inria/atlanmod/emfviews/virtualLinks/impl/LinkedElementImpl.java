@@ -42,7 +42,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The default value of the '{@link #getElementRef() <em>Element Ref</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getElementRef()
    * @generated
    * @ordered
@@ -52,7 +52,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The cached value of the '{@link #getElementRef() <em>Element Ref</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getElementRef()
    * @generated
    * @ordered
@@ -62,7 +62,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The default value of the '{@link #getModelRef() <em>Model Ref</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getModelRef()
    * @generated
    * @ordered
@@ -72,7 +72,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The cached value of the '{@link #getModelRef() <em>Model Ref</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getModelRef()
    * @generated
    * @ordered
@@ -82,7 +82,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
    * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getName()
    * @generated
    * @ordered
@@ -92,7 +92,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
    * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getName()
    * @generated
    * @ordered
@@ -102,7 +102,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The default value of the '{@link #getEstructuralFeatures() <em>Estructural
    * Features</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getEstructuralFeatures()
    * @generated
    * @ordered
@@ -112,7 +112,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
   /**
    * The cached value of the '{@link #getEstructuralFeatures() <em>Estructural
    * Features</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getEstructuralFeatures()
    * @generated
    * @ordered
@@ -121,7 +121,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   protected LinkedElementImpl() {
@@ -130,7 +130,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -140,18 +140,20 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getElementRef() {
     return elementRef;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setElementRef(String newElementRef) {
     String oldElementRef = elementRef;
     elementRef = newElementRef;
@@ -163,18 +165,20 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getModelRef() {
     return modelRef;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setModelRef(String newModelRef) {
     String oldModelRef = modelRef;
     modelRef = newModelRef;
@@ -186,18 +190,20 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getName() {
     return name;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setName(String newName) {
     String oldName = name;
     name = newName;
@@ -208,18 +214,20 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getEstructuralFeatures() {
     return estructuralFeatures;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setEstructuralFeatures(String newEstructuralFeatures) {
     String oldEstructuralFeatures = estructuralFeatures;
     estructuralFeatures = newEstructuralFeatures;
@@ -231,7 +239,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -251,7 +259,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -275,7 +283,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -299,7 +307,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -322,7 +330,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override

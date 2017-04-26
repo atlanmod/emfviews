@@ -23,14 +23,14 @@ import fr.inria.atlanmod.emfviews.virtualLinks.*;
  * starting with the actual class of the object and proceeding up the
  * inheritance hierarchy until a non-null result is returned, which is the
  * result of the switch. <!-- end-user-doc -->
- * 
+ *
  * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage
  * @generated
  */
 public class VirtualLinksSwitch<T> extends Switch<T> {
   /**
    * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   protected static VirtualLinksPackage modelPackage;
@@ -38,7 +38,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   /**
    * Creates an instance of the switch. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @generated
    */
   public VirtualLinksSwitch() {
@@ -50,7 +50,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   /**
    * Checks whether this is a switch for the given package. <!-- begin-user-doc
    * --> <!-- end-user-doc -->
-   * 
+   *
    * @parameter ePackage the package in question.
    * @return whether this is a switch for the given package.
    * @generated
@@ -64,7 +64,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * Calls <code>caseXXX</code> for each class of the model until one returns a
    * non null result; it yields that result. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @return the first non-null result returned by a <code>caseXXX</code> call.
    * @generated
    */
@@ -120,7 +120,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * '<em>Virtual Links</em>'. <!-- begin-user-doc --> This implementation
    * returns null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
-   * 
+   *
    * @param object
    *          the target of the switch.
    * @return the result of interpreting the object as an instance of
@@ -137,7 +137,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * Element</em>'. <!-- begin-user-doc --> This implementation returns null;
    * returning a non-null result will terminate the switch. <!-- end-user-doc
    * -->
-   * 
+   *
    * @param object
    *          the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Linked
@@ -154,7 +154,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * '<em>Association</em>'. <!-- begin-user-doc --> This implementation returns
    * null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
-   * 
+   *
    * @param object
    *          the target of the switch.
    * @return the result of interpreting the object as an instance of
@@ -171,7 +171,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * '<em>Virtual Link</em>'. <!-- begin-user-doc --> This implementation
    * returns null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
-   * 
+   *
    * @param object
    *          the target of the switch.
    * @return the result of interpreting the object as an instance of
@@ -188,7 +188,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * '<em>Filter</em>'. <!-- begin-user-doc --> This implementation returns
    * null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
-   * 
+   *
    * @param object
    *          the target of the switch.
    * @return the result of interpreting the object as an instance of
@@ -205,7 +205,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * '<em>EObject</em>'. <!-- begin-user-doc --> This implementation returns
    * null; returning a non-null result will terminate the switch, but this is
    * the last case anyway. <!-- end-user-doc -->
-   * 
+   *
    * @param object
    *          the target of the switch.
    * @return the result of interpreting the object as an instance of

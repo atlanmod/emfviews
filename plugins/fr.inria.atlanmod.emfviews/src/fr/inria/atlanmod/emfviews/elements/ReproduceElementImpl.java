@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import fr.inria.atlanmod.emfviews.core.View;
 import fr.inria.atlanmod.emfviews.rules.ReproduceRule;
-import fr.inria.atlanmod.emfviews.rules.TranslationRule;
 
 public class ReproduceElementImpl extends VirtualElement {
 
@@ -52,14 +51,14 @@ public class ReproduceElementImpl extends VirtualElement {
   public Object setVirtualAssociation(EStructuralFeature feature, int index,
                                       EObject target) {
     if (virtualAssociations == null) {
-      virtualAssociations = new HashMap<EStructuralFeature, VirtualAssociation>();
+      virtualAssociations = new HashMap<>();
     }
     VirtualAssociation vAss = virtualAssociations.get(feature);
     if (vAss == null) {
       vAss = new VirtualAssociation(this, feature, target);
       virtualAssociations.put(feature, vAss);
     } else {
-      vAss.set(target, TranslationRule.NO_INDEX);
+      vAss.set(target, EStore.NO_INDEX);
     }
     return null;
   }

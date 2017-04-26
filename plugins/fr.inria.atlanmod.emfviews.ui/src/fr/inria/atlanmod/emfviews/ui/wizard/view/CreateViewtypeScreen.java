@@ -12,15 +12,12 @@ package fr.inria.atlanmod.emfviews.ui.wizard.view;
 
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -34,8 +31,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
-import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
+import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.common.AbstractSelection;
 import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 
@@ -77,7 +74,7 @@ public class CreateViewtypeScreen extends WizardPage {
         EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
 
     this.setPageComplete(false);
-    inputMetaModelPaths = new ArrayList<String>();
+    inputMetaModelPaths = new ArrayList<>();
   }
 
   public String getdslForLinks() {
@@ -169,7 +166,7 @@ public class CreateViewtypeScreen extends WizardPage {
       @Override
       public void widgetSelected(SelectionEvent evt) {
         dialog.create();
-        if (dialog.open() == Dialog.OK) {
+        if (dialog.open() == Window.OK) {
           Object[] result = dialog.getResult();
           int modelType = Integer.parseInt(result[0].toString());
           switch (modelType) {
@@ -191,7 +188,7 @@ public class CreateViewtypeScreen extends WizardPage {
     removeIn.addSelectionListener(new SelectionAdapter() {
       /**
        * {@inheritDoc}
-       * 
+       *
        * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
        */
       @Override
@@ -258,6 +255,7 @@ public class CreateViewtypeScreen extends WizardPage {
     return inputMetaModelPaths;
   }
 
+  @Override
   public IWizardPage getNextPage() {
     if (isPageComplete()) {
       AttributesSelectionPage asp = (AttributesSelectionPage) getWizard()

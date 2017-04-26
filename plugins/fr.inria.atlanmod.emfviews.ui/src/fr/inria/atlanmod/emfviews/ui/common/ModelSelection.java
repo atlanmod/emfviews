@@ -46,7 +46,7 @@ public class ModelSelection extends AbstractSelection {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.m2m.atl.adt.ui.common.AbstractAtlSelection#create()
    */
   @Override
@@ -56,7 +56,7 @@ public class ModelSelection extends AbstractSelection {
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
    */
   @Override

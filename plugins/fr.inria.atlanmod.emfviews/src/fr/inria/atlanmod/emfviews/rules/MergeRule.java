@@ -24,6 +24,7 @@ public class MergeRule extends TranslationRule {
 
   public static TranslationRule INSTANCE = new MergeRule();
 
+  @Override
   public Object get(InternalEObject object, EStructuralFeature feature,
                     int index) {
 
@@ -65,6 +66,7 @@ public class MergeRule extends TranslationRule {
     return (InternalEObject) vContainer;
   }
 
+  @Override
   public EStructuralFeature getContainingFeature(InternalEObject object) {
     View vModel = (View) object.eResource();
     MergeElementImpl mergeElement = (MergeElementImpl) object;

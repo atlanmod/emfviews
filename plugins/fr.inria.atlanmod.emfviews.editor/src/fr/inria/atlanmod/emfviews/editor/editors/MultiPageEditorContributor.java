@@ -44,13 +44,14 @@ public class MultiPageEditorContributor
 
   /**
    * Returns the action registered with the given text editor.
-   * 
+   *
    * @return IAction or null if editor is null.
    */
   protected IAction getAction(ITextEditor editor, String actionID) {
     return (editor == null ? null : editor.getAction(actionID));
   }
 
+  @Override
   public void setActivePage(IEditorPart part) {
     if (activeEditorPart == part)
       return;
@@ -87,6 +88,7 @@ public class MultiPageEditorContributor
 
   private void createActions() {
     sampleAction = new Action() {
+      @Override
       public void run() {
         MessageDialog.openInformation(null, "VirtualEMF Editor",
             "Sample Action Executed");
@@ -98,12 +100,14 @@ public class MultiPageEditorContributor
         .getImageDescriptor(IDE.SharedImages.IMG_OBJS_TASK_TSK));
   }
 
+  @Override
   public void contributeToMenu(IMenuManager manager) {
     IMenuManager menu = new MenuManager("Editor &Menu");
     manager.prependToGroup(IWorkbenchActionConstants.MB_ADDITIONS, menu);
     menu.add(sampleAction);
   }
 
+  @Override
   public void contributeToToolBar(IToolBarManager manager) {
     manager.add(new Separator());
     manager.add(sampleAction);

@@ -36,10 +36,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -60,6 +60,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ResourceListSelectionDialog;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -185,9 +186,9 @@ public class ViewtypeEditor extends MultiPageEditorPart
     toolkit.decorateFormHeading(viewtypeForm.getForm());
     toolkit.paintBordersFor(body);
 
-    Section contributingMetamodelsSection = toolkit.createSection(
-        viewtypeForm.getForm().getBody(),
-        Section.DESCRIPTION | Section.TWISTIE | Section.TITLE_BAR);
+    Section contributingMetamodelsSection = toolkit
+        .createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
+            | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
     contributingMetamodelsSection
         .setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
     contributingMetamodelsSection
@@ -233,7 +234,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
             Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"),
             inputMetaModelPaths, ModelSelection.INPUTMETAMODEL);
         dialog.create();
-        if (dialog.open() == Dialog.OK) {
+        if (dialog.open() == Window.OK) {
           Object[] result = dialog.getResult();
           int modelType = Integer.parseInt(result[0].toString());
           switch (modelType) {
@@ -301,9 +302,9 @@ public class ViewtypeEditor extends MultiPageEditorPart
       }
     });
 
-    Section sctnLinksTechnology = toolkit.createSection(
-        viewtypeForm.getForm().getBody(),
-        Section.DESCRIPTION | Section.TWISTIE | Section.TITLE_BAR);
+    Section sctnLinksTechnology = toolkit
+        .createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
+            | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
     GridData gd_sctnLinksTechnology = new GridData(SWT.LEFT, SWT.CENTER, true,
         false, 1, 1);
     gd_sctnLinksTechnology.widthHint = 588;
@@ -340,7 +341,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
 
         selectLinksDslDialog.create();
 
-        if (selectLinksDslDialog.open() == Dialog.OK) {
+        if (selectLinksDslDialog.open() == Window.OK) {
           IFile correspondenceModelBaseFile = (IFile) selectLinksDslDialog
               .getResult()[0];
 

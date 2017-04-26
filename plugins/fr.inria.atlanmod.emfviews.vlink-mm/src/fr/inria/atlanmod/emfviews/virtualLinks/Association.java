@@ -53,7 +53,7 @@ public interface Association extends VirtualLink {
    * really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Lower Bound</em>' attribute.
    * @see #setLowerBound(int)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_LowerBound()
@@ -67,7 +67,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getLowerBound
    * <em>Lower Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Lower Bound</em>' attribute.
    * @see #getLowerBound()
@@ -83,7 +83,7 @@ public interface Association extends VirtualLink {
    * really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Upper Bound</em>' attribute.
    * @see #setUpperBound(int)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_UpperBound()
@@ -97,7 +97,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getUpperBound
    * <em>Upper Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Upper Bound</em>' attribute.
    * @see #getUpperBound()
@@ -113,7 +113,7 @@ public interface Association extends VirtualLink {
    * clear, there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Association Type Name</em>' attribute.
    * @see #setAssociationTypeName(String)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_AssociationTypeName()
@@ -127,7 +127,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getAssociationTypeName
    * <em>Association Type Name</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Association Type Name</em>' attribute.
    * @see #getAssociationTypeName()
@@ -143,7 +143,7 @@ public interface Association extends VirtualLink {
    * really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Opposite</em>' reference.
    * @see #setOpposite(Association)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_Opposite()
@@ -157,7 +157,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOpposite
    * <em>Opposite</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Opposite</em>' reference.
    * @see #getOpposite()
@@ -173,7 +173,7 @@ public interface Association extends VirtualLink {
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Source Element</em>' reference.
    * @see #setSourceElement(LinkedElement)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_SourceElement()
@@ -187,7 +187,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceElement
    * <em>Source Element</em>}' reference. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Source Element</em>' reference.
    * @see #getSourceElement()
@@ -205,7 +205,7 @@ public interface Association extends VirtualLink {
    * clear, there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Target Elements</em>' reference list.
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_TargetElements()
    * @model required="true"
@@ -221,7 +221,7 @@ public interface Association extends VirtualLink {
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Ocl Expression</em>' attribute.
    * @see #setOclExpression(String)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_OclExpression()
@@ -235,7 +235,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOclExpression
    * <em>Ocl Expression</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Ocl Expression</em>' attribute.
    * @see #getOclExpression()
@@ -251,7 +251,7 @@ public interface Association extends VirtualLink {
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Source Attribute</em>' attribute.
    * @see #setSourceAttribute(String)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_SourceAttribute()
@@ -265,7 +265,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceAttribute
    * <em>Source Attribute</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Source Attribute</em>' attribute.
    * @see #getSourceAttribute()
@@ -281,7 +281,7 @@ public interface Association extends VirtualLink {
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Target Attribute</em>' attribute.
    * @see #setTargetAttribute(String)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_TargetAttribute()
@@ -295,7 +295,7 @@ public interface Association extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetAttribute
    * <em>Target Attribute</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Target Attribute</em>' attribute.
    * @see #getTargetAttribute()

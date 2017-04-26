@@ -43,7 +43,7 @@ public interface VirtualLinks extends EObject {
    * isn't clear, there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Virtual Links</em>' containment reference
    *         list.
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLinks_VirtualLinks()
@@ -62,7 +62,7 @@ public interface VirtualLinks extends EObject {
    * isn't clear, there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Linked Elements</em>' containment reference
    *         list.
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLinks_LinkedElements()

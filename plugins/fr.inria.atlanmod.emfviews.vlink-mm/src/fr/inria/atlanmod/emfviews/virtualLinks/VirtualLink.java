@@ -37,7 +37,7 @@ public interface VirtualLink extends EObject {
    * should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * 
+   *
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLink_Name()
@@ -50,7 +50,7 @@ public interface VirtualLink extends EObject {
    * Sets the value of the
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink#getName
    * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @param value
    *          the new value of the '<em>Name</em>' attribute.
    * @see #getName()

@@ -13,9 +13,7 @@ package fr.inria.atlanmod.emfviews.core;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IWorkspace;
@@ -25,7 +23,6 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 import fr.inria.atlanmod.emfviews.elements.VirtualElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
@@ -35,7 +32,7 @@ public class VirtualLinkManager {
 
   private VirtualLinks correspondenceModel;
 
-  private Map<EObject, VirtualElement> virtualLinks = new HashMap<EObject, VirtualElement>();
+  private Map<EObject, VirtualElement> virtualLinks = new HashMap<>();
 
   public VirtualLinkManager(String correspondenceModelURI, View vModel)
       throws MalformedURLException, IOException {
@@ -49,8 +46,7 @@ public class VirtualLinkManager {
 
     java.net.URI uri = workspace.getRoot()
         .findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModel.load(uri.toURL().openStream(),
-        new HashMap<Object, Object>());
+    correspondenceModel.load(uri.toURL().openStream(), new HashMap<>());
 
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceModel.getContents()
         .get(0);

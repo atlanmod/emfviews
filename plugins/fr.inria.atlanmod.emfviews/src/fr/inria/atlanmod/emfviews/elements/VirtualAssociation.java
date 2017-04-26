@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject.EStore;
 
 import fr.inria.atlanmod.emfviews.core.View;
-import fr.inria.atlanmod.emfviews.rules.TranslationRule;
 import fr.inria.atlanmod.emfviews.rules.VirtualModelList;
 
 public class VirtualAssociation {
@@ -30,7 +30,7 @@ public class VirtualAssociation {
   public VirtualAssociation(EObject container,
       EStructuralFeature virtualFeature, EObject referenceElement) {
     init(container, virtualFeature);
-    referencedElements = new ArrayList<EObject>();
+    referencedElements = new ArrayList<>();
     referencedElements.add(referenceElement);
   }
 
@@ -52,7 +52,7 @@ public class VirtualAssociation {
   @SuppressWarnings("unchecked")
   public Object get(int index) {
     if (virtualFeature.isMany()) {
-      if (index == TranslationRule.NO_INDEX) {
+      if (index == EStore.NO_INDEX) {
         return new VirtualModelList<EObject>(container, virtualFeature,
             referencedElements);
       } else {
@@ -67,7 +67,7 @@ public class VirtualAssociation {
 
   public Object set(EObject target, int index) {
     if (virtualFeature.isMany()) {
-      if (index == TranslationRule.NO_INDEX) {
+      if (index == EStore.NO_INDEX) {
         referencedElements.add(target);
       } else {
         referencedElements.add(index, target);

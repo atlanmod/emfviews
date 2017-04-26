@@ -27,42 +27,42 @@ import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
  * end-user-doc -->
- * 
+ *
  * @generated
  */
 public class VirtualLinksPackageImpl extends EPackageImpl
     implements VirtualLinksPackage {
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private EClass virtualLinksEClass = null;
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private EClass linkedElementEClass = null;
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private EClass associationEClass = null;
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private EClass virtualLinkEClass = null;
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private EClass filterEClass = null;
@@ -76,7 +76,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl
    * method {@link #init init()}, which also performs initialization of the
    * package, or returns the registered package, if one already exists. <!--
    * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see org.eclipse.emf.ecore.EPackage.Registry
    * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#eNS_URI
    * @see #init()
@@ -88,7 +88,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private static boolean isInited = false;
@@ -96,13 +96,13 @@ public class VirtualLinksPackageImpl extends EPackageImpl
   /**
    * Creates, registers, and initializes the <b>Package</b> for this model, and
    * for any others upon which it depends.
-   * 
+   *
    * <p>
    * This method is used to initialize {@link VirtualLinksPackage#eINSTANCE}
    * when that field is accessed. Clients should not invoke it directly.
    * Instead, they should simply access that field to obtain the package. <!--
    * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #eNS_URI
    * @see #createPackageContents()
    * @see #initializePackageContents()
@@ -138,232 +138,257 @@ public class VirtualLinksPackageImpl extends EPackageImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EClass getVirtualLinks() {
     return virtualLinksEClass;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EReference getVirtualLinks_VirtualLinks() {
     return (EReference) virtualLinksEClass.getEStructuralFeatures().get(0);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EReference getVirtualLinks_LinkedElements() {
     return (EReference) virtualLinksEClass.getEStructuralFeatures().get(1);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EClass getLinkedElement() {
     return linkedElementEClass;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getLinkedElement_ElementRef() {
     return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(0);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getLinkedElement_ModelRef() {
     return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(1);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getLinkedElement_Name() {
     return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(2);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getLinkedElement_EstructuralFeatures() {
     return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(3);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EClass getAssociation() {
     return associationEClass;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getAssociation_LowerBound() {
     return (EAttribute) associationEClass.getEStructuralFeatures().get(0);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getAssociation_UpperBound() {
     return (EAttribute) associationEClass.getEStructuralFeatures().get(1);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getAssociation_AssociationTypeName() {
     return (EAttribute) associationEClass.getEStructuralFeatures().get(2);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EReference getAssociation_Opposite() {
     return (EReference) associationEClass.getEStructuralFeatures().get(3);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EReference getAssociation_SourceElement() {
     return (EReference) associationEClass.getEStructuralFeatures().get(4);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EReference getAssociation_TargetElements() {
     return (EReference) associationEClass.getEStructuralFeatures().get(5);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getAssociation_OclExpression() {
     return (EAttribute) associationEClass.getEStructuralFeatures().get(6);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getAssociation_SourceAttribute() {
     return (EAttribute) associationEClass.getEStructuralFeatures().get(7);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getAssociation_TargetAttribute() {
     return (EAttribute) associationEClass.getEStructuralFeatures().get(8);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EClass getVirtualLink() {
     return virtualLinkEClass;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getVirtualLink_Name() {
     return (EAttribute) virtualLinkEClass.getEStructuralFeatures().get(0);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EClass getFilter() {
     return filterEClass;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EReference getFilter_FilteredElement() {
     return (EReference) filterEClass.getEStructuralFeatures().get(0);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getFilter_OclQuery() {
     return (EAttribute) filterEClass.getEStructuralFeatures().get(1);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public EAttribute getFilter_FilterOnlyEstructuralFeatures() {
     return (EAttribute) filterEClass.getEStructuralFeatures().get(2);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public VirtualLinksFactory getVirtualLinksFactory() {
     return (VirtualLinksFactory) getEFactoryInstance();
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private boolean isCreated = false;
@@ -372,7 +397,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl
    * Creates the meta-model objects for the package. This method is guarded to
    * have no affect on any invocation but its first. <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   public void createPackageContents() {
@@ -413,7 +438,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   private boolean isInitialized = false;
@@ -422,7 +447,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl
    * Complete the initialization of the package and its meta-model. This method
    * is guarded to have no affect on any invocation but its first. <!--
    * begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   public void initializePackageContents() {

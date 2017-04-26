@@ -29,7 +29,7 @@ public class Messages {
 
   /**
    * Returns a specified {@link String} from the resource bundle.
-   * 
+   *
    * @param key
    *          Key of the String we seek.
    * @return The String from the resource bundle associated with
@@ -45,7 +45,7 @@ public class Messages {
 
   /**
    * Returns a String from the resource bundle binded with the given arguments.
-   * 
+   *
    * @param key
    *          Key of the String we seek.
    * @param arguments

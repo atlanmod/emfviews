@@ -34,6 +34,7 @@ public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
     this.virtualModel = (View) object.eResource();
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public E get(int index) {
     if (index >= 0) {
@@ -74,7 +75,7 @@ public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
   private int subListSize(List<E> list) {
     int count = 0;
     for (E e : list) {
-      EObject eo = (EObject) virtualModel.getVirtualLinkManager()
+      EObject eo = virtualModel.getVirtualLinkManager()
           .getVirtualElement((EObject) e);
       if (eo instanceof MergeElementImpl) {
         if (((MergeElementImpl) eo).getPreferableElement() == e) {

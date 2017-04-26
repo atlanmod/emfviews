@@ -40,7 +40,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
   /**
    * The cached value of the '{@link #getFilteredElement() <em>Filtered
    * Element</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getFilteredElement()
    * @generated
    * @ordered
@@ -50,7 +50,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
   /**
    * The default value of the '{@link #getOclQuery() <em>Ocl Query</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getOclQuery()
    * @generated
    * @ordered
@@ -60,7 +60,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
   /**
    * The cached value of the '{@link #getOclQuery() <em>Ocl Query</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @see #getOclQuery()
    * @generated
    * @ordered
@@ -71,7 +71,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
    * The default value of the '{@link #isFilterOnlyEstructuralFeatures()
    * <em>Filter Only Estructural Features</em>}' attribute. <!-- begin-user-doc
    * --> <!-- end-user-doc -->
-   * 
+   *
    * @see #isFilterOnlyEstructuralFeatures()
    * @generated
    * @ordered
@@ -82,7 +82,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
    * The cached value of the '{@link #isFilterOnlyEstructuralFeatures()
    * <em>Filter Only Estructural Features</em>}' attribute. <!-- begin-user-doc
    * --> <!-- end-user-doc -->
-   * 
+   *
    * @see #isFilterOnlyEstructuralFeatures()
    * @generated
    * @ordered
@@ -91,7 +91,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   protected FilterImpl() {
@@ -100,7 +100,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -110,9 +110,10 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public LinkedElement getFilteredElement() {
     if (filteredElement != null && filteredElement.eIsProxy()) {
       InternalEObject oldFilteredElement = (InternalEObject) filteredElement;
@@ -129,7 +130,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   public LinkedElement basicGetFilteredElement() {
@@ -138,9 +139,10 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setFilteredElement(LinkedElement newFilteredElement) {
     LinkedElement oldFilteredElement = filteredElement;
     filteredElement = newFilteredElement;
@@ -152,18 +154,20 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public String getOclQuery() {
     return oclQuery;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setOclQuery(String newOclQuery) {
     String oldOclQuery = oclQuery;
     oclQuery = newOclQuery;
@@ -174,18 +178,20 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public boolean isFilterOnlyEstructuralFeatures() {
     return filterOnlyEstructuralFeatures;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public void setFilterOnlyEstructuralFeatures(boolean newFilterOnlyEstructuralFeatures) {
     boolean oldFilterOnlyEstructuralFeatures = filterOnlyEstructuralFeatures;
     filterOnlyEstructuralFeatures = newFilterOnlyEstructuralFeatures;
@@ -197,7 +203,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -217,7 +223,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -238,7 +244,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -260,7 +266,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -279,7 +285,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override

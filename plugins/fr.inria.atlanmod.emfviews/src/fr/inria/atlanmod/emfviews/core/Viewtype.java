@@ -23,21 +23,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -49,7 +45,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
@@ -288,11 +283,10 @@ public class Viewtype extends ResourceImpl {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     java.net.URI uri = workspace.getRoot()
         .findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModelResource.load(uri.toURL().openStream(),
-        new HashMap<Object, Object>());
+    correspondenceModelResource.load(uri.toURL().openStream(), new HashMap<>());
     correspondenceModelResource
         .setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
-    List<Association> associations = new ArrayList<Association>();
+    List<Association> associations = new ArrayList<>();
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource
         .getContents().get(0);
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
@@ -654,18 +648,16 @@ public class Viewtype extends ResourceImpl {
     Collection<Object> localPackages = virtualResourceSet.getPackageRegistry()
         .values();
     int numPackages = virtualResourceSet.getPackageRegistry().size();
-    List[] sublists = new List[numPackages];
-    int i = 0;
+    List<EObject>[] sublists = new List[numPackages];
 
     for (Object object : localPackages) {
       if (object instanceof EPackage) {
-        ArrayList oneOftheSublists = new ArrayList<>();
-        oneOftheSublists.add(object);
-        sublists[i] = oneOftheSublists;
-        i++;
+        List<EObject> oneOftheSublists = new ArrayList<>();
+        oneOftheSublists.add((EObject) object);
+        sublists[sublists.length] = oneOftheSublists;
       }
     }
-    this.virtualContents = new VirtualContents<EObject>(this, sublists);
+    this.virtualContents = new VirtualContents<>(this, sublists);
   }
 
   private InputStream openContentStream(String contents) {

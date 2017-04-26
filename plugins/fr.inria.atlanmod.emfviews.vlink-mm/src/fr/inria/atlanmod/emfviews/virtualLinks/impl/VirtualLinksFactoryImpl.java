@@ -21,7 +21,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.*;
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
  * end-user-doc -->
- * 
+ *
  * @generated
  */
 public class VirtualLinksFactoryImpl extends EFactoryImpl
@@ -29,7 +29,7 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
   /**
    * Creates the default factory implementation. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @generated
    */
   public static VirtualLinksFactory init() {
@@ -48,7 +48,7 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
   /**
    * Creates an instance of the factory. <!-- begin-user-doc --> <!--
    * end-user-doc -->
-   * 
+   *
    * @generated
    */
   public VirtualLinksFactoryImpl() {
@@ -57,7 +57,7 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
   @Override
@@ -79,9 +79,10 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public VirtualLinks createVirtualLinks() {
     VirtualLinksImpl virtualLinks = new VirtualLinksImpl();
     return virtualLinks;
@@ -89,9 +90,10 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public LinkedElement createLinkedElement() {
     LinkedElementImpl linkedElement = new LinkedElementImpl();
     return linkedElement;
@@ -99,9 +101,10 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public Association createAssociation() {
     AssociationImpl association = new AssociationImpl();
     return association;
@@ -109,9 +112,10 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public Filter createFilter() {
     FilterImpl filter = new FilterImpl();
     return filter;
@@ -119,16 +123,17 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @generated
    */
+  @Override
   public VirtualLinksPackage getVirtualLinksPackage() {
     return (VirtualLinksPackage) getEPackage();
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
-   * 
+   *
    * @deprecated
    * @generated
    */

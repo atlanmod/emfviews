@@ -25,7 +25,6 @@ public class VirtualContents<E> extends AbstractList<E> implements EList<E> {
     this.subLists = subLists;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public E get(int index) {
     if (index >= 0) {
