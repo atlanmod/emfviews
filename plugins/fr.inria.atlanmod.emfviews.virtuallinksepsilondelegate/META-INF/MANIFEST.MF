@@ -7,7 +7,7 @@ Bundle-Activator: fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate.Activat
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.epsilon.ecl.engine,
  org.eclipse.epsilon.eol.engine;bundle-version="1.0.0",
- fr.inria.atlanmod.emfviews.vlink-mm,
+ fr.inria.atlanmod.emfviews.virtuallinks,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.epsilon.emc.emf,
  org.eclipse.epsilon.eol.dt,

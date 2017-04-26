@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="fr.inria.atlanmod.emfviews.virtuallinks.delegator" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="fr.inria.atlanmod.emfviews.virtuallinks" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
-      <appinfo>
-         <meta.schema plugin="fr.inria.atlanmod.emfviews.vlink-mm" id="delegator" name="delegator"/>
-      </appinfo>
+      <appInfo>
+         <meta.schema plugin="fr.inria.atlanmod.emfviews.virtuallinks" id="delegator" name="delegator"/>
+      </appInfo>
       <documentation>
          The VirtualLinksDelegate plugin allows to transform different linking/comparison DSLs into a canonical links model. This model can be latter use in a tool such as VirtualEMF.
       </documentation>
@@ -12,9 +12,9 @@
 
    <element name="extension">
       <annotation>
-         <appinfo>
+         <appInfo>
             <meta.element />
-         </appinfo>
+         </appInfo>
       </annotation>
       <complexType>
          <choice>
@@ -39,9 +39,9 @@
                <documentation>
                   
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
       </complexType>
@@ -66,9 +66,9 @@
                <documentation>
                   The class to be instantiated.
                </documentation>
-               <appinfo>
+               <appInfo>
                   <meta.attribute kind="java" basedOn="fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegateFactory:fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate"/>
-               </appinfo>
+               </appInfo>
             </annotation>
          </attribute>
          <attribute name="default" type="boolean">
@@ -82,22 +82,22 @@
    </element>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="since"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter the first release in which this extension point appears.]
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="examples"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          &lt;pre&gt;
    &lt;extension
-         point=&quot;fr.inria.atlanmod.emfviews.vlink-mm.delegator&quot;&gt;
+         point=&quot;fr.inria.atlanmod.emfviews.virtuallinks.delegator&quot;&gt;
       &lt;linkingDslContribution
             class=&quot;fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate.EclDelegate&quot;
             fileExtension=&quot;ecl&quot;&gt;
@@ -108,18 +108,18 @@
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="apiinfo"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          Plugins that want to extend this extension point must generate objects that implement &lt;samp&gt; fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate &lt;/samp&gt;
       </documentation>
    </annotation>
 
    <annotation>
-      <appinfo>
+      <appInfo>
          <meta.section type="implementation"/>
-      </appinfo>
+      </appInfo>
       <documentation>
          [Enter information about supplied implementation of this extension point.]
       </documentation>

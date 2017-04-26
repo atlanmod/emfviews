@@ -30,7 +30,7 @@ public class VirtualLinksDelegator {
     String dslExtension = linksDslFile.substring(linksDslFile.lastIndexOf('.') + 1);
 
     IExtension[] extensions = Platform.getExtensionRegistry()
-        .getExtensionPoint("fr.inria.atlanmod.emfviews.vlink-mm.delegator").getExtensions();
+        .getExtensionPoint("fr.inria.atlanmod.emfviews.virtuallinks.delegator").getExtensions();
     boolean finished = false;
     IExtension matchingExtension = null;
     for (int i = 0; i < extensions.length && !finished; i++) {

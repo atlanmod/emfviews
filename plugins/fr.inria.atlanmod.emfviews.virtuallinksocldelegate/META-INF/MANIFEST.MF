@@ -6,7 +6,7 @@ Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: fr.inria.atlanmod.emfviews.virtuallinksocldelegate.Activator
 Bundle-Vendor: Atlanmod
 Require-Bundle: org.eclipse.core.runtime,
- fr.inria.atlanmod.emfviews.vlink-mm,
+ fr.inria.atlanmod.emfviews.virtuallinks,
  org.eclipse.ocl,
  org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

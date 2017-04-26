@@ -24,7 +24,7 @@ So far, these are the projects:
 * fr.inria.atlanmod.emfviews. This project is the main component of the tool. It includes the logic behind viewtypes and views.
 * fr.inria.atlanmod.emfviews.ui. This project contributes to the Eclipse UI by defining wizards to ease the creation of viewtypes and views.
 * fr.inria.atlanmod.emfviews.editor. This project contributes to Eclipse UI, by defining an editor to modify viewtypes and views.
-* fr.inria.atlanmod.emfviews.vlink-mm. EMF project defining an Ecore model to represent links models.
+* fr.inria.atlanmod.emfviews.virtuallinks. EMF project defining an Ecore model to represent links models.
 * fr.inria.atlanmod.emfviews.virtuallinks.delegator. This package delegates the creation of virtual links to concrete implementations
 * fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate. This project allows to generate links from the Epsilon Comparison Language (ECL).
 

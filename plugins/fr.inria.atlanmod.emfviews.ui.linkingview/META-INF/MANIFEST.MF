@@ -13,10 +13,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.edit.ui,
  fr.inria.atlanmod.emfviews,
  fr.inria.atlanmod.emfviews.ui,
- fr.inria.atlanmod.emfviews.vlink-mm,
- fr.inria.atlanmod.emfviews.util,
  org.eclipse.osgi,
- org.eclipse.emf.ecore.xmi
+ org.eclipse.emf.ecore.xmi,
+ fr.inria.atlanmod.emfviews.virtuallinks;bundle-version="0.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: fr.inria.atlanmod.emfviews.ui.linkingview.view
