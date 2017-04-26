@@ -75,7 +75,7 @@ import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
+import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
 
 public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChangeListener {
 
@@ -472,7 +472,7 @@ public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChan
               .getProperty("correspondenceModel");
       java.net.URI linksUri = null;
       try {
-        linksUri = EmfViewsUtil.toURI(linksResourcePath);
+        linksUri = VirtualLinksUtil.toURI(linksResourcePath);
       } catch (URISyntaxException e) {
         e.printStackTrace();
       }
@@ -483,27 +483,27 @@ public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChan
       for (Object elementToFilter : elementsToFilter) {
         if (elementToFilter instanceof EStructuralFeature) {
           EStructuralFeature estFeature = (EStructuralFeature) elementToFilter;
-          Filter filter = EmfViewsUtil
+          Filter filter = VirtualLinksUtil
               .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
           LinkedElement filterLinkedElement =
-              EmfViewsUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
+              VirtualLinksUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
                                                estFeature.getEContainingClass().getEPackage()
                                                    .getNsURI(),
                                                "//" + estFeature.getEContainingClass().getName(),
                                                estFeature.getName());
-          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
+          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (elementToFilter instanceof EClass) {
           EClass tempEclass = (EClass) elementToFilter;
           Filter filter =
-              EmfViewsUtil.createFilter("filter" + tempEclass.getName(),
+              VirtualLinksUtil.createFilter("filter" + tempEclass.getName(),
                                         tempEclass.getName() + ".allInstances()", false);
-          LinkedElement filterLinkedElement = EmfViewsUtil
+          LinkedElement filterLinkedElement = VirtualLinksUtil
               .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
                                    "//" + tempEclass.getName(), null);
           filter.setFilteredElement(filterLinkedElement);
           filterLinks.getVirtualLinks().add(filter);
           filterLinks.getLinkedElements().add(filterLinkedElement);
-          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
+          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         }
       }
 

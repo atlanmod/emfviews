@@ -31,7 +31,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
+import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
 
 public class CreateViewWizard extends Wizard implements INewWizard, IExecutableExtension {
 
@@ -130,9 +130,9 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
       IPath filePath = new Path(viewFileWorkspaceRelativePath).removeFileExtension();
       IPath linksModelPath = filePath.addFileExtension("xmi");
 
-      VirtualLinks viewLinks = EmfViewsUtil.createLinksModel();
-      EmfViewsUtil.persistLinksModel(viewLinks, org.eclipse.emf.common.util.URI
-          .createURI(EmfViewsUtil.toURI(linksModelPath.toString()).toString()));
+      VirtualLinks viewLinks = VirtualLinksUtil.createLinksModel();
+      VirtualLinksUtil.persistLinksModel(viewLinks, org.eclipse.emf.common.util.URI
+          .createURI(VirtualLinksUtil.toURI(linksModelPath.toString()).toString()));
 
       // eview = (EView) vm.createEView(relativeInputmodelsUris, viewtypePath,
       // linksModelPath.toString());

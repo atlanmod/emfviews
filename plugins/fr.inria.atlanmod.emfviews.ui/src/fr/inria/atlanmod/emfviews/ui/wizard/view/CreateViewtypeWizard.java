@@ -42,7 +42,7 @@ import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
+import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
 
 public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecutableExtension {
 
@@ -109,7 +109,7 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecuta
 
     IFile viewTypeFile = simplePage.createNewFile();
     IPath viewTypeFolderFullPath = viewTypeFile.getFullPath().removeFileExtension();
-    VirtualLinks filterLinks = EmfViewsUtil.createLinksModel();
+    VirtualLinks filterLinks = VirtualLinksUtil.createLinksModel();
     Object[] treeElementsSelected = attSelectionPage.getCheckedElements();
 
     if (treeElementsSelected != null && treeElementsSelected.length > 0) {
@@ -117,27 +117,27 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecuta
 
         if (treeItem instanceof EStructuralFeature) {
           EStructuralFeature estFeature = (EStructuralFeature) treeItem;
-          Filter filter = EmfViewsUtil
+          Filter filter = VirtualLinksUtil
               .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
           LinkedElement filterLinkedElement =
-              EmfViewsUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
+              VirtualLinksUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
                                                estFeature.getEContainingClass().getEPackage()
                                                    .getNsURI(),
                                                "//" + estFeature.getEContainingClass().getName(),
                                                estFeature.getName());
-          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
+          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (treeItem instanceof EClass) {
           EClass tempEclass = (EClass) treeItem;
           Filter filter =
-              EmfViewsUtil.createFilter("filter" + tempEclass.getName(),
+              VirtualLinksUtil.createFilter("filter" + tempEclass.getName(),
                                         tempEclass.getName() + ".allInstances()", false);
-          LinkedElement filterLinkedElement = EmfViewsUtil
+          LinkedElement filterLinkedElement = VirtualLinksUtil
               .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
                                    "//" + tempEclass.getName(), null);
           filter.setFilteredElement(filterLinkedElement);
           filterLinks.getVirtualLinks().add(filter);
           filterLinks.getLinkedElements().add(filterLinkedElement);
-          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
+          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         }
 
       }
@@ -145,7 +145,7 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecuta
     }
 
     try {
-      EmfViewsUtil.persistLinksModel(filterLinks, org.eclipse.emf.common.util.URI
+      VirtualLinksUtil.persistLinksModel(filterLinks, org.eclipse.emf.common.util.URI
           .createURI(viewTypeFolderFullPath.addFileExtension("xmi").toString()));
     } catch (IOException e) {
       // TODO Auto-generated catch block

@@ -45,7 +45,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
+import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
 import fr.inria.atlanmod.emfviews.virtuallinksdelegator.IVirtualLinksDelegate;
 
 public class EclDelegate implements IVirtualLinksDelegate {
@@ -55,11 +55,11 @@ public class EclDelegate implements IVirtualLinksDelegate {
                                           URI modelLinksURI) throws Exception {
 
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    VirtualLinks virtualLinks = EmfViewsUtil.createLinksModel();
+    VirtualLinks virtualLinks = VirtualLinksUtil.createLinksModel();
 
     EclModule eclModule = new EclModule();
 
-    java.net.URI uri = EmfViewsUtil.toURI(linksDslFilePath);
+    java.net.URI uri = VirtualLinksUtil.toURI(linksDslFilePath);
 
     File f = new File(uri.getSchemeSpecificPart());
     FileReader fr = new FileReader(f);
@@ -130,14 +130,14 @@ public class EclDelegate implements IVirtualLinksDelegate {
       virtualLinks.getVirtualLinks().add(vAsso);
 
     }
-    EmfViewsUtil.persistLinksModel(virtualLinks, modelLinksURI);
+    VirtualLinksUtil.persistLinksModel(virtualLinks, modelLinksURI);
   }
 
   @Override
   public void createVirtualModelLinks(String linksDslFile, URI linksModel,
                                       List<Resource> inputModelsResourcesList) throws Exception {
 
-    java.net.URI linksDslUri = EmfViewsUtil.toURI(linksDslFile);
+    java.net.URI linksDslUri = VirtualLinksUtil.toURI(linksDslFile);
 
     File f = new File(linksDslUri.getSchemeSpecificPart());
     FileReader fr = new FileReader(f);

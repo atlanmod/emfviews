@@ -47,7 +47,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
+import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
 
 /**
  * Executes ocl queries on the contributing models conforming to ecore.
@@ -130,8 +130,8 @@ public class OclforEmfDelegate {
 
   private void createFilterLink(EObject objectToFilter, Filter viewtypeFilter) {
     Filter filter =
-        EmfViewsUtil.createFilter(viewtypeFilter.getName(), viewtypeFilter.getOclQuery(), false);
-    LinkedElement filterLinkedElement = EmfViewsUtil
+        VirtualLinksUtil.createFilter(viewtypeFilter.getName(), viewtypeFilter.getOclQuery(), false);
+    LinkedElement filterLinkedElement = VirtualLinksUtil
         .createLinkedElement(viewtypeFilter.getFilteredElement().getName(),
                              viewtypeFilter.getFilteredElement().getModelRef(),
                              objectToFilter.eResource().getURIFragment(objectToFilter), null);

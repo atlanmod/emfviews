@@ -25,7 +25,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
 
-public class EmfViewsUtil {
+public class VirtualLinksUtil {
 
   public static URI toURI(String resourcePath) throws URISyntaxException {
     IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
