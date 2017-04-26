@@ -11,8 +11,6 @@
 
 package fr.inria.atlanmod.emfviews.rules;
 
-import java.util.List;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -30,11 +28,11 @@ public abstract class TranslationRule implements EStore {
     return list.isEmpty();
   }
 
-  @Override
   @SuppressWarnings("unchecked")
+  @Override
   public int size(InternalEObject object, EStructuralFeature feature) {
     try {
-      return ((List<Object>) get(object, feature, EStore.NO_INDEX)).size();
+      return ((EList<Object>) get(object, feature, EStore.NO_INDEX)).size();
     } catch (Exception e) {}
     return 0;
   }
