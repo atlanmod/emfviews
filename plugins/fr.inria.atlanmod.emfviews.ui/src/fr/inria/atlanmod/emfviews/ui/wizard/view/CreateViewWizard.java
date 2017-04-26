@@ -28,6 +28,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
+import fr.inria.atlanmod.emfviews.core.EmfViewsFactory;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
@@ -53,7 +54,7 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
 
   private IFile virtualMetamodel;
 
-  // private EmfViewsFactory vm;
+  private EmfViewsFactory vm;
 
   public CreateViewWizard(IFile virtualMetamodel) {
 
@@ -134,8 +135,8 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
       VirtualLinksUtil.persistLinksModel(viewLinks, org.eclipse.emf.common.util.URI
           .createURI(VirtualLinksUtil.toURI(linksModelPath.toString()).toString()));
 
-      // eview = (EView) vm.createEView(relativeInputmodelsUris, viewtypePath,
-      // linksModelPath.toString());
+      // FIXME: unused?
+      vm.createEView(relativeInputmodelsUris, viewtypePath, linksModelPath.toString());
 
       IFile newViewFile = viewContainerFolderSelectionPage.createNewFile();
       StringBuffer fileContent = new StringBuffer();

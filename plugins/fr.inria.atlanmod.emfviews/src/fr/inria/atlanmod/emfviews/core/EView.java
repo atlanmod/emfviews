@@ -52,6 +52,7 @@ public class EView extends View {
     super(uri);
   }
 
+  // FIXME: unused?
   public EView(List<String> contributingModels, String viewtypeUri,
                String correspondenceModelAbsolutePath) throws MalformedURLException, IOException {
     super();

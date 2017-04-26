@@ -56,12 +56,14 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
 
   }
 
+  // FIXME: unused?
   public Resource createEView(List<String> contributingModels, String compositionMetamodel,
                               String correspondenceModelAbsolutePath) throws MalformedURLException,
                                                                       IOException {
     return new EView(contributingModels, compositionMetamodel, correspondenceModelAbsolutePath);
   }
 
+  // FIXME: unused?
   public Resource createViewtype(List<String> contributingMetamodels,
                                  String filtersMMUri) throws FileNotFoundException, IOException {
     return new Viewtype(contributingMetamodels, filtersMMUri);
