@@ -40,7 +40,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtuallinksdelegator.VirtualLinksDelegator;
+import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class EView extends View {
 

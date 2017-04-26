@@ -8,7 +8,7 @@
  * Contributors:
  * Juan David Villa Calle - initial API and implementation
  *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtuallinksdelegator;
+package fr.inria.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.List;
 

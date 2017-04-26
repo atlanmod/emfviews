@@ -4,7 +4,8 @@
 <!--
 -->
 
-<plugin>
+<plugin> 
+   <extension-point id="delegator" name="delegator" schema="schema/delegator.exsd"/>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package

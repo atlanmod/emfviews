@@ -46,7 +46,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
-import fr.inria.atlanmod.emfviews.virtuallinksdelegator.IVirtualLinksDelegate;
+import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 
 public class EclDelegate implements IVirtualLinksDelegate {
 

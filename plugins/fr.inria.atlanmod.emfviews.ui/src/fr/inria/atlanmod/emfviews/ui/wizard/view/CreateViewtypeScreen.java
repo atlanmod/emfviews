@@ -52,7 +52,7 @@ public class CreateViewtypeScreen extends WizardPage {
     super(Messages.getString("VirtualMetamodelFileScreen.Page.Name"));
 
     IExtension[] extensions = Platform.getExtensionRegistry()
-        .getExtensionPoint("fr.inria.atlanmod.emfviews.virtuallinksdelegator.type").getExtensions();
+        .getExtensionPoint("fr.inria.atlanmod.emfviews.vlink-mm.delegator").getExtensions();
     availableLinksDsls = new String[extensions.length];
     int i = 0;
     for (IExtension iExtension : extensions) {

@@ -8,7 +8,7 @@
  * Contributors:
  * Juan David Villa Calle - initial API and implementation
  *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtuallinksdelegator;
+package fr.inria.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class VirtualLinksDelegator {
     String dslExtension = linksDslFile.substring(linksDslFile.lastIndexOf('.') + 1);
 
     IExtension[] extensions = Platform.getExtensionRegistry()
-        .getExtensionPoint("fr.inria.atlanmod.emfviews.virtuallinksdelegator.type").getExtensions();
+        .getExtensionPoint("fr.inria.atlanmod.emfviews.vlink-mm.delegator").getExtensions();
     boolean finished = false;
     IExtension matchingExtension = null;
     for (int i = 0; i < extensions.length && !finished; i++) {
