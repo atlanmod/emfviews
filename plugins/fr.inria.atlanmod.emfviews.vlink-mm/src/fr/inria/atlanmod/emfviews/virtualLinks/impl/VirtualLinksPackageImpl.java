@@ -30,8 +30,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
  *
  * @generated
  */
-public class VirtualLinksPackageImpl extends EPackageImpl
-    implements VirtualLinksPackage {
+public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLinksPackage {
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    *
@@ -114,10 +113,10 @@ public class VirtualLinksPackageImpl extends EPackageImpl
           .getEPackage(VirtualLinksPackage.eNS_URI);
 
     // Obtain or create and register package
-    VirtualLinksPackageImpl theVirtualLinksPackage = (VirtualLinksPackageImpl) (EPackage.Registry.INSTANCE
-        .get(eNS_URI) instanceof VirtualLinksPackageImpl
-            ? EPackage.Registry.INSTANCE.get(eNS_URI)
-            : new VirtualLinksPackageImpl());
+    VirtualLinksPackageImpl theVirtualLinksPackage =
+        (VirtualLinksPackageImpl) (EPackage.Registry.INSTANCE
+            .get(eNS_URI) instanceof VirtualLinksPackageImpl
+                ? EPackage.Registry.INSTANCE.get(eNS_URI) : new VirtualLinksPackageImpl());
 
     isInited = true;
 
@@ -131,8 +130,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl
     theVirtualLinksPackage.freeze();
 
     // Update the registry and return the package
-    EPackage.Registry.INSTANCE.put(VirtualLinksPackage.eNS_URI,
-        theVirtualLinksPackage);
+    EPackage.Registry.INSTANCE.put(VirtualLinksPackage.eNS_URI, theVirtualLinksPackage);
     return theVirtualLinksPackage;
   }
 
@@ -469,95 +467,85 @@ public class VirtualLinksPackageImpl extends EPackageImpl
     filterEClass.getESuperTypes().add(this.getVirtualLink());
 
     // Initialize classes, features, and operations; add parameters
-    initEClass(virtualLinksEClass, VirtualLinks.class, "VirtualLinks",
-        !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getVirtualLinks_VirtualLinks(), this.getVirtualLink(), null,
-        "virtualLinks", null, 0, -1, VirtualLinks.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-        !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getVirtualLinks_LinkedElements(), this.getLinkedElement(),
-        null, "linkedElements", null, 0, -1, VirtualLinks.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-        !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(virtualLinksEClass, VirtualLinks.class, "VirtualLinks", !IS_ABSTRACT, !IS_INTERFACE,
+               IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getVirtualLinks_VirtualLinks(), this.getVirtualLink(), null, "virtualLinks",
+                   null, 0, -1, VirtualLinks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                   IS_ORDERED);
+    initEReference(getVirtualLinks_LinkedElements(), this.getLinkedElement(), null,
+                   "linkedElements", null, 0, -1, VirtualLinks.class, !IS_TRANSIENT, !IS_VOLATILE,
+                   IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
+                   !IS_DERIVED, IS_ORDERED);
 
-    initEClass(linkedElementEClass, LinkedElement.class, "LinkedElement",
-        !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getLinkedElement_ElementRef(), ecorePackage.getEString(),
-        "elementRef", null, 0, 1, LinkedElement.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-        !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getLinkedElement_ModelRef(), ecorePackage.getEString(),
-        "modelRef", null, 0, 1, LinkedElement.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-        !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getLinkedElement_Name(), ecorePackage.getEString(), "name",
-        null, 0, 1, LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE,
-        IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-        IS_ORDERED);
-    initEAttribute(getLinkedElement_EstructuralFeatures(),
-        ecorePackage.getEString(), "estructuralFeatures", null, 0, 1,
-        LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-        !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(linkedElementEClass, LinkedElement.class, "LinkedElement", !IS_ABSTRACT,
+               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getLinkedElement_ElementRef(), ecorePackage.getEString(), "elementRef", null, 0,
+                   1, LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getLinkedElement_ModelRef(), ecorePackage.getEString(), "modelRef", null, 0, 1,
+                   LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getLinkedElement_Name(), ecorePackage.getEString(), "name", null, 0, 1,
+                   LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getLinkedElement_EstructuralFeatures(), ecorePackage.getEString(),
+                   "estructuralFeatures", null, 0, 1, LinkedElement.class, !IS_TRANSIENT,
+                   !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                   IS_ORDERED);
 
-    initEClass(associationEClass, Association.class, "Association",
-        !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getAssociation_LowerBound(), ecorePackage.getEInt(),
-        "lowerBound", null, 1, 1, Association.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE,
-        !IS_DERIVED, !IS_ORDERED);
-    initEAttribute(getAssociation_UpperBound(), ecorePackage.getEInt(),
-        "upperBound", null, 1, 1, Association.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE,
-        !IS_DERIVED, !IS_ORDERED);
-    initEAttribute(getAssociation_AssociationTypeName(),
-        ecorePackage.getEString(), "associationTypeName", null, 1, 1,
-        Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-        !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-    initEReference(getAssociation_Opposite(), this.getAssociation(), null,
-        "opposite", null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE,
-        IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
-        IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-    initEReference(getAssociation_SourceElement(), this.getLinkedElement(),
-        null, "sourceElement", null, 1, 1, Association.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-        !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAssociation_TargetElements(), this.getLinkedElement(),
-        null, "targetElements", null, 1, -1, Association.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-        !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAssociation_OclExpression(), ecorePackage.getEString(),
-        "oclExpression", null, 0, 1, Association.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-        !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAssociation_SourceAttribute(), ecorePackage.getEString(),
-        "sourceAttribute", null, 0, 1, Association.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-        !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAssociation_TargetAttribute(), ecorePackage.getEString(),
-        "targetAttribute", null, 0, 1, Association.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-        !IS_DERIVED, IS_ORDERED);
+    initEClass(associationEClass, Association.class, "Association", !IS_ABSTRACT, !IS_INTERFACE,
+               IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getAssociation_LowerBound(), ecorePackage.getEInt(), "lowerBound", null, 1, 1,
+                   Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                   !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+    initEAttribute(getAssociation_UpperBound(), ecorePackage.getEInt(), "upperBound", null, 1, 1,
+                   Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                   !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+    initEAttribute(getAssociation_AssociationTypeName(), ecorePackage.getEString(),
+                   "associationTypeName", null, 1, 1, Association.class, !IS_TRANSIENT,
+                   !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED,
+                   !IS_ORDERED);
+    initEReference(getAssociation_Opposite(), this.getAssociation(), null, "opposite", null, 0, 1,
+                   Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                   IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+    initEReference(getAssociation_SourceElement(), this.getLinkedElement(), null, "sourceElement",
+                   null, 1, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                   IS_ORDERED);
+    initEReference(getAssociation_TargetElements(), this.getLinkedElement(), null, "targetElements",
+                   null, 1, -1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                   IS_ORDERED);
+    initEAttribute(getAssociation_OclExpression(), ecorePackage.getEString(), "oclExpression", null,
+                   0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAssociation_SourceAttribute(), ecorePackage.getEString(), "sourceAttribute",
+                   null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAssociation_TargetAttribute(), ecorePackage.getEString(), "targetAttribute",
+                   null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(virtualLinkEClass, VirtualLink.class, "VirtualLink", IS_ABSTRACT,
-        !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getVirtualLink_Name(), ecorePackage.getEString(), "name",
-        null, 0, 1, VirtualLink.class, !IS_TRANSIENT, !IS_VOLATILE,
-        IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-        IS_ORDERED);
+    initEClass(virtualLinkEClass, VirtualLink.class, "VirtualLink", IS_ABSTRACT, !IS_INTERFACE,
+               IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getVirtualLink_Name(), ecorePackage.getEString(), "name", null, 0, 1,
+                   VirtualLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(filterEClass, Filter.class, "Filter", !IS_ABSTRACT,
-        !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getFilter_FilteredElement(), this.getLinkedElement(), null,
-        "filteredElement", null, 1, 1, Filter.class, !IS_TRANSIENT,
-        !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-        !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getFilter_OclQuery(), ecorePackage.getEString(), "oclQuery",
-        null, 0, 1, Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-        !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getFilter_FilterOnlyEstructuralFeatures(),
-        ecorePackage.getEBoolean(), "filterOnlyEstructuralFeatures", null, 0, 1,
-        Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-        !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(filterEClass, Filter.class, "Filter", !IS_ABSTRACT, !IS_INTERFACE,
+               IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFilter_FilteredElement(), this.getLinkedElement(), null, "filteredElement",
+                   null, 1, 1, Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                   IS_ORDERED);
+    initEAttribute(getFilter_OclQuery(), ecorePackage.getEString(), "oclQuery", null, 0, 1,
+                   Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                   IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFilter_FilterOnlyEstructuralFeatures(), ecorePackage.getEBoolean(),
+                   "filterOnlyEstructuralFeatures", null, 0, 1, Filter.class, !IS_TRANSIENT,
+                   !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+                   IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

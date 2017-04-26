@@ -244,8 +244,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     lowerBound = newLowerBound;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__LOWER_BOUND, oldLowerBound,
-          lowerBound));
+                                    VirtualLinksPackage.ASSOCIATION__LOWER_BOUND, oldLowerBound,
+                                    lowerBound));
   }
 
   /**
@@ -269,8 +269,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     upperBound = newUpperBound;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__UPPER_BOUND, oldUpperBound,
-          upperBound));
+                                    VirtualLinksPackage.ASSOCIATION__UPPER_BOUND, oldUpperBound,
+                                    upperBound));
   }
 
   /**
@@ -294,8 +294,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     associationTypeName = newAssociationTypeName;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__ASSOCIATION_TYPE_NAME,
-          oldAssociationTypeName, associationTypeName));
+                                    VirtualLinksPackage.ASSOCIATION__ASSOCIATION_TYPE_NAME,
+                                    oldAssociationTypeName, associationTypeName));
   }
 
   /**
@@ -311,8 +311,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
       if (opposite != oldOpposite) {
         if (eNotificationRequired())
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-              VirtualLinksPackage.ASSOCIATION__OPPOSITE, oldOpposite,
-              opposite));
+                                        VirtualLinksPackage.ASSOCIATION__OPPOSITE, oldOpposite,
+                                        opposite));
       }
     }
     return opposite;
@@ -338,7 +338,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     opposite = newOpposite;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__OPPOSITE, oldOpposite, opposite));
+                                    VirtualLinksPackage.ASSOCIATION__OPPOSITE, oldOpposite,
+                                    opposite));
   }
 
   /**
@@ -354,8 +355,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
       if (sourceElement != oldSourceElement) {
         if (eNotificationRequired())
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-              VirtualLinksPackage.ASSOCIATION__SOURCE_ELEMENT, oldSourceElement,
-              sourceElement));
+                                        VirtualLinksPackage.ASSOCIATION__SOURCE_ELEMENT,
+                                        oldSourceElement, sourceElement));
       }
     }
     return sourceElement;
@@ -381,8 +382,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     sourceElement = newSourceElement;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__SOURCE_ELEMENT, oldSourceElement,
-          sourceElement));
+                                    VirtualLinksPackage.ASSOCIATION__SOURCE_ELEMENT,
+                                    oldSourceElement, sourceElement));
   }
 
   /**
@@ -393,8 +394,9 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
   @Override
   public EList<LinkedElement> getTargetElements() {
     if (targetElements == null) {
-      targetElements = new EObjectResolvingEList<>(LinkedElement.class, this,
-          VirtualLinksPackage.ASSOCIATION__TARGET_ELEMENTS);
+      targetElements =
+          new EObjectResolvingEList<>(LinkedElement.class, this,
+                                      VirtualLinksPackage.ASSOCIATION__TARGET_ELEMENTS);
     }
     return targetElements;
   }
@@ -420,8 +422,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     oclExpression = newOclExpression;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__OCL_EXPRESSION, oldOclExpression,
-          oclExpression));
+                                    VirtualLinksPackage.ASSOCIATION__OCL_EXPRESSION,
+                                    oldOclExpression, oclExpression));
   }
 
   /**
@@ -445,8 +447,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     sourceAttribute = newSourceAttribute;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__SOURCE_ATTRIBUTE, oldSourceAttribute,
-          sourceAttribute));
+                                    VirtualLinksPackage.ASSOCIATION__SOURCE_ATTRIBUTE,
+                                    oldSourceAttribute, sourceAttribute));
   }
 
   /**
@@ -470,8 +472,8 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     targetAttribute = newTargetAttribute;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.ASSOCIATION__TARGET_ATTRIBUTE, oldTargetAttribute,
-          targetAttribute));
+                                    VirtualLinksPackage.ASSOCIATION__TARGET_ATTRIBUTE,
+                                    oldTargetAttribute, targetAttribute));
   }
 
   /**
@@ -534,8 +536,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
       return;
     case VirtualLinksPackage.ASSOCIATION__TARGET_ELEMENTS:
       getTargetElements().clear();
-      getTargetElements()
-          .addAll((Collection<? extends LinkedElement>) newValue);
+      getTargetElements().addAll((Collection<? extends LinkedElement>) newValue);
       return;
     case VirtualLinksPackage.ASSOCIATION__OCL_EXPRESSION:
       setOclExpression((String) newValue);
@@ -602,8 +603,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     case VirtualLinksPackage.ASSOCIATION__UPPER_BOUND:
       return upperBound != UPPER_BOUND_EDEFAULT;
     case VirtualLinksPackage.ASSOCIATION__ASSOCIATION_TYPE_NAME:
-      return ASSOCIATION_TYPE_NAME_EDEFAULT == null
-          ? associationTypeName != null
+      return ASSOCIATION_TYPE_NAME_EDEFAULT == null ? associationTypeName != null
           : !ASSOCIATION_TYPE_NAME_EDEFAULT.equals(associationTypeName);
     case VirtualLinksPackage.ASSOCIATION__OPPOSITE:
       return opposite != null;

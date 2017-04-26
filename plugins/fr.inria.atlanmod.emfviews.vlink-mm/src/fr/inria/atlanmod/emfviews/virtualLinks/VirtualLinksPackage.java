@@ -59,8 +59,8 @@ public interface VirtualLinksPackage extends EPackage {
    *
    * @generated
    */
-  VirtualLinksPackage eINSTANCE = fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl
-      .init();
+  VirtualLinksPackage eINSTANCE =
+      fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl.init();
 
   /**
    * The meta object id for the
@@ -731,8 +731,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EReference VIRTUAL_LINKS__VIRTUAL_LINKS = eINSTANCE
-        .getVirtualLinks_VirtualLinks();
+    EReference VIRTUAL_LINKS__VIRTUAL_LINKS = eINSTANCE.getVirtualLinks_VirtualLinks();
 
     /**
      * The meta object literal for the '<em><b>Linked Elements</b></em>'
@@ -741,8 +740,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EReference VIRTUAL_LINKS__LINKED_ELEMENTS = eINSTANCE
-        .getVirtualLinks_LinkedElements();
+    EReference VIRTUAL_LINKS__LINKED_ELEMENTS = eINSTANCE.getVirtualLinks_LinkedElements();
 
     /**
      * The meta object literal for the
@@ -762,8 +760,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute LINKED_ELEMENT__ELEMENT_REF = eINSTANCE
-        .getLinkedElement_ElementRef();
+    EAttribute LINKED_ELEMENT__ELEMENT_REF = eINSTANCE.getLinkedElement_ElementRef();
 
     /**
      * The meta object literal for the '<em><b>Model Ref</b></em>' attribute
@@ -771,8 +768,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute LINKED_ELEMENT__MODEL_REF = eINSTANCE
-        .getLinkedElement_ModelRef();
+    EAttribute LINKED_ELEMENT__MODEL_REF = eINSTANCE.getLinkedElement_ModelRef();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -788,8 +784,8 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute LINKED_ELEMENT__ESTRUCTURAL_FEATURES = eINSTANCE
-        .getLinkedElement_EstructuralFeatures();
+    EAttribute LINKED_ELEMENT__ESTRUCTURAL_FEATURES =
+        eINSTANCE.getLinkedElement_EstructuralFeatures();
 
     /**
      * The meta object literal for the
@@ -825,8 +821,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute ASSOCIATION__ASSOCIATION_TYPE_NAME = eINSTANCE
-        .getAssociation_AssociationTypeName();
+    EAttribute ASSOCIATION__ASSOCIATION_TYPE_NAME = eINSTANCE.getAssociation_AssociationTypeName();
 
     /**
      * The meta object literal for the '<em><b>Opposite</b></em>' reference
@@ -842,8 +837,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EReference ASSOCIATION__SOURCE_ELEMENT = eINSTANCE
-        .getAssociation_SourceElement();
+    EReference ASSOCIATION__SOURCE_ELEMENT = eINSTANCE.getAssociation_SourceElement();
 
     /**
      * The meta object literal for the '<em><b>Target Elements</b></em>'
@@ -851,8 +845,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EReference ASSOCIATION__TARGET_ELEMENTS = eINSTANCE
-        .getAssociation_TargetElements();
+    EReference ASSOCIATION__TARGET_ELEMENTS = eINSTANCE.getAssociation_TargetElements();
 
     /**
      * The meta object literal for the '<em><b>Ocl Expression</b></em>'
@@ -860,8 +853,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute ASSOCIATION__OCL_EXPRESSION = eINSTANCE
-        .getAssociation_OclExpression();
+    EAttribute ASSOCIATION__OCL_EXPRESSION = eINSTANCE.getAssociation_OclExpression();
 
     /**
      * The meta object literal for the '<em><b>Source Attribute</b></em>'
@@ -869,8 +861,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute ASSOCIATION__SOURCE_ATTRIBUTE = eINSTANCE
-        .getAssociation_SourceAttribute();
+    EAttribute ASSOCIATION__SOURCE_ATTRIBUTE = eINSTANCE.getAssociation_SourceAttribute();
 
     /**
      * The meta object literal for the '<em><b>Target Attribute</b></em>'
@@ -878,8 +869,7 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute ASSOCIATION__TARGET_ATTRIBUTE = eINSTANCE
-        .getAssociation_TargetAttribute();
+    EAttribute ASSOCIATION__TARGET_ATTRIBUTE = eINSTANCE.getAssociation_TargetAttribute();
 
     /**
      * The meta object literal for the
@@ -935,8 +925,8 @@ public interface VirtualLinksPackage extends EPackage {
      *
      * @generated
      */
-    EAttribute FILTER__FILTER_ONLY_ESTRUCTURAL_FEATURES = eINSTANCE
-        .getFilter_FilterOnlyEstructuralFeatures();
+    EAttribute FILTER__FILTER_ONLY_ESTRUCTURAL_FEATURES =
+        eINSTANCE.getFilter_FilterOnlyEstructuralFeatures();
 
   }
 

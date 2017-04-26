@@ -22,20 +22,17 @@ public class EmfViewsUiUtil {
 
     IExtension matchingExtension = null;
 
-    IEditorPart activeEditor = PlatformUI.getWorkbench()
-        .getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+    IEditorPart activeEditor =
+        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 
     if (activeEditor != null) {
       IExtension[] extensions = Platform.getExtensionRegistry()
-          .getExtensionPoint(
-              "fr.inria.atlanmod.emfviews.ui.linkingview.linkend")
-          .getExtensions();
+          .getExtensionPoint("fr.inria.atlanmod.emfviews.ui.linkingview.linkend").getExtensions();
 
       boolean finished = false;
 
       for (int i = 0; i < extensions.length && !finished; i++) {
-        IConfigurationElement[] configElements = extensions[i]
-            .getConfigurationElements();
+        IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
         for (int j = 0; j < configElements.length && !finished; j++) {
           if (configElements[j].getAttribute("editorId")
               .compareToIgnoreCase(activeEditor.getSite().getId()) == 0) {

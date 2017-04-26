@@ -65,8 +65,7 @@ public class AttributesSelectionPage extends WizardPage {
     contributingMetamodels = nsURISs;
 
     loadContributingMetamodels(contributingMetamodels);
-    checkboxTreeViewer
-        .setInput(virtualResourceSet.getPackageRegistry().values());
+    checkboxTreeViewer.setInput(virtualResourceSet.getPackageRegistry().values());
   }
 
   @Override
@@ -79,10 +78,11 @@ public class AttributesSelectionPage extends WizardPage {
     Tree tree = checkboxTreeViewer.getTree();
     tree.setBounds(0, 0, 574, 282);
 
-    AttributeSelectionContentProvider adapterContentProvider = new AttributeSelectionContentProvider();
+    AttributeSelectionContentProvider adapterContentProvider =
+        new AttributeSelectionContentProvider();
     checkboxTreeViewer.setContentProvider(adapterContentProvider);
-    checkboxTreeViewer.setLabelProvider(new AdapterFactoryLabelProvider(
-        new ReflectiveItemProviderAdapterFactory()));
+    checkboxTreeViewer
+        .setLabelProvider(new AdapterFactoryLabelProvider(new ReflectiveItemProviderAdapterFactory()));
 
   }
 
@@ -96,18 +96,15 @@ public class AttributesSelectionPage extends WizardPage {
     for (int i = 0; i < modelsURIs.length; i++) {
       String modelURI = modelsURIs[i];
       if (modelURI.startsWith("http")) {
-        EPackage contributingEcoreModelPackage = EPackage.Registry.INSTANCE
-            .getEPackage(modelURI);
-        virtualResourceSet.getPackageRegistry().put(
-            contributingEcoreModelPackage.getNsURI(),
-            contributingEcoreModelPackage);
+        EPackage contributingEcoreModelPackage = EPackage.Registry.INSTANCE.getEPackage(modelURI);
+        virtualResourceSet.getPackageRegistry().put(contributingEcoreModelPackage.getNsURI(),
+                                                    contributingEcoreModelPackage);
 
       } else if (modelURI.endsWith("ecore")) {
-        Resource metamodelResource = virtualResourceSet
-            .getResource(URI.createPlatformResourceURI(modelURI, true), true);
+        Resource metamodelResource =
+            virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
         EPackage mmPackage = (EPackage) metamodelResource.getContents().get(0);
-        virtualResourceSet.getPackageRegistry().put(mmPackage.getNsURI(),
-            mmPackage);
+        virtualResourceSet.getPackageRegistry().put(mmPackage.getNsURI(), mmPackage);
       }
     }
 

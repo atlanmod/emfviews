@@ -30,13 +30,12 @@ public class ReproduceElementImpl extends VirtualElement {
 
   public ReproduceElementImpl(View vModel, EObject concreteElement) {
     super();
-    EClass tempEClass = vModel.getMetamodelManager()
-        .translateToVirtualEClass(concreteElement.eClass());
+    EClass tempEClass =
+        vModel.getMetamodelManager().translateToVirtualEClass(concreteElement.eClass());
     this.init(vModel, concreteElement, tempEClass);
   }
 
-  public ReproduceElementImpl(View vModel, EObject concreteElement,
-      EClass eClass) {
+  public ReproduceElementImpl(View vModel, EObject concreteElement, EClass eClass) {
     this.init(vModel, concreteElement, eClass);
   }
 
@@ -48,8 +47,7 @@ public class ReproduceElementImpl extends VirtualElement {
     return null;
   }
 
-  public Object setVirtualAssociation(EStructuralFeature feature, int index,
-                                      EObject target) {
+  public Object setVirtualAssociation(EStructuralFeature feature, int index, EObject target) {
     if (virtualAssociations == null) {
       virtualAssociations = new HashMap<>();
     }
@@ -103,8 +101,8 @@ public class ReproduceElementImpl extends VirtualElement {
   }
 
   public EStructuralFeature getConcreteFeature(EStructuralFeature virtualFeature) {
-    return ((View) eResource()).getMetamodelManager()
-        .translateFromVirtualFeature(this, virtualFeature);
+    return ((View) eResource()).getMetamodelManager().translateFromVirtualFeature(this,
+                                                                                  virtualFeature);
   }
 
 }

@@ -52,26 +52,20 @@ public class CreateViewtypeScreen extends WizardPage {
     super(Messages.getString("VirtualMetamodelFileScreen.Page.Name"));
 
     IExtension[] extensions = Platform.getExtensionRegistry()
-        .getExtensionPoint(
-            "fr.inria.atlanmod.emfviews.virtuallinksdelegator.type")
-        .getExtensions();
+        .getExtensionPoint("fr.inria.atlanmod.emfviews.virtuallinksdelegator.type").getExtensions();
     availableLinksDsls = new String[extensions.length];
     int i = 0;
     for (IExtension iExtension : extensions) {
-      IConfigurationElement[] configElements = iExtension
-          .getConfigurationElements();
+      IConfigurationElement[] configElements = iExtension.getConfigurationElements();
       for (IConfigurationElement iConfigurationElement : configElements) {
-        availableLinksDsls[i] = iConfigurationElement
-            .getAttribute("fileExtension");
+        availableLinksDsls[i] = iConfigurationElement.getAttribute("fileExtension");
         i = i++;
       }
     }
 
     setTitle(Messages.getString("VirtualMetamodelFileScreen.Title")); //$NON-NLS-1$
-    setDescription(
-        Messages.getString("VirtualMetamodelFileScreen.Page.Description")); //$NON-NLS-1$
-    setImageDescriptor(
-        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+    setDescription(Messages.getString("VirtualMetamodelFileScreen.Page.Description")); //$NON-NLS-1$
+    setImageDescriptor(EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
 
     this.setPageComplete(false);
     inputMetaModelPaths = new ArrayList<>();
@@ -104,15 +98,14 @@ public class CreateViewtypeScreen extends WizardPage {
     GridLayout layout = new GridLayout(3, false);
     container.setLayout(layout);
 
-    GridData dataLists = new GridData(
-        GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
+    GridData dataLists = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
 
-    inputMetamodelsList = createModelControl(container,
-        Messages.getString("VirtualModelFileScreen.InputMetamodels"), //$NON-NLS-1$
-        new ModelSelection(container.getShell(),
-            Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"), //$NON-NLS-1$
-            inputMetaModelPaths, ModelSelection.INPUTMETAMODEL),
-        dataLists); // 2$
+    inputMetamodelsList =
+        createModelControl(container, Messages.getString("VirtualModelFileScreen.InputMetamodels"), //$NON-NLS-1$
+                           new ModelSelection(container.getShell(), Messages
+                               .getString("VirtualModelFileScreen.InputMetamodelCreation"), //$NON-NLS-1$
+                                              inputMetaModelPaths, ModelSelection.INPUTMETAMODEL),
+                           dataLists); // 2$
 
     container.layout();
     setControl(container);
@@ -121,8 +114,7 @@ public class CreateViewtypeScreen extends WizardPage {
 
     addSeparator(container);
 
-    new Label(container, SWT.NULL)
-        .setText("Select a dsl to create virtual links"); //$NON-NLS-1$
+    new Label(container, SWT.NULL).setText("Select a dsl to create virtual links"); //$NON-NLS-1$
     comboLinksDsl = new Combo(container, SWT.BORDER | SWT.READ_ONLY);
     comboLinksDsl.setItems(availableLinksDsls);
     comboLinksDsl.setText(availableLinksDsls[0]);
@@ -131,10 +123,8 @@ public class CreateViewtypeScreen extends WizardPage {
 
   }
 
-  private List createModelControl(final Composite parent,
-                                  final String entryLabel,
-                                  final AbstractSelection dialog,
-                                  GridData listLayoutData) {
+  private List createModelControl(final Composite parent, final String entryLabel,
+                                  final AbstractSelection dialog, GridData listLayoutData) {
 
     final Label typeLabel = new Label(parent, SWT.NONE);
     GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
@@ -142,8 +132,7 @@ public class CreateViewtypeScreen extends WizardPage {
     typeLabel.setLayoutData(data);
     typeLabel.setText(entryLabel);
 
-    final List list = new List(parent,
-        SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+    final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
     listLayoutData.verticalIndent = 5;
     list.setLayoutData(listLayoutData);
 
@@ -157,10 +146,9 @@ public class CreateViewtypeScreen extends WizardPage {
     data.verticalIndent = 5;
     composite.setLayoutData(data);
 
-    final Button addIn = createButton(composite,
-        Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
-    final Button removeIn = createButton(composite,
-        Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
+    final Button addIn = createButton(composite, Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
+    final Button removeIn =
+        createButton(composite, Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
     removeIn.setEnabled(false);
     addIn.addSelectionListener(new SelectionAdapter() {
       @Override
@@ -229,8 +217,7 @@ public class CreateViewtypeScreen extends WizardPage {
   private boolean checkModelsConsistancy() {
 
     if (inputMetaModelPaths.isEmpty()) {
-      setErrorMessage(
-          Messages.getString("VirtualModelFileWizard.INPUT_METAMODELS_ISSUE")); //$NON-NLS-1$
+      setErrorMessage(Messages.getString("VirtualModelFileWizard.INPUT_METAMODELS_ISSUE")); //$NON-NLS-1$
       return false;
 
     }
@@ -245,8 +232,7 @@ public class CreateViewtypeScreen extends WizardPage {
     button.setText(text);
     button.setFont(parent.getFont());
     GridData data = new GridData();
-    data.widthHint = convertHorizontalDLUsToPixels(
-        IDialogConstants.BUTTON_WIDTH);
+    data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
     button.setLayoutData(data);
     return button;
   }
@@ -258,8 +244,8 @@ public class CreateViewtypeScreen extends WizardPage {
   @Override
   public IWizardPage getNextPage() {
     if (isPageComplete()) {
-      AttributesSelectionPage asp = (AttributesSelectionPage) getWizard()
-          .getPage("AttributeSelectionPage");
+      AttributesSelectionPage asp =
+          (AttributesSelectionPage) getWizard().getPage("AttributeSelectionPage");
       asp.setTreeContents();
     }
     return super.getNextPage();

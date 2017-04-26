@@ -30,7 +30,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -78,8 +77,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
 
-public class ViewtypeEditor extends MultiPageEditorPart
-    implements IResourceChangeListener {
+public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChangeListener {
 
   private List inputMetamodelsList;
 
@@ -111,16 +109,15 @@ public class ViewtypeEditor extends MultiPageEditorPart
     IEditorInput editorInput = getEditorInput();
     FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
     EmfViewsFactory vFac = new EmfViewsFactory();
-    org.eclipse.emf.common.util.URI emfURI = org.eclipse.emf.common.util.URI
-        .createURI(fileEditorInput.getPath().toString());
+    org.eclipse.emf.common.util.URI emfURI =
+        org.eclipse.emf.common.util.URI.createURI(fileEditorInput.getPath().toString());
     Resource viewtypeResource = vFac.createResource(emfURI);
     java.net.URI uri = fileEditorInput.getURI();
 
     try {
       viewtypeResource.load(uri.toURL().openStream(), new HashMap<>());
       FormToolkit toolkit = new FormToolkit(getContainer().getDisplay());
-      ScrolledForm virtualMetamodelForm = toolkit
-          .createScrolledForm(getContainer());
+      ScrolledForm virtualMetamodelForm = toolkit.createScrolledForm(getContainer());
       virtualMetamodelForm.setText("View type contents");
 
       Composite body = virtualMetamodelForm.getBody();
@@ -136,14 +133,14 @@ public class ViewtypeEditor extends MultiPageEditorPart
 
       toolkit.paintBordersFor(tree);
 
-      treeViewer.setContentProvider(
-          new fr.inria.atlanmod.emfviews.ui.wizard.view.AttributeSelectionContentProvider());
+      treeViewer
+          .setContentProvider(new fr.inria.atlanmod.emfviews.ui.wizard.view.AttributeSelectionContentProvider());
 
-      treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(
-          new ReflectiveItemProviderAdapterFactory()));
+      treeViewer
+          .setLabelProvider(new AdapterFactoryLabelProvider(new ReflectiveItemProviderAdapterFactory()));
 
-      treeViewer.setInput(((Viewtype) viewtypeResource).getResourceSet()
-          .getPackageRegistry().values());
+      treeViewer
+          .setInput(((Viewtype) viewtypeResource).getResourceSet().getPackageRegistry().values());
 
       ArrayList<EClass> containingClasses = new ArrayList<>();
       Viewtype viewtype = (Viewtype) viewtypeResource;
@@ -186,27 +183,24 @@ public class ViewtypeEditor extends MultiPageEditorPart
     toolkit.decorateFormHeading(viewtypeForm.getForm());
     toolkit.paintBordersFor(body);
 
-    Section contributingMetamodelsSection = toolkit
-        .createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
+    Section contributingMetamodelsSection =
+        toolkit.createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
             | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
     contributingMetamodelsSection
         .setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-    contributingMetamodelsSection
-        .setDescription("Specify the list of contributing metamodels");
+    contributingMetamodelsSection.setDescription("Specify the list of contributing metamodels");
 
     toolkit.paintBordersFor(contributingMetamodelsSection);
     contributingMetamodelsSection.setText("Contributing metamodels");
     contributingMetamodelsSection.setExpanded(true);
 
-    Composite composite = toolkit.createComposite(contributingMetamodelsSection,
-        SWT.NONE);
+    Composite composite = toolkit.createComposite(contributingMetamodelsSection, SWT.NONE);
     toolkit.paintBordersFor(composite);
 
     contributingMetamodelsSection.setClient(composite);
     composite.setLayout(new GridLayout(2, false));
 
-    inputMetamodelsList = new List(composite,
-        SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+    inputMetamodelsList = new List(composite, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
     GridData gd_list = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
     gd_list.widthHint = 430;
     gd_list.heightHint = 20;
@@ -217,8 +211,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
     composite_1.setLayout(new GridLayout(1, false));
 
     btnAddMetamodel = toolkit.createButton(composite_1, "Add", SWT.NONE);
-    GridData gd_btnAddMetamodel = new GridData(SWT.LEFT, SWT.CENTER, true,
-        false, 1, 1);
+    GridData gd_btnAddMetamodel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
     gd_btnAddMetamodel.widthHint = 100;
     btnAddMetamodel.setLayoutData(gd_btnAddMetamodel);
 
@@ -230,9 +223,10 @@ public class ViewtypeEditor extends MultiPageEditorPart
     btnAddMetamodel.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent evt) {
-        AbstractSelection dialog = new ModelSelection(container.getShell(),
-            Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"),
-            inputMetaModelPaths, ModelSelection.INPUTMETAMODEL);
+        AbstractSelection dialog =
+            new ModelSelection(container.getShell(),
+                               Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"),
+                               inputMetaModelPaths, ModelSelection.INPUTMETAMODEL);
         dialog.create();
         if (dialog.open() == Window.OK) {
           Object[] result = dialog.getResult();
@@ -246,8 +240,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
 
             String editorText = theDoc.get();
 
-            theDoc.set(updateViewtypeDefinition(editorText,
-                result[1].toString(), null));
+            theDoc.set(updateViewtypeDefinition(editorText, result[1].toString(), null));
             break;
 
           default:
@@ -263,8 +256,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
     });
 
     btnRemoveMetamodel = toolkit.createButton(composite_1, "Remove", SWT.NONE);
-    GridData gd_btnNewButton = new GridData(SWT.LEFT, SWT.CENTER, false, false,
-        1, 1);
+    GridData gd_btnNewButton = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
     gd_btnNewButton.widthHint = 100;
     btnRemoveMetamodel.setLayoutData(gd_btnNewButton);
     btnRemoveMetamodel.addSelectionListener(new SelectionAdapter() {
@@ -282,8 +274,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
           inputMetamodelsList.remove(j);
           boolean found = false;
           for (int k = 0; i < inputMetaModelPaths.size() & !found; k++) {
-            if (inputMetaModelPaths.get(k)
-                .compareToIgnoreCase(selectedItem) == 0) {
+            if (inputMetaModelPaths.get(k).compareToIgnoreCase(selectedItem) == 0) {
               inputMetaModelPaths.remove(inputMetaModelPaths.get(k));
               found = true;
             }
@@ -291,8 +282,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
 
         }
         updateLists();
-        btnRemoveMetamodel
-            .setEnabled(inputMetamodelsList.getItems().length > 0);
+        btnRemoveMetamodel.setEnabled(inputMetamodelsList.getItems().length > 0);
 
         IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
             .getDocument(viewtypeTextEditor.getEditorInput());
@@ -302,22 +292,19 @@ public class ViewtypeEditor extends MultiPageEditorPart
       }
     });
 
-    Section sctnLinksTechnology = toolkit
-        .createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
+    Section sctnLinksTechnology =
+        toolkit.createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
             | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-    GridData gd_sctnLinksTechnology = new GridData(SWT.LEFT, SWT.CENTER, true,
-        false, 1, 1);
+    GridData gd_sctnLinksTechnology = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
     gd_sctnLinksTechnology.widthHint = 588;
     sctnLinksTechnology.setLayoutData(gd_sctnLinksTechnology);
-    sctnLinksTechnology.setDescription(
-        "Select a DSL technology to specify links between models");
+    sctnLinksTechnology.setDescription("Select a DSL technology to specify links between models");
     sctnLinksTechnology.setBounds(0, 193, 584, 187);
     toolkit.paintBordersFor(sctnLinksTechnology);
     sctnLinksTechnology.setText("Links Technology");
     sctnLinksTechnology.setExpanded(true);
 
-    Composite composite_2 = toolkit.createComposite(sctnLinksTechnology,
-        SWT.NONE);
+    Composite composite_2 = toolkit.createComposite(sctnLinksTechnology, SWT.NONE);
     toolkit.paintBordersFor(composite_2);
     sctnLinksTechnology.setClient(composite_2);
     composite_2.setLayout(null);
@@ -334,29 +321,27 @@ public class ViewtypeEditor extends MultiPageEditorPart
     modifyLinksDslButton.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent evt) {
-        ResourceListSelectionDialog selectLinksDslDialog = new ResourceListSelectionDialog(
-            container.getShell(), ResourcesPlugin.getWorkspace().getRoot(),
-            IResource.FILE);
+        ResourceListSelectionDialog selectLinksDslDialog =
+            new ResourceListSelectionDialog(container.getShell(),
+                                            ResourcesPlugin.getWorkspace()
+                                                .getRoot(),
+                                            IResource.FILE);
         selectLinksDslDialog.setTitle("Select DSL technology");
 
         selectLinksDslDialog.create();
 
         if (selectLinksDslDialog.open() == Window.OK) {
-          IFile correspondenceModelBaseFile = (IFile) selectLinksDslDialog
-              .getResult()[0];
+          IFile correspondenceModelBaseFile = (IFile) selectLinksDslDialog.getResult()[0];
 
-          String correspondenceModelBasePath = correspondenceModelBaseFile
-              .getFullPath().toString();
-          correspondenceModelBasePath = correspondenceModelBasePath
-              .replaceFirst("/", "");
+          String correspondenceModelBasePath = correspondenceModelBaseFile.getFullPath().toString();
+          correspondenceModelBasePath = correspondenceModelBasePath.replaceFirst("/", "");
 
           linksDslText.setText(correspondenceModelBasePath);
 
           IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
               .getDocument(viewtypeTextEditor.getEditorInput());
           String editorText = theDoc.get();
-          theDoc.set(updateViewtypeDefinition(editorText, null,
-              correspondenceModelBasePath));
+          theDoc.set(updateViewtypeDefinition(editorText, null, correspondenceModelBasePath));
 
         }
       }
@@ -375,25 +360,21 @@ public class ViewtypeEditor extends MultiPageEditorPart
       int index = addPage(viewtypeTextEditor, getEditorInput());
       setPageText(index, "Source");
     } catch (PartInitException e) {
-      ErrorDialog.openError(getSite().getShell(),
-          "Error creating nested text editor", null, e.getStatus());
+      ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null,
+                            e.getStatus());
     }
   }
 
   private String updateViewtypeDefinition(String existingViewtypeDefinition,
-                                          String addedMetamodelUri,
-                                          String dslBase) {
-    Properties properties = createPropertiesFromViewtypeInTextEditor(
-        existingViewtypeDefinition);
+                                          String addedMetamodelUri, String dslBase) {
+    Properties properties = createPropertiesFromViewtypeInTextEditor(existingViewtypeDefinition);
     String correspondenceModel = properties.getProperty("correspondenceModel");
-    String correspondenceModelBase = properties
-        .getProperty("correspondenceModelBase");
+    String correspondenceModelBase = properties.getProperty("correspondenceModelBase");
     String metamodels = properties.getProperty("contributingMetamodels");
 
     if (addedMetamodelUri != null) {
       if (addedMetamodelUri.startsWith("platform:/resource/")) {
-        addedMetamodelUri = addedMetamodelUri.replace("platform:/resource/",
-            "");
+        addedMetamodelUri = addedMetamodelUri.replace("platform:/resource/", "");
       }
       if (metamodels.length() > 0) {
         metamodels = metamodels + "," + addedMetamodelUri;
@@ -416,8 +397,8 @@ public class ViewtypeEditor extends MultiPageEditorPart
     }
 
     String updatedVMM = updateViewtype("contributingMetamodels=" + metamodels,
-        "correspondenceModel=" + correspondenceModel,
-        "correspondenceModelBase=" + correspondenceModelBase);
+                                       "correspondenceModel=" + correspondenceModel,
+                                       "correspondenceModelBase=" + correspondenceModelBase);
 
     return updatedVMM;
   }
@@ -484,48 +465,45 @@ public class ViewtypeEditor extends MultiPageEditorPart
 
     getEditor(0).doSave(monitor);
 
-    EcoreFactory theCoreFactory = EcoreFactory.eINSTANCE;
+    // EcoreFactory theCoreFactory = EcoreFactory.eINSTANCE;
     if (elementsToFilter != null && elementsToFilter.size() > 0) {
-      String linksResourcePath = createPropertiesFromViewtypeInTextEditor(
-          viewtypeTextEditor.getDocumentProvider()
-              .getDocument(viewtypeTextEditor.getEditorInput()).get())
-                  .getProperty("correspondenceModel");
+      String linksResourcePath = createPropertiesFromViewtypeInTextEditor(viewtypeTextEditor
+          .getDocumentProvider().getDocument(viewtypeTextEditor.getEditorInput()).get())
+              .getProperty("correspondenceModel");
       java.net.URI linksUri = null;
       try {
         linksUri = EmfViewsUtil.toURI(linksResourcePath);
       } catch (URISyntaxException e) {
         e.printStackTrace();
       }
-      Resource modelResource = new ResourceSetImpl().getResource(
-          org.eclipse.emf.common.util.URI.createURI(linksUri.toString()), true);
+      Resource modelResource = new ResourceSetImpl()
+          .getResource(org.eclipse.emf.common.util.URI.createURI(linksUri.toString()), true);
 
-      VirtualLinks filterLinks = (VirtualLinks) modelResource.getContents()
-          .get(0);
+      VirtualLinks filterLinks = (VirtualLinks) modelResource.getContents().get(0);
       for (Object elementToFilter : elementsToFilter) {
         if (elementToFilter instanceof EStructuralFeature) {
           EStructuralFeature estFeature = (EStructuralFeature) elementToFilter;
-          Filter filter = EmfViewsUtil.createFilter(
-              "filter" + estFeature.getEContainingClass().getName(), "", true);
-          LinkedElement filterLinkedElement = EmfViewsUtil.createLinkedElement(
-              estFeature.getEContainingClass().getName(),
-              estFeature.getEContainingClass().getEPackage().getNsURI(),
-              "//" + estFeature.getEContainingClass().getName(),
-              estFeature.getName());
-          EmfViewsUtil.associateFilters(filterLinks, filter,
-              filterLinkedElement);
+          Filter filter = EmfViewsUtil
+              .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
+          LinkedElement filterLinkedElement =
+              EmfViewsUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
+                                               estFeature.getEContainingClass().getEPackage()
+                                                   .getNsURI(),
+                                               "//" + estFeature.getEContainingClass().getName(),
+                                               estFeature.getName());
+          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (elementToFilter instanceof EClass) {
           EClass tempEclass = (EClass) elementToFilter;
-          Filter filter = EmfViewsUtil.createFilter(
-              "filter" + tempEclass.getName(),
-              tempEclass.getName() + ".allInstances()", false);
-          LinkedElement filterLinkedElement = EmfViewsUtil.createLinkedElement(
-              tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
-              "//" + tempEclass.getName(), null);
+          Filter filter =
+              EmfViewsUtil.createFilter("filter" + tempEclass.getName(),
+                                        tempEclass.getName() + ".allInstances()", false);
+          LinkedElement filterLinkedElement = EmfViewsUtil
+              .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
+                                   "//" + tempEclass.getName(), null);
           filter.setFilteredElement(filterLinkedElement);
           filterLinks.getVirtualLinks().add(filter);
           filterLinks.getLinkedElements().add(filterLinkedElement);
-          EmfViewsUtil.associateFilters(filterLinks, filter,
-              filterLinkedElement);
+          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         }
       }
 
@@ -563,8 +541,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
    * checks that the input is an instance of <code>IFileEditorInput</code>.
    */
   @Override
-  public void init(IEditorSite site, IEditorInput editorInput)
-      throws PartInitException {
+  public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
     if (!(editorInput instanceof IFileEditorInput))
       throw new PartInitException("Invalid Input: Must be IFileEditorInput");
     super.init(site, editorInput);
@@ -601,8 +578,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
 
     String editorText = viewtypeTextEditor.getDocumentProvider()
         .getDocument(viewtypeTextEditor.getEditorInput()).get();
-    Properties properties = createPropertiesFromViewtypeInTextEditor(
-        editorText);
+    Properties properties = createPropertiesFromViewtypeInTextEditor(editorText);
     String metamodels = properties.getProperty("contributingMetamodels");
     String[] splitMetamodels = metamodels.split(",");
     inputMetaModelPaths = new ArrayList<>();
@@ -612,36 +588,32 @@ public class ViewtypeEditor extends MultiPageEditorPart
     }
     if (newPageIndex == 1) {
 
-      String correspondenceModelBase = properties
-          .getProperty("correspondenceModelBase");
+      String correspondenceModelBase = properties.getProperty("correspondenceModelBase");
       linksDslFile = correspondenceModelBase;
       updateLists();
       updateLinksDslText();
 
     } else if (newPageIndex == 2) {
-      Collection treeViewerContents = (Collection) treeViewer.getInput();
+      Collection<EPackage> treeViewerContents = (Collection<EPackage>) treeViewer.getInput();
 
       int numPacksInTree = treeViewerContents.size();
       if (inputMetaModelPaths.size() < numPacksInTree) {
-        ArrayList packsToRemove = new ArrayList();
+        ArrayList<EPackage> packsToRemove = new ArrayList<>();
 
-        for (Object tempTreePack : treeViewerContents) {
+        for (EPackage tempTreePack : treeViewerContents) {
           boolean packageNeedsDeletion = true;
           for (int i = 0; i < inputMetaModelPaths.size(); i++) {
             if (inputMetaModelPaths.get(i).startsWith("http")) {
-              if (inputMetaModelPaths.get(i).compareToIgnoreCase(
-                  ((EPackage) tempTreePack).getNsURI()) == 0) {
+              if (inputMetaModelPaths.get(i).compareToIgnoreCase(tempTreePack.getNsURI()) == 0) {
                 packageNeedsDeletion = false;
               }
             } else {
               ResourceSet virtualResourceSet = new ResourceSetImpl();
-              Resource metamodelResource = virtualResourceSet.getResource(URI
-                  .createPlatformResourceURI(inputMetaModelPaths.get(i), true),
-                  true);
-              EPackage mmPackage = (EPackage) metamodelResource.getContents()
-                  .get(0);
-              if (mmPackage.getNsURI().compareToIgnoreCase(
-                  ((EPackage) tempTreePack).getNsURI()) == 0) {
+              Resource metamodelResource = virtualResourceSet
+                  .getResource(URI.createPlatformResourceURI(inputMetaModelPaths.get(i), true),
+                               true);
+              EPackage mmPackage = (EPackage) metamodelResource.getContents().get(0);
+              if (mmPackage.getNsURI().compareToIgnoreCase(tempTreePack.getNsURI()) == 0) {
                 packageNeedsDeletion = false;
               }
 
@@ -664,8 +636,8 @@ public class ViewtypeEditor extends MultiPageEditorPart
         IEditorInput editorInput = getEditorInput();
         FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
         EmfViewsFactory vFac = new EmfViewsFactory();
-        org.eclipse.emf.common.util.URI emfURI = org.eclipse.emf.common.util.URI
-            .createURI(fileEditorInput.getPath().toString());
+        org.eclipse.emf.common.util.URI emfURI =
+            org.eclipse.emf.common.util.URI.createURI(fileEditorInput.getPath().toString());
         Resource viewtypeResource = vFac.createResource(emfURI);
 
         java.net.URI uri = fileEditorInput.getURI();
@@ -673,7 +645,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
           viewtypeResource.load(uri.toURL().openStream(), new HashMap<>());
           ArrayList<EClass> containingClasses = new ArrayList<>();
           ArrayList<EObject> realAttrsToDelete = new ArrayList<>();
-          Viewtype theVirtualMM = (Viewtype) viewtypeResource;
+          // Viewtype theVirtualMM = (Viewtype) viewtypeResource;
 
           treeViewer.setExpandedElements(containingClasses.toArray());
           treeViewer.setCheckedElements(realAttrsToDelete.toArray());
@@ -688,8 +660,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
           for (Object tempTreePack : treeViewerContents) {
 
             EPackage tempPack = (EPackage) tempTreePack;
-            if (tempPack.getNsURI()
-                .compareToIgnoreCase(inputmetamodelPath) == 0)
+            if (tempPack.getNsURI().compareToIgnoreCase(inputmetamodelPath) == 0)
               ;
             {
               packIsFound = true;
@@ -697,7 +668,7 @@ public class ViewtypeEditor extends MultiPageEditorPart
             }
           }
           if (!packIsFound) {
-            ResourceSet theMMResourceSet = new ResourceSetImpl();
+            // ResourceSet theMMResourceSet = new ResourceSetImpl();
           }
         }
       }
@@ -716,10 +687,9 @@ public class ViewtypeEditor extends MultiPageEditorPart
         public void run() {
           IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
           for (int i = 0; i < pages.length; i++) {
-            if (((FileEditorInput) viewtypeTextEditor.getEditorInput())
-                .getFile().getProject().equals(event.getResource())) {
-              IEditorPart editorPart = pages[i]
-                  .findEditor(viewtypeTextEditor.getEditorInput());
+            if (((FileEditorInput) viewtypeTextEditor.getEditorInput()).getFile().getProject()
+                .equals(event.getResource())) {
+              IEditorPart editorPart = pages[i].findEditor(viewtypeTextEditor.getEditorInput());
               pages[i].closeEditor(editorPart, true);
             }
           }
@@ -743,8 +713,8 @@ public class ViewtypeEditor extends MultiPageEditorPart
       }
     }
 
-    IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
-        .getDocument(viewtypeTextEditor.getEditorInput());
+    IDocument theDoc =
+        viewtypeTextEditor.getDocumentProvider().getDocument(viewtypeTextEditor.getEditorInput());
     theDoc.set(theDoc.get());
 
   }

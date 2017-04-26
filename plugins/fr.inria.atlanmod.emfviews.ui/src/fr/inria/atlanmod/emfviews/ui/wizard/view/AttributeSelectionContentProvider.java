@@ -27,8 +27,8 @@ public class AttributeSelectionContentProvider implements ITreeContentProvider {
 
   public AttributeSelectionContentProvider() {
 
-    emfContentProvider = new AdapterFactoryContentProvider(
-        new ReflectiveItemProviderAdapterFactory());
+    emfContentProvider =
+        new AdapterFactoryContentProvider(new ReflectiveItemProviderAdapterFactory());
   }
 
   @Override

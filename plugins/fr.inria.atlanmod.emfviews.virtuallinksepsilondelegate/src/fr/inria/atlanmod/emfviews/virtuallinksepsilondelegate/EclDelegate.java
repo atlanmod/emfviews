@@ -45,7 +45,6 @@ import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinksdelegator.IVirtualLinksDelegate;
 
@@ -53,8 +52,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
   public void createVirtualMetamodelLinks(String linksDslFilePath,
-                                          URI modelLinksURI)
-      throws Exception {
+                                          URI modelLinksURI) throws Exception {
 
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinks = EmfViewsUtil.createLinksModel();
@@ -75,10 +73,9 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     while ((sCurrentLine = br.readLine()) != null) {
       if (sCurrentLine.startsWith("//alias")) {
-        String metamodelAlias = sCurrentLine.substring(
-            sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
-        String packageUri = sCurrentLine
-            .substring(sCurrentLine.indexOf("=") + 1);
+        String metamodelAlias =
+            sCurrentLine.substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
+        String packageUri = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
         metamodelsMap.put(metamodelAlias, packageUri);
       }
       sb.append(sCurrentLine);
@@ -94,15 +91,13 @@ public class EclDelegate implements IVirtualLinksDelegate {
       // The left parameter
       AST leftParameterAst = matchRuleAst.getFirstChild().getNextSibling();
 
-      String leftParameterType = leftParameterAst.getFirstChild()
-          .getNextSibling().getText();
+      String leftParameterType = leftParameterAst.getFirstChild().getNextSibling().getText();
       String[] leftParameterTypeParts = leftParameterType.split("!");
       String sourceMetamodelAlias = leftParameterTypeParts[0];
       String sourceElementName = leftParameterTypeParts[1];
 
       AST rightParameterAst = leftParameterAst.getNextSibling();
-      String rightParameterType = rightParameterAst.getFirstChild()
-          .getNextSibling().getText();
+      String rightParameterType = rightParameterAst.getFirstChild().getNextSibling().getText();
       String[] rightParameterTypeParts = rightParameterType.split("!");
       String targetMetamodelAlias = rightParameterTypeParts[0];
       String targetElementName = rightParameterTypeParts[1];
@@ -140,8 +135,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
   public void createVirtualModelLinks(String linksDslFile, URI linksModel,
-                                      List<Resource> inputModelsResourcesList)
-      throws Exception {
+                                      List<Resource> inputModelsResourcesList) throws Exception {
 
     java.net.URI linksDslUri = EmfViewsUtil.toURI(linksDslFile);
 
@@ -155,20 +149,17 @@ public class EclDelegate implements IVirtualLinksDelegate {
     Map<String, Resource> inputModelsAliasMapToResource = new HashMap<>();
     Map<String, String> inputmodelsAliasMapMetamodelUri = new HashMap<>();
 
-    while (((sCurrentLine = br.readLine()) != null)
-        && sCurrentLine.startsWith("//alias")) {
-      String metamodelAlias = sCurrentLine
-          .substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
+    while (((sCurrentLine = br.readLine()) != null) && sCurrentLine.startsWith("//alias")) {
+      String metamodelAlias =
+          sCurrentLine.substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
       String packageUri = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
 
       Resource correctResource = null;
       boolean foundCorrectResource = false;
-      for (int i = 0; i < inputModelsResourcesList.size()
-          && !foundCorrectResource; i++) {
+      for (int i = 0; i < inputModelsResourcesList.size() && !foundCorrectResource; i++) {
         Resource r = inputModelsResourcesList.get(i);
         EClassifier rootClassifier = r.getContents().get(0).eClass();
-        if (rootClassifier.getEPackage().getNsURI()
-            .compareToIgnoreCase(packageUri) == 0
+        if (rootClassifier.getEPackage().getNsURI().compareToIgnoreCase(packageUri) == 0
             && !r.getURI().toString().endsWith("profile.uml")) {
           correctResource = r;
           foundCorrectResource = true;
@@ -181,7 +172,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     }
     br.close();
-    VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
 
@@ -202,24 +193,23 @@ public class EclDelegate implements IVirtualLinksDelegate {
     EclOperationFactory operationFactory = new EclOperationFactory();
     module.getContext().setOperationFactory(operationFactory);
 
-    Iterator<Map.Entry<String, Resource>> iter = inputModelsAliasMapToResource
-        .entrySet().iterator();
+    Iterator<Map.Entry<String, Resource>> iter =
+        inputModelsAliasMapToResource.entrySet().iterator();
     while (iter.hasNext()) {
       Entry<String, Resource> tempEntry = iter.next();
       Resource modelResource = tempEntry.getValue();
       EmfModel inputModel = null;
       if (!modelResource.getURI().toString().startsWith("cdo")) {
-        inputModel = createEmfModelByURI(tempEntry.getKey(),
-            modelResource.getURI().toString(),
-            inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()), true,
-            false);
+        inputModel = createEmfModelByURI(tempEntry.getKey(), modelResource.getURI().toString(),
+                                         inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()),
+                                         true, false);
       } else {
         inputModel = new EmfModel();
         inputModel.setResource(modelResource);
         StringProperties properties = new StringProperties();
         properties.put(Model.PROPERTY_NAME, tempEntry.getKey());
         properties.put(EmfModel.PROPERTY_METAMODEL_URI,
-            inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()));
+                       inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()));
         properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
         inputModel.load(properties, null);
         inputModel.setCachingEnabled(true);
@@ -273,10 +263,10 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
   }
 
-  protected EmfModel createEmfModelByURI(String name, String model,
-                                         String metamodel, boolean readOnLoad,
-                                         boolean storeOnDisposal)
-      throws EolModelLoadingException, URISyntaxException {
+  protected EmfModel createEmfModelByURI(String name, String model, String metamodel,
+                                         boolean readOnLoad,
+                                         boolean storeOnDisposal) throws EolModelLoadingException,
+                                                                  URISyntaxException {
     if (metamodel.contains("UML"))
       UMLResourcesUtil.init(null);
     EmfModel emfModel = new EmfModel();

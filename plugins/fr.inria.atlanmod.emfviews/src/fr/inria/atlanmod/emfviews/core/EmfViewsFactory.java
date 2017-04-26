@@ -30,8 +30,8 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
   public Resource createResource(URI uri) {
     if (uri.toString().endsWith(".eview")) {
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
-      java.net.URI uriInworkspace = workspace.getRoot()
-          .findMember(uri.toPlatformString(true)).getLocationURI();
+      java.net.URI uriInworkspace =
+          workspace.getRoot().findMember(uri.toPlatformString(true)).getLocationURI();
 
       Properties properties = new Properties();
       InputStream inStream;
@@ -56,17 +56,14 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
 
   }
 
-  public Resource createEView(List<String> contributingModels,
-                              String compositionMetamodel,
-                              String correspondenceModelAbsolutePath)
-      throws MalformedURLException, IOException {
-    return new EView(contributingModels, compositionMetamodel,
-        correspondenceModelAbsolutePath);
+  public Resource createEView(List<String> contributingModels, String compositionMetamodel,
+                              String correspondenceModelAbsolutePath) throws MalformedURLException,
+                                                                      IOException {
+    return new EView(contributingModels, compositionMetamodel, correspondenceModelAbsolutePath);
   }
 
   public Resource createViewtype(List<String> contributingMetamodels,
-                                 String filtersMMUri)
-      throws FileNotFoundException, IOException {
+                                 String filtersMMUri) throws FileNotFoundException, IOException {
     return new Viewtype(contributingMetamodels, filtersMMUri);
   }
 

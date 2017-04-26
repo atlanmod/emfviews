@@ -11,6 +11,7 @@
 
 package fr.inria.atlanmod.emfviews.rules;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -31,8 +32,7 @@ public class ReproduceRule extends TranslationRule {
 
   @SuppressWarnings("unchecked")
   @Override
-  public Object get(InternalEObject object, EStructuralFeature feature,
-                    int index) {
+  public Object get(InternalEObject object, EStructuralFeature feature, int index) {
     try {
       ReproduceElementImpl vElement = (ReproduceElementImpl) object;
 
@@ -44,8 +44,7 @@ public class ReproduceRule extends TranslationRule {
       Object value = vElement.getConcreteElement().eGet(cFeature);
       if (feature instanceof EReference) {
         if (feature.isMany()) {
-          value = new VirtualModelList<>(object, feature,
-              (EList<EObject>) value);
+          value = new VirtualModelList<>(object, feature, Arrays.asList((EList<EObject>) value));
           if (index != NO_INDEX) {
             value = ((VirtualModelList<EObject>) value).get(index);
           }
@@ -69,8 +68,7 @@ public class ReproduceRule extends TranslationRule {
 
   @SuppressWarnings("unchecked")
   @Override
-  public Object set(InternalEObject object, EStructuralFeature feature,
-                    int index, Object value) {
+  public Object set(InternalEObject object, EStructuralFeature feature, int index, Object value) {
     ReproduceElementImpl vElement = (ReproduceElementImpl) object;
     View vModel = (View) vElement.eResource();
     if (vModel.getMetamodelManager().isVirtualAssociation(feature)) {
@@ -82,19 +80,18 @@ public class ReproduceRule extends TranslationRule {
     if (feature instanceof EReference) {
       if (feature.getUpperBound() != 1) {
         if (index != NO_INDEX) {
-          oldValue = new VirtualModelList<>(object, feature,
-              (EList<EObject>) cElement.eGet(cFeature));
+          oldValue =
+              new VirtualModelList<>(object, feature,
+                                     Arrays.asList((EList<EObject>) cElement.eGet(cFeature)));
           value = ((ReproduceElementImpl) value).getConcreteElement();
           cElement.eSet(cFeature, value);
         } else {
           oldValue = ((EList<EObject>) cElement.eGet(cFeature)).get(index);
           oldValue = vModel.translateToVirtualElement((EObject) oldValue);
-          ((EList<EObject>) cElement.eGet(cFeature)).set(index,
-              (EObject) value);
+          ((EList<EObject>) cElement.eGet(cFeature)).set(index, (EObject) value);
         }
       } else {
-        oldValue = vModel
-            .translateToVirtualElement((EObject) cElement.eGet(cFeature));
+        oldValue = vModel.translateToVirtualElement((EObject) cElement.eGet(cFeature));
         value = ((ReproduceElementImpl) value).getConcreteElement();
         cElement.eSet(cFeature, value);
       }
@@ -128,8 +125,8 @@ public class ReproduceRule extends TranslationRule {
           return true;
         }
       } else {
-        EStructuralFeature cFeature = vModel.getMetamodelManager()
-            .translateFromVirtualFeature(vElement, feature);
+        EStructuralFeature cFeature =
+            vModel.getMetamodelManager().translateFromVirtualFeature(vElement, feature);
         EObject cElement = ((ReproduceElementImpl) object).getConcreteElement();
         return cElement.eIsSet(cFeature);
       }
@@ -144,8 +141,8 @@ public class ReproduceRule extends TranslationRule {
     View vModel = (View) object.eResource();
     ReproduceElementImpl vElement = (ReproduceElementImpl) object;
     EObject cElement = ((ReproduceElementImpl) object).getConcreteElement();
-    EStructuralFeature cFeature = vModel.getMetamodelManager()
-        .translateFromVirtualFeature(vElement, feature);
+    EStructuralFeature cFeature =
+        vModel.getMetamodelManager().translateFromVirtualFeature(vElement, feature);
     cElement.eUnset(cFeature);
   }
 
@@ -155,8 +152,8 @@ public class ReproduceRule extends TranslationRule {
     View vModel = (View) object.eResource();
     ReproduceElementImpl vElement = (ReproduceElementImpl) object;
     EObject cElement = ((ReproduceElementImpl) object).getConcreteElement();
-    Object value = cElement.eGet(vModel.getMetamodelManager()
-        .translateFromVirtualFeature(vElement, feature));
+    Object value =
+        cElement.eGet(vModel.getMetamodelManager().translateFromVirtualFeature(vElement, feature));
     return value.hashCode();
   }
 

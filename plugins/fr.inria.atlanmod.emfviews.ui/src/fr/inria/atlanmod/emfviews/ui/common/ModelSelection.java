@@ -37,8 +37,7 @@ public class ModelSelection extends AbstractSelection {
 
   private int modelType;
 
-  public ModelSelection(Shell parent, String title, ArrayList<String> paths,
-      int modelType) {
+  public ModelSelection(Shell parent, String title, ArrayList<String> paths, int modelType) {
     super(parent, title);
     this.modelType = modelType;
 
@@ -74,8 +73,7 @@ public class ModelSelection extends AbstractSelection {
     uriSection.setLayoutData(data);
 
     loadResourceBox = new ResourceSelectionBox(getShell());
-    final Composite composite = (Composite) loadResourceBox
-        .createDialogArea(uriSection);
+    final Composite composite = (Composite) loadResourceBox.createDialogArea(uriSection);
     composite.getChildren()[composite.getChildren().length - 1].dispose();
 
     composite.setLayoutData(data);

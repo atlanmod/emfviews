@@ -45,8 +45,8 @@ public class MetamodelManager {
 
   private View virtualModel;
 
-  public MetamodelManager(Collection<Object> contributingMetamodels,
-      Resource compositionMetamodel, View virtualModel) {
+  public MetamodelManager(Collection<Object> contributingMetamodels, Resource compositionMetamodel,
+                          View virtualModel) {
     this.virtualModel = virtualModel;
     this.compositionMetamodel = compositionMetamodel;
     this.contributingMetamodels = new ArrayList<>();
@@ -66,10 +66,9 @@ public class MetamodelManager {
     if (virtualModel != null && virtualModel.getResourceSet() != null
         && virtualModel.getResourceSet().getPackageRegistry() != null
         && virtualModel.getResourceSet().getPackageRegistry().values() != null
-        && virtualModel.getResourceSet().getPackageRegistry().values()
-            .size() > 0) {
-      Collection<Object> listOfVirtualMMPackages = virtualModel.getResourceSet()
-          .getPackageRegistry().values();
+        && virtualModel.getResourceSet().getPackageRegistry().values().size() > 0) {
+      Collection<Object> listOfVirtualMMPackages =
+          virtualModel.getResourceSet().getPackageRegistry().values();
       ArrayList<EPackage> packs = new ArrayList<>();
       for (Object object : listOfVirtualMMPackages) {
 
@@ -92,34 +91,29 @@ public class MetamodelManager {
           if (((EClass) obj).getEPackage().getName().equals("MergePackage")) {
             mergeClassesByName.put(((EClass) obj).getName(), (EClass) obj);
           } else {
-            if (compositionClassesByName
-                .get(((EClass) obj).getName()) == null) {
+            if (compositionClassesByName.get(((EClass) obj).getName()) == null) {
               List<EClass> ecs = new ArrayList<>();
               ecs.add((EClass) obj);
               compositionClassesByName.put(((EClass) obj).getName(), ecs);
             } else {
-              compositionClassesByName.get(((EClass) obj).getName())
-                  .add((EClass) obj);
+              compositionClassesByName.get(((EClass) obj).getName()).add((EClass) obj);
             }
           }
         }
       }
     } else {
-      for (Iterator<EObject> i = compositionMetamodel.getAllContents(); i
-          .hasNext();) {
+      for (Iterator<EObject> i = compositionMetamodel.getAllContents(); i.hasNext();) {
         EObject obj = i.next();
         if (obj instanceof EClass) {
           if (((EClass) obj).getEPackage().getName().equals("MergePackage")) {
             mergeClassesByName.put(((EClass) obj).getName(), (EClass) obj);
           } else {
-            if (compositionClassesByName
-                .get(((EClass) obj).getName()) == null) {
+            if (compositionClassesByName.get(((EClass) obj).getName()) == null) {
               List<EClass> ecs = new ArrayList<>();
               ecs.add((EClass) obj);
               compositionClassesByName.put(((EClass) obj).getName(), ecs);
             } else {
-              compositionClassesByName.get(((EClass) obj).getName())
-                  .add((EClass) obj);
+              compositionClassesByName.get(((EClass) obj).getName()).add((EClass) obj);
             }
           }
         }
@@ -146,8 +140,7 @@ public class MetamodelManager {
             ecs.add((EClass) obj);
             contributingClassesByName.put(((EClass) obj).getName(), ecs);
           } else {
-            contributingClassesByName.get(((EClass) obj).getName())
-                .add((EClass) obj);
+            contributingClassesByName.get(((EClass) obj).getName()).add((EClass) obj);
           }
         }
       }
@@ -158,8 +151,7 @@ public class MetamodelManager {
         for (EClass cec : lcec) {
           List<EClass> lvec = compositionClassesByName.get(cec.getName());
           for (EClass vec : lvec) {
-            if (vec.getEPackage().getNsURI()
-                .equals(cec.getEPackage().getNsURI())) {
+            if (vec.getEPackage().getNsURI().equals(cec.getEPackage().getNsURI())) {
               this.concreteToVirtualClass.put(cec, vec);
               mapFeatures(cec, vec);
             }
@@ -200,8 +192,7 @@ public class MetamodelManager {
     }
   }
 
-  public EStructuralFeature translateToVirtualFeature(EObject object,
-                                                      EStructuralFeature feature) {
+  public EStructuralFeature translateToVirtualFeature(EObject object, EStructuralFeature feature) {
     if (object instanceof ReproduceElementImpl)
       return this.concreteToVirtualFeature.get(feature);
     else if (object instanceof MergeElementImpl) {
@@ -220,8 +211,7 @@ public class MetamodelManager {
     if (object instanceof ReproduceElementImpl)
       return this.virtualToConcreteFeature.get(feature);
     else if (object instanceof MergeElementImpl)
-      throw new ViewOperationException(
-          "could not translate feature for merged element");
+      throw new ViewOperationException("could not translate feature for merged element");
     return null;
   }
 

@@ -31,8 +31,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
  *
  * @generated
  */
-public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
-    implements VirtualLink {
+public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container implements VirtualLink {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
    * begin-user-doc --> <!-- end-user-doc -->
@@ -92,8 +91,8 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.VIRTUAL_LINK__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.VIRTUAL_LINK__NAME,
+                                    oldName, name));
   }
 
   /**

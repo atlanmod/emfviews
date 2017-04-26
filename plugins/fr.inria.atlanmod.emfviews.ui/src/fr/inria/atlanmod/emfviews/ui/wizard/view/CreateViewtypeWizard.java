@@ -44,8 +44,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
 
-public class CreateViewtypeWizard extends Wizard
-    implements INewWizard, IExecutableExtension {
+public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecutableExtension {
 
   /**
    * Wizard page to select the location and name of the new virtual metamodel
@@ -69,14 +68,13 @@ public class CreateViewtypeWizard extends Wizard
    */
   @Override
   public void addPages() {
-    simplePage = new WizardNewFileCreationPage(
-        Messages.getString("VirtualMetamodelFileWizard.Page.Name"), selection); //$NON-NLS-1$
-    simplePage.setImageDescriptor(
-        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+    simplePage =
+        new WizardNewFileCreationPage(Messages.getString("VirtualMetamodelFileWizard.Page.Name"), //$NON-NLS-1$
+                                      selection);
+    simplePage.setImageDescriptor(EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
 
     simplePage.setTitle(Messages.getString("VirtualMetamodelFileWizard.Title")); //$NON-NLS-1$
-    simplePage.setDescription(
-        Messages.getString("VirtualModelFileWizard.Page.Description")); //$NON-NLS-1$
+    simplePage.setDescription(Messages.getString("VirtualModelFileWizard.Page.Description")); //$NON-NLS-1$
     simplePage.setFileExtension("eviewtype"); //$NON-NLS-1$
     addPage(simplePage);
 
@@ -89,17 +87,15 @@ public class CreateViewtypeWizard extends Wizard
   }
 
   @Override
-  public void init(IWorkbench currentWorkbench,
-                   IStructuredSelection structuredSelection) {
+  public void init(IWorkbench currentWorkbench, IStructuredSelection structuredSelection) {
 
     this.selection = structuredSelection;
 
   }
 
   @Override
-  public void setInitializationData(IConfigurationElement config,
-                                    String propertyName, Object data)
-      throws CoreException {
+  public void setInitializationData(IConfigurationElement config, String propertyName,
+                                    Object data) throws CoreException {
 
   }
 
@@ -112,8 +108,7 @@ public class CreateViewtypeWizard extends Wizard
         .put("ecore", new XMLResourceFactoryImpl());
 
     IFile viewTypeFile = simplePage.createNewFile();
-    IPath viewTypeFolderFullPath = viewTypeFile.getFullPath()
-        .removeFileExtension();
+    IPath viewTypeFolderFullPath = viewTypeFile.getFullPath().removeFileExtension();
     VirtualLinks filterLinks = EmfViewsUtil.createLinksModel();
     Object[] treeElementsSelected = attSelectionPage.getCheckedElements();
 
@@ -122,28 +117,27 @@ public class CreateViewtypeWizard extends Wizard
 
         if (treeItem instanceof EStructuralFeature) {
           EStructuralFeature estFeature = (EStructuralFeature) treeItem;
-          Filter filter = EmfViewsUtil.createFilter(
-              "filter" + estFeature.getEContainingClass().getName(), "", true);
-          LinkedElement filterLinkedElement = EmfViewsUtil.createLinkedElement(
-              estFeature.getEContainingClass().getName(),
-              estFeature.getEContainingClass().getEPackage().getNsURI(),
-              "//" + estFeature.getEContainingClass().getName(),
-              estFeature.getName());
-          EmfViewsUtil.associateFilters(filterLinks, filter,
-              filterLinkedElement);
+          Filter filter = EmfViewsUtil
+              .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
+          LinkedElement filterLinkedElement =
+              EmfViewsUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
+                                               estFeature.getEContainingClass().getEPackage()
+                                                   .getNsURI(),
+                                               "//" + estFeature.getEContainingClass().getName(),
+                                               estFeature.getName());
+          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (treeItem instanceof EClass) {
           EClass tempEclass = (EClass) treeItem;
-          Filter filter = EmfViewsUtil.createFilter(
-              "filter" + tempEclass.getName(),
-              tempEclass.getName() + ".allInstances()", false);
-          LinkedElement filterLinkedElement = EmfViewsUtil.createLinkedElement(
-              tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
-              "//" + tempEclass.getName(), null);
+          Filter filter =
+              EmfViewsUtil.createFilter("filter" + tempEclass.getName(),
+                                        tempEclass.getName() + ".allInstances()", false);
+          LinkedElement filterLinkedElement = EmfViewsUtil
+              .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
+                                   "//" + tempEclass.getName(), null);
           filter.setFilteredElement(filterLinkedElement);
           filterLinks.getVirtualLinks().add(filter);
           filterLinks.getLinkedElements().add(filterLinkedElement);
-          EmfViewsUtil.associateFilters(filterLinks, filter,
-              filterLinkedElement);
+          EmfViewsUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         }
 
       }
@@ -151,9 +145,8 @@ public class CreateViewtypeWizard extends Wizard
     }
 
     try {
-      EmfViewsUtil.persistLinksModel(filterLinks,
-          org.eclipse.emf.common.util.URI.createURI(
-              viewTypeFolderFullPath.addFileExtension("xmi").toString()));
+      EmfViewsUtil.persistLinksModel(filterLinks, org.eclipse.emf.common.util.URI
+          .createURI(viewTypeFolderFullPath.addFileExtension("xmi").toString()));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -179,9 +172,8 @@ public class CreateViewtypeWizard extends Wizard
       fileContent.append("contributingMetamodels=");
       fileContent.append(nsURISs);
       fileContent.append("\n");
-      String correspondenceModelLine = "correspondenceModel="
-          + org.eclipse.emf.common.util.URI.createURI(
-              viewTypeFolderFullPath.addFileExtension("xmi").toString());
+      String correspondenceModelLine = "correspondenceModel=" + org.eclipse.emf.common.util.URI
+          .createURI(viewTypeFolderFullPath.addFileExtension("xmi").toString());
 
       // Up to this point it should serilize a vietype without an ecl file
       // and a links model with filters.
@@ -189,15 +181,13 @@ public class CreateViewtypeWizard extends Wizard
       fileContent.append("\n");
 
       serializeViewtype(viewTypeFile, fileContent);
-      IProject[] workspaceProjects = ResourcesPlugin.getWorkspace().getRoot()
-          .getProjects();
+      IProject[] workspaceProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
       for (IProject iProject : workspaceProjects) {
         iProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 
       }
 
-      IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-          .getActivePage();
+      IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
       IDE.openEditor(page, viewTypeFile);
 
       return true;
@@ -209,10 +199,9 @@ public class CreateViewtypeWizard extends Wizard
 
   }
 
-  private void serializeViewtype(IFile viewTypeFile, StringBuffer fileContent)
-      throws CoreException, IOException {
-    InputStream stream = new ByteArrayInputStream(
-        fileContent.toString().getBytes());
+  private void serializeViewtype(IFile viewTypeFile, StringBuffer fileContent) throws CoreException,
+                                                                               IOException {
+    InputStream stream = new ByteArrayInputStream(fileContent.toString().getBytes());
     if (viewTypeFile.exists()) {
       viewTypeFile.setContents(stream, true, true, null);
     } else {

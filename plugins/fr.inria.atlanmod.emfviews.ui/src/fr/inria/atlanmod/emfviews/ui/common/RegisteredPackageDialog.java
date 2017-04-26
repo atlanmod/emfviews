@@ -58,11 +58,9 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
     });
 
     setMultipleSelection(false);
-    setMessage(
-        EcoreEditorPlugin.INSTANCE.getString("_UI_SelectRegisteredPackageURI")); //$NON-NLS-1$
+    setMessage(EcoreEditorPlugin.INSTANCE.getString("_UI_SelectRegisteredPackageURI")); //$NON-NLS-1$
     setFilter("*"); //$NON-NLS-1$
-    setTitle(
-        EcoreEditorPlugin.INSTANCE.getString("_UI_PackageSelection_label")); //$NON-NLS-1$
+    setTitle(EcoreEditorPlugin.INSTANCE.getString("_UI_PackageSelection_label")); //$NON-NLS-1$
   }
 
   /**
@@ -76,11 +74,10 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
       Object nsURI = result[0];
       if (isDevelopmentTimeVersion() && !isRuntimeOnly) {
         ResourceSet resourceSet = new ResourceSetImpl();
-        resourceSet.getURIConverter().getURIMap()
-            .putAll(EcorePlugin.computePlatformURIMap());
+        resourceSet.getURIConverter().getURIMap().putAll(EcorePlugin.computePlatformURIMap());
         String uri = ""; //$NON-NLS-1$
-        Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin
-            .getEPackageNsURIToGenModelLocationMap();
+        Map<String, URI> ePackageNsURItoGenModelLocationMap =
+            EcorePlugin.getEPackageNsURIToGenModelLocationMap();
 
         URI location = ePackageNsURItoGenModelLocationMap.get(nsURI);
         Resource resource = resourceSet.getResource(location, true);
@@ -104,14 +101,12 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
 
   private Collection<EPackage> getAllPackages(Resource resource) {
     List<EPackage> result = new ArrayList<>();
-    for (TreeIterator<?> j = new EcoreUtil.ContentTreeIterator<Object>(
-        resource.getContents()) {
+    for (TreeIterator<?> j = new EcoreUtil.ContentTreeIterator<Object>(resource.getContents()) {
       private static final long serialVersionUID = 1L;
 
       @Override
       protected Iterator<? extends EObject> getEObjectChildren(EObject eObject) {
-        return eObject instanceof EPackage
-            ? ((EPackage) eObject).getESubpackages().iterator()
+        return eObject instanceof EPackage ? ((EPackage) eObject).getESubpackages().iterator()
             : Collections.<EObject>emptyList().iterator();
       }
     };j.hasNext();) {
@@ -129,8 +124,8 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
 
   private void updateElements() {
     if (isDevelopmentTimeVersion) {
-      Map<String, URI> ePackageNsURItoGenModelLocationMap = EcorePlugin
-          .getEPackageNsURIToGenModelLocationMap();
+      Map<String, URI> ePackageNsURItoGenModelLocationMap =
+          EcorePlugin.getEPackageNsURIToGenModelLocationMap();
       Object[] result = ePackageNsURItoGenModelLocationMap.keySet()
           .toArray(new Object[ePackageNsURItoGenModelLocationMap.size()]);
       Arrays.sort(result);
@@ -155,8 +150,7 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
     GridLayout layout = new GridLayout();
     layout.numColumns = 2;
     buttonGroup.setLayout(layout);
-    final Button developmentTimeVersionButton = new Button(buttonGroup,
-        SWT.RADIO);
+    final Button developmentTimeVersionButton = new Button(buttonGroup, SWT.RADIO);
     developmentTimeVersionButton.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent event) {
@@ -164,11 +158,11 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
         updateElements();
       }
     });
-    developmentTimeVersionButton.setText(EcoreEditorPlugin.INSTANCE
-        .getString("_UI_DevelopmentTimeVersion_label")); //$NON-NLS-1$
+    developmentTimeVersionButton
+        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_DevelopmentTimeVersion_label")); //$NON-NLS-1$
     Button runtimeTimeVersionButton = new Button(buttonGroup, SWT.RADIO);
-    runtimeTimeVersionButton.setText(
-        EcoreEditorPlugin.INSTANCE.getString("_UI_RuntimeVersion_label")); //$NON-NLS-1$
+    runtimeTimeVersionButton
+        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_RuntimeVersion_label")); //$NON-NLS-1$
     runtimeTimeVersionButton.setSelection(true);
 
     updateElements();

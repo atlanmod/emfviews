@@ -39,7 +39,6 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
 public abstract class View extends ResourceImpl {
   protected Properties properties;
@@ -104,23 +103,22 @@ public abstract class View extends ResourceImpl {
     super();
 
   }
-
-  public View(List<URI> contributingModels, List<URI> contributingMetamodels,
-      URI linksModel, URI compositionMetamodel) {
-    super();
-
-  }
-
-  public View(List<String> contributingModels,
-      List<String> contributingMetamodels, String compositionMetamodel) {
-    super();
-  }
+  //
+  // public View(List<URI> contributingModels, List<URI> contributingMetamodels,
+  // URI linksModel, URI compositionMetamodel) {
+  // super();
+  //
+  // }
+  //
+  // public View(List<String> contributingModels,
+  // List<String> contributingMetamodels, String compositionMetamodel) {
+  // super();
+  // }
 
   protected void loadContributingModels(List<String> contributingModelsPaths) {
 
     for (String modelURI : contributingModelsPaths) {
-      Resource modelResource = virtualResourceSet
-          .getResource(URI.createPlatformResourceURI(modelURI, true), true);
+      virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
     }
 
   }
@@ -129,16 +127,15 @@ public abstract class View extends ResourceImpl {
 
     for (String metamodelURI : contributingmetaModelsPaths) {
       if (metamodelURI.startsWith("http")) {
-        virtualResourceSet.getPackageRegistry().put(metamodelURI,
-            EPackage.Registry.INSTANCE.getEPackage(metamodelURI));
+        virtualResourceSet.getPackageRegistry()
+            .put(metamodelURI, EPackage.Registry.INSTANCE.getEPackage(metamodelURI));
 
       } else if (metamodelURI.endsWith("ecore")) {
-        Resource metamodelResource = virtualResourceSet.getResource(
-            URI.createPlatformResourceURI(metamodelURI, true), true);
+        Resource metamodelResource =
+            virtualResourceSet.getResource(URI.createPlatformResourceURI(metamodelURI, true), true);
         EList<EObject> contents = metamodelResource.getContents();
         EPackage thePack = (EPackage) contents.iterator().next();
-        virtualResourceSet.getPackageRegistry().put(thePack.getNsURI(),
-            thePack);
+        virtualResourceSet.getPackageRegistry().put(thePack.getNsURI(), thePack);
 
       }
     }
@@ -149,14 +146,12 @@ public abstract class View extends ResourceImpl {
 
     List<Resource> contributingModels = getContributingModels();
 
-    List<EObject>[] sublists = new List[contributingModels.size()];
+    List<List<EObject>> sublists = new ArrayList<>();
 
-    for (int i = 0; i < contributingModels.size(); i++) {
-
+    for (Resource r : contributingModels) {
       ArrayList<EObject> oneOftheSublists = new ArrayList<>();
-      oneOftheSublists.add(translateToVirtualElement(
-          contributingModels.get(i).getContents().get(0)));
-      sublists[i] = oneOftheSublists;
+      oneOftheSublists.add(translateToVirtualElement(r.getContents().get(0)));
+      sublists.add(oneOftheSublists);
     }
 
     this.virtualContents = new VirtualContents<>(this, sublists);
@@ -172,28 +167,23 @@ public abstract class View extends ResourceImpl {
 
   public void serialize(IFile file) throws IOException, CoreException {
     StringBuffer fileContent = new StringBuffer();
-    String contributingModelsLine = "contributingModels="
-        + contributingModelsURIs;
+    String contributingModelsLine = "contributingModels=" + contributingModelsURIs;
     fileContent.append(contributingModelsLine);
     fileContent.append("\n");
 
-    String compositionMetamodelLine = "compositionMetamodel="
-        + compositionMetamodelURI;
+    String compositionMetamodelLine = "compositionMetamodel=" + compositionMetamodelURI;
     fileContent.append(compositionMetamodelLine);
     fileContent.append("\n");
 
-    String contributingMetamodelsLine = "contributingMetamodels="
-        + contributingMetamodelsURIs;
+    String contributingMetamodelsLine = "contributingMetamodels=" + contributingMetamodelsURIs;
     fileContent.append(contributingMetamodelsLine);
     fileContent.append("\n");
 
-    String correspondenceModelLine = "correspondenceModel="
-        + correspondenceModelURI;
+    String correspondenceModelLine = "correspondenceModel=" + correspondenceModelURI;
 
     fileContent.append(correspondenceModelLine);
 
-    String correspondenceModelBaseLine = "correspondenceModelBase="
-        + correspondenceModelURI;
+    String correspondenceModelBaseLine = "correspondenceModelBase=" + correspondenceModelURI;
     fileContent.append(correspondenceModelBaseLine);
 
     InputStream stream = openContentStream(fileContent.toString());
@@ -214,7 +204,7 @@ public abstract class View extends ResourceImpl {
 
     correspondenceModelURI = modelURI.toString();
 
-    VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinksModelLevel = vLinksFactory.createVirtualLinks();
 
@@ -223,21 +213,20 @@ public abstract class View extends ResourceImpl {
     correspondenceModelResource.setURI(modelURI);
     correspondenceModelResource.getContents().add(virtualLinksModelLevel);
 
-    XMIResourceImpl correspondenceBetweenMetaModelResource = new XMIResourceImpl();
+    // XMIResourceImpl correspondenceBetweenMetaModelResource = new
+    // XMIResourceImpl();
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-    java.net.URI uri = workspace.getRoot()
-        .findMember("/" + correspondenceModelURI).getLocationURI();
+    java.net.URI uri =
+        workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
     correspondenceModelResource.load(uri.toURL().openStream(), new HashMap<>());
 
-    correspondenceModelResource
-        .setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
+    correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
 
     List<Association> associations = new ArrayList<>();
 
-    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource
-        .getContents().get(0);
+    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
     for (VirtualLink virtualLink : allVirtualLinks) {
       if (virtualLink instanceof Association) {
@@ -279,35 +268,30 @@ public abstract class View extends ResourceImpl {
 
         for (EObject tempSourceElement : sourceModelElementsThatConform) {
           boolean matchFound = false;
-          String theSourceAttVal = (String) tempSourceElement.eGet(
-              tempSourceElement.eClass().getEStructuralFeature(sourceAtt));
+          String theSourceAttVal = (String) tempSourceElement
+              .eGet(tempSourceElement.eClass().getEStructuralFeature(sourceAtt));
 
-          for (int i = 0; i < targetModelElementsThatConform.size()
-              && !matchFound; i++) {
+          for (int i = 0; i < targetModelElementsThatConform.size() && !matchFound; i++) {
             EObject tempTargetElement = targetModelElementsThatConform.get(i);
-            String tempTargetAttVal = (String) tempSourceElement.eGet(
-                tempTargetElement.eClass().getEStructuralFeature(targetAtt));
+            String tempTargetAttVal = (String) tempSourceElement
+                .eGet(tempTargetElement.eClass().getEStructuralFeature(targetAtt));
             if (theSourceAttVal.equalsIgnoreCase(tempTargetAttVal)) {
 
               matchFound = true;
-              Association associationModelLevel = vLinksFactory
-                  .createAssociation();
+              Association associationModelLevel = vLinksFactory.createAssociation();
               associationModelLevel.setName(association.getName());
 
               LinkedElement lSource = vLinksFactory.createLinkedElement();
               lSource.setModelRef(sourcePackagensURI);
-              lSource.setElementRef(
-                  sourceResource.getURIFragment(tempSourceElement));
+              lSource.setElementRef(sourceResource.getURIFragment(tempSourceElement));
 
               associationModelLevel.setSourceElement(lSource);
               LinkedElement lTarget = vLinksFactory.createLinkedElement();
               lTarget.setModelRef(targetPackagensURI);
-              lTarget.setElementRef(
-                  targetResource.getURIFragment(tempTargetElement));
+              lTarget.setElementRef(targetResource.getURIFragment(tempTargetElement));
 
               associationModelLevel.getTargetElements().add(lTarget);
-              virtualLinksModelLevel.getVirtualLinks()
-                  .add(associationModelLevel);
+              virtualLinksModelLevel.getVirtualLinks().add(associationModelLevel);
 
               virtualLinksModelLevel.getLinkedElements().add(lSource);
               virtualLinksModelLevel.getLinkedElements().add(lTarget);
@@ -330,8 +314,7 @@ public abstract class View extends ResourceImpl {
     for (int i = 0; i < contributingModels.size() && !packageFound; i++) {
       Resource temp = contributingModels.get(i);
       EClassifier rootClass = temp.getContents().get(0).eClass();
-      if (rootClass.getEPackage().getNsURI()
-          .compareToIgnoreCase(packageURI) == 0) {
+      if (rootClass.getEPackage().getNsURI().compareToIgnoreCase(packageURI) == 0) {
         packageFound = true;
         r = temp;
       }
@@ -341,8 +324,7 @@ public abstract class View extends ResourceImpl {
   }
 
   @Override
-  protected void doSave(OutputStream outputStream, Map<?, ?> options)
-      throws IOException {
+  protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
     List<Resource> contributingModels = getContributingModels();
     for (Resource r : contributingModels) {
       r.save(options);
@@ -356,8 +338,8 @@ public abstract class View extends ResourceImpl {
     String contributingModelsURIs = "";
 
     for (int i = 0; i < contributingModels.size(); i++) {
-      contributingModelsURIs = contributingModelsURIs.concat(contributingModels
-          .get(i).getURI().toString().replace("platform:/resource/", ""));
+      contributingModelsURIs = contributingModelsURIs
+          .concat(contributingModels.get(i).getURI().toString().replace("platform:/resource/", ""));
       if (i < contributingModels.size() - 1) {
         contributingModelsURIs = contributingModelsURIs.concat(",");
       }

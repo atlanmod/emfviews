@@ -37,8 +37,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
  *
  * @generated
  */
-public class LinkedElementImpl extends MinimalEObjectImpl.Container
-    implements LinkedElement {
+public class LinkedElementImpl extends MinimalEObjectImpl.Container implements LinkedElement {
   /**
    * The default value of the '{@link #getElementRef() <em>Element Ref</em>}'
    * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -159,8 +158,8 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
     elementRef = newElementRef;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.LINKED_ELEMENT__ELEMENT_REF, oldElementRef,
-          elementRef));
+                                    VirtualLinksPackage.LINKED_ELEMENT__ELEMENT_REF, oldElementRef,
+                                    elementRef));
   }
 
   /**
@@ -184,8 +183,8 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
     modelRef = newModelRef;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.LINKED_ELEMENT__MODEL_REF, oldModelRef,
-          modelRef));
+                                    VirtualLinksPackage.LINKED_ELEMENT__MODEL_REF, oldModelRef,
+                                    modelRef));
   }
 
   /**
@@ -209,7 +208,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
     name = newName;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.LINKED_ELEMENT__NAME, oldName, name));
+                                    VirtualLinksPackage.LINKED_ELEMENT__NAME, oldName, name));
   }
 
   /**
@@ -233,8 +232,8 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
     estructuralFeatures = newEstructuralFeatures;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.LINKED_ELEMENT__ESTRUCTURAL_FEATURES,
-          oldEstructuralFeatures, estructuralFeatures));
+                                    VirtualLinksPackage.LINKED_ELEMENT__ESTRUCTURAL_FEATURES,
+                                    oldEstructuralFeatures, estructuralFeatures));
   }
 
   /**
@@ -317,8 +316,7 @@ public class LinkedElementImpl extends MinimalEObjectImpl.Container
       return ELEMENT_REF_EDEFAULT == null ? elementRef != null
           : !ELEMENT_REF_EDEFAULT.equals(elementRef);
     case VirtualLinksPackage.LINKED_ELEMENT__MODEL_REF:
-      return MODEL_REF_EDEFAULT == null ? modelRef != null
-          : !MODEL_REF_EDEFAULT.equals(modelRef);
+      return MODEL_REF_EDEFAULT == null ? modelRef != null : !MODEL_REF_EDEFAULT.equals(modelRef);
     case VirtualLinksPackage.LINKED_ELEMENT__NAME:
       return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     case VirtualLinksPackage.LINKED_ELEMENT__ESTRUCTURAL_FEATURES:

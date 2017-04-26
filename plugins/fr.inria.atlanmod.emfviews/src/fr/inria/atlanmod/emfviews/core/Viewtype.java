@@ -54,8 +54,6 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
-import fr.inria.atlanmod.emfviews.virtuallinksdelegator.VirtualLinksDelegator;
 
 public class Viewtype extends ResourceImpl {
 
@@ -109,7 +107,7 @@ public class Viewtype extends ResourceImpl {
   }
 
   public void createCorrespondenceModel(URI modelURI) throws IOException {
-    VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
     correspondenceModelResource = new XMIResourceImpl();
@@ -141,29 +139,26 @@ public class Viewtype extends ResourceImpl {
   }
 
   @Override
-  protected void doLoad(InputStream inputStream, Map<?, ?> options)
-      throws IOException {
+  protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
     properties = new Properties();
     properties.load(inputStream);
     if (properties.getProperty("correspondenceModelBase") != null) {
-      correspondenceModelBase = properties
-          .getProperty("correspondenceModelBase");
-      IWorkspace workspace = ResourcesPlugin.getWorkspace();
-      java.net.URI uri = workspace.getRoot()
-          .findMember("/" + properties.getProperty("correspondenceModel"))
-          .getLocationURI();
-      try {
-        VirtualLinksDelegator vld = new VirtualLinksDelegator(
-            properties.getProperty("correspondenceModelBase"));
-        // vld.createVirtualMetamodelLinks(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
-        // //extendedMMviewpoint.xmi is rewrited
-      } catch (CoreException e) {
-        e.printStackTrace();
-      }
+      correspondenceModelBase = properties.getProperty("correspondenceModelBase");
+      // IWorkspace workspace = ResourcesPlugin.getWorkspace();
+      // java.net.URI uri = workspace.getRoot()
+      // .findMember("/" + properties.getProperty("correspondenceModel"))
+      // .getLocationURI();
+      // try {
+      // VirtualLinksDelegator vld = new VirtualLinksDelegator(
+      // properties.getProperty("correspondenceModelBase"));
+      // vld.createVirtualMetamodelLinks(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
+      // //extendedMMviewpoint.xmi is rewrited
+      // } catch (CoreException e) {
+      // e.printStackTrace();
+      // }
     }
     loadFilterMetamodel(properties.getProperty("filtersMetamodel"));
-    loadContributingMetamodels(
-        properties.getProperty("contributingMetamodels"));
+    loadContributingMetamodels(properties.getProperty("contributingMetamodels"));
     loadCorrespondenceModel(properties.getProperty("correspondenceModel"));
     setVirtualContents();
   }
@@ -172,8 +167,8 @@ public class Viewtype extends ResourceImpl {
 
   private void loadFilterMetamodel(String filtersMetamodel) {
     ResourceSet filtersResourceSet = new ResourceSetImpl();
-    attributesToHideMM = filtersResourceSet.getResource(
-        URI.createPlatformResourceURI(filtersMetamodel, true), true);
+    attributesToHideMM =
+        filtersResourceSet.getResource(URI.createPlatformResourceURI(filtersMetamodel, true), true);
   }
 
   public Resource getAttributesToHideMM() {
@@ -190,8 +185,7 @@ public class Viewtype extends ResourceImpl {
     for (int i = 0; i < modelsURIs.length; i++) {
       String modelURI = modelsURIs[i];
       if (modelURI.startsWith("http")) {
-        EPackage contributingEcoreModelPackage = EPackage.Registry.INSTANCE
-            .getEPackage(modelURI);
+        EPackage contributingEcoreModelPackage = EPackage.Registry.INSTANCE.getEPackage(modelURI);
 
         Copier copier = new Copier();
         EObject copy = copier.copy(contributingEcoreModelPackage);
@@ -201,24 +195,21 @@ public class Viewtype extends ResourceImpl {
         contributingEpackages.add(contributingEcoreModelPackage);
         for (int j = 0; j < epackagesWithAttsToHide.size(); j++) {
           EPackage tempPack = (EPackage) epackagesWithAttsToHide.get(j);
-          if (tempPack.getNsURI()
-              .compareToIgnoreCase(copiedPackage.getNsURI()) == 0) {
-            EList<EClassifier> eClassifiersWithItemsToHide = tempPack
-                .getEClassifiers();
+          if (tempPack.getNsURI().compareToIgnoreCase(copiedPackage.getNsURI()) == 0) {
+            EList<EClassifier> eClassifiersWithItemsToHide = tempPack.getEClassifiers();
             for (EClassifier eClassifierWithItemsToHide : eClassifiersWithItemsToHide) {
-              EClassifier requiredEclassifier = copiedPackage
-                  .getEClassifier(eClassifierWithItemsToHide.getName());
+              EClassifier requiredEclassifier =
+                  copiedPackage.getEClassifier(eClassifierWithItemsToHide.getName());
               EClass eClassWithItemsToHide = (EClass) requiredEclassifier;
-              EList<EStructuralFeature> attsToHide = ((EClass) eClassifierWithItemsToHide)
-                  .getEStructuralFeatures();
+              EList<EStructuralFeature> attsToHide =
+                  ((EClass) eClassifierWithItemsToHide).getEStructuralFeatures();
               for (EStructuralFeature eAttributeToHide : attsToHide) {
-                EStructuralFeature theAtt = eClassWithItemsToHide
-                    .getEStructuralFeature(eAttributeToHide.getName());
+                EStructuralFeature theAtt =
+                    eClassWithItemsToHide.getEStructuralFeature(eAttributeToHide.getName());
                 EClassifier originalClassifier = contributingEcoreModelPackage
                     .getEClassifier(eClassifierWithItemsToHide.getName());
                 EClass originalEClass = (EClass) originalClassifier;
-                hiddenAttributes.add(
-                    originalEClass.getEStructuralFeature(theAtt.getName()));
+                hiddenAttributes.add(originalEClass.getEStructuralFeature(theAtt.getName()));
                 eClassWithItemsToHide.getEStructuralFeatures().remove(theAtt);
               }
             }
@@ -226,15 +217,14 @@ public class Viewtype extends ResourceImpl {
         }
 
         ResourceImpl resourceTemp = new ResourceImpl();
-        resourceTemp
-            .setURI(URI.createURI(contributingEcoreModelPackage.getNsURI()));
+        resourceTemp.setURI(URI.createURI(contributingEcoreModelPackage.getNsURI()));
         resourceTemp.getContents().add(copiedPackage);
-        virtualResourceSet.getPackageRegistry()
-            .put(contributingEcoreModelPackage.getNsURI(), copiedPackage);
+        virtualResourceSet.getPackageRegistry().put(contributingEcoreModelPackage.getNsURI(),
+                                                    copiedPackage);
 
       } else if (modelURI.endsWith("ecore")) {
-        Resource metamodelResource = virtualResourceSet
-            .getResource(URI.createPlatformResourceURI(modelURI, true), true);
+        Resource metamodelResource =
+            virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
         EPackage mmPackage = (EPackage) metamodelResource.getContents().get(0);
 
         Copier copier = new Copier();
@@ -246,49 +236,43 @@ public class Viewtype extends ResourceImpl {
         contributingEpackages.add(mmPackage);
         for (int j = 0; j < epackagesWithAttsToHide.size(); j++) {
           EPackage tempPack = (EPackage) epackagesWithAttsToHide.get(j);
-          if (tempPack.getNsURI()
-              .compareToIgnoreCase(copiedPackage.getNsURI()) == 0) {
-            EList<EClassifier> eClassifiersWithItemsToHide = tempPack
-                .getEClassifiers();
+          if (tempPack.getNsURI().compareToIgnoreCase(copiedPackage.getNsURI()) == 0) {
+            EList<EClassifier> eClassifiersWithItemsToHide = tempPack.getEClassifiers();
             for (EClassifier eClassifierWithItemsToHide : eClassifiersWithItemsToHide) {
-              EClassifier requiredEclassifier = copiedPackage
-                  .getEClassifier(eClassifierWithItemsToHide.getName());
+              EClassifier requiredEclassifier =
+                  copiedPackage.getEClassifier(eClassifierWithItemsToHide.getName());
               EClass eClassWithItemsToHide = (EClass) requiredEclassifier;
-              EList<EStructuralFeature> attsToHide = ((EClass) eClassifierWithItemsToHide)
-                  .getEStructuralFeatures();
+              EList<EStructuralFeature> attsToHide =
+                  ((EClass) eClassifierWithItemsToHide).getEStructuralFeatures();
               for (EStructuralFeature eAttributeToHide : attsToHide) {
-                EStructuralFeature theAtt = eClassWithItemsToHide
-                    .getEStructuralFeature(eAttributeToHide.getName());
-                EClassifier originalClassifier = mmPackage
-                    .getEClassifier(eClassifierWithItemsToHide.getName());
+                EStructuralFeature theAtt =
+                    eClassWithItemsToHide.getEStructuralFeature(eAttributeToHide.getName());
+                EClassifier originalClassifier =
+                    mmPackage.getEClassifier(eClassifierWithItemsToHide.getName());
                 EClass originalEClass = (EClass) originalClassifier;
-                hiddenAttributes.add(
-                    originalEClass.getEStructuralFeature(theAtt.getName()));
+                hiddenAttributes.add(originalEClass.getEStructuralFeature(theAtt.getName()));
                 eClassWithItemsToHide.getEStructuralFeatures().remove(theAtt);
               }
 
             }
           }
         }
-        virtualResourceSet.getPackageRegistry().put(mmPackage.getNsURI(),
-            copiedPackage);
+        virtualResourceSet.getPackageRegistry().put(mmPackage.getNsURI(), copiedPackage);
       }
     }
   }
 
-  private void loadCorrespondenceModel(String correspondenceModelURI)
-      throws FileNotFoundException, IOException {
-    VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+  private void loadCorrespondenceModel(String correspondenceModelURI) throws FileNotFoundException,
+                                                                      IOException {
+    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     correspondenceModelResource = new XMIResourceImpl();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    java.net.URI uri = workspace.getRoot()
-        .findMember("/" + correspondenceModelURI).getLocationURI();
+    java.net.URI uri =
+        workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
     correspondenceModelResource.load(uri.toURL().openStream(), new HashMap<>());
-    correspondenceModelResource
-        .setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
+    correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
     List<Association> associations = new ArrayList<>();
-    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource
-        .getContents().get(0);
+    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
     for (VirtualLink virtualLink : allVirtualLinks) {
       if (virtualLink instanceof Association) {
@@ -296,16 +280,15 @@ public class Viewtype extends ResourceImpl {
         associations.add(association);
       }
     }
-    System.out.println("contributingMetamodels:  "
-        + properties.getProperty("contributingMetamodels"));
+    System.out
+        .println("contributingMetamodels:  " + properties.getProperty("contributingMetamodels"));
 
     // if there is only one contributingMetamodel: metamodel extension (Monoge)
-    if (properties.getProperty("contributingMetamodels")
-        .split(",").length > 1) {
+    if (properties.getProperty("contributingMetamodels").split(",").length > 1) {
       System.out.println("Composition");
       for (Association association : associations) {
         // The name of the association corresponds to the type of change
-        String associationName = association.getName();
+        // String associationName = association.getName();
         LinkedElement sourceElement = association.getSourceElement();
         String sourceElementName = sourceElement.getName();
         String sourcePackageUri = sourceElement.getModelRef();
@@ -316,15 +299,13 @@ public class Viewtype extends ResourceImpl {
         String targetElementName = targetElement.getName();
         String targetPackageUri = targetElement.getModelRef();
 
-        EPackage sourcePackage = virtualResourceSet.getPackageRegistry()
-            .getEPackage(sourcePackageUri);
-        EClass theSourceEClass = (EClass) sourcePackage
-            .getEClassifier(sourceElementName);
+        EPackage sourcePackage =
+            virtualResourceSet.getPackageRegistry().getEPackage(sourcePackageUri);
+        EClass theSourceEClass = (EClass) sourcePackage.getEClassifier(sourceElementName);
 
-        EPackage targetPackage = virtualResourceSet.getPackageRegistry()
-            .getEPackage(targetPackageUri);
-        EClass theTargetEClass = (EClass) targetPackage
-            .getEClassifier(targetElementName);
+        EPackage targetPackage =
+            virtualResourceSet.getPackageRegistry().getEPackage(targetPackageUri);
+        EClass theTargetEClass = (EClass) targetPackage.getEClassifier(targetElementName);
 
         EReference theR = EcoreFactory.eINSTANCE.createEReference();
         theR.setName(association.getName());
@@ -337,16 +318,16 @@ public class Viewtype extends ResourceImpl {
 
         theR.getEAnnotations().add(theAnnotation);
 
-        if (association.getSourceAttribute() != null
-            && association.getSourceAttribute() != ""
-            && association.getTargetAttribute() != null
-            && association.getTargetAttribute() != "") {
-          EStringToStringMapEntryImpl detailSource = (EStringToStringMapEntryImpl) EcoreFactory.eINSTANCE
-              .create(EcorePackage.eINSTANCE.getEStringToStringMapEntry());
+        if (association.getSourceAttribute() != null && association.getSourceAttribute() != ""
+            && association.getTargetAttribute() != null && association.getTargetAttribute() != "") {
+          EStringToStringMapEntryImpl detailSource =
+              (EStringToStringMapEntryImpl) EcoreFactory.eINSTANCE
+                  .create(EcorePackage.eINSTANCE.getEStringToStringMapEntry());
           detailSource.setKey("source");
           detailSource.setValue(association.getSourceAttribute());
-          EStringToStringMapEntryImpl detailTarget = (EStringToStringMapEntryImpl) EcoreFactory.eINSTANCE
-              .create(EcorePackage.eINSTANCE.getEStringToStringMapEntry());
+          EStringToStringMapEntryImpl detailTarget =
+              (EStringToStringMapEntryImpl) EcoreFactory.eINSTANCE
+                  .create(EcorePackage.eINSTANCE.getEStringToStringMapEntry());
           detailTarget.setKey("target");
           detailTarget.setValue(association.getTargetAttribute());
           theAnnotation.getDetails().add(detailSource);
@@ -358,15 +339,11 @@ public class Viewtype extends ResourceImpl {
       System.out.println("Extension");
       // EPackage originalPackage =
       // virtualResourceSet.getPackageRegistry().getEPackage(properties.getProperty("originalMetamodel"));
-      Resource metamodelResource = virtualResourceSet
-          .getResource(
-              URI.createPlatformResourceURI(
-                  properties.getProperty("contributingMetamodels"), true),
-              true);
-      System.out.println("originalMetamodel2:  "
-          + metamodelResource.getContents().get(0).toString());
-      EPackage originalPackage = (EPackage) metamodelResource.getContents()
-          .get(0);
+      Resource metamodelResource = virtualResourceSet.getResource(URI
+          .createPlatformResourceURI(properties.getProperty("contributingMetamodels"), true), true);
+      System.out
+          .println("originalMetamodel2:  " + metamodelResource.getContents().get(0).toString());
+      EPackage originalPackage = (EPackage) metamodelResource.getContents().get(0);
       // Create extendedPackage and copy the originalPackage
       EPackage extendedPackage = EcoreFactory.eINSTANCE.createEPackage();
       extendedPackage = originalPackage;
@@ -381,8 +358,7 @@ public class Viewtype extends ResourceImpl {
         if (associationName.compareTo("Refine") == 0) {
           String newClass = association.getTargetAttribute();
           String superClass = association.getSourceElement().getName();
-          System.out
-              .println("Create: " + newClass + " subtyping: " + superClass);
+          System.out.println("Create: " + newClass + " subtyping: " + superClass);
           EClass classY = EcoreFactory.eINSTANCE.createEClass();
           classY.setName(newClass); // Y
           EClass classC = (EClass) extendedPackage.getEClassifier(superClass); // C
@@ -396,23 +372,19 @@ public class Viewtype extends ResourceImpl {
           classZ.setName(newClass);
           // get subclasses and add new class as superclass
           for (int i = 0; i < association.getTargetElements().size(); i++) {
-            String subclassName = association.getTargetElements().get(i)
-                .getName();
-            EClass subClass = (EClass) extendedPackage
-                .getEClassifier(subclassName);
+            String subclassName = association.getTargetElements().get(i).getName();
+            EClass subClass = (EClass) extendedPackage.getEClassifier(subclassName);
             subClass.getESuperTypes().add(classZ);
           }
           extendedPackage.getEClassifiers().add(classZ);
           // 3- AddProperty: propertyA to metaclass A
         } else if (associationName.compareTo("AddProperty") == 0) {
           String addedProperty = association.getTargetAttribute();
-          String targetElement = association.getTargetElements().get(0)
-              .getName();
+          String targetElement = association.getTargetElements().get(0).getName();
           String typeString = association.getSourceAttribute();
-          System.out.println("Add property: " + addedProperty + " of type: "
-              + typeString + " to class: " + targetElement);
-          EClass classA = (EClass) extendedPackage
-              .getEClassifier(targetElement); // A
+          System.out.println("Add property: " + addedProperty + " of type: " + typeString
+              + " to class: " + targetElement);
+          EClass classA = (EClass) extendedPackage.getEClassifier(targetElement); // A
           EAttribute attrA = EcoreFactory.eINSTANCE.createEAttribute();
           attrA.setName(addedProperty); // propertyA
           if (typeString.toLowerCase().compareTo("string") == 0) {
@@ -443,18 +415,15 @@ public class Viewtype extends ResourceImpl {
         } else if (associationName.compareTo("FilterProperty") == 0) {
           String filteredProperty = association.getSourceAttribute();
           String sourceElement = association.getSourceElement().getName();
-          EClass classB = (EClass) extendedPackage
-              .getEClassifier(sourceElement); // B
+          EClass classB = (EClass) extendedPackage.getEClassifier(sourceElement); // B
           // System.out.println("Filter property: "+ filteredProperty + " from
           // class: " + sourceElement);
           System.out.println("Filter property structuralFeatures size: "
               + classB.getEStructuralFeatures().size());
           for (int i = 0; i < classB.getEStructuralFeatures().size(); i++) {
-            if (classB.getEStructuralFeatures().get(i).getName()
-                .compareTo(filteredProperty) == 0) {
+            if (classB.getEStructuralFeatures().get(i).getName().compareTo(filteredProperty) == 0) {
               System.out.println("Filter property ");
-              EStructuralFeature theAtt = classB.getEAllStructuralFeatures()
-                  .get(i);
+              EStructuralFeature theAtt = classB.getEAllStructuralFeatures().get(i);
               classB.getEStructuralFeatures().remove(theAtt);
             }
           }
@@ -463,8 +432,7 @@ public class Viewtype extends ResourceImpl {
           String filteredClass = association.getSourceElement().getName();
           System.out.println("FilterClass: " + filteredClass);
           for (int i = 0; i < extendedPackage.getEClassifiers().size(); i++) {
-            if (extendedPackage.getEClassifiers().get(i).getName()
-                .compareTo(filteredClass) == 0) {
+            if (extendedPackage.getEClassifiers().get(i).getName().compareTo(filteredClass) == 0) {
               extendedPackage.getEClassifiers().remove(i);
             }
           }
@@ -473,10 +441,9 @@ public class Viewtype extends ResourceImpl {
           String classConstraint = association.getSourceElement().getName();
           String constraint = association.getSourceAttribute();
           String value = association.getTargetAttribute();
-          System.out.println("AddConstraint " + constraint + "with value: "
-              + value + "on class " + classConstraint);
-          EClass classA = (EClass) extendedPackage
-              .getEClassifier(classConstraint);
+          System.out.println("AddConstraint " + constraint + "with value: " + value + "on class "
+              + classConstraint);
+          EClass classA = (EClass) extendedPackage.getEClassifier(classConstraint);
           EAnnotation constraint1 = EcoreFactory.eINSTANCE.createEAnnotation();
           constraint1.setSource(constraint);
           classA.getEAnnotations().add(constraint1);
@@ -484,13 +451,10 @@ public class Viewtype extends ResourceImpl {
         } else if (associationName.compareTo("FilterConstraint") == 0) {
           String classConstraint = association.getSourceElement().getName();
           String constraint = association.getSourceAttribute();
-          System.out.println("FilterConstraint " + constraint + "from class "
-              + classConstraint);
-          EClass classC = (EClass) extendedPackage
-              .getEClassifier(classConstraint);
+          System.out.println("FilterConstraint " + constraint + "from class " + classConstraint);
+          EClass classC = (EClass) extendedPackage.getEClassifier(classConstraint);
           for (int i = 0; i < classC.getEAnnotations().size(); i++) {
-            if (classC.getEAnnotations().get(i).getSource()
-                .compareTo(constraint) == 0) {
+            if (classC.getEAnnotations().get(i).getSource().compareTo(constraint) == 0) {
               classC.getEAnnotations().remove(i);
             }
           }
@@ -499,12 +463,10 @@ public class Viewtype extends ResourceImpl {
         } else if (associationName.compareTo("ModifyProperty") == 0) {
           String classModify = association.getSourceElement().getName();
           String property = association.getSourceAttribute();
-          System.out.println(
-              "ModifyProperty " + property + "from class " + classModify);
+          System.out.println("ModifyProperty " + property + "from class " + classModify);
           EClass classC = (EClass) extendedPackage.getEClassifier(classModify);
           for (int i = 0; i < classC.getEAttributes().size(); i++) {
-            if (classC.getEAttributes().get(i).getName()
-                .compareTo(property) == 0) {
+            if (classC.getEAttributes().get(i).getName().compareTo(property) == 0) {
               // attribute:value, attribute:value, ...
               String attribute_values = association.getTargetAttribute();
               String[] attribute_values_array = attribute_values.split(",");
@@ -524,14 +486,11 @@ public class Viewtype extends ResourceImpl {
           System.out.println(association.getTargetAttribute());
           String addedProperty = association.getTargetAttribute().split(";")[0]; // refB
           String typeRelation = association.getTargetAttribute().split(";")[1]; // composition
-          String targetElement = association.getTargetElements().get(0)
-              .getName(); // A
+          String targetElement = association.getTargetElements().get(0).getName(); // A
           String typeString = association.getSourceAttribute(); // B
-          System.out.println("Add reference: " + addedProperty + " of type: "
-              + typeString + "and relation" + typeRelation + " to class: "
-              + targetElement);
-          EClass classA = (EClass) extendedPackage
-              .getEClassifier(targetElement); // A
+          System.out.println("Add reference: " + addedProperty + " of type: " + typeString
+              + "and relation" + typeRelation + " to class: " + targetElement);
+          EClass classA = (EClass) extendedPackage.getEClassifier(targetElement); // A
           EReference refB = EcoreFactory.eINSTANCE.createEReference();
           refB.setName(addedProperty);
           EClass classB = (EClass) extendedPackage.getEClassifier(typeString); // B
@@ -549,8 +508,7 @@ public class Viewtype extends ResourceImpl {
         } else if (associationName.compareTo("FilterReference") == 0) {
           String filteredReference = association.getSourceAttribute();
           String sourceElement = association.getSourceElement().getName();
-          EClass classB = (EClass) extendedPackage
-              .getEClassifier(sourceElement); // B
+          EClass classB = (EClass) extendedPackage.getEClassifier(sourceElement); // B
           // System.out.println("Filter property: "+ filteredProperty + " from
           // class: " + sourceElement);
           System.out.println("Filter reference structuralFeatures size: "
@@ -559,8 +517,7 @@ public class Viewtype extends ResourceImpl {
             if (classB.getEStructuralFeatures().get(i).getName()
                 .compareTo(filteredReference) == 0) {
               System.out.println("Filter reference ");
-              EStructuralFeature theRef = classB.getEAllStructuralFeatures()
-                  .get(i);
+              EStructuralFeature theRef = classB.getEAllStructuralFeatures().get(i);
               classB.getEStructuralFeatures().remove(theRef);
             }
           }
@@ -570,17 +527,14 @@ public class Viewtype extends ResourceImpl {
 
       } // for
         // Register the new virtual MM
-      EPackage.Registry.INSTANCE.put("http://Extended_Metamodel/1.0",
-          extendedPackage);
+      EPackage.Registry.INSTANCE.put("http://Extended_Metamodel/1.0", extendedPackage);
     } // end if (composition or extension)
 
   }
 
-  public void serialize(IFile file, String dslTechnology)
-      throws IOException, CoreException {
+  public void serialize(IFile file, String dslTechnology) throws IOException, CoreException {
     StringBuffer fileContent = new StringBuffer();
-    String contributingMetamodelsLine = "contributingMetamodels="
-        + contributingMetamodels;
+    String contributingMetamodelsLine = "contributingMetamodels=" + contributingMetamodels;
     fileContent.append(contributingMetamodelsLine);
     fileContent.append("\n");
     if (correspondenceModel == null) {
@@ -593,14 +547,11 @@ public class Viewtype extends ResourceImpl {
       correspondenceModel = correspondenceModelPath.toString();
     }
 
-    if (dslTechnology.compareToIgnoreCase("none") != 0
-        && correspondenceModelBase == null) {
-      IPath modelBasePath = file.getFullPath().removeFileExtension()
-          .addFileExtension("ecl");
+    if (dslTechnology.compareToIgnoreCase("none") != 0 && correspondenceModelBase == null) {
+      IPath modelBasePath = file.getFullPath().removeFileExtension().addFileExtension("ecl");
 
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
-      String veamosA = new File(workspace.getRoot().getLocationURI().getPath())
-          .getAbsolutePath();
+      String veamosA = new File(workspace.getRoot().getLocationURI().getPath()).getAbsolutePath();
       String laRuta = veamosA.concat(modelBasePath.toString());
 
       correspondenceModelBase = modelBasePath.toString();
@@ -608,14 +559,13 @@ public class Viewtype extends ResourceImpl {
       File fileModelBase = new File(laRuta);
       fileModelBase.createNewFile();
 
-      String correspondenceModelLine = "correspondenceModel="
-          + correspondenceModel;
+      String correspondenceModelLine = "correspondenceModel=" + correspondenceModel;
 
       fileContent.append(correspondenceModelLine);
       fileContent.append("\n");
 
-      String correspondenceModelBaseLine = "correspondenceModelBase="
-          + correspondenceModel.replaceAll("xmi", dslTechnology);
+      String correspondenceModelBaseLine =
+          "correspondenceModelBase=" + correspondenceModel.replaceAll("xmi", dslTechnology);
       fileContent.append(correspondenceModelBaseLine);
       fileContent.append("\n");
       String filtersMetamodelLine = "filtersMetamodel=" + filtersMM;
@@ -633,11 +583,9 @@ public class Viewtype extends ResourceImpl {
   }
 
   @Override
-  protected void doSave(OutputStream outputStream, Map<?, ?> options)
-      throws IOException {
-    VirtualLinksFactory linksFactory = VirtualLinksFactory.eINSTANCE;
-    VirtualLinks vLinks = (VirtualLinks) correspondenceModelResource
-        .getContents().get(0);
+  protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
+    // VirtualLinksFactory linksFactory = VirtualLinksFactory.eINSTANCE;
+    VirtualLinks vLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
     vLinks.getVirtualLinks().clear();
     vLinks.getLinkedElements().clear();
     correspondenceModelResource.save(new HashMap<String, String>());
@@ -645,16 +593,14 @@ public class Viewtype extends ResourceImpl {
   }
 
   private void setVirtualContents() {
-    Collection<Object> localPackages = virtualResourceSet.getPackageRegistry()
-        .values();
-    int numPackages = virtualResourceSet.getPackageRegistry().size();
-    List<EObject>[] sublists = new List[numPackages];
+    Collection<Object> localPackages = virtualResourceSet.getPackageRegistry().values();
+    List<List<EObject>> sublists = new ArrayList<>();
 
     for (Object object : localPackages) {
       if (object instanceof EPackage) {
         List<EObject> oneOftheSublists = new ArrayList<>();
         oneOftheSublists.add((EObject) object);
-        sublists[sublists.length] = oneOftheSublists;
+        sublists.add(oneOftheSublists);
       }
     }
     this.virtualContents = new VirtualContents<>(this, sublists);

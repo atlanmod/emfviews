@@ -30,8 +30,7 @@ public class AbstractSelection extends SelectionStatusDialog {
     super(parent);
     setTitle(title);
     setStatusLineAboveButtons(true);
-    setShellStyle(
-        SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
+    setShellStyle(SWT.CLOSE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM | SWT.RESIZE);
   }
 
   /**
@@ -42,7 +41,7 @@ public class AbstractSelection extends SelectionStatusDialog {
   @Override
   public void create() {
     status = new Status(IStatus.OK, EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK, "", //$NON-NLS-1$
-        null);
+                        null);
     updateStatus(status);
     super.create();
   }
@@ -56,8 +55,7 @@ public class AbstractSelection extends SelectionStatusDialog {
   protected void nok(String message) {
     if (Platform.isRunning()) {
 
-      status = new Status(IStatus.ERROR, EmfViewsUIPlugin.PLUGIN_ID,
-          IStatus.ERROR, message, null);
+      status = new Status(IStatus.ERROR, EmfViewsUIPlugin.PLUGIN_ID, IStatus.ERROR, message, null);
       updateStatus(status);
     }
     getOkButton().setEnabled(false);
@@ -69,7 +67,7 @@ public class AbstractSelection extends SelectionStatusDialog {
    */
   protected void ok() {
     status = new Status(IStatus.OK, EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK, "", //$NON-NLS-1$
-        null);
+                        null);
     updateStatus(status);
     getOkButton().setEnabled(true);
   }

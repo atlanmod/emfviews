@@ -12,6 +12,7 @@
 package fr.inria.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
@@ -27,15 +28,15 @@ public class VirtualAssociation {
   private List<EObject> referencedElements;
   private EStructuralFeature virtualFeature;
 
-  public VirtualAssociation(EObject container,
-      EStructuralFeature virtualFeature, EObject referenceElement) {
+  public VirtualAssociation(EObject container, EStructuralFeature virtualFeature,
+                            EObject referenceElement) {
     init(container, virtualFeature);
     referencedElements = new ArrayList<>();
     referencedElements.add(referenceElement);
   }
 
-  public VirtualAssociation(EObject container,
-      EStructuralFeature virtualFeature, List<EObject> referenceElements) {
+  public VirtualAssociation(EObject container, EStructuralFeature virtualFeature,
+                            List<EObject> referenceElements) {
     init(container, virtualFeature);
     this.referencedElements = referenceElements;
   }
@@ -49,19 +50,16 @@ public class VirtualAssociation {
     return container;
   }
 
-  @SuppressWarnings("unchecked")
   public Object get(int index) {
     if (virtualFeature.isMany()) {
       if (index == EStore.NO_INDEX) {
-        return new VirtualModelList<EObject>(container, virtualFeature,
-            referencedElements);
+        return new VirtualModelList<>(container, virtualFeature, Arrays.asList(referencedElements));
       } else {
         return ((View) container.eResource())
             .translateToVirtualElement(referencedElements.get(index));
       }
     } else {
-      return ((View) container.eResource())
-          .translateToVirtualElement(referencedElements.get(0));
+      return ((View) container.eResource()).translateToVirtualElement(referencedElements.get(0));
     }
   }
 

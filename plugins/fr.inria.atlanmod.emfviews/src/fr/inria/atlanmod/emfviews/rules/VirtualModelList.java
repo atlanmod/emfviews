@@ -24,11 +24,10 @@ import fr.inria.atlanmod.emfviews.elements.MergeElementImpl;
 
 public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
 
-  private List<E>[] subLists;
+  private List<List<E>> subLists;
   private View virtualModel;
 
-  public VirtualModelList(EObject object, EStructuralFeature feature,
-      List<E>... subLists) {
+  public VirtualModelList(EObject object, EStructuralFeature feature, List<List<E>> subLists) {
 
     this.subLists = subLists;
     this.virtualModel = (View) object.eResource();
@@ -38,25 +37,22 @@ public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
   @SuppressWarnings("unchecked")
   public E get(int index) {
     if (index >= 0) {
-      for (int i = 0; i < this.subLists.length; i++) {
-        if (index < subListSize(subLists[i])) {
+      for (List<E> l : subLists) {
+        if (index < subListSize(l)) {
           for (int k = 0; k <= index; k++) {
-            EObject concreteEO = (EObject) subLists[i].get(k);
-            EObject virtualEO = virtualModel.getVirtualLinkManager()
-                .getVirtualElement(concreteEO);
+            EObject concreteEO = (EObject) l.get(k);
+            EObject virtualEO = virtualModel.getVirtualLinkManager().getVirtualElement(concreteEO);
             if (virtualEO instanceof MergeElementImpl) {
-              if (!(((MergeElementImpl) virtualEO)
-                  .getPreferableElement() == concreteEO)) {
+              if (!(((MergeElementImpl) virtualEO).getPreferableElement() == concreteEO)) {
                 index++;
               }
             } else if (virtualEO instanceof FilterElement) {
               index++;
             }
           }
-          return (E) virtualModel
-              .translateToVirtualElement((EObject) subLists[i].get(index));
+          return (E) virtualModel.translateToVirtualElement((EObject) l.get(index));
         } else {
-          index -= subListSize(subLists[i]);
+          index -= subListSize(l);
         }
       }
     }
@@ -66,8 +62,8 @@ public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
   @Override
   public int size() {
     int count = 0;
-    for (int i = 0; i < subLists.length; i++) {
-      count += subListSize(subLists[i]);
+    for (List<E> l : subLists) {
+      count += subListSize(l);
     }
     return count;
   }
@@ -75,8 +71,7 @@ public class VirtualModelList<E> extends AbstractList<E> implements EList<E> {
   private int subListSize(List<E> list) {
     int count = 0;
     for (E e : list) {
-      EObject eo = virtualModel.getVirtualLinkManager()
-          .getVirtualElement((EObject) e);
+      EObject eo = virtualModel.getVirtualLinkManager().getVirtualElement((EObject) e);
       if (eo instanceof MergeElementImpl) {
         if (((MergeElementImpl) eo).getPreferableElement() == e) {
           count++;

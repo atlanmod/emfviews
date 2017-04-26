@@ -56,28 +56,24 @@ public class LinksProjector {
       String sourceElementRef = sourceElementLink.getElementRef();
       String sourceModelURI = sourceElementLink.getModelRef();
 
-      EObject sourceElement = getReferencedObject(sourceElementRef,
-          sourceModelURI);
+      EObject sourceElement = getReferencedObject(sourceElementRef, sourceModelURI);
 
       List<EObject> targetElements = new ArrayList<>();
 
-      for (LinkedElement targetEnd : (List<LinkedElement>) association
-          .getTargetElements()) {
+      for (LinkedElement targetEnd : (List<LinkedElement>) association.getTargetElements()) {
         String targetElementRef = targetEnd.getElementRef();
         String targetModelURI = targetEnd.getModelRef();
-        targetElements
-            .add(getReferencedObject(targetElementRef, targetModelURI));
+        targetElements.add(getReferencedObject(targetElementRef, targetModelURI));
       }
 
-      ReproduceElementImpl vElement = (ReproduceElementImpl) virtualModel
-          .getVirtualLinkManager().getVirtualElement(sourceElement);
+      ReproduceElementImpl vElement = (ReproduceElementImpl) virtualModel.getVirtualLinkManager()
+          .getVirtualElement(sourceElement);
 
       String virtualFeatureName = association.getName();
-      EStructuralFeature virtualFeature = virtualModel.getMetamodelManager()
-          .getVirtualAssociation(vElement, virtualFeatureName);
+      EStructuralFeature virtualFeature =
+          virtualModel.getMetamodelManager().getVirtualAssociation(vElement, virtualFeatureName);
 
-      vElement.setVirtualAssociation(virtualFeature, EStore.NO_INDEX,
-          targetElements);
+      vElement.setVirtualAssociation(virtualFeature, EStore.NO_INDEX, targetElements);
       vElement.toString();
     }
   }
@@ -89,8 +85,7 @@ public class LinksProjector {
     for (int i = 0; i < contributingModels.size() && !elemFound; i++) {
       Resource r = contributingModels.get(i);
       EObject firstElem = r.getContents().get(0);
-      if (firstElem.eClass().getEPackage().getNsURI()
-          .compareToIgnoreCase(packageNsuri) == 0) {
+      if (firstElem.eClass().getEPackage().getNsURI().compareToIgnoreCase(packageNsuri) == 0) {
         referencedElement = r.getEObject(elementRef);
         elemFound = true;
       }
@@ -101,7 +96,7 @@ public class LinksProjector {
   }
 
   public void save(VirtualLinks correspondenceModel) {
-
+    // FIXME: shouldn't we do something here?
   }
 
 }

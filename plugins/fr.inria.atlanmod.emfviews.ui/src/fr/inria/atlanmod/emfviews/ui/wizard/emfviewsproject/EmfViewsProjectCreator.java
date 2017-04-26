@@ -23,17 +23,16 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
 
-import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
+import fr.inria.atlanmod.emfviews.ui.Messages;
 
-public class EmfViewsProjectCreator extends Wizard
-    implements INewWizard, IExecutableExtension {
+public class EmfViewsProjectCreator extends Wizard implements INewWizard, IExecutableExtension {
   protected WizardNewProjectCreationPage page;
 
   protected IConfigurationElement configElement;
@@ -49,13 +48,11 @@ public class EmfViewsProjectCreator extends Wizard
    */
   @Override
   public void addPages() {
-    page = new WizardNewProjectCreationPage(
-        Messages.getString("VirtualEMFProjectCreator.Page.Name")); //$NON-NLS-1$
+    page =
+        new WizardNewProjectCreationPage(Messages.getString("VirtualEMFProjectCreator.Page.Name")); //$NON-NLS-1$
     page.setTitle(Messages.getString("VirtualEMFProjectCreator.Title")); //$NON-NLS-1$
-    page.setDescription(
-        Messages.getString("VirtualEMFProjectCreator.Page.Description")); //$NON-NLS-1$
-    page.setImageDescriptor(
-        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+    page.setDescription(Messages.getString("VirtualEMFProjectCreator.Page.Description")); //$NON-NLS-1$
+    page.setImageDescriptor(EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
     addPage(page);
   }
 
@@ -69,14 +66,14 @@ public class EmfViewsProjectCreator extends Wizard
     IWorkspaceRunnable create = new IWorkspaceRunnable() {
       @Override
       public void run(IProgressMonitor monitor) throws CoreException {
-        IProject project = ResourcesPlugin.getWorkspace().getRoot()
-            .getProject(page.getProjectName());
+        IProject project =
+            ResourcesPlugin.getWorkspace().getRoot().getProject(page.getProjectName());
         IPath location = page.getLocationPath();
         if (!project.exists()) {
-          IProjectDescription desc = project.getWorkspace()
-              .newProjectDescription(page.getProjectName());
-          if (location != null && ResourcesPlugin.getWorkspace().getRoot()
-              .getLocation().equals(location)) {
+          IProjectDescription desc =
+              project.getWorkspace().newProjectDescription(page.getProjectName());
+          if (location != null
+              && ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(location)) {
             location = null;
           }
           desc.setLocation(location);
@@ -101,8 +98,7 @@ public class EmfViewsProjectCreator extends Wizard
       ResourcesPlugin.getWorkspace().run(create, null);
       return true;
     } catch (CoreException e) {
-      IStatus status = new Status(IStatus.ERROR, EmfViewsUIPlugin.PLUGIN_ID,
-          IStatus.OK, e.getMessage(), e);
+      new Status(IStatus.ERROR, EmfViewsUIPlugin.PLUGIN_ID, IStatus.OK, e.getMessage(), e);
       return false;
     }
 
@@ -147,9 +143,8 @@ public class EmfViewsProjectCreator extends Wizard
    *      java.lang.String, java.lang.Object)
    */
   @Override
-  public void setInitializationData(IConfigurationElement config,
-                                    String propertyName, Object data)
-      throws CoreException {
+  public void setInitializationData(IConfigurationElement config, String propertyName,
+                                    Object data) throws CoreException {
     this.configElement = config;
   }
 }

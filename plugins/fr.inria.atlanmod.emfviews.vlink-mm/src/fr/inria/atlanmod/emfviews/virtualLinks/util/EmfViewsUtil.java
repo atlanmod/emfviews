@@ -30,11 +30,11 @@ public class EmfViewsUtil {
   public static URI toURI(String resourcePath) throws URISyntaxException {
     IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 
-    IResource resource = workspaceRoot.findMember(
-        (resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath));
+    IResource resource = workspaceRoot
+        .findMember((resourcePath.startsWith("/") ? resourcePath : "/" + resourcePath));
 
-    URI resourceUri = (resource != null ? resource.getLocationURI()
-        : new java.net.URI(resourcePath));
+    URI resourceUri =
+        (resource != null ? resource.getLocationURI() : new java.net.URI(resourcePath));
 
     return resourceUri;
   }
@@ -44,8 +44,7 @@ public class EmfViewsUtil {
   }
 
   public static void persistLinksModel(VirtualLinks linksModel,
-                                       org.eclipse.emf.common.util.URI theUri)
-      throws IOException {
+                                       org.eclipse.emf.common.util.URI theUri) throws IOException {
     XMIResourceImpl linksModelResource = new XMIResourceImpl();
     linksModelResource.setURI(theUri);
     linksModelResource.getContents().add(linksModel);
@@ -53,8 +52,7 @@ public class EmfViewsUtil {
 
   }
 
-  public static Filter createFilter(String name, String oclQuery,
-                                    boolean filterOnlyFeatures) {
+  public static Filter createFilter(String name, String oclQuery, boolean filterOnlyFeatures) {
     Filter filter = VirtualLinksFactory.eINSTANCE.createFilter();
     filter.setName(name);
     filter.setOclQuery(oclQuery);
@@ -63,11 +61,9 @@ public class EmfViewsUtil {
     return filter;
   }
 
-  public static LinkedElement createLinkedElement(String name, String modelRef,
-                                                  String elementRef,
+  public static LinkedElement createLinkedElement(String name, String modelRef, String elementRef,
                                                   String features) {
-    LinkedElement linkedElement = VirtualLinksFactory.eINSTANCE
-        .createLinkedElement();
+    LinkedElement linkedElement = VirtualLinksFactory.eINSTANCE.createLinkedElement();
     linkedElement.setName(name);
     linkedElement.setModelRef(modelRef);
     linkedElement.setElementRef(elementRef);

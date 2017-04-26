@@ -17,11 +17,9 @@ import org.eclipse.emf.common.util.URI;
 
 public interface IVirtualLinksDelegate {
 
-  public void createVirtualMetamodelLinks(String linksDslFile, URI linksModel)
-      throws Exception;
+  public void createVirtualMetamodelLinks(String linksDslFile, URI linksModel) throws Exception;
 
   public void createVirtualModelLinks(String linksDslFile, URI linksModelURI,
-                                      List<Resource> inputModels)
-      throws Exception;
+                                      List<Resource> inputModels) throws Exception;
 
 }

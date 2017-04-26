@@ -14,7 +14,6 @@ package fr.inria.atlanmod.emfviews.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -22,7 +21,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import fr.inria.atlanmod.emfviews.core.View;
 import fr.inria.atlanmod.emfviews.core.ViewOperationException;
 import fr.inria.atlanmod.emfviews.rules.MergeRule;
-import fr.inria.atlanmod.emfviews.rules.VirtualModelList;
 
 public class MergeElementImpl extends VirtualElement {
 
@@ -30,21 +28,21 @@ public class MergeElementImpl extends VirtualElement {
   private List<EObject> concreteElements = new ArrayList<>();
   private EClass mergeClass = null;
 
-  public MergeElementImpl(View vModel, List<EObject> concreteElements,
-      EObject preferableElement, String mergeClassName) {
+  public MergeElementImpl(View vModel, List<EObject> concreteElements, EObject preferableElement,
+                          String mergeClassName) {
     super();
 
     init(vModel, concreteElements, preferableElement, mergeClass);
   }
 
-  public MergeElementImpl(View vModel, List<EObject> concreteElements,
-      EClass eClass, EObject preferableElement) {
+  public MergeElementImpl(View vModel, List<EObject> concreteElements, EClass eClass,
+                          EObject preferableElement) {
     super();
     init(vModel, concreteElements, preferableElement, eClass);
   }
 
-  private void init(View vModel, List<EObject> concreteElements,
-                    EObject preferableElement, EClass eClass) {
+  private void init(View vModel, List<EObject> concreteElements, EObject preferableElement,
+                    EClass eClass) {
 
     this.eProperties().setEResource(vModel);
     this.concreteElements = concreteElements;
@@ -81,12 +79,11 @@ public class MergeElementImpl extends VirtualElement {
     throw new ViewOperationException("concrete element could not found");
   }
 
-  @SuppressWarnings("unchecked")
-  public List<EObject> getMergedList(EStructuralFeature feature) {
-    EList<EObject>[] subLists = new EList[concreteElements.size()];
-    for (int i = 0; i < subLists.length; i++) {}
-    return new VirtualModelList<>(this, feature, subLists);
-  }
+  // public List<EObject> getMergedList(EStructuralFeature feature) {
+  // EList<EObject>[] subLists = new EList[concreteElements.size()];
+  // return new VirtualModelList<>(this, feature,
+  // Arrays.asList(concreteElements));
+  // }
 
   public List<EObject> getConcreteElements() {
     return concreteElements;

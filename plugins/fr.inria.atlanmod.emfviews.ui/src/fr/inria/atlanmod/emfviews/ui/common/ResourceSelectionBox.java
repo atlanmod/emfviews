@@ -66,14 +66,12 @@ public class ResourceSelectionBox extends LoadResourceDialog {
 
   private Collection<EPackage> getAllPackages(Resource resource) {
     List<EPackage> result = new ArrayList<>();
-    for (TreeIterator<?> j = new EcoreUtil.ContentTreeIterator<Object>(
-        resource.getContents()) {
+    for (TreeIterator<?> j = new EcoreUtil.ContentTreeIterator<Object>(resource.getContents()) {
       private static final long serialVersionUID = 1L;
 
       @Override
       protected Iterator<? extends EObject> getEObjectChildren(EObject eObject) {
-        return eObject instanceof EPackage
-            ? ((EPackage) eObject).getESubpackages().iterator()
+        return eObject instanceof EPackage ? ((EPackage) eObject).getESubpackages().iterator()
             : Collections.<EObject>emptyList().iterator();
       }
     };j.hasNext();) {
@@ -89,10 +87,9 @@ public class ResourceSelectionBox extends LoadResourceDialog {
   public Control createDialogArea(Composite parent) {
     Composite composite = (Composite) super.createDialogArea(parent);
     Composite buttonComposite = (Composite) composite.getChildren()[0];
-    Button browseRegisteredPackagesButton = new Button(buttonComposite,
-        SWT.PUSH);
-    browseRegisteredPackagesButton.setText(EcoreEditorPlugin.INSTANCE
-        .getString("_UI_BrowseRegisteredPackages_label")); //$NON-NLS-1$
+    Button browseRegisteredPackagesButton = new Button(buttonComposite, SWT.PUSH);
+    browseRegisteredPackagesButton
+        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_BrowseRegisteredPackages_label")); //$NON-NLS-1$
     prepareBrowseRegisteredPackagesButton(browseRegisteredPackagesButton);
 
     FormData data = new FormData();
@@ -122,8 +119,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
     browseRegisteredPackagesButton.addSelectionListener(new SelectionAdapter() {
       @Override
       public void widgetSelected(SelectionEvent event) {
-        RegisteredPackageDialog dialog = new RegisteredPackageDialog(
-            getShell());
+        RegisteredPackageDialog dialog = new RegisteredPackageDialog(getShell());
         if (dialog.open() == Window.OK) {
           uriField.setText(dialog.getResultAsString());
         }

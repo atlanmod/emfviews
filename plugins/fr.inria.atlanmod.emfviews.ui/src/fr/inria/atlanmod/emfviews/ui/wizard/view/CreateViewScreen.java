@@ -66,10 +66,8 @@ public class CreateViewScreen extends WizardPage {
 
     super(Messages.getString("VirtualModelFileScreen.Page.Name"));
     setTitle(Messages.getString("VirtualModelFileScreen.Title")); //$NON-NLS-1$
-    setDescription(
-        Messages.getString("VirtualModelFileScreen.Page.Description")); //$NON-NLS-1$
-    setImageDescriptor(
-        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+    setDescription(Messages.getString("VirtualModelFileScreen.Page.Description")); //$NON-NLS-1$
+    setImageDescriptor(EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
 
     this.setPageComplete(false);
     inputModelPaths = new ArrayList<>();
@@ -105,22 +103,22 @@ public class CreateViewScreen extends WizardPage {
 
     addSeparator(container);
 
-    GridData dataLists = new GridData(
-        GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
+    GridData dataLists = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
 
-    compositionMetaModelList = createModelControl(container,
-        Messages.getString("VirtualModelFileScreen.CompositionMetamodel"), //$NON-NLS-1$
-        new ModelSelection(container.getShell(),
-            Messages.getString(
-                "VirtualModelFileScreen.CompositionMetamodelCreation"), //$NON-NLS-1$
-            compositionMetaModelPath, ModelSelection.COMPOSITIONMETAMODEL),
-        dataLists); // $NON-NLS-2$
-    inputmodelsList = createModelControl(container,
-        Messages.getString("VirtualModelFileScreen.InputModels"), //$NON-NLS-1$
-        new ModelSelection(container.getShell(),
-            Messages.getString("VirtualModelFileScreen.InputModelCreation"), //$NON-NLS-1$
-            inputModelPaths, ModelSelection.INPUTMODEL),
-        dataLists); // $NON-NLS-2$
+    compositionMetaModelList =
+        createModelControl(container,
+                           Messages.getString("VirtualModelFileScreen.CompositionMetamodel"), //$NON-NLS-1$
+                           new ModelSelection(container.getShell(), Messages
+                               .getString("VirtualModelFileScreen.CompositionMetamodelCreation"), //$NON-NLS-1$
+                                              compositionMetaModelPath,
+                                              ModelSelection.COMPOSITIONMETAMODEL),
+                           dataLists); // $NON-NLS-2$
+    inputmodelsList =
+        createModelControl(container, Messages.getString("VirtualModelFileScreen.InputModels"), //$NON-NLS-1$
+                           new ModelSelection(container.getShell(), Messages
+                               .getString("VirtualModelFileScreen.InputModelCreation"), //$NON-NLS-1$
+                                              inputModelPaths, ModelSelection.INPUTMODEL),
+                           dataLists); // $NON-NLS-2$
 
     updateLists();
 
@@ -128,10 +126,8 @@ public class CreateViewScreen extends WizardPage {
     setControl(container);
   }
 
-  private List createModelControl(final Composite parent,
-                                  final String entryLabel,
-                                  final AbstractSelection dialog,
-                                  GridData listLayoutData) {
+  private List createModelControl(final Composite parent, final String entryLabel,
+                                  final AbstractSelection dialog, GridData listLayoutData) {
 
     final Label typeLabel = new Label(parent, SWT.NONE);
     GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
@@ -140,8 +136,7 @@ public class CreateViewScreen extends WizardPage {
     typeLabel.setLayoutData(data);
     typeLabel.setText(entryLabel);
 
-    final List list = new List(parent,
-        SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+    final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
     listLayoutData.verticalIndent = 5;
     list.setLayoutData(listLayoutData);
 
@@ -155,10 +150,9 @@ public class CreateViewScreen extends WizardPage {
     data.verticalIndent = 5;
     composite.setLayoutData(data);
 
-    final Button addIn = createButton(composite,
-        Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
-    final Button removeIn = createButton(composite,
-        Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
+    final Button addIn = createButton(composite, Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
+    final Button removeIn =
+        createButton(composite, Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
     removeIn.setEnabled(false);
     addIn.addSelectionListener(new SelectionAdapter() {
       @Override
@@ -229,15 +223,14 @@ public class CreateViewScreen extends WizardPage {
   private boolean checkModelsConsistancy() {
 
     if (inputModelPaths.isEmpty()) {
-      setErrorMessage(
-          Messages.getString("VirtualModelFileWizard.INPUT_MODELS_ISSUE")); //$NON-NLS-1$
+      setErrorMessage(Messages.getString("VirtualModelFileWizard.INPUT_MODELS_ISSUE")); //$NON-NLS-1$
       return false;
     }
 
     if (compositionMetaModelPath.isEmpty()) {
 
-      setErrorMessage(Messages.getString(
-          "VirtualModelFileWizard.INPUT_COMPOSITION_METAMODEL_ISSUE")); //$NON-NLS-1$
+      setErrorMessage(Messages
+          .getString("VirtualModelFileWizard.INPUT_COMPOSITION_METAMODEL_ISSUE")); //$NON-NLS-1$
       return false;
     }
 
@@ -252,8 +245,7 @@ public class CreateViewScreen extends WizardPage {
     button.setText(text);
     button.setFont(parent.getFont());
     GridData data = new GridData();
-    data.widthHint = convertHorizontalDLUsToPixels(
-        IDialogConstants.BUTTON_WIDTH);
+    data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
     button.setLayoutData(data);
     return button;
   }

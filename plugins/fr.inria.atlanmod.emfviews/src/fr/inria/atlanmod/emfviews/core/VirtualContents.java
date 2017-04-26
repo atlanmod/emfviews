@@ -19,23 +19,20 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public class VirtualContents<E> extends AbstractList<E> implements EList<E> {
 
-  private List<E>[] subLists;
+  private List<List<E>> subLists;
 
-  public VirtualContents(Resource resource, List<E>... subLists) {
+  public VirtualContents(Resource resource, List<List<E>> subLists) {
     this.subLists = subLists;
   }
 
   @Override
   public E get(int index) {
     if (index >= 0) {
-      for (int i = 0; i < this.subLists.length; i++) {
-        if (index < this.subLists[i].size()) {
-          E v = this.subLists[i].get(index);
-
-          return v;
-
+      for (List<E> l : subLists) {
+        if (index < l.size()) {
+          return l.get(index);
         } else {
-          index -= this.subLists[i].size();
+          index -= l.size();
         }
       }
     }
@@ -50,8 +47,8 @@ public class VirtualContents<E> extends AbstractList<E> implements EList<E> {
   @Override
   public int size() {
     int ret = 0;
-    for (int i = 0; i < this.subLists.length; i++) {
-      ret += this.subLists[i].size();
+    for (List<E> l : subLists) {
+      ret += l.size();
     }
     return ret;
   }

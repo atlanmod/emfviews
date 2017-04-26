@@ -40,8 +40,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
  *
  * @generated
  */
-public class VirtualLinksImpl extends MinimalEObjectImpl.Container
-    implements VirtualLinks {
+public class VirtualLinksImpl extends MinimalEObjectImpl.Container implements VirtualLinks {
   /**
    * The cached value of the '{@link #getVirtualLinks() <em>Virtual Links</em>}'
    * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -90,8 +89,9 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
   @Override
   public EList<VirtualLink> getVirtualLinks() {
     if (virtualLinks == null) {
-      virtualLinks = new EObjectContainmentEList<>(VirtualLink.class, this,
-          VirtualLinksPackage.VIRTUAL_LINKS__VIRTUAL_LINKS);
+      virtualLinks =
+          new EObjectContainmentEList<>(VirtualLink.class, this,
+                                        VirtualLinksPackage.VIRTUAL_LINKS__VIRTUAL_LINKS);
     }
     return virtualLinks;
   }
@@ -104,8 +104,9 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
   @Override
   public EList<LinkedElement> getLinkedElements() {
     if (linkedElements == null) {
-      linkedElements = new EObjectContainmentEList<>(LinkedElement.class, this,
-          VirtualLinksPackage.VIRTUAL_LINKS__LINKED_ELEMENTS);
+      linkedElements =
+          new EObjectContainmentEList<>(LinkedElement.class, this,
+                                        VirtualLinksPackage.VIRTUAL_LINKS__LINKED_ELEMENTS);
     }
     return linkedElements;
   }
@@ -116,15 +117,13 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
    * @generated
    */
   @Override
-  public NotificationChain eInverseRemove(InternalEObject otherEnd,
-                                          int featureID,
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID,
                                           NotificationChain msgs) {
     switch (featureID) {
     case VirtualLinksPackage.VIRTUAL_LINKS__VIRTUAL_LINKS:
       return ((InternalEList<?>) getVirtualLinks()).basicRemove(otherEnd, msgs);
     case VirtualLinksPackage.VIRTUAL_LINKS__LINKED_ELEMENTS:
-      return ((InternalEList<?>) getLinkedElements()).basicRemove(otherEnd,
-          msgs);
+      return ((InternalEList<?>) getLinkedElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -160,8 +159,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container
       return;
     case VirtualLinksPackage.VIRTUAL_LINKS__LINKED_ELEMENTS:
       getLinkedElements().clear();
-      getLinkedElements()
-          .addAll((Collection<? extends LinkedElement>) newValue);
+      getLinkedElements().addAll((Collection<? extends LinkedElement>) newValue);
       return;
     }
     super.eSet(featureID, newValue);

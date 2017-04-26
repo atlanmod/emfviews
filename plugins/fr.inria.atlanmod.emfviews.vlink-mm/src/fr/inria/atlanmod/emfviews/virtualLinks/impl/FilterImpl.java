@@ -121,8 +121,8 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
       if (filteredElement != oldFilteredElement) {
         if (eNotificationRequired())
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-              VirtualLinksPackage.FILTER__FILTERED_ELEMENT, oldFilteredElement,
-              filteredElement));
+                                        VirtualLinksPackage.FILTER__FILTERED_ELEMENT,
+                                        oldFilteredElement, filteredElement));
       }
     }
     return filteredElement;
@@ -148,8 +148,8 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
     filteredElement = newFilteredElement;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.FILTER__FILTERED_ELEMENT, oldFilteredElement,
-          filteredElement));
+                                    VirtualLinksPackage.FILTER__FILTERED_ELEMENT,
+                                    oldFilteredElement, filteredElement));
   }
 
   /**
@@ -172,8 +172,8 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
     String oldOclQuery = oclQuery;
     oclQuery = newOclQuery;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.FILTER__OCL_QUERY, oldOclQuery, oclQuery));
+      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.FILTER__OCL_QUERY,
+                                    oldOclQuery, oclQuery));
   }
 
   /**
@@ -197,8 +197,9 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
     filterOnlyEstructuralFeatures = newFilterOnlyEstructuralFeatures;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET,
-          VirtualLinksPackage.FILTER__FILTER_ONLY_ESTRUCTURAL_FEATURES,
-          oldFilterOnlyEstructuralFeatures, filterOnlyEstructuralFeatures));
+                                    VirtualLinksPackage.FILTER__FILTER_ONLY_ESTRUCTURAL_FEATURES,
+                                    oldFilterOnlyEstructuralFeatures,
+                                    filterOnlyEstructuralFeatures));
   }
 
   /**
@@ -257,8 +258,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
       setOclQuery(OCL_QUERY_EDEFAULT);
       return;
     case VirtualLinksPackage.FILTER__FILTER_ONLY_ESTRUCTURAL_FEATURES:
-      setFilterOnlyEstructuralFeatures(
-          FILTER_ONLY_ESTRUCTURAL_FEATURES_EDEFAULT);
+      setFilterOnlyEstructuralFeatures(FILTER_ONLY_ESTRUCTURAL_FEATURES_EDEFAULT);
       return;
     }
     super.eUnset(featureID);
@@ -275,8 +275,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
     case VirtualLinksPackage.FILTER__FILTERED_ELEMENT:
       return filteredElement != null;
     case VirtualLinksPackage.FILTER__OCL_QUERY:
-      return OCL_QUERY_EDEFAULT == null ? oclQuery != null
-          : !OCL_QUERY_EDEFAULT.equals(oclQuery);
+      return OCL_QUERY_EDEFAULT == null ? oclQuery != null : !OCL_QUERY_EDEFAULT.equals(oclQuery);
     case VirtualLinksPackage.FILTER__FILTER_ONLY_ESTRUCTURAL_FEATURES:
       return filterOnlyEstructuralFeatures != FILTER_ONLY_ESTRUCTURAL_FEATURES_EDEFAULT;
     }

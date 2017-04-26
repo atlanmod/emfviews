@@ -26,8 +26,8 @@ public interface VirtualLinksFactory extends EFactory {
    *
    * @generated
    */
-  VirtualLinksFactory eINSTANCE = fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksFactoryImpl
-      .init();
+  VirtualLinksFactory eINSTANCE =
+      fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksFactoryImpl.init();
 
   /**
    * Returns a new object of class '<em>Virtual Links</em>'. <!-- begin-user-doc

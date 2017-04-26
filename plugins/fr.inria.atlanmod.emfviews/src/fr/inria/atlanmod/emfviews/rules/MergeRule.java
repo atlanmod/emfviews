@@ -25,15 +25,13 @@ public class MergeRule extends TranslationRule {
   public static TranslationRule INSTANCE = new MergeRule();
 
   @Override
-  public Object get(InternalEObject object, EStructuralFeature feature,
-                    int index) {
+  public Object get(InternalEObject object, EStructuralFeature feature, int index) {
 
     return null;
   }
 
   @Override
-  public Object set(InternalEObject object, EStructuralFeature feature,
-                    int index, Object value) {
+  public Object set(InternalEObject object, EStructuralFeature feature, int index, Object value) {
 
     return null;
   }
@@ -52,8 +50,7 @@ public class MergeRule extends TranslationRule {
   @Override
   public int hashCode(InternalEObject object, EStructuralFeature feature) {
 
-    throw new ViewOperationException(
-        "hashCode not implemented for merged elements");
+    throw new ViewOperationException("hashCode not implemented for merged elements");
   }
 
   @Override

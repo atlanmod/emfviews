@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 import fr.inria.atlanmod.emfviews.elements.VirtualElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
 public class VirtualLinkManager {
 
@@ -34,22 +33,21 @@ public class VirtualLinkManager {
 
   private Map<EObject, VirtualElement> virtualLinks = new HashMap<>();
 
-  public VirtualLinkManager(String correspondenceModelURI, View vModel)
-      throws MalformedURLException, IOException {
+  public VirtualLinkManager(String correspondenceModelURI,
+                            View vModel) throws MalformedURLException, IOException {
     this.virtualModel = vModel;
 
-    VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
 
     XMIResourceImpl correspondenceModel = new XMIResourceImpl();
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-    java.net.URI uri = workspace.getRoot()
-        .findMember("/" + correspondenceModelURI).getLocationURI();
+    java.net.URI uri =
+        workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
     correspondenceModel.load(uri.toURL().openStream(), new HashMap<>());
 
-    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModel.getContents()
-        .get(0);
+    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModel.getContents().get(0);
 
     this.correspondenceModel = virtualLinks;
   }
@@ -59,8 +57,7 @@ public class VirtualLinkManager {
     projector.load(correspondenceModel);
   }
 
-  public void setVirtualLink(EObject concreteElement,
-                             VirtualElement virtualElement) {
+  public void setVirtualLink(EObject concreteElement, VirtualElement virtualElement) {
     virtualLinks.put(concreteElement, virtualElement);
   }
 

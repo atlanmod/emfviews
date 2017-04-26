@@ -40,7 +40,6 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 import fr.inria.atlanmod.emfviews.virtuallinksdelegator.VirtualLinksDelegator;
 
 public class EView extends View {
@@ -54,24 +53,20 @@ public class EView extends View {
   }
 
   public EView(List<String> contributingModels, String viewtypeUri,
-      String correspondenceModelAbsolutePath)
-      throws MalformedURLException, IOException {
+               String correspondenceModelAbsolutePath) throws MalformedURLException, IOException {
     super();
     virtualResourceSet = new ResourceSetImpl();
 
     compositionMetamodelURI = viewtypeUri;
     EmfViewsFactory vFac = new EmfViewsFactory();
-    org.eclipse.emf.common.util.URI emfURI = org.eclipse.emf.common.util.URI
-        .createURI(viewtypeUri);
+    org.eclipse.emf.common.util.URI emfURI = org.eclipse.emf.common.util.URI.createURI(viewtypeUri);
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    java.net.URI uri = workspace.getRoot().findMember("/" + viewtypeUri)
-        .getLocationURI();
+    java.net.URI uri = workspace.getRoot().findMember("/" + viewtypeUri).getLocationURI();
     viewtypeProperties = new Properties();
     viewtypeProperties.load(uri.toURL().openStream());
 
-    String contributingMetamodels = viewtypeProperties
-        .getProperty("contributingMetamodels");
+    String contributingMetamodels = viewtypeProperties.getProperty("contributingMetamodels");
     String[] contributingMMs = contributingMetamodels.split(",");
     ArrayList<String> contributingMMsURIs = new ArrayList<>();
     for (String contributingMM : contributingMMs) {
@@ -83,13 +78,12 @@ public class EView extends View {
     viewtype = vFac.createResource(emfURI);
     viewtype.load(uri.toURL().openStream(), new HashMap<>());
 
-    metamodelManager = new MetamodelManager(
-        virtualResourceSet.getPackageRegistry().values(), viewtype, this);
+    metamodelManager =
+        new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewtype, this);
 
     loadContributingModels(contributingModels);
 
-    IPath filePath = new Path(correspondenceModelAbsolutePath)
-        .removeFileExtension();
+    IPath filePath = new Path(correspondenceModelAbsolutePath).removeFileExtension();
     IPath correspondenceModelPath = filePath.addFileExtension("xmi");
 
     URI linksURI = URI.createFileURI(correspondenceModelPath.toString());
@@ -104,8 +98,7 @@ public class EView extends View {
   }
 
   @Override
-  protected void doLoad(InputStream inputStream, Map<?, ?> options)
-      throws IOException {
+  protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
 
     properties = new Properties();
     properties.load(inputStream);
@@ -113,11 +106,11 @@ public class EView extends View {
 
     readVirtualCompositionMMProperties();
 
-    loadContributingMetamodels(new ArrayList<>(Arrays.asList(
-        viewtypeProperties.getProperty("contributingMetamodels").split(","))));
+    loadContributingMetamodels(new ArrayList<>(Arrays
+        .asList(viewtypeProperties.getProperty("contributingMetamodels").split(","))));
 
-    metamodelManager = new MetamodelManager(
-        virtualResourceSet.getPackageRegistry().values(), viewtype, this);
+    metamodelManager =
+        new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewtype, this);
 
     loadContributingModels(new ArrayList<>(Arrays
         .asList(properties.getProperty("contributingModels").split(","))));
@@ -125,41 +118,36 @@ public class EView extends View {
     if (properties.getProperty("correspondenceModelBase") != null) {
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       java.net.URI linksModelURI = workspace.getRoot()
-          .findMember("/" + properties.getProperty("correspondenceModel"))
-          .getLocationURI();
+          .findMember("/" + properties.getProperty("correspondenceModel")).getLocationURI();
       try {
-        VirtualLinksDelegator vld = new VirtualLinksDelegator(
-            properties.getProperty("correspondenceModelBase"));
+        VirtualLinksDelegator vld =
+            new VirtualLinksDelegator(properties.getProperty("correspondenceModelBase"));
 
-        vld.createVirtualModelLinks(
-            org.eclipse.emf.common.util.URI.createURI(linksModelURI.toString()),
-            getContributingModels());
+        vld.createVirtualModelLinks(org.eclipse.emf.common.util.URI
+            .createURI(linksModelURI.toString()), getContributingModels());
       } catch (Exception e) {
         e.printStackTrace();
       }
     }
 
-    this.vLinkManager = new VirtualLinkManager(
-        properties.getProperty("correspondenceModel"), this);
+    this.vLinkManager = new VirtualLinkManager(properties.getProperty("correspondenceModel"), this);
     vLinkManager.initialize();
 
     setVirtualContents();
   }
 
-  private void readVirtualCompositionMMProperties()
-      throws FileNotFoundException, IOException {
+  private void readVirtualCompositionMMProperties() throws FileNotFoundException, IOException {
     String virtualMMPath = properties.getProperty("compositionMetamodel");
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    java.net.URI uri = workspace.getRoot().findMember("/" + virtualMMPath)
-        .getLocationURI();
+    java.net.URI uri = workspace.getRoot().findMember("/" + virtualMMPath).getLocationURI();
     viewtypeProperties = new Properties();
     viewtypeProperties.load(uri.toURL().openStream());
 
     EmfViewsFactory vFac = new EmfViewsFactory();
 
-    org.eclipse.emf.common.util.URI emfURI = org.eclipse.emf.common.util.URI
-        .createURI(virtualMMPath);
+    org.eclipse.emf.common.util.URI emfURI =
+        org.eclipse.emf.common.util.URI.createURI(virtualMMPath);
 
     viewtype = vFac.createResource(emfURI);
     viewtype.load(uri.toURL().openStream(), new HashMap<>());
@@ -167,7 +155,7 @@ public class EView extends View {
 
   @Override
   public void createCorrespondenceModel(URI modelURI) throws IOException {
-    VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinksModelLevel = vLinksFactory.createVirtualLinks();
 
@@ -177,13 +165,12 @@ public class EView extends View {
     correspondenceModelResource.getContents().add(virtualLinksModelLevel);
 
     Viewtype vm = (Viewtype) viewtype;
-    XMIResourceImpl correspondenceBetweenMetaModelResource = vm
-        .getCorrespondenceModelResource();
+    XMIResourceImpl correspondenceBetweenMetaModelResource = vm.getCorrespondenceModelResource();
 
     List<Association> associations = new ArrayList<>();
 
-    VirtualLinks virtualLinks = (VirtualLinks) correspondenceBetweenMetaModelResource
-        .getContents().get(0);
+    VirtualLinks virtualLinks =
+        (VirtualLinks) correspondenceBetweenMetaModelResource.getContents().get(0);
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
     for (VirtualLink virtualLink : allVirtualLinks) {
       if (virtualLink instanceof Association) {
@@ -205,61 +192,52 @@ public class EView extends View {
       String targetAtt = association.getTargetAttribute();
       if (sourceAtt != null && targetAtt != null) {
         Resource sourceResource = getcontributingModel(sourcePackagensURI);
-        TreeIterator<EObject> sourceModelContents = sourceResource
-            .getAllContents();
+        TreeIterator<EObject> sourceModelContents = sourceResource.getAllContents();
 
         ArrayList<EObject> sourceModelElementsThatConform = new ArrayList<>();
         while (sourceModelContents.hasNext()) {
           EObject eObject = sourceModelContents.next();
-          if (eObject.eClass().getName()
-              .compareToIgnoreCase(sourceCLassName) == 0) {
+          if (eObject.eClass().getName().compareToIgnoreCase(sourceCLassName) == 0) {
             sourceModelElementsThatConform.add(eObject);
           }
 
         }
 
         Resource targetResource = getcontributingModel(targetPackagensURI);
-        TreeIterator<EObject> targetModelContents = targetResource
-            .getAllContents();
+        TreeIterator<EObject> targetModelContents = targetResource.getAllContents();
         ArrayList<EObject> targetModelElementsThatConform = new ArrayList<>();
         while (targetModelContents.hasNext()) {
           EObject eObject = targetModelContents.next();
-          if (eObject.eClass().getName()
-              .compareToIgnoreCase(targetCLassName) == 0) {
+          if (eObject.eClass().getName().compareToIgnoreCase(targetCLassName) == 0) {
             targetModelElementsThatConform.add(eObject);
           }
 
         }
         for (EObject tempSourceElement : sourceModelElementsThatConform) {
           boolean matchFound = false;
-          String theSourceAttVal = (String) tempSourceElement.eGet(
-              tempSourceElement.eClass().getEStructuralFeature(sourceAtt));
+          String theSourceAttVal = (String) tempSourceElement
+              .eGet(tempSourceElement.eClass().getEStructuralFeature(sourceAtt));
 
-          for (int i = 0; i < targetModelElementsThatConform.size()
-              && !matchFound; i++) {
+          for (int i = 0; i < targetModelElementsThatConform.size() && !matchFound; i++) {
             EObject tempTargetElement = targetModelElementsThatConform.get(i);
-            String tempTargetAttVal = (String) tempSourceElement.eGet(
-                tempTargetElement.eClass().getEStructuralFeature(targetAtt));
+            String tempTargetAttVal = (String) tempSourceElement
+                .eGet(tempTargetElement.eClass().getEStructuralFeature(targetAtt));
             if (theSourceAttVal.compareToIgnoreCase(tempTargetAttVal) == 0) {
               matchFound = true;
-              Association associationModelLevel = vLinksFactory
-                  .createAssociation();
+              Association associationModelLevel = vLinksFactory.createAssociation();
               associationModelLevel.setName(association.getName());
               LinkedElement lSource = vLinksFactory.createLinkedElement();
               lSource.setModelRef(sourcePackagensURI);
-              lSource.setElementRef(
-                  sourceResource.getURIFragment(tempSourceElement));
+              lSource.setElementRef(sourceResource.getURIFragment(tempSourceElement));
 
               associationModelLevel.setSourceElement(lSource);
               LinkedElement lTarget = vLinksFactory.createLinkedElement();
               lTarget.setModelRef(targetPackagensURI);
-              lTarget.setElementRef(
-                  targetResource.getURIFragment(tempTargetElement));
+              lTarget.setElementRef(targetResource.getURIFragment(tempTargetElement));
 
               associationModelLevel.getTargetElements().add(lTarget);
 
-              virtualLinksModelLevel.getVirtualLinks()
-                  .add(associationModelLevel);
+              virtualLinksModelLevel.getVirtualLinks().add(associationModelLevel);
 
               virtualLinksModelLevel.getLinkedElements().add(lSource);
               virtualLinksModelLevel.getLinkedElements().add(lTarget);
@@ -276,25 +254,22 @@ public class EView extends View {
   @Override
   public void serialize(IFile file) throws IOException, CoreException {
     StringBuffer fileContent = new StringBuffer();
-    String contributingModelsLine = "contributingModels="
-        + getContributingModelsUris();
+    String contributingModelsLine = "contributingModels=" + getContributingModelsUris();
     fileContent.append(contributingModelsLine);
     fileContent.append("\n");
 
-    String compositionMetamodelLine = "compositionMetamodel="
-        + compositionMetamodelURI;
+    String compositionMetamodelLine = "compositionMetamodel=" + compositionMetamodelURI;
     fileContent.append(compositionMetamodelLine);
     fileContent.append("\n");
 
-    String correspondenceModelLine = "correspondenceModel="
-        + correspondenceModelURI;
+    String correspondenceModelLine = "correspondenceModel=" + correspondenceModelURI;
 
     fileContent.append(correspondenceModelLine);
 
     fileContent.append("\n");
     Viewtype vm = (Viewtype) viewtype;
-    String correspondenceModelBaseLine = "correspondenceModelBase="
-        + vm.getCorrespondenceModelBase();
+    String correspondenceModelBaseLine =
+        "correspondenceModelBase=" + vm.getCorrespondenceModelBase();
     fileContent.append(correspondenceModelBaseLine);
 
     InputStream stream = openContentStream(fileContent.toString());

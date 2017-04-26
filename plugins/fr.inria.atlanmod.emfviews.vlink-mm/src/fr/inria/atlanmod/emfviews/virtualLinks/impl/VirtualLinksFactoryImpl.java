@@ -24,8 +24,7 @@ import fr.inria.atlanmod.emfviews.virtualLinks.*;
  *
  * @generated
  */
-public class VirtualLinksFactoryImpl extends EFactoryImpl
-    implements VirtualLinksFactory {
+public class VirtualLinksFactoryImpl extends EFactoryImpl implements VirtualLinksFactory {
   /**
    * Creates the default factory implementation. <!-- begin-user-doc --> <!--
    * end-user-doc -->
@@ -34,8 +33,8 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
    */
   public static VirtualLinksFactory init() {
     try {
-      VirtualLinksFactory theVirtualLinksFactory = (VirtualLinksFactory) EPackage.Registry.INSTANCE
-          .getEFactory(VirtualLinksPackage.eNS_URI);
+      VirtualLinksFactory theVirtualLinksFactory =
+          (VirtualLinksFactory) EPackage.Registry.INSTANCE.getEFactory(VirtualLinksPackage.eNS_URI);
       if (theVirtualLinksFactory != null) {
         return theVirtualLinksFactory;
       }
@@ -72,8 +71,8 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl
     case VirtualLinksPackage.FILTER:
       return createFilter();
     default:
-      throw new IllegalArgumentException(
-          "The class '" + eClass.getName() + "' is not a valid classifier");
+      throw new IllegalArgumentException("The class '" + eClass.getName()
+          + "' is not a valid classifier");
     }
   }
 

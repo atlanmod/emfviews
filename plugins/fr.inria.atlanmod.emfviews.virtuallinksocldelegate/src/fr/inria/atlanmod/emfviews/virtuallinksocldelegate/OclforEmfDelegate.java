@@ -64,11 +64,10 @@ public class OclforEmfDelegate {
   OCLHelper<EClassifier, EOperation, EStructuralFeature, org.eclipse.ocl.ecore.Constraint> helper;
   VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
 
-  public OclforEmfDelegate(VirtualLinks viewtypeVirtualLinks,
-      ResourceSet virtualResourceSet, VirtualLinks viewVirtualLinks) {
+  public OclforEmfDelegate(VirtualLinks viewtypeVirtualLinks, ResourceSet virtualResourceSet,
+                           VirtualLinks viewVirtualLinks) {
     this.viewVirtualLinks = viewVirtualLinks;
-    EList<VirtualLink> allViewtypeVirtualLinks = viewtypeVirtualLinks
-        .getVirtualLinks();
+    EList<VirtualLink> allViewtypeVirtualLinks = viewtypeVirtualLinks.getVirtualLinks();
     viewtypeFilters = new ArrayList<>();
     this.virtualResourceSet = virtualResourceSet;
 
@@ -84,9 +83,9 @@ public class OclforEmfDelegate {
       // Part 1: Execute the ocl query.
       if (!viewtypeFilter.isFilterOnlyEstructuralFeatures()) {
         String oclQuery = viewtypeFilter.getOclQuery();
-        OCL<EPackage, EClassifier, EOperation, EStructuralFeature,
-
-            EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, org.eclipse.ocl.ecore.Constraint, EClass, EObject> ocl;
+        OCL<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter,
+            EObject, CallOperationAction, SendSignalAction, org.eclipse.ocl.ecore.Constraint,
+            EClass, EObject> ocl;
         ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
 
         // create an OCL helper object
@@ -99,12 +98,11 @@ public class OclforEmfDelegate {
           ocl.setExtentMap(createExtentMapHelper(viewtypeFilter));
 
           OCLExpression<EClassifier> parsedQuery = helper.createQuery(oclQuery);
-          Query<EClassifier, EClass, EObject> theQueryCreatedByOcl = ocl
-              .createQuery(parsedQuery);
+          Query<EClassifier, EClass, EObject> theQueryCreatedByOcl = ocl.createQuery(parsedQuery);
           Object objectsToFilter = theQueryCreatedByOcl.evaluate();
           if (objectsToFilter instanceof Collection) {
-            createFilterLinks((Collection<EObject>) objectsToFilter,
-                viewtypeFilter);
+            Collection<EObject> objs = (Collection<EObject>) objectsToFilter;
+            createFilterLinks(objs, viewtypeFilter);
           } else if (objectsToFilter instanceof EObject) {
             createFilterLink((EObject) objectsToFilter, viewtypeFilter);
           }
@@ -120,8 +118,7 @@ public class OclforEmfDelegate {
     }
   }
 
-  private void createFilterLinks(Collection<EObject> objectsToFilter,
-                                 Filter viewtypeFilter) {
+  private void createFilterLinks(Collection<EObject> objectsToFilter, Filter viewtypeFilter) {
     Iterator<EObject> iter = objectsToFilter.iterator();
     while (iter.hasNext()) {
       EObject objectToFilter = iter.next();
@@ -132,12 +129,12 @@ public class OclforEmfDelegate {
   }
 
   private void createFilterLink(EObject objectToFilter, Filter viewtypeFilter) {
-    Filter filter = EmfViewsUtil.createFilter(viewtypeFilter.getName(),
-        viewtypeFilter.getOclQuery(), false);
-    LinkedElement filterLinkedElement = EmfViewsUtil.createLinkedElement(
-        viewtypeFilter.getFilteredElement().getName(),
-        viewtypeFilter.getFilteredElement().getModelRef(),
-        objectToFilter.eResource().getURIFragment(objectToFilter), null);
+    Filter filter =
+        EmfViewsUtil.createFilter(viewtypeFilter.getName(), viewtypeFilter.getOclQuery(), false);
+    LinkedElement filterLinkedElement = EmfViewsUtil
+        .createLinkedElement(viewtypeFilter.getFilteredElement().getName(),
+                             viewtypeFilter.getFilteredElement().getModelRef(),
+                             objectToFilter.eResource().getURIFragment(objectToFilter), null);
     filter.setFilteredElement(filterLinkedElement);
     viewVirtualLinks.getVirtualLinks().add(filter);
     viewVirtualLinks.getLinkedElements().add(filterLinkedElement);
@@ -152,10 +149,8 @@ public class OclforEmfDelegate {
     String metaclassRef = metaclassToFilter.getElementRef(); // EnterpriseArchitecture
     String metamodelUri = metaclassToFilter.getModelRef(); // http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
 
-    EPackage correctPackage = virtualResourceSet.getPackageRegistry()
-        .getEPackage(metamodelUri);
-    EClassifier correctEclass = correctPackage
-        .getEClassifier(metaclassRef.substring(2));
+    EPackage correctPackage = virtualResourceSet.getPackageRegistry().getEPackage(metamodelUri);
+    EClassifier correctEclass = correctPackage.getEClassifier(metaclassRef.substring(2));
 
     // TODO, esto tiene que cambiar para que se pueda sacar el recurso que es,
     // lo que pasa es que no se por ejemplo cual es la uir del modelo. En el
@@ -167,8 +162,7 @@ public class OclforEmfDelegate {
     Resource correctResource = null;
     for (int i = 0; i < resources.size() && !foundModel; i++) {
       EClassifier firstElement = resources.get(i).getContents().get(0).eClass();
-      if (firstElement.getEPackage().getNsURI()
-          .compareToIgnoreCase(metamodelUri) == 0) {
+      if (firstElement.getEPackage().getNsURI().compareToIgnoreCase(metamodelUri) == 0) {
         foundModel = true;
         correctResource = resources.get(i);
       }
@@ -181,8 +175,7 @@ public class OclforEmfDelegate {
     TreeIterator<EObject> resourceContents = correctResource.getAllContents();
     while (resourceContents.hasNext()) {
       EObject tempContent = resourceContents.next();
-      if (tempContent.eClass().getName()
-          .compareToIgnoreCase(correctEclass.getName()) == 0) {
+      if (tempContent.eClass().getName().compareToIgnoreCase(correctEclass.getName()) == 0) {
         theEclassExtents.add(tempContent);
       }
 

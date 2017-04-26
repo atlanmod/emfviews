@@ -28,15 +28,12 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import fr.inria.atlanmod.emfviews.core.EView;
-import fr.inria.atlanmod.emfviews.core.EmfViewsFactory;
-import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
+import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.util.EmfViewsUtil;
 
-public class CreateViewWizard extends Wizard
-    implements INewWizard, IExecutableExtension {
+public class CreateViewWizard extends Wizard implements INewWizard, IExecutableExtension {
 
   /**
    * Wizard page to select the location and name of the new virtual model
@@ -56,13 +53,13 @@ public class CreateViewWizard extends Wizard
 
   private IFile virtualMetamodel;
 
-  private EmfViewsFactory vm;
+  // private EmfViewsFactory vm;
 
   public CreateViewWizard(IFile virtualMetamodel) {
 
     super();
     this.virtualMetamodel = virtualMetamodel;
-    vm = new EmfViewsFactory();
+    // vm = new EmfViewsFactory();
     setNeedsProgressMonitor(true);
     setWindowTitle(Messages.getString("VirtualModelFileWizard.Title")); //$NON-NLS-1$
   }
@@ -72,27 +69,25 @@ public class CreateViewWizard extends Wizard
    */
   @Override
   public void addPages() {
-    viewContainerFolderSelectionPage = new WizardNewFileCreationPage(
-        Messages.getString("VirtualModelFileWizard.Page.Name"), selection); //$NON-NLS-1$
-    viewContainerFolderSelectionPage.setImageDescriptor(
-        EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
-
+    viewContainerFolderSelectionPage =
+        new WizardNewFileCreationPage(Messages.getString("VirtualModelFileWizard.Page.Name"), //$NON-NLS-1$
+                                      selection);
     viewContainerFolderSelectionPage
-        .setTitle(Messages.getString("VirtualModelFileWizard.Title")); //$NON-NLS-1$
-    viewContainerFolderSelectionPage.setDescription(
-        Messages.getString("VirtualModelFileWizard.Page.Description")); //$NON-NLS-1$
+        .setImageDescriptor(EmfViewsUIPlugin.getImageDescriptor("VirtualModelWizard.png")); //$NON-NLS-1$
+
+    viewContainerFolderSelectionPage.setTitle(Messages.getString("VirtualModelFileWizard.Title")); //$NON-NLS-1$
+    viewContainerFolderSelectionPage
+        .setDescription(Messages.getString("VirtualModelFileWizard.Page.Description")); //$NON-NLS-1$
     viewContainerFolderSelectionPage.setFileExtension("eview"); //$NON-NLS-1$
     addPage(viewContainerFolderSelectionPage);
-    String compositionMetamodel = virtualMetamodel.getFullPath().makeRelative()
-        .toString();
+    String compositionMetamodel = virtualMetamodel.getFullPath().makeRelative().toString();
     createViewScreen = new CreateViewScreen(compositionMetamodel);
 
     addPage(createViewScreen);
   }
 
   @Override
-  public void init(IWorkbench currentWorkbench,
-                   IStructuredSelection structuredSelection) {
+  public void init(IWorkbench currentWorkbench, IStructuredSelection structuredSelection) {
 
     this.selection = structuredSelection;
   }
@@ -115,37 +110,32 @@ public class CreateViewWizard extends Wizard
 
     String viewtypePath = createViewScreen.getCompositionMetaModelPath().get(0);
 
-    ArrayList<String> inputmodelsPlatformUris = createViewScreen
-        .getInputModelPaths();
+    ArrayList<String> inputmodelsPlatformUris = createViewScreen.getInputModelPaths();
     ArrayList<String> relativeInputmodelsUris = new ArrayList<>();
     String contributingModelsToSerialize = "";
     for (String modelPlatformURI : inputmodelsPlatformUris) {
       if (modelPlatformURI.startsWith("platform:/resource/")) {
-        String inputModelRelativeURI = modelPlatformURI
-            .replace("platform:/resource/", "");
+        String inputModelRelativeURI = modelPlatformURI.replace("platform:/resource/", "");
         relativeInputmodelsUris.add(inputModelRelativeURI);
-        contributingModelsToSerialize = contributingModelsToSerialize
-            + inputModelRelativeURI + ",";
+        contributingModelsToSerialize = contributingModelsToSerialize + inputModelRelativeURI + ",";
       }
     }
-    contributingModelsToSerialize = contributingModelsToSerialize.substring(0,
-        contributingModelsToSerialize.length() - 1);
-    EView eview;
+    contributingModelsToSerialize =
+        contributingModelsToSerialize.substring(0, contributingModelsToSerialize.length() - 1);
+    // EView eview;
     try {
-      String viewFileWorkspaceRelativePath = viewContainerFolderSelectionPage
-          .getContainerFullPath()
+      String viewFileWorkspaceRelativePath = viewContainerFolderSelectionPage.getContainerFullPath()
           .append(viewContainerFolderSelectionPage.getFileName()).toString();
 
-      IPath filePath = new Path(viewFileWorkspaceRelativePath)
-          .removeFileExtension();
+      IPath filePath = new Path(viewFileWorkspaceRelativePath).removeFileExtension();
       IPath linksModelPath = filePath.addFileExtension("xmi");
 
       VirtualLinks viewLinks = EmfViewsUtil.createLinksModel();
       EmfViewsUtil.persistLinksModel(viewLinks, org.eclipse.emf.common.util.URI
           .createURI(EmfViewsUtil.toURI(linksModelPath.toString()).toString()));
 
-      eview = (EView) vm.createEView(relativeInputmodelsUris, viewtypePath,
-          linksModelPath.toString());
+      // eview = (EView) vm.createEView(relativeInputmodelsUris, viewtypePath,
+      // linksModelPath.toString());
 
       IFile newViewFile = viewContainerFolderSelectionPage.createNewFile();
       StringBuffer fileContent = new StringBuffer();
@@ -167,10 +157,9 @@ public class CreateViewWizard extends Wizard
 
   }
 
-  private void serializeView(IFile viewFile, StringBuffer fileContent)
-      throws CoreException, IOException {
-    InputStream stream = new ByteArrayInputStream(
-        fileContent.toString().getBytes());
+  private void serializeView(IFile viewFile, StringBuffer fileContent) throws CoreException,
+                                                                       IOException {
+    InputStream stream = new ByteArrayInputStream(fileContent.toString().getBytes());
     if (viewFile.exists()) {
       viewFile.setContents(stream, true, true, null);
     } else {
@@ -186,9 +175,8 @@ public class CreateViewWizard extends Wizard
    *      java.lang.String, java.lang.Object)
    */
   @Override
-  public void setInitializationData(IConfigurationElement config,
-                                    String propertyName, Object data)
-      throws CoreException {
+  public void setInitializationData(IConfigurationElement config, String propertyName,
+                                    Object data) throws CoreException {
 
   }
 

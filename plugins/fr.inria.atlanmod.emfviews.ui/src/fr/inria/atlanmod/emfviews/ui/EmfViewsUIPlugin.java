@@ -110,8 +110,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
       String pluginDir = plugin.getBundle().getEntry("/").toString(); //$NON-NLS-1$
       String iconPath = "icons/"; //$NON-NLS-1$
       try {
-        return ImageDescriptor
-            .createFromURL(new URL(pluginDir + iconPath + name));
+        return ImageDescriptor.createFromURL(new URL(pluginDir + iconPath + name));
       } catch (MalformedURLException mfe) {
         return ImageDescriptor.getMissingImageDescriptor();
       }

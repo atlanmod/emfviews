@@ -29,8 +29,7 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
  * editor. Multi-page contributor replaces the contributors for the individual
  * editors in the multi-page editor.
  */
-public class MultiPageEditorContributor
-    extends MultiPageEditorActionBarContributor {
+public class MultiPageEditorContributor extends MultiPageEditorActionBarContributor {
   private IEditorPart activeEditorPart;
   private Action sampleAction;
 
@@ -61,27 +60,26 @@ public class MultiPageEditorContributor
     IActionBars actionBars = getActionBars();
     if (actionBars != null) {
 
-      ITextEditor editor = (part instanceof ITextEditor) ? (ITextEditor) part
-          : null;
+      ITextEditor editor = (part instanceof ITextEditor) ? (ITextEditor) part : null;
 
       actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(),
-          getAction(editor, ITextEditorActionConstants.DELETE));
+                                        getAction(editor, ITextEditorActionConstants.DELETE));
       actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(),
-          getAction(editor, ITextEditorActionConstants.UNDO));
+                                        getAction(editor, ITextEditorActionConstants.UNDO));
       actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(),
-          getAction(editor, ITextEditorActionConstants.REDO));
+                                        getAction(editor, ITextEditorActionConstants.REDO));
       actionBars.setGlobalActionHandler(ActionFactory.CUT.getId(),
-          getAction(editor, ITextEditorActionConstants.CUT));
+                                        getAction(editor, ITextEditorActionConstants.CUT));
       actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(),
-          getAction(editor, ITextEditorActionConstants.COPY));
+                                        getAction(editor, ITextEditorActionConstants.COPY));
       actionBars.setGlobalActionHandler(ActionFactory.PASTE.getId(),
-          getAction(editor, ITextEditorActionConstants.PASTE));
+                                        getAction(editor, ITextEditorActionConstants.PASTE));
       actionBars.setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(),
-          getAction(editor, ITextEditorActionConstants.SELECT_ALL));
+                                        getAction(editor, ITextEditorActionConstants.SELECT_ALL));
       actionBars.setGlobalActionHandler(ActionFactory.FIND.getId(),
-          getAction(editor, ITextEditorActionConstants.FIND));
+                                        getAction(editor, ITextEditorActionConstants.FIND));
       actionBars.setGlobalActionHandler(IDEActionFactory.BOOKMARK.getId(),
-          getAction(editor, IDEActionFactory.BOOKMARK.getId()));
+                                        getAction(editor, IDEActionFactory.BOOKMARK.getId()));
       actionBars.updateActionBars();
     }
   }
@@ -90,8 +88,7 @@ public class MultiPageEditorContributor
     sampleAction = new Action() {
       @Override
       public void run() {
-        MessageDialog.openInformation(null, "VirtualEMF Editor",
-            "Sample Action Executed");
+        MessageDialog.openInformation(null, "VirtualEMF Editor", "Sample Action Executed");
       }
     };
     sampleAction.setText("Sample Action");

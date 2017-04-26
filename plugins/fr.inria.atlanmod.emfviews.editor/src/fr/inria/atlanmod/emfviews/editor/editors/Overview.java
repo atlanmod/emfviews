@@ -59,28 +59,24 @@ public class Overview extends SectionPart {
     section.setClient(container);
     container.setLayout(new GridLayout(3, false));
 
-    GridData dataLists = new GridData(
-        GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
+    GridData dataLists = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
 
-    inputMetamodelsList = createModelControl(container,
-        Messages.getString("VirtualModelFileScreen.InputMetamodels"), //$NON-NLS-1$
-        new ModelSelection(container.getShell(),
-            Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"), //$NON-NLS-1$
-            inputMetaModelPaths, ModelSelection.INPUTMETAMODEL),
-        dataLists); // 2$
+    inputMetamodelsList =
+        createModelControl(container, Messages.getString("VirtualModelFileScreen.InputMetamodels"), //$NON-NLS-1$
+                           new ModelSelection(container.getShell(), Messages
+                               .getString("VirtualModelFileScreen.InputMetamodelCreation"), //$NON-NLS-1$
+                                              inputMetaModelPaths, ModelSelection.INPUTMETAMODEL),
+                           dataLists); // 2$
   }
 
-  private List createModelControl(final Composite parent,
-                                  final String entryLabel,
-                                  final AbstractSelection dialog,
-                                  GridData listLayoutData) {
+  private List createModelControl(final Composite parent, final String entryLabel,
+                                  final AbstractSelection dialog, GridData listLayoutData) {
     final Label typeLabel = new Label(parent, SWT.NONE);
     GridData data = new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
     data.verticalIndent = 5;
     typeLabel.setLayoutData(data);
     typeLabel.setText(entryLabel);
-    final List list = new List(parent,
-        SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+    final List list = new List(parent, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
     listLayoutData.verticalIndent = 5;
     list.setLayoutData(listLayoutData);
 
@@ -94,10 +90,9 @@ public class Overview extends SectionPart {
     data.verticalIndent = 5;
     composite.setLayoutData(data);
 
-    final Button addIn = createButton(composite,
-        Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
-    final Button removeIn = createButton(composite,
-        Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
+    final Button addIn = createButton(composite, Messages.getString("VirtualModelFileScreen.Add")); //$NON-NLS-1$
+    final Button removeIn =
+        createButton(composite, Messages.getString("VirtualModelFileScreen.Remove")); //$NON-NLS-1$
     removeIn.setEnabled(false);
     addIn.addSelectionListener(new SelectionAdapter() {
       @Override
@@ -129,11 +124,11 @@ public class Overview extends SectionPart {
        */
       @Override
       public void widgetSelected(SelectionEvent evt) {
-        int[] indices = list.getSelectionIndices();
-        for (int i = 0; i < indices.length; i++) {
-          int j = indices[i];
+        // int[] indices = list.getSelectionIndices();
+        // for (int i = 0; i < indices.length; i++) {
+        // int j = indices[i];
 
-        }
+        // }
         updateLists();
         removeIn.setEnabled(list.getSelection().length > 0);
       }

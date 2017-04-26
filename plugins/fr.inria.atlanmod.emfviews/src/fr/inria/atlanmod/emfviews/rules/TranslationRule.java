@@ -41,8 +41,7 @@ public abstract class TranslationRule implements EStore {
 
   @SuppressWarnings("unchecked")
   @Override
-  public boolean contains(InternalEObject object, EStructuralFeature feature,
-                          Object value) {
+  public boolean contains(InternalEObject object, EStructuralFeature feature, Object value) {
     try {
       EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
       return ret.contains(value);
@@ -52,41 +51,36 @@ public abstract class TranslationRule implements EStore {
 
   @SuppressWarnings("unchecked")
   @Override
-  public int indexOf(InternalEObject object, EStructuralFeature feature,
-                     Object value) {
+  public int indexOf(InternalEObject object, EStructuralFeature feature, Object value) {
     EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
     return ret.indexOf(value);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public int lastIndexOf(InternalEObject object, EStructuralFeature feature,
-                         Object value) {
+  public int lastIndexOf(InternalEObject object, EStructuralFeature feature, Object value) {
     EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
     return ret.lastIndexOf(value);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public void add(InternalEObject object, EStructuralFeature feature, int index,
-                  Object value) {
+  public void add(InternalEObject object, EStructuralFeature feature, int index, Object value) {
     EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
-    ret.add(index,
-        ((View) object.eResource()).translateToVirtualElement((EObject) value));
+    ret.add(index, ((View) object.eResource()).translateToVirtualElement((EObject) value));
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public Object remove(InternalEObject object, EStructuralFeature feature,
-                       int index) {
+  public Object remove(InternalEObject object, EStructuralFeature feature, int index) {
     EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
     return ret.remove(index);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public Object move(InternalEObject object, EStructuralFeature feature,
-                     int targetIndex, int sourceIndex) {
+  public Object move(InternalEObject object, EStructuralFeature feature, int targetIndex,
+                     int sourceIndex) {
     EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
     return ret.move(targetIndex, sourceIndex);
   }
@@ -107,8 +101,7 @@ public abstract class TranslationRule implements EStore {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T[] toArray(InternalEObject object, EStructuralFeature feature,
-                         T[] array) {
+  public <T> T[] toArray(InternalEObject object, EStructuralFeature feature, T[] array) {
     EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
     return ret.toArray(array);
   }
