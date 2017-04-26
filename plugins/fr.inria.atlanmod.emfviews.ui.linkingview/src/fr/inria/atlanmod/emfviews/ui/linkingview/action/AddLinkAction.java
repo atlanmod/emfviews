@@ -1,12 +1,9 @@
 package fr.inria.atlanmod.emfviews.ui.linkingview.action;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-
 import java.util.Set;
-
 
 /*******************************************************************************
  * Copyright (c) 2013 INRIA.
@@ -38,104 +35,92 @@ import fr.inria.atlanmod.emfviews.ui.linkingview.view.ModelToLinkDialog;
 
 public class AddLinkAction extends Action {
 
-	private LinksView linksView;
+  private LinksView linksView;
 
-	private Composite parent;
+  private Composite parent;
 
-	public AddLinkAction(LinksView linksView, Composite parent) {
-		this.linksView = linksView;
-		this.parent = parent;
-	}
+  public AddLinkAction(LinksView linksView, Composite parent) {
+    this.linksView = linksView;
+    this.parent = parent;
+  }
 
-	public void run() {
-		if (linksView.viewSelected()) {
-			IExtension matchingExtension = EmfViewsUiUtil
-					.getCurrentEditorDelegate();
-			if (matchingExtension != null) {
-				IConfigurationElement[] matchingConfigElements = matchingExtension
-						.getConfigurationElements();
+  @Override
+  public void run() {
+    if (linksView.viewSelected()) {
+      IExtension matchingExtension = EmfViewsUiUtil.getCurrentEditorDelegate();
+      if (matchingExtension != null) {
+        IConfigurationElement[] matchingConfigElements =
+            matchingExtension.getConfigurationElements();
 
-				IEditorDelegate editorDelegate;
-				try {
-					editorDelegate = (IEditorDelegate) matchingConfigElements[0]
-							.createExecutableExtension("class");
-					EObject selectedElement = editorDelegate
-							.getSelectedElement();
-					if (selectedElement != null) {
-						Set<String> modelTypes=new LinkedHashSet<String>();
-						for (Resource contributingModel : linksView.getCurrentView().getContributingModels()) {
-							modelTypes.add(contributingModel.getContents().get(0).eClass().getEPackage().getNsPrefix());
-						}
-						ModelToLinkDialog modelToLinkDialog = new ModelToLinkDialog(
-								parent.getShell(),modelTypes);
-						modelToLinkDialog.create();
-						int returnCodeT = modelToLinkDialog.open();
-						if (returnCodeT == Dialog.OK) {
-							String buttonSelected = modelToLinkDialog
-									.getSelectedButton();
-							EView currentView = linksView.getCurrentView();
-							List<Resource> viewInputModels = currentView
-									.getContributingModels();
-							boolean modelFound = false;
-							Resource lookedForResource = null;
+        IEditorDelegate editorDelegate;
+        try {
+          editorDelegate =
+              (IEditorDelegate) matchingConfigElements[0].createExecutableExtension("class");
+          EObject selectedElement = editorDelegate.getSelectedElement();
+          if (selectedElement != null) {
+            Set<String> modelTypes = new LinkedHashSet<String>();
+            for (Resource contributingModel : linksView.getCurrentView().getContributingModels()) {
+              modelTypes
+                  .add(contributingModel.getContents().get(0).eClass().getEPackage().getNsPrefix());
+            }
+            ModelToLinkDialog modelToLinkDialog =
+                new ModelToLinkDialog(parent.getShell(), modelTypes);
+            modelToLinkDialog.create();
+            int returnCodeT = modelToLinkDialog.open();
+            if (returnCodeT == Window.OK) {
+              String buttonSelected = modelToLinkDialog.getSelectedButton();
+              EView currentView = linksView.getCurrentView();
+              List<Resource> viewInputModels = currentView.getContributingModels();
+              boolean modelFound = false;
+              Resource lookedForResource = null;
 
-							for (int i = 0; i < viewInputModels.size()
-									&& !modelFound; i++) {
-								Resource resource = viewInputModels.get(i);
-								EObject rootElem = resource.getContents()
-										.get(0);
-								if (rootElem.eClass().getEPackage().getNsURI()
-										.contains(buttonSelected.toLowerCase())
-										|| rootElem.eClass().getEPackage()
-												.getNsURI()
-												.contains(buttonSelected)|| rootElem.eClass().getEPackage()
-												.getNsURI()
-												.contains(buttonSelected.toUpperCase())) {
-									lookedForResource = resource;
-									modelFound = true;
-								}
-							}
-							if (lookedForResource != null) {
-								ModelSelectionDialog modelSelectionDialog = new ModelSelectionDialog(
-										parent.getShell(), lookedForResource
-												.getContents().get(0),
-										currentView);
-								modelSelectionDialog
-										.setSelectedElement(selectedElement);
-								modelSelectionDialog.create();
+              for (int i = 0; i < viewInputModels.size() && !modelFound; i++) {
+                Resource resource = viewInputModels.get(i);
+                EObject rootElem = resource.getContents().get(0);
+                if (rootElem.eClass().getEPackage().getNsURI()
+                    .contains(buttonSelected.toLowerCase())
+                    || rootElem.eClass().getEPackage().getNsURI().contains(buttonSelected)
+                    || rootElem.eClass().getEPackage().getNsURI()
+                        .contains(buttonSelected.toUpperCase())) {
+                  lookedForResource = resource;
+                  modelFound = true;
+                }
+              }
+              if (lookedForResource != null) {
+                ModelSelectionDialog modelSelectionDialog =
+                    new ModelSelectionDialog(parent.getShell(),
+                                             lookedForResource.getContents().get(0), currentView);
+                modelSelectionDialog.setSelectedElement(selectedElement);
+                modelSelectionDialog.create();
 
-								int returnCode = modelSelectionDialog.open();
+                int returnCode = modelSelectionDialog.open();
 
-								if (returnCode == Window.OK) {
-									MessageDialog.openInformation(
-											parent.getShell(), "Link created",
-											"A link has been created");
-								}
-							}
-						} else {
-							// TODO The user canceled the selection of the link
-							// end element
-						}
-					} else {
-						MessageDialog.openInformation(parent.getShell(),
-								"Select element to link",
-								"You should first select an element to link");
-					}
-				} catch (CoreException e) {
+                if (returnCode == Window.OK) {
+                  MessageDialog.openInformation(parent.getShell(), "Link created",
+                                                "A link has been created");
+                }
+              }
+            } else {
+              // TODO The user canceled the selection of the link
+              // end element
+            }
+          } else {
+            MessageDialog.openInformation(parent.getShell(), "Select element to link",
+                                          "You should first select an element to link");
+          }
+        } catch (CoreException e) {
 
-					e.printStackTrace();
-				}
+          e.printStackTrace();
+        }
 
-			} else {
-				MessageDialog.openInformation(parent.getShell(),
-						"Editor not yet supported by Emf Views",
-						"Editor not yet supported by Emf Views");
+      } else {
+        MessageDialog.openInformation(parent.getShell(), "Editor not yet supported by Emf Views",
+                                      "Editor not yet supported by Emf Views");
 
-			}
-		} else {
-			MessageDialog.openInformation(parent.getShell(),
-					"No view selected", "Select a view first");
-		}
-	}
+      }
+    } else {
+      MessageDialog.openInformation(parent.getShell(), "No view selected", "Select a view first");
+    }
+  }
 
 }

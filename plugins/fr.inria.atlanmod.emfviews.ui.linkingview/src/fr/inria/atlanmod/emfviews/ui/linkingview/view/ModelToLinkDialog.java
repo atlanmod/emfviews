@@ -23,54 +23,52 @@ import org.eclipse.swt.widgets.Shell;
 
 public class ModelToLinkDialog extends TitleAreaDialog {
 
-	ArrayList<Button> buttons;
-	Set<String> modelTypes;
-	String selectedButton = "";
+  ArrayList<Button> buttons;
+  Set<String> modelTypes;
+  String selectedButton = "";
 
-	public ModelToLinkDialog(Shell parent,Set<String> modelTypes) {
-		super(parent);
-		this.modelTypes=modelTypes;
-		this.buttons = new ArrayList<Button>();
-	}
+  public ModelToLinkDialog(Shell parent, Set<String> modelTypes) {
+    super(parent);
+    this.modelTypes = modelTypes;
+    this.buttons = new ArrayList<Button>();
+  }
 
-	@Override
-	protected Control createDialogArea(Composite parent) {
+  @Override
+  protected Control createDialogArea(Composite parent) {
 
-		Composite area = (Composite) super.createDialogArea(parent);
-		
-		for (String  modelType : modelTypes) 
-		{
-			Button b = new Button(area, SWT.RADIO);
-			b.setText(modelType);
-			buttons.add(b);	
-		}
+    Composite area = (Composite) super.createDialogArea(parent);
 
-		return area;
+    for (String modelType : modelTypes) {
+      Button b = new Button(area, SWT.RADIO);
+      b.setText(modelType);
+      buttons.add(b);
+    }
 
-	}
+    return area;
 
-	@Override
-	public void create() {
-		super.create();
-		setTitle("Select the model you want to link");
-		setMessage("Select the model you want to link",
-				IMessageProvider.INFORMATION);
-	}
+  }
 
-	@Override
-	protected void okPressed() {
+  @Override
+  public void create() {
+    super.create();
+    setTitle("Select the model you want to link");
+    setMessage("Select the model you want to link", IMessageProvider.INFORMATION);
+  }
 
-		for (Button b : buttons) {
-			if (b.getSelection()) {
-				selectedButton = b.getText();
-			}
-		}
+  @Override
+  protected void okPressed() {
 
-		super.okPressed();
-	}
+    for (Button b : buttons) {
+      if (b.getSelection()) {
+        selectedButton = b.getText();
+      }
+    }
 
-	public String getSelectedButton() {
-		return selectedButton;
-	}
+    super.okPressed();
+  }
+
+  public String getSelectedButton() {
+    return selectedButton;
+  }
 
 }

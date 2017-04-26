@@ -34,191 +34,177 @@ import org.eclipse.swt.widgets.Tree;
 
 import fr.inria.atlanmod.emfviews.core.EView;
 import fr.inria.atlanmod.emfviews.core.Viewtype;
-import fr.inria.atlanmod.emfviews.util.EmfViewsUtil;
 import fr.inria.atlanmod.emfviews.virtualLinks.Association;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
 
 public class ModelSelectionDialog extends TitleAreaDialog {
 
-	private CheckboxTreeViewer treeViewer;
+  private CheckboxTreeViewer treeViewer;
 
-	// The model element that is currently selected on an editor
-	private EObject selectedElement;
+  // The model element that is currently selected on an editor
+  private EObject selectedElement;
 
-	private EObject modelRoot;
-	
-	Composite parent;
+  private EObject modelRoot;
 
-	// The views link model element
-	private VirtualLinks tempLinksModel;
-	
-	private EView currentView;
+  Composite parent;
 
-	public void setSelectedElement(EObject selectedElement) {
-		this.selectedElement = selectedElement;
+  // The views link model element
+  private VirtualLinks tempLinksModel;
 
-	}
+  private EView currentView;
 
-	public ModelSelectionDialog(Shell parentShell, EObject modelRoot,
-			EView currentView) {
-		super(parentShell);
-		this.modelRoot = modelRoot;
-		this.currentView = currentView;
-		this.tempLinksModel = currentView.getVirtualLinkManager()
-				.getLinks();
-	}
+  public void setSelectedElement(EObject selectedElement) {
+    this.selectedElement = selectedElement;
 
-	@Override
-	public void create() {
-		super.create();
-		setTitle("Create a link");
-		setMessage("You can select several elements",
-				IMessageProvider.INFORMATION);
-	}
+  }
 
-	public Association getConformantToAssociation(EObject sourceEObject, EObject targetEObject)
-	{
-		Association conformantToAssociation=null;
-		Viewtype currentViewtype = currentView.getViewtype();
-		XMIResourceImpl viewtypeLinks=currentViewtype.getCorrespondenceModelResource();
-		
-		if(viewtypeLinks.getContents()!=null&&viewtypeLinks.getContents().size()>0)
-		{
-			if(viewtypeLinks.getContents().get(0) instanceof VirtualLinks)
-			{
-				VirtualLinks vl=(VirtualLinks)(viewtypeLinks.getContents().get(0));
-				EList<VirtualLink> virtualLinks=vl.getVirtualLinks();
-				ArrayList<Association>associations=new ArrayList<Association>();
-				for (VirtualLink virtualLink : virtualLinks) 
-				{
-					if(virtualLink instanceof Association)
-						associations.add((Association)virtualLink);
-				}
-				boolean associationFound=false;
-				for(int i =0;i<associations.size() && !associationFound;i++)
-				{
-					Association a=associations.get(i);
-					EList<LinkedElement> targetElements=a.getTargetElements();
-					for (LinkedElement linkedElement : targetElements)
-					{
-						//TODO Simplify this conditional
-						if(a.getSourceElement().getModelRef().compareToIgnoreCase(sourceEObject.eClass().getEPackage().getNsURI())==0 && a.getSourceElement().getName().compareToIgnoreCase(sourceEObject.eClass().getName())==0 &&linkedElement.getModelRef().compareToIgnoreCase(targetEObject.eClass().getEPackage().getNsURI())==0 && linkedElement.getName().compareToIgnoreCase(targetEObject.eClass().getName())==0)
-						{
-							associationFound=true;
-							conformantToAssociation=a;
-						}
-						
-					}
-					
-				}
-			}
-		}
-		
-		
-		return conformantToAssociation;
-	}
-	
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		this.parent=parent;
-		Composite area = (Composite) super.createDialogArea(parent);
-		Composite container = new Composite(area, SWT.NONE);
-		container.setLayoutData(new GridData(GridData.FILL_BOTH));
-		GridLayout layout = new GridLayout(1, false);
-		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		container.setLayout(layout);
+  public ModelSelectionDialog(Shell parentShell, EObject modelRoot, EView currentView) {
+    super(parentShell);
+    this.modelRoot = modelRoot;
+    this.currentView = currentView;
+    this.tempLinksModel = currentView.getVirtualLinkManager().getLinks();
+  }
 
-		treeViewer = new CheckboxTreeViewer(area, SWT.BORDER);
+  @Override
+  public void create() {
+    super.create();
+    setTitle("Create a link");
+    setMessage("You can select several elements", IMessageProvider.INFORMATION);
+  }
 
-		Tree tree = treeViewer.getTree();
-		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+  public Association getConformantToAssociation(EObject sourceEObject, EObject targetEObject) {
+    Association conformantToAssociation = null;
+    Viewtype currentViewtype = currentView.getViewtype();
+    XMIResourceImpl viewtypeLinks = currentViewtype.getCorrespondenceModelResource();
 
-		treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(
-				new ReflectiveItemProviderAdapterFactory()));
+    if (viewtypeLinks.getContents() != null && viewtypeLinks.getContents().size() > 0) {
+      if (viewtypeLinks.getContents().get(0) instanceof VirtualLinks) {
+        VirtualLinks vl = (VirtualLinks) (viewtypeLinks.getContents().get(0));
+        EList<VirtualLink> virtualLinks = vl.getVirtualLinks();
+        ArrayList<Association> associations = new ArrayList<>();
+        for (VirtualLink virtualLink : virtualLinks) {
+          if (virtualLink instanceof Association)
+            associations.add((Association) virtualLink);
+        }
+        boolean associationFound = false;
+        for (int i = 0; i < associations.size() && !associationFound; i++) {
+          Association a = associations.get(i);
+          EList<LinkedElement> targetElements = a.getTargetElements();
+          for (LinkedElement linkedElement : targetElements) {
+            // TODO Simplify this conditional
+            if (a.getSourceElement().getModelRef()
+                .compareToIgnoreCase(sourceEObject.eClass().getEPackage().getNsURI()) == 0
+                && a.getSourceElement().getName()
+                    .compareToIgnoreCase(sourceEObject.eClass().getName()) == 0
+                && linkedElement.getModelRef()
+                    .compareToIgnoreCase(targetEObject.eClass().getEPackage().getNsURI()) == 0
+                && linkedElement.getName()
+                    .compareToIgnoreCase(targetEObject.eClass().getName()) == 0) {
+              associationFound = true;
+              conformantToAssociation = a;
+            }
 
-		treeViewer.setContentProvider(new AdapterFactoryContentProvider(
-				new ReflectiveItemProviderAdapterFactory()));
+          }
 
-		treeViewer.setInput(modelRoot);
-		return area;
-	}
+        }
+      }
+    }
 
-	@Override
-	protected void okPressed() {
+    return conformantToAssociation;
+  }
 
-		Object[] treeElementsSelected = treeViewer.getCheckedElements();
-		if (treeElementsSelected != null && treeElementsSelected.length > 0) {
+  @Override
+  protected Control createDialogArea(Composite parent) {
+    this.parent = parent;
+    Composite area = (Composite) super.createDialogArea(parent);
+    Composite container = new Composite(area, SWT.NONE);
+    container.setLayoutData(new GridData(GridData.FILL_BOTH));
+    GridLayout layout = new GridLayout(1, false);
+    container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+    container.setLayout(layout);
 
-			ArrayList<Association> newAssociations = new ArrayList<Association>();
-			LinkedElement source = EmfViewsUtil.createLinkedElement(
-					"referenceFrom"
-							+ selectedElement.eClass().getName()
-							+ "ElementFrom"
-							+ selectedElement.eClass().getEPackage()
-									.getNsPrefix() + "Model", selectedElement
-							.eClass().getEPackage().getNsURI(), selectedElement
-							.eResource().getURIFragment(selectedElement), null);
-			for (Object treeItem : treeElementsSelected) {
-				EObject selectedEobject = (EObject) treeItem;
-				// So here is where i need to save the link.
-				VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-				VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-				Association vAsso = vLinksFactory.createAssociation();
-				// TODO Choose a different name so that they will not all be
-				// named the same.
-				Association conformantAssociation=getConformantToAssociation(selectedElement,selectedEobject);
-				if(conformantAssociation!=null)
-				{
-					vAsso.setName(conformantAssociation.getName());
-					// TODO this one is important, because it needs to have the name
-					// of an association on the metamodel
-					vAsso.setAssociationTypeName(conformantAssociation.getAssociationTypeName());
-					LinkedElement target = EmfViewsUtil.createLinkedElement(
-							"referenceTo"
-									+ selectedEobject.eClass().getName()
-									+ "ElementFrom"
-									+ selectedEobject.eClass().getEPackage()
-											.getNsPrefix() + "Model",
-							selectedEobject.eClass().getEPackage().getNsURI(),
-							selectedEobject.eResource().getURIFragment(
-									selectedEobject), null);
+    treeViewer = new CheckboxTreeViewer(area, SWT.BORDER);
 
-					vAsso.setSourceElement(source);
-					vAsso.getTargetElements().add(target);
-					newAssociations.add(vAsso);
+    Tree tree = treeViewer.getTree();
+    tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-					tempLinksModel.getLinkedElements().add(source);
-					tempLinksModel.getLinkedElements().add(target);
-					tempLinksModel.getVirtualLinks().add(vAsso);
-				}
-				else
-				{
-					MessageDialog.openInformation(parent.getShell(), "Link not created",
-							"Link not created: Create first an association of this type at the viewtype level");
-					this.setReturnCode(Window.CANCEL);
-				}
-				
+    treeViewer
+        .setLabelProvider(new AdapterFactoryLabelProvider(new ReflectiveItemProviderAdapterFactory()));
 
-			}
+    treeViewer
+        .setContentProvider(new AdapterFactoryContentProvider(new ReflectiveItemProviderAdapterFactory()));
 
-			try {
+    treeViewer.setInput(modelRoot);
+    return area;
+  }
 
-				EmfViewsUtil.persistLinksModel(tempLinksModel,
-						org.eclipse.emf.common.util.URI
-								.createURI(tempLinksModel.eResource().getURI()
-										.toString()));
+  @Override
+  protected void okPressed() {
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+    Object[] treeElementsSelected = treeViewer.getCheckedElements();
+    if (treeElementsSelected != null && treeElementsSelected.length > 0) {
 
-		}
+      ArrayList<Association> newAssociations = new ArrayList<>();
+      LinkedElement source = VirtualLinksUtil
+          .createLinkedElement("referenceFrom" + selectedElement.eClass().getName() + "ElementFrom"
+              + selectedElement.eClass().getEPackage().getNsPrefix() + "Model",
+                               selectedElement.eClass().getEPackage().getNsURI(),
+                               selectedElement.eResource().getURIFragment(selectedElement), null);
+      for (Object treeItem : treeElementsSelected) {
+        EObject selectedEobject = (EObject) treeItem;
+        // So here is where i need to save the link.
+        VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
+        VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
+        Association vAsso = vLinksFactory.createAssociation();
+        // TODO Choose a different name so that they will not all be
+        // named the same.
+        Association conformantAssociation =
+            getConformantToAssociation(selectedElement, selectedEobject);
+        if (conformantAssociation != null) {
+          vAsso.setName(conformantAssociation.getName());
+          // TODO this one is important, because it needs to have the name
+          // of an association on the metamodel
+          vAsso.setAssociationTypeName(conformantAssociation.getAssociationTypeName());
+          LinkedElement target = VirtualLinksUtil
+              .createLinkedElement("referenceTo" + selectedEobject.eClass().getName()
+                  + "ElementFrom" + selectedEobject.eClass().getEPackage().getNsPrefix() + "Model",
+                                   selectedEobject.eClass().getEPackage().getNsURI(),
+                                   selectedEobject.eResource().getURIFragment(selectedEobject),
+                                   null);
 
-		super.okPressed();
-	}
+          vAsso.setSourceElement(source);
+          vAsso.getTargetElements().add(target);
+          newAssociations.add(vAsso);
+
+          tempLinksModel.getLinkedElements().add(source);
+          tempLinksModel.getLinkedElements().add(target);
+          tempLinksModel.getVirtualLinks().add(vAsso);
+        } else {
+          MessageDialog
+              .openInformation(parent.getShell(), "Link not created",
+                               "Link not created: Create first an association of this type at the viewtype level");
+          this.setReturnCode(Window.CANCEL);
+        }
+
+      }
+
+      try {
+
+        VirtualLinksUtil.persistLinksModel(tempLinksModel, org.eclipse.emf.common.util.URI
+            .createURI(tempLinksModel.eResource().getURI().toString()));
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+    }
+
+    super.okPressed();
+  }
 
 }

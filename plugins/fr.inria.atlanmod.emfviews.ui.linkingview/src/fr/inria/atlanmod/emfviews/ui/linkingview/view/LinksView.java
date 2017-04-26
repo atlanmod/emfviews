@@ -37,87 +37,75 @@ import fr.inria.atlanmod.emfviews.ui.linkingview.action.SelectViewAction;
 
 public class LinksView extends ViewPart {
 
-	
-	public static final String SELECTVIEW_ACTION_ICON  = "icons/selectview.png";
-	
-	public static final String ADDLINK_ACTION_ICON  = "icons/add.png";
-	
-	private EView currentView;
+  public static final String SELECTVIEW_ACTION_ICON = "icons/selectview.png";
 
-	private TreeViewer linkedElementsViewer;
+  public static final String ADDLINK_ACTION_ICON = "icons/add.png";
 
-	private Composite parent;
-	
-	public EView getCurrentView() {
-		return currentView;
-	}
+  private EView currentView;
 
-	@Override
-	public void createPartControl(Composite parent) {
+  private TreeViewer linkedElementsViewer;
 
-		this.parent = parent;
-		linkedElementsViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL);
-		linkedElementsViewer.setLabelProvider(new AdapterFactoryLabelProvider(
-				new ReflectiveItemProviderAdapterFactory()));
-		linkedElementsViewer.setContentProvider(new LinksViewContentProvider());
+  private Composite parent;
 
-		Action selectViewAction = new SelectViewAction(this, parent);
+  public EView getCurrentView() {
+    return currentView;
+  }
 
-		Action addLinkAction = new AddLinkAction(this, parent);
+  @Override
+  public void createPartControl(Composite parent) {
 
-		IActionBars bars = getViewSite().getActionBars();
+    this.parent = parent;
+    linkedElementsViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+    linkedElementsViewer
+        .setLabelProvider(new AdapterFactoryLabelProvider(new ReflectiveItemProviderAdapterFactory()));
+    linkedElementsViewer.setContentProvider(new LinksViewContentProvider());
 
-		selectViewAction.setText("Select view");
-		selectViewAction.setToolTipText("Select view");
-		selectViewAction.setImageDescriptor(Activator.getImage(SELECTVIEW_ACTION_ICON));
-		bars.getMenuManager().add(selectViewAction);
-		bars.getToolBarManager().add(selectViewAction);
+    Action selectViewAction = new SelectViewAction(this, parent);
 
-		addLinkAction.setText("Create link");
-		addLinkAction.setToolTipText("Create link");
-		addLinkAction.setImageDescriptor(Activator.getImage(ADDLINK_ACTION_ICON));
-		bars.getMenuManager().add(addLinkAction);
-		bars.getToolBarManager().add(addLinkAction);
+    Action addLinkAction = new AddLinkAction(this, parent);
 
-	}
+    IActionBars bars = getViewSite().getActionBars();
 
-	@Override
-	public void setFocus() {
-		
-	}
+    selectViewAction.setText("Select view");
+    selectViewAction.setToolTipText("Select view");
+    selectViewAction.setImageDescriptor(Activator.getImage(SELECTVIEW_ACTION_ICON));
+    bars.getMenuManager().add(selectViewAction);
+    bars.getToolBarManager().add(selectViewAction);
 
-	public boolean viewSelected() {
-		return currentView != null;
-	}
+    addLinkAction.setText("Create link");
+    addLinkAction.setToolTipText("Create link");
+    addLinkAction.setImageDescriptor(Activator.getImage(ADDLINK_ACTION_ICON));
+    bars.getMenuManager().add(addLinkAction);
+    bars.getToolBarManager().add(addLinkAction);
 
-	public void loadView(String viewPath) {
-		EmfViewsFactory factory = new EmfViewsFactory();
-		URI viewURI=URI.createURI(viewPath,
-				true);
-		currentView = (EView) factory.createResource(viewURI);
+  }
 
-		try {
-			ExtensibleURIConverterImpl eui= new ExtensibleURIConverterImpl();
-			InputStream is=eui.createInputStream(viewURI);
-			currentView
-			.load(is,
-					new HashMap<>());
-			linkedElementsViewer.setInput(currentView.getVirtualLinkManager()
-					.getLinks());
-			((LinksViewContentProvider) (linkedElementsViewer
-					.getContentProvider())).setLinkedModels(currentView
-					.getContributingModels());
-			MessageDialog.openInformation(parent.getShell(), "View selected",
-					"View selected");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+  @Override
+  public void setFocus() {
 
-	}
+  }
 
+  public boolean viewSelected() {
+    return currentView != null;
+  }
 
+  public void loadView(String viewPath) {
+    EmfViewsFactory factory = new EmfViewsFactory();
+    URI viewURI = URI.createURI(viewPath, true);
+    currentView = (EView) factory.createResource(viewURI);
 
-	
-	
+    try {
+      ExtensibleURIConverterImpl eui = new ExtensibleURIConverterImpl();
+      InputStream is = eui.createInputStream(viewURI);
+      currentView.load(is, new HashMap<>());
+      linkedElementsViewer.setInput(currentView.getVirtualLinkManager().getLinks());
+      ((LinksViewContentProvider) (linkedElementsViewer.getContentProvider()))
+          .setLinkedModels(currentView.getContributingModels());
+      MessageDialog.openInformation(parent.getShell(), "View selected", "View selected");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
+
 }

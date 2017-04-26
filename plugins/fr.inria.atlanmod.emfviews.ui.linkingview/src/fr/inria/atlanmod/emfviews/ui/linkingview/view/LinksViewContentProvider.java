@@ -32,139 +32,126 @@ import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 
-public class LinksViewContentProvider implements IStructuredContentProvider,
-		ITreeContentProvider {
+public class LinksViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
-	private ITreeContentProvider emfContentProvider;
+  private ITreeContentProvider emfContentProvider;
 
-	private List<Resource> linkedModels;
+  private List<Resource> linkedModels;
 
-	public LinksViewContentProvider() {
-		emfContentProvider = new AdapterFactoryContentProvider(
-				new ReflectiveItemProviderAdapterFactory());
-	}
+  public LinksViewContentProvider() {
+    emfContentProvider =
+        new AdapterFactoryContentProvider(new ReflectiveItemProviderAdapterFactory());
+  }
 
-	public void setLinkedModels(List<Resource> linkedModels) {
-		this.linkedModels = linkedModels;
-	}
+  public void setLinkedModels(List<Resource> linkedModels) {
+    this.linkedModels = linkedModels;
+  }
 
-	private String getCurrentEObject() {
-		String currentElementId = null;
-		IExtension matchingExtension = EmfViewsUiUtil
-				.getCurrentEditorDelegate();
-		if (matchingExtension != null) {
-			IConfigurationElement[] matchingConfigElements = matchingExtension
-					.getConfigurationElements();
+  private String getCurrentEObject() {
+    String currentElementId = null;
+    IExtension matchingExtension = EmfViewsUiUtil.getCurrentEditorDelegate();
+    if (matchingExtension != null) {
+      IConfigurationElement[] matchingConfigElements = matchingExtension.getConfigurationElements();
 
-			IEditorDelegate editorDelegate;
-			try {
-				editorDelegate = (IEditorDelegate) matchingConfigElements[0]
-						.createExecutableExtension("class");
-				EObject selectedElement = editorDelegate.getSelectedElement();
-				currentElementId = selectedElement.eResource().getURIFragment(
-						selectedElement);
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-		}
+      IEditorDelegate editorDelegate;
+      try {
+        editorDelegate =
+            (IEditorDelegate) matchingConfigElements[0].createExecutableExtension("class");
+        EObject selectedElement = editorDelegate.getSelectedElement();
+        currentElementId = selectedElement.eResource().getURIFragment(selectedElement);
+      } catch (CoreException e) {
+        e.printStackTrace();
+      }
+    }
 
-		return currentElementId;
+    return currentElementId;
 
-	}
+  }
 
-	@Override
-	public void dispose() {
+  @Override
+  public void dispose() {
 
-	}
+  }
 
-	@Override
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+  @Override
+  public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
-	}
+  }
 
-	@Override
-	public Object[] getChildren(Object linksModelElement) {
+  @Override
+  public Object[] getChildren(Object linksModelElement) {
 
-		String currentSelectObjectId=getCurrentEObject();
-		if(currentSelectObjectId!=null)
-		{
-			if (linksModelElement instanceof VirtualLinks) {
-				VirtualLinks virtualLinks = (VirtualLinks) linksModelElement;
-				EList<VirtualLink> allLinks = virtualLinks.getVirtualLinks();
-				ArrayList<Association> associations = new ArrayList<Association>();
-				for (VirtualLink virtualLink : allLinks) {
-					if (virtualLink instanceof Association)
-						associations.add((Association) virtualLink);
-				}
-				ArrayList<EObject> linkedElements = new ArrayList<EObject>();
-				for (Association association : associations) {
+    String currentSelectObjectId = getCurrentEObject();
+    if (currentSelectObjectId != null) {
+      if (linksModelElement instanceof VirtualLinks) {
+        VirtualLinks virtualLinks = (VirtualLinks) linksModelElement;
+        EList<VirtualLink> allLinks = virtualLinks.getVirtualLinks();
+        ArrayList<Association> associations = new ArrayList<Association>();
+        for (VirtualLink virtualLink : allLinks) {
+          if (virtualLink instanceof Association)
+            associations.add((Association) virtualLink);
+        }
+        ArrayList<EObject> linkedElements = new ArrayList<EObject>();
+        for (Association association : associations) {
 
-					 if(association.getSourceElement().getElementRef().compareToIgnoreCase(currentSelectObjectId)==0)
-					{
-						for (LinkedElement targetEnd : (List<LinkedElement>) association
-								.getTargetElements()) {
-							String targetElementRef = targetEnd.getElementRef();
-							String targetModelURI = targetEnd.getModelRef();
-							if (getReferencedObject(targetElementRef,
-									targetModelURI) != null)
-								linkedElements.add(getReferencedObject(
-										targetElementRef, targetModelURI));
-						}
-					}
+          if (association.getSourceElement().getElementRef()
+              .compareToIgnoreCase(currentSelectObjectId) == 0) {
+            for (LinkedElement targetEnd : (List<LinkedElement>) association.getTargetElements()) {
+              String targetElementRef = targetEnd.getElementRef();
+              String targetModelURI = targetEnd.getModelRef();
+              if (getReferencedObject(targetElementRef, targetModelURI) != null)
+                linkedElements.add(getReferencedObject(targetElementRef, targetModelURI));
+            }
+          }
 
-				}
+        }
 
-				return linkedElements.toArray();
-			} else {
-				return emfContentProvider.getChildren(linksModelElement);
-			}
-		}
-		else
-		{
-			return new Object[0];
-		}
-		
-		
+        return linkedElements.toArray();
+      } else {
+        return emfContentProvider.getChildren(linksModelElement);
+      }
+    } else {
+      return new Object[0];
+    }
 
-	}
+  }
 
-	private EObject getReferencedObject(String elementRef, String packageNsuri) {
+  private EObject getReferencedObject(String elementRef, String packageNsuri) {
 
-		boolean elemFound = false;
-		EObject referencedElement = null;
-		for (int i = 0; i < linkedModels.size() && !elemFound; i++) {
-			Resource r = linkedModels.get(i);
-			EObject firstElem = r.getContents().get(0);
-			if (firstElem.eClass().getEPackage().getNsURI()
-					.compareToIgnoreCase(packageNsuri) == 0
-					&& !r.getURI().toString().endsWith("profile.uml")) {
-				referencedElement = r.getEObject(elementRef);
-				elemFound = true;
-			}
+    boolean elemFound = false;
+    EObject referencedElement = null;
+    for (int i = 0; i < linkedModels.size() && !elemFound; i++) {
+      Resource r = linkedModels.get(i);
+      EObject firstElem = r.getContents().get(0);
+      if (firstElem.eClass().getEPackage().getNsURI().compareToIgnoreCase(packageNsuri) == 0
+          && !r.getURI().toString().endsWith("profile.uml")) {
+        referencedElement = r.getEObject(elementRef);
+        elemFound = true;
+      }
 
-		}
-		return referencedElement;
+    }
+    return referencedElement;
 
-	}
+  }
 
-	@Override
-	public Object getParent(Object element) {
-		return null;
-	}
+  @Override
+  public Object getParent(Object element) {
+    return null;
+  }
 
-	@Override
-	public boolean hasChildren(Object element) {
+  @Override
+  public boolean hasChildren(Object element) {
 
-		return emfContentProvider.hasChildren(element);
-	}
+    return emfContentProvider.hasChildren(element);
+  }
 
-	@Override
-	public Object[] getElements(Object inputElement) {
-		if (inputElement instanceof Collection<?>) {
-			return ((Collection<?>) inputElement).toArray();
-		}
+  @Override
+  public Object[] getElements(Object inputElement) {
+    if (inputElement instanceof Collection<?>) {
+      return ((Collection<?>) inputElement).toArray();
+    }
 
-		return getChildren(inputElement);
-	}
+    return getChildren(inputElement);
+  }
 
 }

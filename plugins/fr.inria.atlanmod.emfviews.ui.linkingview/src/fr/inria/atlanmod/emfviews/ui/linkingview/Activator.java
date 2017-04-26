@@ -23,64 +23,67 @@ import java.net.URL;
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
-	public static final String PLUGIN_ID = "fr.inria.atlanmod.emfviews.ui.linkingview"; //$NON-NLS-1$
+  // The plug-in ID
+  public static final String PLUGIN_ID = "fr.inria.atlanmod.emfviews.ui.linkingview"; //$NON-NLS-1$
 
-	// The shared instance
-	private static Activator plugin;
-	
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-	}
+  // The shared instance
+  private static Activator plugin;
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+  /**
+   * The constructor
+   */
+  public Activator() {}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.
+   * BundleContext)
+   */
+  @Override
+  public void start(BundleContext context) throws Exception {
+    super.start(context);
+    plugin = this;
+  }
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
-	
-	public static URL getInstallURL()
-	{
-		Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
-		if(bundle != null) {
-			return bundle.getEntry("/");
-		} else
-			return null;
-	}
-	
-	public static ImageDescriptor getImage(String relativePath)
-	{
-		URL url = getInstallURL();
-		ImageDescriptor descriptor= null;
-		try {
-			descriptor = ImageDescriptor.createFromURL(new URL(url, relativePath));
-		} catch (Exception e) {
-			descriptor= ImageDescriptor.getMissingImageDescriptor();
-		}
-		return descriptor;
-	}
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.
+   * BundleContext)
+   */
+  @Override
+  public void stop(BundleContext context) throws Exception {
+    plugin = null;
+    super.stop(context);
+  }
+
+  /**
+   * Returns the shared instance
+   *
+   * @return the shared instance
+   */
+  public static Activator getDefault() {
+    return plugin;
+  }
+
+  public static URL getInstallURL() {
+    Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+    if (bundle != null) {
+      return bundle.getEntry("/");
+    } else
+      return null;
+  }
+
+  public static ImageDescriptor getImage(String relativePath) {
+    URL url = getInstallURL();
+    ImageDescriptor descriptor = null;
+    try {
+      descriptor = ImageDescriptor.createFromURL(new URL(url, relativePath));
+    } catch (Exception e) {
+      descriptor = ImageDescriptor.getMissingImageDescriptor();
+    }
+    return descriptor;
+  }
 
 }

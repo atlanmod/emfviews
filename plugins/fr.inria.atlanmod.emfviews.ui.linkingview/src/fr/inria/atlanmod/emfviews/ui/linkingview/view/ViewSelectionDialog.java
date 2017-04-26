@@ -26,47 +26,46 @@ import fr.inria.atlanmod.emfviews.ui.common.ResourceSelectionBox;
 
 public class ViewSelectionDialog extends AbstractSelection {
 
-	private ResourceSelectionBox loadResourceBox;
+  private ResourceSelectionBox loadResourceBox;
 
-	public ViewSelectionDialog(Shell parent, String title) {
-		super(parent, title);
+  public ViewSelectionDialog(Shell parent, String title) {
+    super(parent, title);
 
-	}
+  }
 
-	@Override
-	public void create() {
-		super.create();
-	}
+  @Override
+  public void create() {
+    super.create();
+  }
 
-	@Override
-	protected Control createDialogArea(Composite parent) {
-		final Composite container = (Composite) super.createDialogArea(parent);
-		GridData data = new GridData(GridData.FILL_BOTH);
-		container.setLayoutData(data);
-		GridLayout layout = new GridLayout();
-		container.setLayout(layout);
+  @Override
+  protected Control createDialogArea(Composite parent) {
+    final Composite container = (Composite) super.createDialogArea(parent);
+    GridData data = new GridData(GridData.FILL_BOTH);
+    container.setLayoutData(data);
+    GridLayout layout = new GridLayout();
+    container.setLayout(layout);
 
-		Group uriSection = new Group(container, SWT.NULL);
-		uriSection.setText(Messages.getString("ModelSelection.MODEL_LOCATION")); //$NON-NLS-1$
-		uriSection.setLayout(new GridLayout());
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		uriSection.setLayoutData(data);
+    Group uriSection = new Group(container, SWT.NULL);
+    uriSection.setText(Messages.getString("ModelSelection.MODEL_LOCATION")); //$NON-NLS-1$
+    uriSection.setLayout(new GridLayout());
+    data = new GridData(GridData.FILL_HORIZONTAL);
+    uriSection.setLayoutData(data);
 
-		loadResourceBox = new ResourceSelectionBox(getShell());
-		final Composite composite = (Composite) loadResourceBox
-				.createDialogArea(uriSection);
-		composite.getChildren()[composite.getChildren().length - 1].dispose();
+    loadResourceBox = new ResourceSelectionBox(getShell());
+    final Composite composite = (Composite) loadResourceBox.createDialogArea(uriSection);
+    composite.getChildren()[composite.getChildren().length - 1].dispose();
 
-		composite.setLayoutData(data);
-		return container;
-	}
+    composite.setLayoutData(data);
+    return container;
+  }
 
-	@Override
-	protected void computeResult() {
-		Object[] result;
-		String resourceUri = loadResourceBox.getURIText();
-		result = new Object[] { resourceUri };
-		setResult(Arrays.asList(result));
-	}
+  @Override
+  protected void computeResult() {
+    Object[] result;
+    String resourceUri = loadResourceBox.getURIText();
+    result = new Object[] { resourceUri };
+    setResult(Arrays.asList(result));
+  }
 
 }

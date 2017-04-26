@@ -14,6 +14,6 @@ import org.eclipse.emf.ecore.EObject;
 
 public interface IEditorDelegate {
 
-	public EObject getSelectedElement();
+  public EObject getSelectedElement();
 
 }

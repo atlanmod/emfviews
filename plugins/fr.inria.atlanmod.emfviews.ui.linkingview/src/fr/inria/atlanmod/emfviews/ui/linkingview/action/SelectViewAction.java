@@ -12,29 +12,30 @@ package fr.inria.atlanmod.emfviews.ui.linkingview.action;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
 
 import fr.inria.atlanmod.emfviews.ui.linkingview.view.LinksView;
 import fr.inria.atlanmod.emfviews.ui.linkingview.view.ViewSelectionDialog;
 
 public class SelectViewAction extends Action {
-	LinksView linksView;
-	Composite parent;
+  LinksView linksView;
+  Composite parent;
 
-	public SelectViewAction(LinksView linksView, Composite parent) {
-		this.linksView = linksView;
-		this.parent = parent;
-	}
+  public SelectViewAction(LinksView linksView, Composite parent) {
+    this.linksView = linksView;
+    this.parent = parent;
+  }
 
-	public void run() {
-		ViewSelectionDialog viewSelection = new ViewSelectionDialog(
-				parent.getShell(), "Select a view");
-		viewSelection.create();
-		if (viewSelection.open() == Dialog.OK) {
-			Object[] result = viewSelection.getResult();
-			String viewPath = (String) result[0];
-			linksView.loadView(viewPath);
-		}
-	}
+  @Override
+  public void run() {
+    ViewSelectionDialog viewSelection = new ViewSelectionDialog(parent.getShell(), "Select a view");
+    viewSelection.create();
+    if (viewSelection.open() == Window.OK) {
+      Object[] result = viewSelection.getResult();
+      String viewPath = (String) result[0];
+      linksView.loadView(viewPath);
+    }
+  }
 
 }
