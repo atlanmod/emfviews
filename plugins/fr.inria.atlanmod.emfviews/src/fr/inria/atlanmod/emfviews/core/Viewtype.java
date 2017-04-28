@@ -609,4 +609,10 @@ public class Viewtype extends ResourceImpl {
   private InputStream openContentStream(String contents) {
     return new ByteArrayInputStream(contents.getBytes());
   }
+
+  @Override
+  public ResourceSet getResourceSet() {
+    return virtualResourceSet;
+  }
+
 }
