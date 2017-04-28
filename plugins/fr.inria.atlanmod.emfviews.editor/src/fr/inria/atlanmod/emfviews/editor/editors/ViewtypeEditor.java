@@ -485,18 +485,17 @@ public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChan
           EStructuralFeature estFeature = (EStructuralFeature) elementToFilter;
           Filter filter = VirtualLinksUtil
               .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
-          LinkedElement filterLinkedElement =
-              VirtualLinksUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
-                                               estFeature.getEContainingClass().getEPackage()
-                                                   .getNsURI(),
-                                               "//" + estFeature.getEContainingClass().getName(),
-                                               estFeature.getName());
+          LinkedElement filterLinkedElement = VirtualLinksUtil
+              .createLinkedElement(estFeature.getEContainingClass().getName(),
+                                   estFeature.getEContainingClass().getEPackage().getNsURI(),
+                                   "//" + estFeature.getEContainingClass().getName(),
+                                   estFeature.getName());
           VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (elementToFilter instanceof EClass) {
           EClass tempEclass = (EClass) elementToFilter;
           Filter filter =
               VirtualLinksUtil.createFilter("filter" + tempEclass.getName(),
-                                        tempEclass.getName() + ".allInstances()", false);
+                                            tempEclass.getName() + ".allInstances()", false);
           LinkedElement filterLinkedElement = VirtualLinksUtil
               .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
                                    "//" + tempEclass.getName(), null);
