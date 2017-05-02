@@ -129,8 +129,8 @@ public class OclforEmfDelegate {
   }
 
   private void createFilterLink(EObject objectToFilter, Filter viewtypeFilter) {
-    Filter filter =
-        VirtualLinksUtil.createFilter(viewtypeFilter.getName(), viewtypeFilter.getOclQuery(), false);
+    Filter filter = VirtualLinksUtil.createFilter(viewtypeFilter.getName(),
+                                                  viewtypeFilter.getOclQuery(), false);
     LinkedElement filterLinkedElement = VirtualLinksUtil
         .createLinkedElement(viewtypeFilter.getFilteredElement().getName(),
                              viewtypeFilter.getFilteredElement().getModelRef(),

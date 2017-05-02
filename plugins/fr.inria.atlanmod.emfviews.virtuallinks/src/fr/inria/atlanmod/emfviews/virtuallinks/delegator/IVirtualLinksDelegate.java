@@ -12,8 +12,8 @@ package fr.inria.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
 public interface IVirtualLinksDelegate {
 

@@ -15,7 +15,12 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.*;
+import fr.inria.atlanmod.emfviews.virtualLinks.Association;
+import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
+import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
@@ -107,8 +112,7 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
    * Creates an adapter for the <code>target</code>. <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    *
-   * @param target
-   *          the object to adapt.
+   * @param target the object to adapt.
    * @return the adapter for the <code>target</code>.
    * @generated
    */

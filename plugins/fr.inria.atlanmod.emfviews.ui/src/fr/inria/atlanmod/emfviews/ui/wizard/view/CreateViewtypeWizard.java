@@ -37,8 +37,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 
-import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
+import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
@@ -119,18 +119,17 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecuta
           EStructuralFeature estFeature = (EStructuralFeature) treeItem;
           Filter filter = VirtualLinksUtil
               .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
-          LinkedElement filterLinkedElement =
-              VirtualLinksUtil.createLinkedElement(estFeature.getEContainingClass().getName(),
-                                               estFeature.getEContainingClass().getEPackage()
-                                                   .getNsURI(),
-                                               "//" + estFeature.getEContainingClass().getName(),
-                                               estFeature.getName());
+          LinkedElement filterLinkedElement = VirtualLinksUtil
+              .createLinkedElement(estFeature.getEContainingClass().getName(),
+                                   estFeature.getEContainingClass().getEPackage().getNsURI(),
+                                   "//" + estFeature.getEContainingClass().getName(),
+                                   estFeature.getName());
           VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (treeItem instanceof EClass) {
           EClass tempEclass = (EClass) treeItem;
           Filter filter =
               VirtualLinksUtil.createFilter("filter" + tempEclass.getName(),
-                                        tempEclass.getName() + ".allInstances()", false);
+                                            tempEclass.getName() + ".allInstances()", false);
           LinkedElement filterLinkedElement = VirtualLinksUtil
               .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
                                    "//" + tempEclass.getName(), null);

@@ -84,7 +84,8 @@ public class EmfViewsProjectCreator extends Wizard implements INewWizard, IExecu
           project.open(monitor);
         }
 
-        String[] paths = { "views", //$NON-NLS-1$
+        String[] paths = {
+            "views", //$NON-NLS-1$
             "models", //$NON-NLS-1$
             "viewtypes", //$NON-NLS-1$
             "metamodels"//$NON-NLS-1$

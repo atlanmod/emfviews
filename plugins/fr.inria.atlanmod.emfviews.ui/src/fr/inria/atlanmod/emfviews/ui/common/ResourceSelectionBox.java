@@ -144,8 +144,7 @@ public class ResourceSelectionBox extends LoadResourceDialog {
   /**
    * Sets the dialog text.
    *
-   * @param text
-   *          the text
+   * @param text the text
    */
   public void setText(String text) {
     uriField.setText(text);

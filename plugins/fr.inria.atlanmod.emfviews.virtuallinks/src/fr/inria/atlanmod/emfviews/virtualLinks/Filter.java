@@ -54,8 +54,7 @@ public interface Filter extends VirtualLink {
    * <em>Filtered Element</em>}' reference. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Filtered Element</em>' reference.
+   * @param value the new value of the '<em>Filtered Element</em>' reference.
    * @see #getFilteredElement()
    * @generated
    */
@@ -83,8 +82,7 @@ public interface Filter extends VirtualLink {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Filter#getOclQuery <em>Ocl
    * Query</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Ocl Query</em>' attribute.
+   * @param value the new value of the '<em>Ocl Query</em>' attribute.
    * @see #getOclQuery()
    * @generated
    */
@@ -114,9 +112,8 @@ public interface Filter extends VirtualLink {
    * <em>Filter Only Estructural Features</em>}' attribute. <!-- begin-user-doc
    * --> <!-- end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Filter Only Estructural Features</em>'
-   *          attribute.
+   * @param value the new value of the '<em>Filter Only Estructural
+   *          Features</em>' attribute.
    * @see #isFilterOnlyEstructuralFeatures()
    * @generated
    */

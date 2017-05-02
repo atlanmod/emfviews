@@ -51,8 +51,7 @@ public interface VirtualLink extends EObject {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink#getName
    * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Name</em>' attribute.
+   * @param value the new value of the '<em>Name</em>' attribute.
    * @see #getName()
    * @generated
    */

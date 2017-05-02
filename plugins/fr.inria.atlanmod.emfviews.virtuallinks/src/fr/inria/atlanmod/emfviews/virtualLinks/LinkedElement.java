@@ -58,8 +58,7 @@ public interface LinkedElement extends EObject {
    * <em>Element Ref</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @param value
-   *          the new value of the '<em>Element Ref</em>' attribute.
+   * @param value the new value of the '<em>Element Ref</em>' attribute.
    * @see #getElementRef()
    * @generated
    */
@@ -88,8 +87,7 @@ public interface LinkedElement extends EObject {
    * <em>Model Ref</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @param value
-   *          the new value of the '<em>Model Ref</em>' attribute.
+   * @param value the new value of the '<em>Model Ref</em>' attribute.
    * @see #getModelRef()
    * @generated
    */
@@ -117,8 +115,7 @@ public interface LinkedElement extends EObject {
    * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getName
    * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Name</em>' attribute.
+   * @param value the new value of the '<em>Name</em>' attribute.
    * @see #getName()
    * @generated
    */
@@ -147,8 +144,8 @@ public interface LinkedElement extends EObject {
    * <em>Estructural Features</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Estructural Features</em>' attribute.
+   * @param value the new value of the '<em>Estructural Features</em>'
+   *          attribute.
    * @see #getEstructuralFeatures()
    * @generated
    */

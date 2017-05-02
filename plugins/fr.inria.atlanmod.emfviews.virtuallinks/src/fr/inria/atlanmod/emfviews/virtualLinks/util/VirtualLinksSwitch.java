@@ -14,7 +14,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.*;
+import fr.inria.atlanmod.emfviews.virtualLinks.Association;
+import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
+import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance
@@ -121,8 +126,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * returns null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
    *
-   * @param object
-   *          the target of the switch.
+   * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of
    *         '<em>Virtual Links</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -138,8 +142,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * returning a non-null result will terminate the switch. <!-- end-user-doc
    * -->
    *
-   * @param object
-   *          the target of the switch.
+   * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Linked
    *         Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -155,8 +158,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
    *
-   * @param object
-   *          the target of the switch.
+   * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of
    *         '<em>Association</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -172,8 +174,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * returns null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
    *
-   * @param object
-   *          the target of the switch.
+   * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of
    *         '<em>Virtual Link</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -189,8 +190,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * null; returning a non-null result will terminate the switch. <!--
    * end-user-doc -->
    *
-   * @param object
-   *          the target of the switch.
+   * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of
    *         '<em>Filter</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -206,8 +206,7 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
    * null; returning a non-null result will terminate the switch, but this is
    * the last case anyway. <!-- end-user-doc -->
    *
-   * @param object
-   *          the target of the switch.
+   * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of
    *         '<em>EObject</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject)

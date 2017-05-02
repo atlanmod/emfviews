@@ -116,7 +116,8 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     VirtualLinksPackageImpl theVirtualLinksPackage =
         (VirtualLinksPackageImpl) (EPackage.Registry.INSTANCE
             .get(eNS_URI) instanceof VirtualLinksPackageImpl
-                ? EPackage.Registry.INSTANCE.get(eNS_URI) : new VirtualLinksPackageImpl());
+                ? EPackage.Registry.INSTANCE.get(eNS_URI)
+                : new VirtualLinksPackageImpl());
 
     isInited = true;
 

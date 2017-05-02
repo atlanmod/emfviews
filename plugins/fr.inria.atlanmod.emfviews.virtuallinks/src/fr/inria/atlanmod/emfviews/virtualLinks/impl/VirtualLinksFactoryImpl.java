@@ -16,7 +16,12 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.*;
+import fr.inria.atlanmod.emfviews.virtualLinks.Association;
+import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
+import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--

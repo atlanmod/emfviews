@@ -52,8 +52,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
    * Returns the string from the plugin's resource bundle, or 'key' if not
    * found.
    *
-   * @param key
-   *          the default value
+   * @param key the default value
    * @return the string from the plugin's resource bundle, or 'key' if not found
    */
   public static String getResourceString(String key) {
@@ -77,8 +76,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
   /**
    * Looks for an image in the icons folder.
    *
-   * @param path
-   *          the image path
+   * @param path the image path
    * @return the searched Image
    */
   public static Image getImage(String path) {
@@ -101,8 +99,7 @@ public class EmfViewsUIPlugin extends AbstractUIPlugin {
   /**
    * Returns the image descriptor with the given relative path.
    *
-   * @param name
-   *          the image name
+   * @param name the image name
    * @return the image descriptor
    */
   public static ImageDescriptor getImageDescriptor(String name) {

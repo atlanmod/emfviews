@@ -68,8 +68,7 @@ public interface Association extends VirtualLink {
    * <em>Lower Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @param value
-   *          the new value of the '<em>Lower Bound</em>' attribute.
+   * @param value the new value of the '<em>Lower Bound</em>' attribute.
    * @see #getLowerBound()
    * @generated
    */
@@ -98,8 +97,7 @@ public interface Association extends VirtualLink {
    * <em>Upper Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @param value
-   *          the new value of the '<em>Upper Bound</em>' attribute.
+   * @param value the new value of the '<em>Upper Bound</em>' attribute.
    * @see #getUpperBound()
    * @generated
    */
@@ -128,8 +126,8 @@ public interface Association extends VirtualLink {
    * <em>Association Type Name</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Association Type Name</em>' attribute.
+   * @param value the new value of the '<em>Association Type Name</em>'
+   *          attribute.
    * @see #getAssociationTypeName()
    * @generated
    */
@@ -158,8 +156,7 @@ public interface Association extends VirtualLink {
    * <em>Opposite</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @param value
-   *          the new value of the '<em>Opposite</em>' reference.
+   * @param value the new value of the '<em>Opposite</em>' reference.
    * @see #getOpposite()
    * @generated
    */
@@ -188,8 +185,7 @@ public interface Association extends VirtualLink {
    * <em>Source Element</em>}' reference. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Source Element</em>' reference.
+   * @param value the new value of the '<em>Source Element</em>' reference.
    * @see #getSourceElement()
    * @generated
    */
@@ -236,8 +232,7 @@ public interface Association extends VirtualLink {
    * <em>Ocl Expression</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Ocl Expression</em>' attribute.
+   * @param value the new value of the '<em>Ocl Expression</em>' attribute.
    * @see #getOclExpression()
    * @generated
    */
@@ -266,8 +261,7 @@ public interface Association extends VirtualLink {
    * <em>Source Attribute</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Source Attribute</em>' attribute.
+   * @param value the new value of the '<em>Source Attribute</em>' attribute.
    * @see #getSourceAttribute()
    * @generated
    */
@@ -296,8 +290,7 @@ public interface Association extends VirtualLink {
    * <em>Target Attribute</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
-   * @param value
-   *          the new value of the '<em>Target Attribute</em>' attribute.
+   * @param value the new value of the '<em>Target Attribute</em>' attribute.
    * @see #getTargetAttribute()
    * @generated
    */

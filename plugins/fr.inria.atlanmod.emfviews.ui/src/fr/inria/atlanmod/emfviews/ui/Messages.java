@@ -29,8 +29,7 @@ public class Messages {
   /**
    * Returns a specified {@link String} from the resource bundle.
    *
-   * @param key
-   *          Key of the String we seek.
+   * @param key Key of the String we seek.
    * @return The String from the resource bundle associated with
    *         <code>key</code>.
    */
@@ -45,10 +44,8 @@ public class Messages {
   /**
    * Returns a String from the resource bundle binded with the given arguments.
    *
-   * @param key
-   *          Key of the String we seek.
-   * @param arguments
-   *          Arguments for the String formatting.
+   * @param key Key of the String we seek.
+   * @param arguments Arguments for the String formatting.
    * @return formatted {@link String}.
    * @see MessageFormat#format(String, Object[])
    */

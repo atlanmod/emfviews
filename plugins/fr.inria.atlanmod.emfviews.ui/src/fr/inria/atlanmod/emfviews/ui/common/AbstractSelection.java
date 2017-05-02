@@ -13,10 +13,10 @@ package fr.inria.atlanmod.emfviews.ui.common;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
-import org.eclipse.core.runtime.Status;
 
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 
@@ -49,8 +49,7 @@ public class AbstractSelection extends SelectionStatusDialog {
   /**
    * Displays an error.
    *
-   * @param message
-   *          the message
+   * @param message the message
    */
   protected void nok(String message) {
     if (Platform.isRunning()) {
@@ -75,8 +74,7 @@ public class AbstractSelection extends SelectionStatusDialog {
   /**
    * Displays a warning.
    *
-   * @param message
-   *          the warning message
+   * @param message the warning message
    */
   protected void warn(String message) {
     status = new Status(IStatus.WARNING, EmfViewsUIPlugin.PLUGIN_ID, message);

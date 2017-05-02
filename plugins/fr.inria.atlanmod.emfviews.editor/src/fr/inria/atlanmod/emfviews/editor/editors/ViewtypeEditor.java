@@ -323,8 +323,7 @@ public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChan
       public void widgetSelected(SelectionEvent evt) {
         ResourceListSelectionDialog selectLinksDslDialog =
             new ResourceListSelectionDialog(container.getShell(),
-                                            ResourcesPlugin.getWorkspace()
-                                                .getRoot(),
+                                            ResourcesPlugin.getWorkspace().getRoot(),
                                             IResource.FILE);
         selectLinksDslDialog.setTitle("Select DSL technology");
 
