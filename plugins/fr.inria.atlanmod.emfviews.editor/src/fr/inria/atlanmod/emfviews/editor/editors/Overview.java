@@ -30,6 +30,7 @@ import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.common.AbstractSelection;
 import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 
+// FIXME: unused
 public class Overview extends SectionPart {
 
   private List inputMetamodelsList;

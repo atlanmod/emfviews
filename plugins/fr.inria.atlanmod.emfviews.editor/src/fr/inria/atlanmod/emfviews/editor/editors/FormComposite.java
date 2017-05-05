@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+// FIXME: unused
 public class FormComposite extends Composite {
 
   private final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
