@@ -59,25 +59,28 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.ResourceListSelectionDialog;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.MultiPageEditorPart;
 
 import fr.inria.atlanmod.emfviews.core.EmfViewsFactory;
 import fr.inria.atlanmod.emfviews.core.Viewtype;
 import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.common.AbstractSelection;
 import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
+import fr.inria.atlanmod.emfviews.ui.wizard.view.AttributeSelectionContentProvider;
 import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
 import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
 
-public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChangeListener {
+public class ViewtypeEditor extends FormEditor implements IResourceChangeListener {
 
   private List inputMetamodelsList;
 
@@ -103,251 +106,6 @@ public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChan
   public ViewtypeEditor() {
     super();
     ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
-  }
-
-  public void createViewtypeTreeEditorPage() {
-    IEditorInput editorInput = getEditorInput();
-    FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
-    EmfViewsFactory vFac = new EmfViewsFactory();
-    org.eclipse.emf.common.util.URI emfURI =
-        org.eclipse.emf.common.util.URI.createURI(fileEditorInput.getPath().toString());
-    Resource viewtypeResource = vFac.createResource(emfURI);
-    java.net.URI uri = fileEditorInput.getURI();
-
-    try {
-      viewtypeResource.load(uri.toURL().openStream(), new HashMap<>());
-      FormToolkit toolkit = new FormToolkit(getContainer().getDisplay());
-      ScrolledForm virtualMetamodelForm = toolkit.createScrolledForm(getContainer());
-      virtualMetamodelForm.setText("View type contents");
-
-      Composite body = virtualMetamodelForm.getBody();
-      toolkit.decorateFormHeading(virtualMetamodelForm.getForm());
-      toolkit.paintBordersFor(body);
-      body.setLayout(new GridLayout(1, true));
-
-      treeViewer = new CheckboxTreeViewer(body, SWT.BORDER);
-      Tree tree = treeViewer.getTree();
-      tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-      tree.addSelectionListener(new AttributeSelectionAdapter(this));
-
-      toolkit.paintBordersFor(tree);
-
-      treeViewer
-          .setContentProvider(new fr.inria.atlanmod.emfviews.ui.wizard.view.AttributeSelectionContentProvider());
-
-      treeViewer
-          .setLabelProvider(new AdapterFactoryLabelProvider(new ReflectiveItemProviderAdapterFactory()));
-
-      treeViewer
-          .setInput(((Viewtype) viewtypeResource).getResourceSet().getPackageRegistry().values());
-
-      ArrayList<EClass> containingClasses = new ArrayList<>();
-      Viewtype viewtype = (Viewtype) viewtypeResource;
-
-      ArrayList<EObject> hiddenElemens = viewtype.getHiddenAttributes();
-      if (hiddenElemens != null && hiddenElemens.size() > 0) {
-        for (EObject eObject : hiddenElemens) {
-
-          if (eObject instanceof EStructuralFeature) {
-            EStructuralFeature temp = (EStructuralFeature) eObject;
-            containingClasses.add(temp.getEContainingClass());
-          }
-
-        }
-
-        treeViewer.setCheckedElements(hiddenElemens.toArray());
-        if (containingClasses.size() > 0)
-          treeViewer.setExpandedElements(containingClasses.toArray());
-      }
-
-      int index = addPage(virtualMetamodelForm);
-      setPageText(index, "Contents");
-
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Creates page 2 of the multi-page editor, which shows the sorted text.
-   */
-  void createViewtypePropertiesEditorPage() {
-    FormToolkit toolkit = new FormToolkit(getContainer().getDisplay());
-    ScrolledForm viewtypeForm = toolkit.createScrolledForm(getContainer());
-    viewtypeForm.setText("Viewtype details");
-    Composite body = viewtypeForm.getBody();
-    body.setLayout(new GridLayout(1, false));
-    toolkit.decorateFormHeading(viewtypeForm.getForm());
-    toolkit.paintBordersFor(body);
-
-    Section contributingMetamodelsSection =
-        toolkit.createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
-            | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-    contributingMetamodelsSection
-        .setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-    contributingMetamodelsSection.setDescription("Specify the list of contributing metamodels");
-
-    toolkit.paintBordersFor(contributingMetamodelsSection);
-    contributingMetamodelsSection.setText("Contributing metamodels");
-    contributingMetamodelsSection.setExpanded(true);
-
-    Composite composite = toolkit.createComposite(contributingMetamodelsSection, SWT.NONE);
-    toolkit.paintBordersFor(composite);
-
-    contributingMetamodelsSection.setClient(composite);
-    composite.setLayout(new GridLayout(2, false));
-
-    inputMetamodelsList = new List(composite, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
-    GridData gd_list = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
-    gd_list.widthHint = 430;
-    gd_list.heightHint = 20;
-    inputMetamodelsList.setLayoutData(gd_list);
-
-    Composite composite_1 = toolkit.createComposite(composite, SWT.NONE);
-    toolkit.paintBordersFor(composite_1);
-    composite_1.setLayout(new GridLayout(1, false));
-
-    btnAddMetamodel = toolkit.createButton(composite_1, "Add", SWT.NONE);
-    GridData gd_btnAddMetamodel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-    gd_btnAddMetamodel.widthHint = 100;
-    btnAddMetamodel.setLayoutData(gd_btnAddMetamodel);
-
-    final Composite container = new Composite(getContainer(), SWT.NULL);
-    GridData data = new GridData(GridData.FILL_BOTH);
-    container.setLayoutData(data);
-    GridLayout layout = new GridLayout(3, false);
-    container.setLayout(layout);
-    btnAddMetamodel.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent evt) {
-        AbstractSelection dialog =
-            new ModelSelection(container.getShell(),
-                               Messages.getString("VirtualModelFileScreen.InputMetamodelCreation"),
-                               inputMetaModelPaths, ModelSelection.INPUTMETAMODEL);
-        dialog.create();
-        if (dialog.open() == Window.OK) {
-          Object[] result = dialog.getResult();
-          int modelType = Integer.parseInt(result[0].toString());
-          switch (modelType) {
-
-          case ModelSelection.INPUTMETAMODEL:
-            inputMetaModelPaths.add(result[1].toString());
-            IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
-                .getDocument(viewtypeTextEditor.getEditorInput());
-
-            String editorText = theDoc.get();
-
-            theDoc.set(updateViewtypeDefinition(editorText, result[1].toString(), null));
-            break;
-
-          default:
-            break;
-          }
-
-        }
-
-        updateLists();
-
-      }
-
-    });
-
-    btnRemoveMetamodel = toolkit.createButton(composite_1, "Remove", SWT.NONE);
-    GridData gd_btnNewButton = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-    gd_btnNewButton.widthHint = 100;
-    btnRemoveMetamodel.setLayoutData(gd_btnNewButton);
-    btnRemoveMetamodel.addSelectionListener(new SelectionAdapter() {
-      /**
-       * {@inheritDoc}
-       *
-       * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-       */
-      @Override
-      public void widgetSelected(SelectionEvent evt) {
-        int[] indices = inputMetamodelsList.getSelectionIndices();
-        for (int i = 0; i < indices.length; i++) {
-          int j = indices[i];
-          String selectedItem = inputMetamodelsList.getItem(j);
-          inputMetamodelsList.remove(j);
-          boolean found = false;
-          for (int k = 0; i < inputMetaModelPaths.size() & !found; k++) {
-            if (inputMetaModelPaths.get(k).compareToIgnoreCase(selectedItem) == 0) {
-              inputMetaModelPaths.remove(inputMetaModelPaths.get(k));
-              found = true;
-            }
-          }
-
-        }
-        updateLists();
-        btnRemoveMetamodel.setEnabled(inputMetamodelsList.getItems().length > 0);
-
-        IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
-            .getDocument(viewtypeTextEditor.getEditorInput());
-        String editorText = theDoc.get();
-        theDoc.set(updateViewtypeDefinition(editorText, null, null));
-
-      }
-    });
-
-    Section sctnLinksTechnology =
-        toolkit.createSection(viewtypeForm.getForm().getBody(), Section.DESCRIPTION
-            | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-    GridData gd_sctnLinksTechnology = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
-    gd_sctnLinksTechnology.widthHint = 588;
-    sctnLinksTechnology.setLayoutData(gd_sctnLinksTechnology);
-    sctnLinksTechnology.setDescription("Select a DSL technology to specify links between models");
-    sctnLinksTechnology.setBounds(0, 193, 584, 187);
-    toolkit.paintBordersFor(sctnLinksTechnology);
-    sctnLinksTechnology.setText("Links Technology");
-    sctnLinksTechnology.setExpanded(true);
-
-    Composite composite_2 = toolkit.createComposite(sctnLinksTechnology, SWT.NONE);
-    toolkit.paintBordersFor(composite_2);
-    sctnLinksTechnology.setClient(composite_2);
-    composite_2.setLayout(null);
-
-    linksDslText = new Text(composite_2, SWT.BORDER);
-    linksDslText.setEnabled(true);
-    linksDslText.setBounds(0, 0, 456, 25);
-    toolkit.adapt(linksDslText, true, true);
-
-    Button modifyLinksDslButton = new Button(composite_2, SWT.NONE);
-    modifyLinksDslButton.setBounds(469, 0, 107, 25);
-    toolkit.adapt(modifyLinksDslButton, true, true);
-    modifyLinksDslButton.setText("Modify");
-    modifyLinksDslButton.addSelectionListener(new SelectionAdapter() {
-      @Override
-      public void widgetSelected(SelectionEvent evt) {
-        ResourceListSelectionDialog selectLinksDslDialog =
-            new ResourceListSelectionDialog(container.getShell(),
-                                            ResourcesPlugin.getWorkspace().getRoot(),
-                                            IResource.FILE);
-        selectLinksDslDialog.setTitle("Select DSL technology");
-
-        selectLinksDslDialog.create();
-
-        if (selectLinksDslDialog.open() == Window.OK) {
-          IFile correspondenceModelBaseFile = (IFile) selectLinksDslDialog.getResult()[0];
-
-          String correspondenceModelBasePath = correspondenceModelBaseFile.getFullPath().toString();
-          correspondenceModelBasePath = correspondenceModelBasePath.replaceFirst("/", "");
-
-          linksDslText.setText(correspondenceModelBasePath);
-
-          IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
-              .getDocument(viewtypeTextEditor.getEditorInput());
-          String editorText = theDoc.get();
-          theDoc.set(updateViewtypeDefinition(editorText, null, correspondenceModelBasePath));
-
-        }
-      }
-
-    });
-    int index = addPage(viewtypeForm);
-    setPageText(index, "Properties");
   }
 
   /**
@@ -438,10 +196,275 @@ public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChan
    * Creates the pages of the multi-page editor.
    */
   @Override
-  protected void createPages() {
+  protected void addPages() {
     createViewtypeTextEditorPage();
-    createViewtypePropertiesEditorPage();
-    createViewtypeTreeEditorPage();
+
+    try {
+      addPage(new PropertiesPage(this, "PropertiesPage", "Properties"));
+      addPage(new ContentsPage(this, "ContentsPage", "Contents"));
+    } catch (PartInitException e) {
+      e.printStackTrace();
+    }
+
+    setActivePage("PropertiesPage");
+  }
+
+  class PropertiesPage extends FormPage {
+
+    public PropertiesPage(FormEditor editor, String id, String title) {
+      super(editor, id, title);
+    }
+
+    private void createContributingMetamodelsSection(final ScrolledForm form, FormToolkit toolkit) {
+      Section contributingMetamodelsSection = toolkit
+          .createSection(form.getForm().getBody(), Section.DESCRIPTION | ExpandableComposite.TWISTIE
+              | ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED);
+      contributingMetamodelsSection
+          .setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+      contributingMetamodelsSection.setDescription("Specify the list of contributing metamodels");
+
+      toolkit.paintBordersFor(contributingMetamodelsSection);
+      contributingMetamodelsSection.setText("Contributing metamodels");
+      // contributingMetamodelsSection.setExpanded(true);
+
+      Composite composite = toolkit.createComposite(contributingMetamodelsSection, SWT.NONE);
+      toolkit.paintBordersFor(composite);
+
+      contributingMetamodelsSection.setClient(composite);
+      composite.setLayout(new GridLayout(2, false));
+
+      inputMetamodelsList =
+          new List(composite, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+      GridData gd_list = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
+      gd_list.widthHint = 430;
+      gd_list.heightHint = 20;
+      inputMetamodelsList.setLayoutData(gd_list);
+
+      Composite composite_1 = toolkit.createComposite(composite, SWT.NONE);
+      toolkit.paintBordersFor(composite_1);
+      composite_1.setLayout(new GridLayout(1, false));
+
+      btnAddMetamodel = toolkit.createButton(composite_1, "Add", SWT.NONE);
+      GridData gd_btnAddMetamodel = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+      gd_btnAddMetamodel.widthHint = 100;
+      btnAddMetamodel.setLayoutData(gd_btnAddMetamodel);
+
+      // Composite container = new Composite(getContainer(), SWT.NULL);
+      // GridData data = new GridData(GridData.FILL_BOTH);
+      // container.setLayoutData(data);
+      // GridLayout layout = new GridLayout(3, false);
+      // container.setLayout(layout);
+      btnAddMetamodel.addSelectionListener(new SelectionAdapter() {
+        @Override
+        public void widgetSelected(SelectionEvent evt) {
+          AbstractSelection dialog =
+              new ModelSelection(form.getShell(),
+                                 Messages
+                                     .getString("VirtualModelFileScreen.InputMetamodelCreation"),
+                                 inputMetaModelPaths, ModelSelection.INPUTMETAMODEL);
+          dialog.create();
+          if (dialog.open() == Window.OK) {
+            Object[] result = dialog.getResult();
+            int modelType = Integer.parseInt(result[0].toString());
+            switch (modelType) {
+
+            case ModelSelection.INPUTMETAMODEL:
+              inputMetaModelPaths.add(result[1].toString());
+              IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
+                  .getDocument(viewtypeTextEditor.getEditorInput());
+
+              String editorText = theDoc.get();
+
+              theDoc.set(updateViewtypeDefinition(editorText, result[1].toString(), null));
+              break;
+
+            default:
+              break;
+            }
+
+          }
+
+          updateLists();
+
+        }
+
+      });
+
+      btnRemoveMetamodel = toolkit.createButton(composite_1, "Remove", SWT.NONE);
+      GridData gd_btnNewButton = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+      gd_btnNewButton.widthHint = 100;
+      btnRemoveMetamodel.setLayoutData(gd_btnNewButton);
+      btnRemoveMetamodel.addSelectionListener(new SelectionAdapter() {
+        @Override
+        public void widgetSelected(SelectionEvent evt) {
+          int[] indices = inputMetamodelsList.getSelectionIndices();
+          for (int i = 0; i < indices.length; i++) {
+            int j = indices[i];
+            String selectedItem = inputMetamodelsList.getItem(j);
+            inputMetamodelsList.remove(j);
+            boolean found = false;
+            for (int k = 0; i < inputMetaModelPaths.size() & !found; k++) {
+              if (inputMetaModelPaths.get(k).compareToIgnoreCase(selectedItem) == 0) {
+                inputMetaModelPaths.remove(inputMetaModelPaths.get(k));
+                found = true;
+              }
+            }
+
+          }
+          updateLists();
+          btnRemoveMetamodel.setEnabled(inputMetamodelsList.getItems().length > 0);
+
+          IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
+              .getDocument(viewtypeTextEditor.getEditorInput());
+          String editorText = theDoc.get();
+          theDoc.set(updateViewtypeDefinition(editorText, null, null));
+
+        }
+      });
+    }
+
+    private void createLinksTechnologySection(final ScrolledForm form, FormToolkit toolkit) {
+      Section sctnLinksTechnology = toolkit
+          .createSection(form.getForm().getBody(), Section.DESCRIPTION | ExpandableComposite.TWISTIE
+              | ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED);
+      GridData gd_sctnLinksTechnology = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+      gd_sctnLinksTechnology.widthHint = 588;
+      sctnLinksTechnology.setLayoutData(gd_sctnLinksTechnology);
+      sctnLinksTechnology.setDescription("Select a DSL technology to specify links between models");
+      // sctnLinksTechnology.setBounds(0, 193, 584, 187);
+      toolkit.paintBordersFor(sctnLinksTechnology);
+      sctnLinksTechnology.setText("Links Technology");
+      // sctnLinksTechnology.setExpanded(true);
+
+      Composite composite_2 = toolkit.createComposite(sctnLinksTechnology, SWT.NONE);
+      toolkit.paintBordersFor(composite_2);
+      sctnLinksTechnology.setClient(composite_2);
+      composite_2.setLayout(new GridLayout(2, false));
+
+      linksDslText = new Text(composite_2, SWT.NONE);
+      linksDslText.setEnabled(true);
+      // linksDslText.setBounds(0, 0, 456, 22);
+      toolkit.adapt(linksDslText, true, true);
+
+      Button modifyLinksDslButton = new Button(composite_2, SWT.NONE);
+      modifyLinksDslButton.setBounds(469, 0, 107, 25);
+      toolkit.adapt(modifyLinksDslButton, true, true);
+      modifyLinksDslButton.setText("Modify");
+      modifyLinksDslButton.addSelectionListener(new SelectionAdapter() {
+        @Override
+        public void widgetSelected(SelectionEvent evt) {
+          ResourceListSelectionDialog selectLinksDslDialog =
+              new ResourceListSelectionDialog(form.getShell(),
+                                              ResourcesPlugin.getWorkspace().getRoot(),
+                                              IResource.FILE);
+          selectLinksDslDialog.setTitle("Select DSL technology");
+
+          selectLinksDslDialog.create();
+
+          if (selectLinksDslDialog.open() == Window.OK) {
+            IFile correspondenceModelBaseFile = (IFile) selectLinksDslDialog.getResult()[0];
+
+            String correspondenceModelBasePath =
+                correspondenceModelBaseFile.getFullPath().toString();
+            correspondenceModelBasePath = correspondenceModelBasePath.replaceFirst("/", "");
+
+            linksDslText.setText(correspondenceModelBasePath);
+
+            IDocument theDoc = viewtypeTextEditor.getDocumentProvider()
+                .getDocument(viewtypeTextEditor.getEditorInput());
+            String editorText = theDoc.get();
+            theDoc.set(updateViewtypeDefinition(editorText, null, correspondenceModelBasePath));
+
+          }
+        }
+
+      });
+    }
+
+    @Override
+    protected void createFormContent(IManagedForm managedForm) {
+      ScrolledForm form = managedForm.getForm();
+      FormToolkit toolkit = managedForm.getToolkit();
+
+      form.setText("Viewtype details");
+      Composite body = form.getBody();
+      body.setLayout(new GridLayout(1, false));
+      toolkit.decorateFormHeading(form.getForm());
+      toolkit.paintBordersFor(body);
+
+      createContributingMetamodelsSection(form, toolkit);
+      createLinksTechnologySection(form, toolkit);
+    }
+  }
+
+  class ContentsPage extends FormPage {
+
+    public ContentsPage(FormEditor editor, String id, String title) {
+      super(editor, id, title);
+    }
+
+    @Override
+    protected void createFormContent(IManagedForm managedForm) {
+      ScrolledForm form = managedForm.getForm();
+      FormToolkit toolkit = managedForm.getToolkit();
+
+      IEditorInput editorInput = getEditorInput();
+      FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
+      EmfViewsFactory vFac = new EmfViewsFactory();
+      org.eclipse.emf.common.util.URI emfURI =
+          org.eclipse.emf.common.util.URI.createURI(fileEditorInput.getPath().toString());
+      Resource viewtypeResource = vFac.createResource(emfURI);
+      java.net.URI uri = fileEditorInput.getURI();
+
+      try {
+        viewtypeResource.load(uri.toURL().openStream(), new HashMap<>());
+        form.setText("View type contents");
+
+        Composite body = form.getBody();
+        toolkit.decorateFormHeading(form.getForm());
+        toolkit.paintBordersFor(body);
+        body.setLayout(new GridLayout(1, true));
+
+        treeViewer = new CheckboxTreeViewer(body, SWT.BORDER);
+        Tree tree = treeViewer.getTree();
+        tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+        tree.addSelectionListener(new AttributeSelectionAdapter(ViewtypeEditor.this));
+
+        toolkit.paintBordersFor(tree);
+
+        treeViewer.setContentProvider(new AttributeSelectionContentProvider());
+
+        treeViewer
+            .setLabelProvider(new AdapterFactoryLabelProvider(new ReflectiveItemProviderAdapterFactory()));
+
+        treeViewer
+            .setInput(((Viewtype) viewtypeResource).getResourceSet().getPackageRegistry().values());
+
+        ArrayList<EClass> containingClasses = new ArrayList<>();
+        Viewtype viewtype = (Viewtype) viewtypeResource;
+
+        ArrayList<EObject> hiddenElemens = viewtype.getHiddenAttributes();
+        if (hiddenElemens != null && hiddenElemens.size() > 0) {
+          for (EObject eObject : hiddenElemens) {
+
+            if (eObject instanceof EStructuralFeature) {
+              EStructuralFeature temp = (EStructuralFeature) eObject;
+              containingClasses.add(temp.getEContainingClass());
+            }
+
+          }
+
+          treeViewer.setCheckedElements(hiddenElemens.toArray());
+          if (containingClasses.size() > 0)
+            treeViewer.setExpandedElements(containingClasses.toArray());
+        }
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
 
   }
 
@@ -573,6 +596,9 @@ public class ViewtypeEditor extends MultiPageEditorPart implements IResourceChan
   @Override
   protected void pageChange(int newPageIndex) {
     super.pageChange(newPageIndex);
+
+    // FIXME: switching to the Contents page dirties the editor, even when the
+    // user made no change
 
     String editorText = viewtypeTextEditor.getDocumentProvider()
         .getDocument(viewtypeTextEditor.getEditorInput()).get();
