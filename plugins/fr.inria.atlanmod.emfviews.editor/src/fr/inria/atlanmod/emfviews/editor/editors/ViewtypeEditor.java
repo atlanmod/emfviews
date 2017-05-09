@@ -690,11 +690,9 @@ public class ViewtypeEditor extends FormEditor implements IResourceChangeListene
     }
   }
 
-  /**
-   * Closes all project files on project close.
-   */
   @Override
   public void resourceChanged(final IResourceChangeEvent event) {
+    // Closes all project files on project close.
     if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
       Display.getDefault().asyncExec(new Runnable() {
         @Override
