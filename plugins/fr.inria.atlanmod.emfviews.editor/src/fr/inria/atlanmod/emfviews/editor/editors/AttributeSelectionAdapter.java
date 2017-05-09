@@ -27,6 +27,8 @@ public class AttributeSelectionAdapter extends SelectionAdapter {
   @Override
   public void widgetSelected(SelectionEvent e) {
     TreeItem item = (TreeItem) e.item;
+    // FIXME: we should update the model only when we check/uncheck attributes
+    // in the tree.
     mpe.updateAttributesToHide(item);
 
   }

@@ -179,6 +179,10 @@ public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecuta
       fileContent.append(correspondenceModelLine);
       fileContent.append("\n");
 
+      // FIXME: this is incoherent with the Viewtype editor: the eviewtype file
+      // does not contain a filtersMetamodel line, which is expected by the
+      // editor.
+
       serializeViewtype(viewTypeFile, fileContent);
       IProject[] workspaceProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
       for (IProject iProject : workspaceProjects) {
