@@ -418,7 +418,7 @@ public class ViewtypeEditor extends FormEditor implements IResourceChangeListene
 
       try {
         viewtypeResource.load(uri.toURL().openStream(), new HashMap<>());
-        form.setText("View type contents");
+        form.setText("Viewtype contents");
 
         Composite body = form.getBody();
         toolkit.decorateFormHeading(form.getForm());
