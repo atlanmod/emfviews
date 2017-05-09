@@ -438,26 +438,16 @@ public class ViewtypeEditor extends FormEditor implements IResourceChangeListene
         treeViewer
             .setLabelProvider(new AdapterFactoryLabelProvider(new ReflectiveItemProviderAdapterFactory()));
 
-        treeViewer
-            .setInput(((Viewtype) viewtypeResource).getResourceSet().getPackageRegistry().values());
-
-        ArrayList<EClass> containingClasses = new ArrayList<>();
         Viewtype viewtype = (Viewtype) viewtypeResource;
+        treeViewer.setInput(viewtype.getContributingEpackages());
 
         ArrayList<EObject> hiddenElemens = viewtype.getHiddenAttributes();
+
         if (hiddenElemens != null && hiddenElemens.size() > 0) {
-          for (EObject eObject : hiddenElemens) {
-
-            if (eObject instanceof EStructuralFeature) {
-              EStructuralFeature temp = (EStructuralFeature) eObject;
-              containingClasses.add(temp.getEContainingClass());
-            }
-
-          }
-
           treeViewer.setCheckedElements(hiddenElemens.toArray());
-          if (containingClasses.size() > 0)
-            treeViewer.setExpandedElements(containingClasses.toArray());
+          for (EObject eObject : hiddenElemens) {
+            treeViewer.reveal(eObject);
+          }
         }
       } catch (MalformedURLException e) {
         e.printStackTrace();
