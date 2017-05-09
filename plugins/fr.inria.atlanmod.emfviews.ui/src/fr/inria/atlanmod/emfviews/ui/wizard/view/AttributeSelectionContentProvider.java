@@ -33,8 +33,7 @@ public class AttributeSelectionContentProvider implements ITreeContentProvider {
 
   @Override
   public void dispose() {
-    // TODO Auto-generated method stub
-
+    emfContentProvider.dispose();
   }
 
   @Override
@@ -47,42 +46,43 @@ public class AttributeSelectionContentProvider implements ITreeContentProvider {
   public Object[] getElements(Object inputElement) {
     if (inputElement instanceof Collection<?>) {
       return ((Collection<?>) inputElement).toArray();
+    } else {
+      return new Object[0];
     }
-
-    return getChildren(inputElement);
   }
 
   @Override
   public Object[] getChildren(Object parentElement) {
-    Object[] result = new Object[0];
-
     if (parentElement instanceof EPackage) {
       EPackage pack = (EPackage) parentElement;
       return pack.getEClassifiers().toArray();
     } else if (parentElement instanceof EObject) {
-      result = emfContentProvider.getChildren(parentElement);
+      return emfContentProvider.getChildren(parentElement);
+    } else {
+      return new Object[0];
     }
-
-    else if (!hasChildren(parentElement)) {}
-
-    return result;
-
   }
 
   @Override
   public Object getParent(Object element) {
-
-    Object parent = null;
-    if (element instanceof EObject)
-      parent = emfContentProvider.getParent(element);
-    return parent;
+    if (element instanceof EPackage) {
+      return null;
+    } else if (element instanceof EObject) {
+      return emfContentProvider.getParent(element);
+    } else {
+      return null;
+    }
   }
 
   @Override
   public boolean hasChildren(Object element) {
-    if (element instanceof EObject)
-      return true;
-    return false;
+    if (element instanceof EPackage) {
+      return getChildren(element).length > 0;
+    } else if (element instanceof EObject) {
+      return emfContentProvider.hasChildren(element);
+    } else {
+      return false;
+    }
   }
 
 }
