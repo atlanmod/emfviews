@@ -50,6 +50,8 @@ import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class EclDelegate implements IVirtualLinksDelegate {
 
+  // FIXME: This only works with Epsilon 1.2, but 1.4 is the latest one.
+
   @Override
   public void createVirtualMetamodelLinks(String linksDslFilePath,
                                           URI modelLinksURI) throws Exception {

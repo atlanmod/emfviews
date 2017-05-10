@@ -116,6 +116,7 @@ public class Viewtype extends ResourceImpl {
     correspondenceModelResource.save(null);
   }
 
+  // FIXME: unused?
   public Viewtype(List<String> nsURIs, String filtersMMUri) {
     super();
     virtualResourceSet = new ResourceSetImpl();
@@ -532,6 +533,7 @@ public class Viewtype extends ResourceImpl {
 
   }
 
+  // FIXME: unused?
   public void serialize(IFile file, String dslTechnology) throws IOException, CoreException {
     StringBuffer fileContent = new StringBuffer();
     String contributingMetamodelsLine = "contributingMetamodels=" + contributingMetamodels;
