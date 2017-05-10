@@ -1,33 +1,25 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks.impl;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual
  * Link</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinkImpl#getName
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl#getName
  * <em>Name</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

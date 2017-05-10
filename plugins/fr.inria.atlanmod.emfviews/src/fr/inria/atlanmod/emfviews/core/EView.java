@@ -35,11 +35,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class EView extends View {

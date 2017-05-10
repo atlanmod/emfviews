@@ -8,11 +8,11 @@
    <extension-point id="delegator" name="delegator" schema="schema/delegator.exsd"/>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated VirtualLinksMM2 -->
       <package
             uri="http://inria.fr/virtualLinks"
-            class="fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage"
-            genModel="resource/VirtualLinksMM2.genmodel"/>
+            class="fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage"
+            genModel="resource/VirtualLinks.genmodel"/>
    </extension>
-
 
 </plugin>

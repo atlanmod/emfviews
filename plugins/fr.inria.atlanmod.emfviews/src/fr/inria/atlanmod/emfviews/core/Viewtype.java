@@ -49,11 +49,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 
 public class Viewtype extends ResourceImpl {
 

@@ -39,10 +39,10 @@ import org.eclipse.ui.ide.IDE;
 
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 import fr.inria.atlanmod.emfviews.ui.Messages;
-import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class CreateViewtypeWizard extends Wizard implements INewWizard, IExecutableExtension {
 

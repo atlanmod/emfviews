@@ -8,7 +8,7 @@
  * Contributors:
  * Juan David Villa Calle - initial API and implementation
  *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks.util;
+package fr.inria.atlanmod.emfviews.virtuallinks.util;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,10 +20,10 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 
 public class VirtualLinksUtil {
 

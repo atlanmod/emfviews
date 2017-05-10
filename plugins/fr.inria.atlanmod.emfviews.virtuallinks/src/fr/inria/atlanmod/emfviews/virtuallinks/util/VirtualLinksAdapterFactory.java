@@ -1,33 +1,25 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks.util;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
  * an adapter <code>createXXX</code> method for each class of the model. <!--
  * end-user-doc -->
  *
- * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage
+ * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage
  * @generated
  */
 public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
@@ -123,13 +115,13 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
 
   /**
    * Creates a new adapter for an object of class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks <em>Virtual
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks <em>Virtual
    * Links</em>}'. <!-- begin-user-doc --> This default implementation returns
    * null so that we can easily ignore cases; it's useful to ignore a case when
    * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks
    * @generated
    */
   public Adapter createVirtualLinksAdapter() {
@@ -138,13 +130,13 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
 
   /**
    * Creates a new adapter for an object of class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement <em>Linked
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement <em>Linked
    * Element</em>}'. <!-- begin-user-doc --> This default implementation returns
    * null so that we can easily ignore cases; it's useful to ignore a case when
    * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement
    * @generated
    */
   public Adapter createLinkedElementAdapter() {
@@ -153,14 +145,14 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
 
   /**
    * Creates a new adapter for an object of class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association
    * <em>Association</em>}'. <!-- begin-user-doc --> This default implementation
    * returns null so that we can easily ignore cases; it's useful to ignore a
    * case when inheritance will catch all the cases anyway. <!-- end-user-doc
    * -->
    *
    * @return the new adapter.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association
    * @generated
    */
   public Adapter createAssociationAdapter() {
@@ -169,13 +161,13 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
 
   /**
    * Creates a new adapter for an object of class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink <em>Virtual
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink <em>Virtual
    * Link</em>}'. <!-- begin-user-doc --> This default implementation returns
    * null so that we can easily ignore cases; it's useful to ignore a case when
    * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink
    * @generated
    */
   public Adapter createVirtualLinkAdapter() {
@@ -184,13 +176,13 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
 
   /**
    * Creates a new adapter for an object of class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Filter <em>Filter</em>}'.
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Filter <em>Filter</em>}'.
    * <!-- begin-user-doc --> This default implementation returns null so that we
    * can easily ignore cases; it's useful to ignore a case when inheritance will
    * catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Filter
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Filter
    * @generated
    */
   public Adapter createFilterAdapter() {

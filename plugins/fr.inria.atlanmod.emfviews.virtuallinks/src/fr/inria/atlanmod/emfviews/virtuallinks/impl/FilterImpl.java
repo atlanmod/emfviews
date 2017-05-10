@@ -1,38 +1,30 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks.impl;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
  * '<em><b>Filter</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.FilterImpl#getFilteredElement
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.FilterImpl#getFilteredElement
  * <em>Filtered Element</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.FilterImpl#getOclQuery
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.FilterImpl#getOclQuery
  * <em>Ocl Query</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.FilterImpl#isFilterOnlyEstructuralFeatures
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.FilterImpl#isFilterOnlyEstructuralFeatures
  * <em>Filter Only Estructural Features</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

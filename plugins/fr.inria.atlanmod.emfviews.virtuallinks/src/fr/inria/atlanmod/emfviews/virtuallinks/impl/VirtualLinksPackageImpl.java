@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks.impl;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -16,13 +8,13 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
@@ -77,7 +69,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see org.eclipse.emf.ecore.EPackage.Registry
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#eNS_URI
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#eNS_URI
    * @see #init()
    * @generated
    */

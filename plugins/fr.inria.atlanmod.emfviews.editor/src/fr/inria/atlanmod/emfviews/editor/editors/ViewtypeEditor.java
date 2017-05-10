@@ -75,10 +75,10 @@ import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.ui.common.AbstractSelection;
 import fr.inria.atlanmod.emfviews.ui.common.ModelSelection;
 import fr.inria.atlanmod.emfviews.ui.wizard.view.AttributeSelectionContentProvider;
-import fr.inria.atlanmod.emfviews.virtualLinks.Filter;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class ViewtypeEditor extends FormEditor implements IResourceChangeListener {
 

@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks.impl;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
 import java.util.Collection;
 
@@ -19,36 +11,36 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object
  * '<em><b>Association</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getLowerBound
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getLowerBound
  * <em>Lower Bound</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getUpperBound
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getUpperBound
  * <em>Upper Bound</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getAssociationTypeName
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getAssociationTypeName
  * <em>Association Type Name</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getOpposite
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getOpposite
  * <em>Opposite</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getSourceElement
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getSourceElement
  * <em>Source Element</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getTargetElements
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getTargetElements
  * <em>Target Elements</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getOclExpression
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getOclExpression
  * <em>Ocl Expression</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getSourceAttribute
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getSourceAttribute
  * <em>Source Attribute</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl#getTargetAttribute
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl#getTargetAttribute
  * <em>Target Attribute</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -396,7 +388,7 @@ public class AssociationImpl extends VirtualLinkImpl implements Association {
     if (targetElements == null) {
       targetElements =
           new EObjectResolvingEList<>(LinkedElement.class, this,
-                                      VirtualLinksPackage.ASSOCIATION__TARGET_ELEMENTS);
+                                                   VirtualLinksPackage.ASSOCIATION__TARGET_ELEMENTS);
     }
     return targetElements;
   }

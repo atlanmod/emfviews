@@ -31,8 +31,8 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import fr.inria.atlanmod.emfviews.core.EmfViewsFactory;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 import fr.inria.atlanmod.emfviews.ui.Messages;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class CreateViewWizard extends Wizard implements INewWizard, IExecutableExtension {
 

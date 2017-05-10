@@ -10,12 +10,10 @@
  *******************************************************************************/
 package fr.inria.atlanmod.emfviews.ui.linkingview.view;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -26,7 +24,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import fr.inria.atlanmod.emfviews.core.EView;
@@ -98,7 +95,7 @@ public class LinksView extends ViewPart {
       ExtensibleURIConverterImpl eui = new ExtensibleURIConverterImpl();
       InputStream is = eui.createInputStream(viewURI);
       currentView.load(is, new HashMap<>());
-      linkedElementsViewer.setInput(currentView.getVirtualLinkManager().getLinks());
+      linkedElementsViewer.setInput(currentView.getVirtualLinkManager().getVirtualLinks());
       ((LinksViewContentProvider) (linkedElementsViewer.getContentProvider()))
           .setLinkedModels(currentView.getContributingModels());
       MessageDialog.openInformation(parent.getShell(), "View selected", "View selected");

@@ -41,12 +41,12 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.Model;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
+import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class EclDelegate implements IVirtualLinksDelegate {
 

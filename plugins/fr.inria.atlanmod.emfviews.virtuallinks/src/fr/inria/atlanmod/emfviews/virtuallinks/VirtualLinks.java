@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -19,15 +11,15 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks#getVirtualLinks
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks#getVirtualLinks
  * <em>Virtual Links</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks#getLinkedElements
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks#getLinkedElements
  * <em>Linked Elements</em>}</li>
  * </ul>
- * </p>
  *
- * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLinks()
+ * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualLinks()
  * @model
  * @generated
  */
@@ -35,7 +27,7 @@ public interface VirtualLinks extends EObject {
   /**
    * Returns the value of the '<em><b>Virtual Links</b></em>' containment
    * reference list. The list contents are of type
-   * {@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink}. <!--
+   * {@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink}. <!--
    * begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Virtual Links</em>' containment reference list
@@ -45,7 +37,7 @@ public interface VirtualLinks extends EObject {
    *
    * @return the value of the '<em>Virtual Links</em>' containment reference
    *         list.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLinks_VirtualLinks()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualLinks_VirtualLinks()
    * @model containment="true"
    * @generated
    */
@@ -54,7 +46,7 @@ public interface VirtualLinks extends EObject {
   /**
    * Returns the value of the '<em><b>Linked Elements</b></em>' containment
    * reference list. The list contents are of type
-   * {@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement}. <!--
+   * {@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement}. <!--
    * begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Linked Elements</em>' containment reference list
@@ -64,7 +56,7 @@ public interface VirtualLinks extends EObject {
    *
    * @return the value of the '<em>Linked Elements</em>' containment reference
    *         list.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLinks_LinkedElements()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualLinks_LinkedElements()
    * @model containment="true"
    * @generated
    */

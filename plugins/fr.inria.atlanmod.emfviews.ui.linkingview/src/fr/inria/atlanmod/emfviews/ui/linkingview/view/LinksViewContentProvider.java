@@ -27,10 +27,10 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import fr.inria.atlanmod.emfviews.ui.common.EmfViewsUiUtil;
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
 
 public class LinksViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
@@ -86,12 +86,12 @@ public class LinksViewContentProvider implements IStructuredContentProvider, ITr
       if (linksModelElement instanceof VirtualLinks) {
         VirtualLinks virtualLinks = (VirtualLinks) linksModelElement;
         EList<VirtualLink> allLinks = virtualLinks.getVirtualLinks();
-        ArrayList<Association> associations = new ArrayList<Association>();
+        ArrayList<Association> associations = new ArrayList<>();
         for (VirtualLink virtualLink : allLinks) {
           if (virtualLink instanceof Association)
             associations.add((Association) virtualLink);
         }
-        ArrayList<EObject> linkedElements = new ArrayList<EObject>();
+        ArrayList<EObject> linkedElements = new ArrayList<>();
         for (Association association : associations) {
 
           if (association.getSourceElement().getElementRef()

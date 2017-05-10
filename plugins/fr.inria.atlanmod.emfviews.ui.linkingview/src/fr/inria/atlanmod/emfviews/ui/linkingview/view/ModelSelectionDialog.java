@@ -34,13 +34,13 @@ import org.eclipse.swt.widgets.Tree;
 
 import fr.inria.atlanmod.emfviews.core.EView;
 import fr.inria.atlanmod.emfviews.core.Viewtype;
-import fr.inria.atlanmod.emfviews.virtualLinks.Association;
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
-import fr.inria.atlanmod.emfviews.virtualLinks.util.VirtualLinksUtil;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class ModelSelectionDialog extends TitleAreaDialog {
 
@@ -67,7 +67,7 @@ public class ModelSelectionDialog extends TitleAreaDialog {
     super(parentShell);
     this.modelRoot = modelRoot;
     this.currentView = currentView;
-    this.tempLinksModel = currentView.getVirtualLinkManager().getLinks();
+    this.tempLinksModel = currentView.getVirtualLinkManager().getVirtualLinks();
   }
 
   @Override

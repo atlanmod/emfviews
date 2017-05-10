@@ -18,8 +18,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.ecore
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Import-Package: fr.inria.atlanmod.emfviews.virtualLinks,
- fr.inria.atlanmod.emfviews.virtualLinks.util
+Import-Package: fr.inria.atlanmod.emfviews.virtuallinks,
+ fr.inria.atlanmod.emfviews.virtuallinks.util
 Export-Package: fr.inria.atlanmod.emfviews.editor.editors;
   uses:="org.eclipse.jface.action,
    org.eclipse.emf.ecore.resource,

@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 import fr.inria.atlanmod.emfviews.elements.VirtualElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
 
 public class VirtualLinkManager {
 

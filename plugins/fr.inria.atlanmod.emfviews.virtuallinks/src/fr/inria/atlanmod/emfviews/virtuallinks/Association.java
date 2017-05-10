@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -18,29 +10,29 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getLowerBound
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getLowerBound
  * <em>Lower Bound</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getUpperBound
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getUpperBound
  * <em>Upper Bound</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getAssociationTypeName
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getAssociationTypeName
  * <em>Association Type Name</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOpposite
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getOpposite
  * <em>Opposite</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceElement
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceElement
  * <em>Source Element</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetElements
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getTargetElements
  * <em>Target Elements</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOclExpression
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getOclExpression
  * <em>Ocl Expression</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceAttribute
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceAttribute
  * <em>Source Attribute</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetAttribute
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getTargetAttribute
  * <em>Target Attribute</em>}</li>
  * </ul>
- * </p>
  *
- * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation()
+ * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation()
  * @model
  * @generated
  */
@@ -56,7 +48,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Lower Bound</em>' attribute.
    * @see #setLowerBound(int)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_LowerBound()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_LowerBound()
    * @model unique="false" required="true" ordered="false"
    * @generated
    */
@@ -64,7 +56,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getLowerBound
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getLowerBound
    * <em>Lower Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
@@ -85,7 +77,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Upper Bound</em>' attribute.
    * @see #setUpperBound(int)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_UpperBound()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_UpperBound()
    * @model unique="false" required="true" ordered="false"
    * @generated
    */
@@ -93,7 +85,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getUpperBound
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getUpperBound
    * <em>Upper Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
@@ -114,7 +106,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Association Type Name</em>' attribute.
    * @see #setAssociationTypeName(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_AssociationTypeName()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_AssociationTypeName()
    * @model unique="false" required="true" ordered="false"
    * @generated
    */
@@ -122,7 +114,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getAssociationTypeName
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getAssociationTypeName
    * <em>Association Type Name</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
@@ -144,7 +136,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Opposite</em>' reference.
    * @see #setOpposite(Association)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_Opposite()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_Opposite()
    * @model ordered="false"
    * @generated
    */
@@ -152,7 +144,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOpposite
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getOpposite
    * <em>Opposite</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
@@ -173,7 +165,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Source Element</em>' reference.
    * @see #setSourceElement(LinkedElement)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_SourceElement()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_SourceElement()
    * @model required="true"
    * @generated
    */
@@ -181,7 +173,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceElement
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceElement
    * <em>Source Element</em>}' reference. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
@@ -194,7 +186,7 @@ public interface Association extends VirtualLink {
   /**
    * Returns the value of the '<em><b>Target Elements</b></em>' reference list.
    * The list contents are of type
-   * {@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement}. <!--
+   * {@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement}. <!--
    * begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Target Elements</em>' reference list isn't
@@ -203,7 +195,7 @@ public interface Association extends VirtualLink {
    * <!-- end-user-doc -->
    *
    * @return the value of the '<em>Target Elements</em>' reference list.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_TargetElements()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_TargetElements()
    * @model required="true"
    * @generated
    */
@@ -220,7 +212,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Ocl Expression</em>' attribute.
    * @see #setOclExpression(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_OclExpression()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_OclExpression()
    * @model
    * @generated
    */
@@ -228,7 +220,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOclExpression
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getOclExpression
    * <em>Ocl Expression</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
@@ -249,7 +241,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Source Attribute</em>' attribute.
    * @see #setSourceAttribute(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_SourceAttribute()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_SourceAttribute()
    * @model
    * @generated
    */
@@ -257,7 +249,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceAttribute
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceAttribute
    * <em>Source Attribute</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
@@ -278,7 +270,7 @@ public interface Association extends VirtualLink {
    *
    * @return the value of the '<em>Target Attribute</em>' attribute.
    * @see #setTargetAttribute(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getAssociation_TargetAttribute()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getAssociation_TargetAttribute()
    * @model
    * @generated
    */
@@ -286,7 +278,7 @@ public interface Association extends VirtualLink {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetAttribute
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getTargetAttribute
    * <em>Target Attribute</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *

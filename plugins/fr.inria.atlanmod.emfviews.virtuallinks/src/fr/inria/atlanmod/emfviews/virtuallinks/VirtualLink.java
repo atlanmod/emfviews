@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -18,13 +10,13 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink#getName
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink#getName
  * <em>Name</em>}</li>
  * </ul>
- * </p>
  *
- * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLink()
+ * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualLink()
  * @model abstract="true"
  * @generated
  */
@@ -40,7 +32,7 @@ public interface VirtualLink extends EObject {
    *
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getVirtualLink_Name()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualLink_Name()
    * @model
    * @generated
    */
@@ -48,7 +40,7 @@ public interface VirtualLink extends EObject {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink#getName
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink#getName
    * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @param value the new value of the '<em>Name</em>' attribute.

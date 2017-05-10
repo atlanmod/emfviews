@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -18,19 +10,19 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getElementRef
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getElementRef
  * <em>Element Ref</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getModelRef
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getModelRef
  * <em>Model Ref</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getName
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getName
  * <em>Name</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getEstructuralFeatures
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getEstructuralFeatures
  * <em>Estructural Features</em>}</li>
  * </ul>
- * </p>
  *
- * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getLinkedElement()
+ * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getLinkedElement()
  * @model
  * @generated
  */
@@ -46,7 +38,7 @@ public interface LinkedElement extends EObject {
    *
    * @return the value of the '<em>Element Ref</em>' attribute.
    * @see #setElementRef(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getLinkedElement_ElementRef()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getLinkedElement_ElementRef()
    * @model
    * @generated
    */
@@ -54,7 +46,7 @@ public interface LinkedElement extends EObject {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getElementRef
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getElementRef
    * <em>Element Ref</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
@@ -75,7 +67,7 @@ public interface LinkedElement extends EObject {
    *
    * @return the value of the '<em>Model Ref</em>' attribute.
    * @see #setModelRef(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getLinkedElement_ModelRef()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getLinkedElement_ModelRef()
    * @model
    * @generated
    */
@@ -83,7 +75,7 @@ public interface LinkedElement extends EObject {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getModelRef
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getModelRef
    * <em>Model Ref</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
@@ -104,7 +96,7 @@ public interface LinkedElement extends EObject {
    *
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getLinkedElement_Name()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getLinkedElement_Name()
    * @model
    * @generated
    */
@@ -112,7 +104,7 @@ public interface LinkedElement extends EObject {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getName
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getName
    * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -132,7 +124,7 @@ public interface LinkedElement extends EObject {
    *
    * @return the value of the '<em>Estructural Features</em>' attribute.
    * @see #setEstructuralFeatures(String)
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage#getLinkedElement_EstructuralFeatures()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getLinkedElement_EstructuralFeatures()
    * @model
    * @generated
    */
@@ -140,7 +132,7 @@ public interface LinkedElement extends EObject {
 
   /**
    * Sets the value of the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getEstructuralFeatures
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getEstructuralFeatures
    * <em>Estructural Features</em>}' attribute. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *

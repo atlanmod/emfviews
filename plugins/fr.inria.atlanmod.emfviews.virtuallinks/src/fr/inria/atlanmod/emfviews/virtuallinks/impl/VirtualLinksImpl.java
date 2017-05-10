@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks.impl;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
 import java.util.Collection;
 
@@ -20,23 +12,23 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual
  * Links</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksImpl#getVirtualLinks
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksImpl#getVirtualLinks
  * <em>Virtual Links</em>}</li>
- * <li>{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksImpl#getLinkedElements
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksImpl#getLinkedElements
  * <em>Linked Elements</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -91,7 +83,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container implements Vi
     if (virtualLinks == null) {
       virtualLinks =
           new EObjectContainmentEList<>(VirtualLink.class, this,
-                                        VirtualLinksPackage.VIRTUAL_LINKS__VIRTUAL_LINKS);
+                                                   VirtualLinksPackage.VIRTUAL_LINKS__VIRTUAL_LINKS);
     }
     return virtualLinks;
   }
@@ -106,7 +98,7 @@ public class VirtualLinksImpl extends MinimalEObjectImpl.Container implements Vi
     if (linkedElements == null) {
       linkedElements =
           new EObjectContainmentEList<>(LinkedElement.class, this,
-                                        VirtualLinksPackage.VIRTUAL_LINKS__LINKED_ELEMENTS);
+                                                     VirtualLinksPackage.VIRTUAL_LINKS__LINKED_ELEMENTS);
     }
     return linkedElements;
   }

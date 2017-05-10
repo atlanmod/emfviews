@@ -1,14 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2013 INRIA.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Juan David Villa Calle - initial API and implementation
- *******************************************************************************/
-package fr.inria.atlanmod.emfviews.virtualLinks;
+/**
+ */
+package fr.inria.atlanmod.emfviews.virtuallinks;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -27,7 +19,7 @@ import org.eclipse.emf.ecore.EReference;
  * </ul>
  * <!-- end-user-doc -->
  *
- * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinksFactory
+ * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory
  * @model kind="package"
  * @generated
  */
@@ -37,7 +29,7 @@ public interface VirtualLinksPackage extends EPackage {
    *
    * @generated
    */
-  String eNAME = "virtualLinks";
+  String eNAME = "virtuallinks";
 
   /**
    * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -60,16 +52,16 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    */
   VirtualLinksPackage eINSTANCE =
-      fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl.init();
+      fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl.init();
 
   /**
    * The meta object id for the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksImpl
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksImpl
    * <em>Virtual Links</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksImpl
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getVirtualLinks()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksImpl
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getVirtualLinks()
    * @generated
    */
   int VIRTUAL_LINKS = 0;
@@ -112,12 +104,12 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * The meta object id for the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.LinkedElementImpl
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.LinkedElementImpl
    * <em>Linked Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.LinkedElementImpl
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getLinkedElement()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.LinkedElementImpl
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getLinkedElement()
    * @generated
    */
   int LINKED_ELEMENT = 1;
@@ -178,12 +170,12 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * The meta object id for the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinkImpl
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl
    * <em>Virtual Link</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinkImpl
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getVirtualLink()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getVirtualLink()
    * @generated
    */
   int VIRTUAL_LINK = 3;
@@ -217,11 +209,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * The meta object id for the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl
    * <em>Association</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getAssociation()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getAssociation()
    * @generated
    */
   int ASSOCIATION = 2;
@@ -336,11 +328,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * The meta object id for the
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.FilterImpl
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.FilterImpl
    * <em>Filter</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.FilterImpl
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getFilter()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.FilterImpl
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getFilter()
    * @generated
    */
   int FILTER = 4;
@@ -401,23 +393,23 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks <em>Virtual
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks <em>Virtual
    * Links</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for class '<em>Virtual Links</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks
    * @generated
    */
   EClass getVirtualLinks();
 
   /**
    * Returns the meta object for the containment reference list
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks#getVirtualLinks
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks#getVirtualLinks
    * <em>Virtual Links</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the containment reference list '<em>Virtual
    *         Links</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks#getVirtualLinks()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks#getVirtualLinks()
    * @see #getVirtualLinks()
    * @generated
    */
@@ -425,12 +417,12 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the containment reference list
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks#getLinkedElements
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks#getLinkedElements
    * <em>Linked Elements</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the containment reference list '<em>Linked
    *         Elements</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLinks#getLinkedElements()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks#getLinkedElements()
    * @see #getVirtualLinks()
    * @generated
    */
@@ -438,22 +430,22 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement <em>Linked
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement <em>Linked
    * Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for class '<em>Linked Element</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement
    * @generated
    */
   EClass getLinkedElement();
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getElementRef
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getElementRef
    * <em>Element Ref</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Element Ref</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getElementRef()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getElementRef()
    * @see #getLinkedElement()
    * @generated
    */
@@ -461,11 +453,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getModelRef
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getModelRef
    * <em>Model Ref</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Model Ref</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getModelRef()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getModelRef()
    * @see #getLinkedElement()
    * @generated
    */
@@ -473,11 +465,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getName
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getName
    * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getName()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getName()
    * @see #getLinkedElement()
    * @generated
    */
@@ -485,12 +477,12 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getEstructuralFeatures
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getEstructuralFeatures
    * <em>Estructural Features</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
    * @return the meta object for the attribute '<em>Estructural Features</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.LinkedElement#getEstructuralFeatures()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement#getEstructuralFeatures()
    * @see #getLinkedElement()
    * @generated
    */
@@ -498,22 +490,22 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association
    * <em>Association</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for class '<em>Association</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association
    * @generated
    */
   EClass getAssociation();
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getLowerBound
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getLowerBound
    * <em>Lower Bound</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Lower Bound</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getLowerBound()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getLowerBound()
    * @see #getAssociation()
    * @generated
    */
@@ -521,11 +513,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getUpperBound
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getUpperBound
    * <em>Upper Bound</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Upper Bound</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getUpperBound()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getUpperBound()
    * @see #getAssociation()
    * @generated
    */
@@ -533,12 +525,12 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getAssociationTypeName
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getAssociationTypeName
    * <em>Association Type Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
    * -->
    *
    * @return the meta object for the attribute '<em>Association Type Name</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getAssociationTypeName()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getAssociationTypeName()
    * @see #getAssociation()
    * @generated
    */
@@ -546,11 +538,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the reference
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOpposite
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getOpposite
    * <em>Opposite</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the reference '<em>Opposite</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getOpposite()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getOpposite()
    * @see #getAssociation()
    * @generated
    */
@@ -558,11 +550,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the reference
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceElement
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceElement
    * <em>Source Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the reference '<em>Source Element</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceElement()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceElement()
    * @see #getAssociation()
    * @generated
    */
@@ -570,11 +562,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the reference list
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetElements
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getTargetElements
    * <em>Target Elements</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the reference list '<em>Target Elements</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetElements()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getTargetElements()
    * @see #getAssociation()
    * @generated
    */
@@ -582,11 +574,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getOclExpression
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getOclExpression
    * <em>Ocl Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Ocl Expression</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getOclExpression()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getOclExpression()
    * @see #getAssociation()
    * @generated
    */
@@ -594,11 +586,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceAttribute
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceAttribute
    * <em>Source Attribute</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Source Attribute</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getSourceAttribute()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getSourceAttribute()
    * @see #getAssociation()
    * @generated
    */
@@ -606,11 +598,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetAttribute
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Association#getTargetAttribute
    * <em>Target Attribute</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Target Attribute</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Association#getTargetAttribute()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Association#getTargetAttribute()
    * @see #getAssociation()
    * @generated
    */
@@ -618,22 +610,22 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink <em>Virtual
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink <em>Virtual
    * Link</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for class '<em>Virtual Link</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink
    * @generated
    */
   EClass getVirtualLink();
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink#getName
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink#getName
    * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.VirtualLink#getName()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink#getName()
    * @see #getVirtualLink()
    * @generated
    */
@@ -641,22 +633,22 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for class
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Filter <em>Filter</em>}'.
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Filter <em>Filter</em>}'.
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for class '<em>Filter</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Filter
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Filter
    * @generated
    */
   EClass getFilter();
 
   /**
    * Returns the meta object for the reference
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Filter#getFilteredElement
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Filter#getFilteredElement
    * <em>Filtered Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the reference '<em>Filtered Element</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Filter#getFilteredElement()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Filter#getFilteredElement()
    * @see #getFilter()
    * @generated
    */
@@ -664,11 +656,11 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Filter#getOclQuery <em>Ocl
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Filter#getOclQuery <em>Ocl
    * Query</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Ocl Query</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Filter#getOclQuery()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Filter#getOclQuery()
    * @see #getFilter()
    * @generated
    */
@@ -676,13 +668,13 @@ public interface VirtualLinksPackage extends EPackage {
 
   /**
    * Returns the meta object for the attribute
-   * '{@link fr.inria.atlanmod.emfviews.virtualLinks.Filter#isFilterOnlyEstructuralFeatures
+   * '{@link fr.inria.atlanmod.emfviews.virtuallinks.Filter#isFilterOnlyEstructuralFeatures
    * <em>Filter Only Estructural Features</em>}'. <!-- begin-user-doc --> <!--
    * end-user-doc -->
    *
    * @return the meta object for the attribute '<em>Filter Only Estructural
    *         Features</em>'.
-   * @see fr.inria.atlanmod.emfviews.virtualLinks.Filter#isFilterOnlyEstructuralFeatures()
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.Filter#isFilterOnlyEstructuralFeatures()
    * @see #getFilter()
    * @generated
    */
@@ -714,12 +706,12 @@ public interface VirtualLinksPackage extends EPackage {
   interface Literals {
     /**
      * The meta object literal for the
-     * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksImpl
+     * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksImpl
      * <em>Virtual Links</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksImpl
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getVirtualLinks()
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksImpl
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getVirtualLinks()
      * @generated
      */
     EClass VIRTUAL_LINKS = eINSTANCE.getVirtualLinks();
@@ -744,12 +736,12 @@ public interface VirtualLinksPackage extends EPackage {
 
     /**
      * The meta object literal for the
-     * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.LinkedElementImpl
+     * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.LinkedElementImpl
      * <em>Linked Element</em>}' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.LinkedElementImpl
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getLinkedElement()
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.LinkedElementImpl
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getLinkedElement()
      * @generated
      */
     EClass LINKED_ELEMENT = eINSTANCE.getLinkedElement();
@@ -789,12 +781,12 @@ public interface VirtualLinksPackage extends EPackage {
 
     /**
      * The meta object literal for the
-     * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl
+     * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl
      * <em>Association</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.AssociationImpl
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getAssociation()
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.AssociationImpl
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getAssociation()
      * @generated
      */
     EClass ASSOCIATION = eINSTANCE.getAssociation();
@@ -873,12 +865,12 @@ public interface VirtualLinksPackage extends EPackage {
 
     /**
      * The meta object literal for the
-     * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinkImpl
+     * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl
      * <em>Virtual Link</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinkImpl
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getVirtualLink()
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getVirtualLink()
      * @generated
      */
     EClass VIRTUAL_LINK = eINSTANCE.getVirtualLink();
@@ -893,11 +885,11 @@ public interface VirtualLinksPackage extends EPackage {
 
     /**
      * The meta object literal for the
-     * '{@link fr.inria.atlanmod.emfviews.virtualLinks.impl.FilterImpl
+     * '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.FilterImpl
      * <em>Filter</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.FilterImpl
-     * @see fr.inria.atlanmod.emfviews.virtualLinks.impl.VirtualLinksPackageImpl#getFilter()
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.FilterImpl
+     * @see fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinksPackageImpl#getFilter()
      * @generated
      */
     EClass FILTER = eINSTANCE.getFilter();
