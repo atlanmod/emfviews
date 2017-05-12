@@ -44,7 +44,7 @@ public class ReproduceRule extends TranslationRule {
       Object value = vElement.getConcreteElement().eGet(cFeature);
       if (feature instanceof EReference) {
         if (feature.isMany()) {
-          value = new VirtualModelList<>(object, feature, Arrays.asList((EList<EObject>) value));
+          value = new VirtualModelList<>(object, feature, Arrays.asList((List<EObject>) value));
           if (index != NO_INDEX) {
             value = ((VirtualModelList<EObject>) value).get(index);
           }
@@ -80,9 +80,8 @@ public class ReproduceRule extends TranslationRule {
     if (feature instanceof EReference) {
       if (feature.getUpperBound() != 1) {
         if (index != NO_INDEX) {
-          oldValue =
-              new VirtualModelList<>(object, feature,
-                                     Arrays.asList((EList<EObject>) cElement.eGet(cFeature)));
+          oldValue = new VirtualModelList<>(object, feature,
+                                            Arrays.asList((List<EObject>) cElement.eGet(cFeature)));
           value = ((ReproduceElementImpl) value).getConcreteElement();
           cElement.eSet(cFeature, value);
         } else {
