@@ -194,6 +194,8 @@ public class Viewtype extends ResourceImpl {
         EPackage copiedPackage = (EPackage) copy;
         EcoreUtil.remove(copiedPackage);
         contributingEpackages.add(contributingEcoreModelPackage);
+        // FIXME: would make more sense to start with packages that have
+        // elements to be filtered, and have a visitor to filter recursively
         for (int j = 0; j < epackagesWithAttsToHide.size(); j++) {
           EPackage tempPack = (EPackage) epackagesWithAttsToHide.get(j);
           if (tempPack.getNsURI().compareToIgnoreCase(copiedPackage.getNsURI()) == 0) {
@@ -201,6 +203,8 @@ public class Viewtype extends ResourceImpl {
             for (EClassifier eClassifierWithItemsToHide : eClassifiersWithItemsToHide) {
               EClassifier requiredEclassifier =
                   copiedPackage.getEClassifier(eClassifierWithItemsToHide.getName());
+              // FIXME: there are other classifiers beyond EClass (EEnum and
+              // EDataType), so this downcast is unsafe [Note: classifiers]
               EClass eClassWithItemsToHide = (EClass) requiredEclassifier;
               EList<EStructuralFeature> attsToHide =
                   ((EClass) eClassifierWithItemsToHide).getEStructuralFeatures();
@@ -217,12 +221,15 @@ public class Viewtype extends ResourceImpl {
           }
         }
 
+        // FIXME: is the temp Resource necessary?
         ResourceImpl resourceTemp = new ResourceImpl();
         resourceTemp.setURI(URI.createURI(contributingEcoreModelPackage.getNsURI()));
         resourceTemp.getContents().add(copiedPackage);
         virtualResourceSet.getPackageRegistry().put(contributingEcoreModelPackage.getNsURI(),
                                                     copiedPackage);
 
+        // FIXME: this looks like a nasty duplication: the only change is how we
+        // fetch the EPackage
       } else if (modelURI.endsWith("ecore")) {
         Resource metamodelResource =
             virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
@@ -268,11 +275,13 @@ public class Viewtype extends ResourceImpl {
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     correspondenceModelResource = new XMIResourceImpl();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    // FIXME: why is the '/' not mandatory in the first place?
     java.net.URI uri =
         workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModelResource.load(uri.toURL().openStream(), new HashMap<>());
+    correspondenceModelResource.load(uri.toURL().openStream(), null);
     correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
     List<Association> associations = new ArrayList<>();
+    // FIXME: this cast can fail if the XMI is not a viewtype
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
     for (VirtualLink virtualLink : allVirtualLinks) {
@@ -302,10 +311,12 @@ public class Viewtype extends ResourceImpl {
 
         EPackage sourcePackage =
             virtualResourceSet.getPackageRegistry().getEPackage(sourcePackageUri);
+        // FIXME: unsafe downcast see [Note: classifiers]
         EClass theSourceEClass = (EClass) sourcePackage.getEClassifier(sourceElementName);
 
         EPackage targetPackage =
             virtualResourceSet.getPackageRegistry().getEPackage(targetPackageUri);
+        // FIXME: unsafe downcast see [Note: classifiers]
         EClass theTargetEClass = (EClass) targetPackage.getEClassifier(targetElementName);
 
         EReference theR = EcoreFactory.eINSTANCE.createEReference();
@@ -314,6 +325,7 @@ public class Viewtype extends ResourceImpl {
         theR.setUpperBound(association.getUpperBound());
         theR.setEType(theTargetEClass);
 
+        // XXX: is this annotation used anywhere?
         EAnnotation theAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
         theAnnotation.setSource("va");
 
