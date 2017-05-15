@@ -64,6 +64,7 @@ public abstract class View extends ResourceImpl {
     ArrayList<Resource> contributingModels = new ArrayList<>();
     EList<Resource> allResources = virtualResourceSet.getResources();
     for (Resource resource : allResources) {
+      // XXX: why skip ECore resources?
       if (resource.getURI().toString().startsWith("platform")
           && !resource.getURI().toString().endsWith("ecore")) {
         contributingModels.add(resource);
@@ -116,7 +117,8 @@ public abstract class View extends ResourceImpl {
   // }
 
   protected void loadContributingModels(List<String> contributingModelsPaths) {
-
+    // XXX: do we need to force loading the resources here? We don't do anything
+    // with the return value.
     for (String modelURI : contributingModelsPaths) {
       virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
     }
@@ -134,6 +136,7 @@ public abstract class View extends ResourceImpl {
         Resource metamodelResource =
             virtualResourceSet.getResource(URI.createPlatformResourceURI(metamodelURI, true), true);
         EList<EObject> contents = metamodelResource.getContents();
+        // HYPO: the ECore contains only one EPackage we care about
         EPackage thePack = (EPackage) contents.iterator().next();
         virtualResourceSet.getPackageRegistry().put(thePack.getNsURI(), thePack);
 

@@ -118,6 +118,7 @@ public class EView extends View {
 
     if (properties.getProperty("correspondenceModelBase") != null) {
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
+      // XXX: is the '/' necessary?
       java.net.URI linksModelURI = workspace.getRoot()
           .findMember("/" + properties.getProperty("correspondenceModel")).getLocationURI();
       try {
@@ -141,6 +142,7 @@ public class EView extends View {
     String virtualMMPath = properties.getProperty("compositionMetamodel");
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    // FIXME: Why not require the '/' in the properties file?
     java.net.URI uri = workspace.getRoot().findMember("/" + virtualMMPath).getLocationURI();
     viewtypeProperties = new Properties();
     viewtypeProperties.load(uri.toURL().openStream());

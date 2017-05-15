@@ -28,7 +28,7 @@ public class VirtualLinksDelegator {
 
     this.linksDslFile = linksDslFile;
     String dslExtension = linksDslFile.substring(linksDslFile.lastIndexOf('.') + 1);
-
+    // FIXME: hardcoding the extension point ID seems brittle
     IExtension[] extensions = Platform.getExtensionRegistry()
         .getExtensionPoint("fr.inria.atlanmod.emfviews.virtuallinks.delegator").getExtensions();
     boolean finished = false;
@@ -44,7 +44,7 @@ public class VirtualLinksDelegator {
         }
       }
     }
-
+    // FIXME: what if there is no matching extension?
     IConfigurationElement[] matchingConfigElements = matchingExtension.getConfigurationElements();
     virtualLinksDelegate =
         (IVirtualLinksDelegate) matchingConfigElements[0].createExecutableExtension("class");

@@ -146,6 +146,7 @@ public class MetamodelManager {
       }
     }
 
+    // XXX: why the special case for lists of a single EClass? Performance?
     for (List<EClass> lcec : contributingClassesByName.values()) {
       if (lcec.size() > 1) {
         for (EClass cec : lcec) {

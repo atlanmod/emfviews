@@ -161,6 +161,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       for (int i = 0; i < inputModelsResourcesList.size() && !foundCorrectResource; i++) {
         Resource r = inputModelsResourcesList.get(i);
         EClassifier rootClassifier = r.getContents().get(0).eClass();
+        // XXX: the profile.uml special case looks fishy
         if (rootClassifier.getEPackage().getNsURI().compareToIgnoreCase(packageUri) == 0
             && !r.getURI().toString().endsWith("profile.uml")) {
           correctResource = r;
@@ -168,6 +169,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
         }
 
       }
+      // FIXME: what if correctResource is null?
       inputModelsAliasMapToResource.put(metamodelAlias, correctResource);
 
       inputmodelsAliasMapMetamodelUri.put(metamodelAlias, packageUri);
@@ -205,7 +207,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
         inputModel = createEmfModelByURI(tempEntry.getKey(), modelResource.getURI().toString(),
                                          inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()),
                                          true, false);
-      } else {
+      } else { // XXX: CDO special case seems fishy
         inputModel = new EmfModel();
         inputModel.setResource(modelResource);
         StringProperties properties = new StringProperties();

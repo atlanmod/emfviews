@@ -90,7 +90,7 @@ public class LinksProjector {
         elemFound = true;
       }
 
-    }
+    } // FIXME: what if null? (Maybe this cannot happen at this point?)
     return referencedElement;
 
   }
