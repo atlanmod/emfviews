@@ -263,7 +263,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
     }
     correspondenceModelResource.setURI(linksModel);
     correspondenceModelResource.getContents().add(virtualLinks);
-    correspondenceModelResource.save(new HashMap<String, String>());
+    correspondenceModelResource.save(null);
 
   }
 

@@ -45,7 +45,7 @@ public class VirtualLinkManager {
 
     java.net.URI uri =
         workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModel.load(uri.toURL().openStream(), new HashMap<>());
+    correspondenceModel.load(uri.toURL().openStream(), null);
 
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceModel.getContents().get(0);
 

@@ -74,7 +74,7 @@ public class LinksProjector {
           virtualModel.getMetamodelManager().getVirtualAssociation(vElement, virtualFeatureName);
 
       vElement.setVirtualAssociation(virtualFeature, EStore.NO_INDEX, targetElements);
-      vElement.toString();
+
     }
   }
 

@@ -153,7 +153,7 @@ public class EView extends View {
         org.eclipse.emf.common.util.URI.createURI(virtualMMPath);
 
     viewtype = vFac.createResource(emfURI);
-    viewtype.load(uri.toURL().openStream(), new HashMap<>());
+    viewtype.load(uri.toURL().openStream(), null);
   }
 
   @Override

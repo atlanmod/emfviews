@@ -167,7 +167,6 @@ public class MetamodelManager {
     }
     for (List<EClass> lec : compositionClassesByName.values()) {
       for (EClass ec : lec) {
-        if (ec.getName().equalsIgnoreCase("laneset")) {}
         for (EStructuralFeature sf : ec.getEStructuralFeatures()) {
           if (virtualToConcreteFeature.get(sf) == null)
             if (virtualAssociations.get(sf.getName()) == null) {
