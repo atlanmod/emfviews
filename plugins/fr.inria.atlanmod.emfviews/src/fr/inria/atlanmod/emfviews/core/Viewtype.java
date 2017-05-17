@@ -102,10 +102,12 @@ public class Viewtype extends ResourceImpl {
     return correspondenceModelResource;
   }
 
+  // FIXME: unused?
   public void setCorrespondenceModelResource(XMIResourceImpl correspondenceModelResource) {
     this.correspondenceModelResource = correspondenceModelResource;
   }
 
+  // FIXME: unused?
   public void createCorrespondenceModel(URI modelURI) throws IOException {
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
@@ -331,6 +333,8 @@ public class Viewtype extends ResourceImpl {
 
         theR.getEAnnotations().add(theAnnotation);
 
+        // XXX: not sure when this should match, but comparison to string using
+        // equals is fishy
         if (association.getSourceAttribute() != null && association.getSourceAttribute() != ""
             && association.getTargetAttribute() != null && association.getTargetAttribute() != "") {
           EStringToStringMapEntryImpl detailSource =
@@ -620,6 +624,7 @@ public class Viewtype extends ResourceImpl {
     this.virtualContents = new VirtualContents<>(this, sublists);
   }
 
+  // FIXME: unused?
   private InputStream openContentStream(String contents) {
     return new ByteArrayInputStream(contents.getBytes());
   }

@@ -168,6 +168,7 @@ public abstract class View extends ResourceImpl {
     }
   }
 
+  // FIXME: unused?
   public void serialize(IFile file) throws IOException, CoreException {
     StringBuffer fileContent = new StringBuffer();
     String contributingModelsLine = "contributingModels=" + contributingModelsURIs;
@@ -199,10 +200,12 @@ public abstract class View extends ResourceImpl {
 
   }
 
+  // FIXME: unused?
   public InputStream openContentStream(String contents) {
     return new ByteArrayInputStream(contents.getBytes());
   }
 
+  // FIXME: unused?
   public void createCorrespondenceModel(URI modelURI) throws IOException {
 
     correspondenceModelURI = modelURI.toString();

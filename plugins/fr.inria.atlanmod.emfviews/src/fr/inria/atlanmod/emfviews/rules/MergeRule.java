@@ -20,6 +20,7 @@ import fr.inria.atlanmod.emfviews.core.View;
 import fr.inria.atlanmod.emfviews.core.ViewOperationException;
 import fr.inria.atlanmod.emfviews.elements.MergeElementImpl;
 
+// FIXME: unused?  These are never created anywhere, and not part of the VirtualLinks metamodel.
 public class MergeRule extends TranslationRule {
 
   public static TranslationRule INSTANCE = new MergeRule();

@@ -156,6 +156,7 @@ public class EView extends View {
     viewtype.load(uri.toURL().openStream(), null);
   }
 
+  // FIXME: unused?
   @Override
   public void createCorrespondenceModel(URI modelURI) throws IOException {
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
@@ -254,6 +255,7 @@ public class EView extends View {
 
   }
 
+  // FIXME: unused?
   @Override
   public void serialize(IFile file) throws IOException, CoreException {
     StringBuffer fileContent = new StringBuffer();
