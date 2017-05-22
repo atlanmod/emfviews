@@ -1,0 +1,4 @@
+contributingModels=viewtype-test/models/1_travelAgencyEA.xmi,viewtype-test/models/2_bookingTripRequirements.xmi,viewtype-test/models/3_bookingTripProcess.xmi
+compositionMetamodel=viewtype-test/viewtype/full.eviewtype
+correspondenceModel=viewtype-test/view/weaving.xmi
+correspondenceModelBase=viewtype-test/viewtype/matching.ecl
