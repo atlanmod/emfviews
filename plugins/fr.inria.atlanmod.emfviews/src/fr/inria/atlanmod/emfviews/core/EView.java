@@ -105,7 +105,7 @@ public class EView extends View {
     properties.load(inputStream);
     virtualResourceSet = new ResourceSetImpl();
 
-    readVirtualCompositionMMProperties();
+    String correspondenceModelBase = readVirtualCompositionMMProperties();
 
     loadContributingMetamodels(new ArrayList<>(Arrays
         .asList(viewtypeProperties.getProperty("contributingMetamodels").split(","))));
@@ -116,17 +116,19 @@ public class EView extends View {
     loadContributingModels(new ArrayList<>(Arrays
         .asList(properties.getProperty("contributingModels").split(","))));
 
-    if (properties.getProperty("correspondenceModelBase") != null) {
+    if (correspondenceModelBase != null) {
+      // FIXME: the virtual links delegator recreates the correspondence model
+      // every time, but only if the file already exists
+      // XXX: we could also mark this file as derived
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       // XXX: is the '/' necessary?
       java.net.URI linksModelURI = workspace.getRoot()
           .findMember("/" + properties.getProperty("correspondenceModel")).getLocationURI();
       try {
-        VirtualLinksDelegator vld =
-            new VirtualLinksDelegator(properties.getProperty("correspondenceModelBase"));
+        VirtualLinksDelegator vld = new VirtualLinksDelegator(correspondenceModelBase);
 
-        vld.createVirtualModelLinks(org.eclipse.emf.common.util.URI
-            .createURI(linksModelURI.toString()), getContributingModels());
+        vld.createVirtualModelLinks(URI.createURI(linksModelURI.toString()),
+                                    getContributingModels());
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -138,7 +140,7 @@ public class EView extends View {
     setVirtualContents();
   }
 
-  private void readVirtualCompositionMMProperties() throws FileNotFoundException, IOException {
+  private String readVirtualCompositionMMProperties() throws FileNotFoundException, IOException {
     String virtualMMPath = properties.getProperty("compositionMetamodel");
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -154,6 +156,8 @@ public class EView extends View {
 
     viewtype = vFac.createResource(emfURI);
     viewtype.load(uri.toURL().openStream(), null);
+
+    return viewtypeProperties.getProperty("correspondenceModelBase");
   }
 
   // FIXME: unused?
