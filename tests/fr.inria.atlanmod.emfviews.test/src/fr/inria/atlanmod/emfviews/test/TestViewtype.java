@@ -10,7 +10,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
 
 import fr.inria.atlanmod.emfviews.core.EView;
@@ -37,61 +36,67 @@ public class TestViewtype {
     // three metamodels (contentfwk, BPMN2 and reqif10), with filters and
     // associations.
 
-    EStructuralFeature dp;
-
+    // First check the metamodels (Viewtype)
     {
       Viewtype v = new Viewtype(URI
           .createPlatformResourceURI("viewtype-test/viewtype/full.eviewtype", true));
       v.load(null);
 
       // FIXME: after this point, ideally we should just compare the Viewtype
-      // with
-      // a serialized "expected" result, or at the very least do an exhaustive
-      // comparison with the base models. For now, comparing by hand a few
-      // select
-      // features will do.
+      // with a serialized "expected" result, or at the very least do an
+      // exhaustive comparison with the base models. For now, comparing by hand
+      // a few select features will do.
       EList<EObject> l = v.getContents();
 
       // Ensure we have the three packages we want
-      assertEquals(l.size(), 3);
-      assertEquals(((EPackage) l.get(0)).getName(), "contentfwk");
-      assertEquals(((EPackage) l.get(1)).getName(), "reqif10");
-      assertEquals(((EPackage) l.get(2)).getName(), "bpmn2");
+      assertEquals(3, l.size());
+      assertEquals("contentfwk", ((EPackage) l.get(0)).getName());
+      assertEquals("reqif10", ((EPackage) l.get(1)).getName());
+      assertEquals("bpmn2", ((EPackage) l.get(2)).getName());
 
       // Ensure the filtered elements are absent
       EClass c = (EClass) ((EPackage) l.get(0)).getEClassifier("BusinessArchitecture");
-      assertEquals(c.getFeatureCount(), 1);
+      assertEquals(1, c.getFeatureCount());
       // and make sure the feature we left is in there
       assertNotNull(c.getEStructuralFeature("processes"));
 
       // Ensure our virtual associations are in there
       EClass p = (EClass) ((EPackage) l.get(0)).getEClassifier("Process");
       assertNotNull(p.getEStructuralFeature("detailedProcess"));
-      dp = p.getEStructuralFeature("detailedProcess");
 
       EClass r = (EClass) ((EPackage) l.get(0)).getEClassifier("Requirement");
       assertNotNull(r.getEStructuralFeature("detailedRequirement"));
     }
 
-    // Then, do the same for models
+    // Then, do the same for models (EView)
     {
       EView v = new EView(URI.createPlatformResourceURI("viewtype-test/view/full.eview", true));
       v.load(null);
 
       EList<EObject> l = v.getContents();
 
-      assertEquals(l.size(), 3);
+      assertEquals(3, l.size());
+      assertEquals("EnterpriseArchitecture", l.get(0).eClass().getName());
+      assertEquals("ReqIF", l.get(1).eClass().getName());
+      assertEquals("Definitions", l.get(2).eClass().getName());
 
-      // Check we only have "Process" instances (others are filtered out)
+      // Find the Business Architecture instance
+      EObject ba = l.get(0).eContents().get(1);
+      assertEquals("BusinessArchitecture", ba.eClass().getName());
 
-      System.out.println(l.get(0).eContents().get(1).eContents().get(0));
-      System.out.println(l.get(0).eContents().get(1).eContents().get(0).eGet(dp));
+      // Check we only have "Process" instances in there (others are filtered
+      // out), and that they each have a detailedProcess feature
+      for (EObject e : ba.eContents()) {
+        assertEquals(e.eClass().getName(), "Process");
+        assertNotNull(e.eClass().getEStructuralFeature("detailedProcess"));
+      }
 
-      // System.out.println(l.get(0).eGet(p.getEStructuralFeature("detailedProcess")));
-      // assertEquals(l.get(0).eGet(), "contentfwk");
-      // assertEquals(((EPackage) l.get(1)).getName(), "reqif10");
-      // assertEquals(((EPackage) l.get(2)).getName(), "bpmn2");
+      // Furthermore, the detailed process for "Booking a trip" should link to a
+      // BPMN Process
+      EObject p = ba.eContents().get(0);
+      EObject dp = (EObject) p.eGet(p.eClass().getEStructuralFeature("detailedProcess"));
+      EObject container = dp.eClass().eContainer();
+      assertEquals("bpmn2", container.eGet(container.eClass().getEStructuralFeature("name")));
     }
   }
-
 }
