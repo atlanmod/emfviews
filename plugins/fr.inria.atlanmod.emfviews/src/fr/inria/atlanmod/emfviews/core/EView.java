@@ -117,17 +117,12 @@ public class EView extends View {
         .asList(properties.getProperty("contributingModels").split(","))));
 
     if (correspondenceModelBase != null) {
-      // FIXME: the virtual links delegator recreates the correspondence model
-      // every time, but only if the file already exists
-      // XXX: we could also mark this file as derived
-      IWorkspace workspace = ResourcesPlugin.getWorkspace();
-      // XXX: is the '/' necessary?
-      java.net.URI linksModelURI = workspace.getRoot()
-          .findMember("/" + properties.getProperty("correspondenceModel")).getLocationURI();
+      // XXX: we could mark the correspondence model file as derived
       try {
         VirtualLinksDelegator vld = new VirtualLinksDelegator(correspondenceModelBase);
 
-        vld.createVirtualModelLinks(URI.createURI(linksModelURI.toString()),
+        vld.createVirtualModelLinks(URI
+            .createPlatformResourceURI(properties.getProperty("correspondenceModel"), true),
                                     getContributingModels());
       } catch (Exception e) {
         e.printStackTrace();
