@@ -1,9 +1,100 @@
 <?xml version="1.0" encoding="ASCII"?>
-<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
-  <virtualLinks xsi:type="virtualLinks:Association" name="detailedProcess" upperBound="1" associationTypeName="detailedProcess" sourceElement="//@linkedElements.0" targetElements="//@linkedElements.1"/>
-  <virtualLinks xsi:type="virtualLinks:Association" name="detailedRequirement" upperBound="1" associationTypeName="detailedRequirement" sourceElement="//@linkedElements.2" targetElements="//@linkedElements.3"/>
-  <linkedElements elementRef="//Process" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" name="Process"/>
-  <linkedElements elementRef="//Process" modelRef="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" name="Process"/>
-  <linkedElements elementRef="//Requirement" modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0" name="Requirement"/>
-  <linkedElements elementRef="//SpecObject" modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" name="SpecObject"/>
+<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks xsi:type="virtualLinks:Association" name="detailedProcess"
+                upperBound="1" associationTypeName="detailedProcess"
+                sourceElement="//@linkedElements.0"
+                targetElements="//@linkedElements.1"/>
+  <virtualLinks xsi:type="virtualLinks:Association" name="detailedRequirement"
+                upperBound="1" associationTypeName="detailedRequirement"
+                sourceElement="//@linkedElements.2"
+                targetElements="//@linkedElements.3"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="drivers"
+                filteredElement="//@linkedElements.4"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="goals"
+                filteredElement="//@linkedElements.5"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="objectives"
+                filteredElement="//@linkedElements.6"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="units"
+                filteredElement="//@linkedElements.7"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="actors"
+                filteredElement="//@linkedElements.8"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="roles"
+                filteredElement="//@linkedElements.9"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="functions"
+                filteredElement="//@linkedElements.10"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="services"
+                filteredElement="//@linkedElements.11"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="controls"
+                filteredElement="//@linkedElements.12"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="events"
+                filteredElement="//@linkedElements.13"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="locations"
+                filteredElement="//@linkedElements.14"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="products"
+                filteredElement="//@linkedElements.15"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="contracts"
+                filteredElement="//@linkedElements.16"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="measures"
+                filteredElement="//@linkedElements.17"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="servicesQuality"
+                filteredElement="//@linkedElements.18"/>
+  <linkedElements elementRef="//Process"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="Process"/>
+  <linkedElements elementRef="//Process"
+                  modelRef="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"
+                  name="Process"/>
+  <linkedElements elementRef="//Requirement"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="Requirement"/>
+  <linkedElements elementRef="//SpecObject"
+                  modelRef="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd"
+                  name="SpecObject"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.drivers"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="drivers"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.goals"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="goals"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.objectives"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="objectives"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.units"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="units"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.actors"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="actors"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.roles"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="roles"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.functions"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="functions"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.services"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="services"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.controls"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="controls"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.events"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="events"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.locations"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="locations"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.products"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="products"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.contracts"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="contracts"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.measures"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="measures"/>
+  <linkedElements elementRef="contentfwk.BusinessArchitecture.servicesQuality"
+                  modelRef="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0"
+                  name="servicesQuality"/>
 </virtualLinks:VirtualLinks>

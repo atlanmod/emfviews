@@ -16,12 +16,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Queue;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
@@ -50,6 +52,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
@@ -65,6 +68,10 @@ public class Viewtype extends ResourceImpl {
    */
   private EList<EObject> virtualContents; // list of resources
 
+  /**
+   * Contains all the attributes we have removed from packages in the virtual
+   * resource set. Used by the ViewtypeEditor.
+   */
   private ArrayList<EObject> hiddenAttributes;
 
   public ArrayList<EObject> getHiddenAttributes() {
@@ -136,7 +143,6 @@ public class Viewtype extends ResourceImpl {
     }
     filtersMM = filtersMMUri;
     contributingMetamodels = nsURISs;
-    loadFilterMetamodel(filtersMM);
     loadContributingMetamodels(nsURISs);
     setVirtualContents();
   }
@@ -160,22 +166,98 @@ public class Viewtype extends ResourceImpl {
       // e.printStackTrace();
       // }
     }
-    loadFilterMetamodel(properties.getProperty("filtersMetamodel"));
-    loadContributingMetamodels(properties.getProperty("contributingMetamodels"));
+
+    cloneContributingMetamodels(properties.getProperty("contributingMetamodels"));
     loadCorrespondenceModel(properties.getProperty("correspondenceModel"));
     setVirtualContents();
   }
 
   Resource attributesToHideMM;
 
-  private void loadFilterMetamodel(String filtersMetamodel) {
-    ResourceSet filtersResourceSet = new ResourceSetImpl();
-    attributesToHideMM =
-        filtersResourceSet.getResource(URI.createPlatformResourceURI(filtersMetamodel, true), true);
-  }
-
   public Resource getAttributesToHideMM() {
     return attributesToHideMM;
+  }
+
+  // Clone each metamodel into our virtual resource set, so that we can add and
+  // remove elements from them without affecting the originals.
+  private void cloneContributingMetamodels(String contributingModelsURIs) {
+    contributingEpackages = new ArrayList<>();
+
+    // Get the EPackage from each metamodel URI
+    for (String modelURI : contributingModelsURIs.split(",")) {
+      if (modelURI.startsWith("http")) {
+        contributingEpackages.add(EPackage.Registry.INSTANCE.getEPackage(modelURI));
+      } else if (modelURI.endsWith("ecore")) {
+        // XXX: Since the virtual resource set is empty at this point, this
+        // should merely delegate to the global registry, and be equivalent to
+        // the line above, so we can dispense of this case
+        Resource r =
+            virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
+        contributingEpackages.add((EPackage) r.getContents().get(0));
+      }
+    }
+
+    // Clone each package into our virtual resource set
+    for (EPackage p : contributingEpackages) {
+      EPackage copy = EcoreUtil.copy(p);
+      // EcoreUtil.remove(copiedPackage);
+      virtualResourceSet.getPackageRegistry().put(p.getNsURI(), copy);
+    }
+  }
+
+  // Apply the filters from the given virtual links to all the packages in the
+  // virtual resource set.
+  private void filterMetamodels(VirtualLinks vl) {
+    hiddenAttributes = new ArrayList<>();
+
+    for (VirtualLink l : vl.getVirtualLinks()) {
+      if (l instanceof Filter) {
+        Filter f = (Filter) l;
+        LinkedElement e = f.getFilteredElement();
+        EObject root = virtualResourceSet.getPackageRegistry().getEPackage(e.getModelRef());
+        EObject filteredElement = findElement(root, e.getElementRef());
+        if (filteredElement != null) {
+          EcoreUtil.remove(filteredElement);
+          hiddenAttributes.add(filteredElement);
+        }
+      }
+    }
+  }
+
+  // Try to match all components of the path by with the named contents of the
+  // object. If all components match, return this element. Otherwise, return
+  // null.
+  private EObject findElement(EObject root, String path) {
+    String[] components = path.split("\\.");
+    Queue<EObject> objs = new ArrayDeque<>();
+    objs.add(root);
+
+    EObject o = null;
+    for (String c : components) {
+      boolean match = false;
+      while (!match) {
+        o = objs.poll();
+        // No more objects, give up
+        if (o == null) {
+          return null;
+        }
+        EStructuralFeature nameFeature = o.eClass().getEStructuralFeature("name");
+        // Unnamed feature, cannot match
+        if (nameFeature == null) {
+          return null;
+        }
+        String objName = (String) o.eGet(nameFeature);
+        if (c.equals(objName)) {
+          // Match: add the contents of the current object to the search, and
+          // continue with the next component
+          objs.clear();
+          objs.addAll(o.eContents());
+          match = true;
+        }
+      }
+    }
+
+    return o;
   }
 
   private void loadContributingMetamodels(String contributingModelsURIs) {
@@ -282,10 +364,16 @@ public class Viewtype extends ResourceImpl {
         workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
     correspondenceModelResource.load(uri.toURL().openStream(), null);
     correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
-    List<Association> associations = new ArrayList<>();
-    // FIXME: this cast can fail if the XMI is not a viewtype
+
+    // Get the virtual links from the serialized resource
+    // FIXME: this cast can fail if the XMI is not a VirtualLinks
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
+
+    filterMetamodels(virtualLinks);
+
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
+
+    List<Association> associations = new ArrayList<>();
     for (VirtualLink virtualLink : allVirtualLinks) {
       if (virtualLink instanceof Association) {
         Association association = (Association) virtualLink;

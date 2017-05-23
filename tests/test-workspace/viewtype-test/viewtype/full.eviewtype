@@ -1,4 +1,3 @@
 contributingMetamodels=viewtype-test/metamodels/contentfwk.ecore,http://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
 correspondenceModel=viewtype-test/viewtype/weaving.xmi
 correspondenceModelBase=viewtype-test/viewtype/matching.ecl
-filtersMetamodel=/viewtype-test/viewtype/filter.ecore
