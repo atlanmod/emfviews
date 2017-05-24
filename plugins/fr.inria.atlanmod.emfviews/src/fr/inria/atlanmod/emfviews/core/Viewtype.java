@@ -175,7 +175,6 @@ public class Viewtype extends ResourceImpl {
     // Clone each package into our virtual resource set
     for (EPackage p : contributingEpackages) {
       EPackage copy = EcoreUtil.copy(p);
-      // EcoreUtil.remove(copiedPackage);
       virtualResourceSet.getPackageRegistry().put(p.getNsURI(), copy);
     }
   }
