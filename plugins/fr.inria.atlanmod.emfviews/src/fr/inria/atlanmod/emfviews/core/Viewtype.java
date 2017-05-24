@@ -180,21 +180,22 @@ public class Viewtype extends ResourceImpl {
     }
   }
 
-  // Apply the filters from the given virtual links to all the packages in the
-  // virtual resource set.
-  private void filterMetamodels(VirtualLinks vl) {
+  /**
+   * Apply the given filters to all the packages in the virtual resource set.
+   *
+   * @param filters The filters describing the elements to remove from the
+   *          packages in the resource set.
+   */
+  private void filterMetamodels(List<Filter> filters) {
     hiddenAttributes = new ArrayList<>();
 
-    for (VirtualLink l : vl.getVirtualLinks()) {
-      if (l instanceof Filter) {
-        Filter f = (Filter) l;
-        LinkedElement e = f.getFilteredElement();
-        EObject root = virtualResourceSet.getPackageRegistry().getEPackage(e.getModelRef());
-        EObject filteredElement = EMFViewsUtil.findElement(root, e.getElementRef());
-        if (filteredElement != null) {
-          EcoreUtil.remove(filteredElement);
-          hiddenAttributes.add(filteredElement);
-        }
+    for (Filter f : filters) {
+      LinkedElement e = f.getFilteredElement();
+      EObject root = virtualResourceSet.getPackageRegistry().getEPackage(e.getModelRef());
+      EObject filteredElement = EMFViewsUtil.findElement(root, e.getElementRef());
+      if (filteredElement != null) {
+        EcoreUtil.remove(filteredElement);
+        hiddenAttributes.add(filteredElement);
       }
     }
   }
@@ -214,17 +215,20 @@ public class Viewtype extends ResourceImpl {
     // FIXME: this cast can fail if the XMI is not a VirtualLinks
     VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
 
-    filterMetamodels(virtualLinks);
-
-    EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
-
+    // Separate associations and filters links
     List<Association> associations = new ArrayList<>();
-    for (VirtualLink virtualLink : allVirtualLinks) {
-      if (virtualLink instanceof Association) {
-        Association association = (Association) virtualLink;
-        associations.add(association);
+    List<Filter> filters = new ArrayList<>();
+    for (VirtualLink link : virtualLinks.getVirtualLinks()) {
+      if (link instanceof Association) {
+        associations.add((Association) link);
+      } else if (link instanceof Filter) {
+        filters.add((Filter) link);
       }
     }
+
+    // Remove filtered elements from the packages in the resource set
+    filterMetamodels(filters);
+
     System.out
         .println("contributingMetamodels:  " + properties.getProperty("contributingMetamodels"));
 
