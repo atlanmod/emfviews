@@ -33,7 +33,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -46,7 +45,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
@@ -124,28 +122,6 @@ public class Viewtype extends ResourceImpl {
     correspondenceModelResource.save(null);
   }
 
-  // FIXME: unused?
-  public Viewtype(List<String> nsURIs, String filtersMMUri) {
-    super();
-    virtualResourceSet = new ResourceSetImpl();
-    String nsURISs = "";
-
-    for (String nsURI : nsURIs) {
-      if (nsURI.startsWith("platform:/resource/")) {
-        nsURI = nsURI.replace("platform:/resource/", "");
-      }
-      if (nsURISs.length() > 0) {
-        nsURISs += "," + nsURI.toString();
-      } else {
-        nsURISs = nsURI.toString();
-      }
-    }
-    filtersMM = filtersMMUri;
-    contributingMetamodels = nsURISs;
-    loadContributingMetamodels(nsURISs);
-    setVirtualContents();
-  }
-
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
     properties = new Properties();
@@ -219,100 +195,6 @@ public class Viewtype extends ResourceImpl {
           EcoreUtil.remove(filteredElement);
           hiddenAttributes.add(filteredElement);
         }
-      }
-    }
-  }
-
-  private void loadContributingMetamodels(String contributingModelsURIs) {
-
-    hiddenAttributes = new ArrayList<>();
-    contributingEpackages = new ArrayList<>();
-    EList<EObject> epackagesWithAttsToHide = attributesToHideMM.getContents();
-
-    String modelsURIs[] = contributingModelsURIs.split(",");
-    for (int i = 0; i < modelsURIs.length; i++) {
-      String modelURI = modelsURIs[i];
-      if (modelURI.startsWith("http")) {
-        EPackage contributingEcoreModelPackage = EPackage.Registry.INSTANCE.getEPackage(modelURI);
-
-        Copier copier = new Copier();
-        EObject copy = copier.copy(contributingEcoreModelPackage);
-        copier.copyReferences();
-        EPackage copiedPackage = (EPackage) copy;
-        EcoreUtil.remove(copiedPackage);
-        contributingEpackages.add(contributingEcoreModelPackage);
-        // FIXME: would make more sense to start with packages that have
-        // elements to be filtered, and have a visitor to filter recursively
-        for (int j = 0; j < epackagesWithAttsToHide.size(); j++) {
-          EPackage tempPack = (EPackage) epackagesWithAttsToHide.get(j);
-          if (tempPack.getNsURI().compareToIgnoreCase(copiedPackage.getNsURI()) == 0) {
-            EList<EClassifier> eClassifiersWithItemsToHide = tempPack.getEClassifiers();
-            for (EClassifier eClassifierWithItemsToHide : eClassifiersWithItemsToHide) {
-              EClassifier requiredEclassifier =
-                  copiedPackage.getEClassifier(eClassifierWithItemsToHide.getName());
-              // FIXME: there are other classifiers beyond EClass (EEnum and
-              // EDataType), so this downcast is unsafe [Note: classifiers]
-              EClass eClassWithItemsToHide = (EClass) requiredEclassifier;
-              EList<EStructuralFeature> attsToHide =
-                  ((EClass) eClassifierWithItemsToHide).getEStructuralFeatures();
-              for (EStructuralFeature eAttributeToHide : attsToHide) {
-                EStructuralFeature theAtt =
-                    eClassWithItemsToHide.getEStructuralFeature(eAttributeToHide.getName());
-                EClassifier originalClassifier = contributingEcoreModelPackage
-                    .getEClassifier(eClassifierWithItemsToHide.getName());
-                EClass originalEClass = (EClass) originalClassifier;
-                hiddenAttributes.add(originalEClass.getEStructuralFeature(theAtt.getName()));
-                eClassWithItemsToHide.getEStructuralFeatures().remove(theAtt);
-              }
-            }
-          }
-        }
-
-        // FIXME: is the temp Resource necessary?
-        ResourceImpl resourceTemp = new ResourceImpl();
-        resourceTemp.setURI(URI.createURI(contributingEcoreModelPackage.getNsURI()));
-        resourceTemp.getContents().add(copiedPackage);
-        virtualResourceSet.getPackageRegistry().put(contributingEcoreModelPackage.getNsURI(),
-                                                    copiedPackage);
-
-        // FIXME: this looks like a nasty duplication: the only change is how we
-        // fetch the EPackage
-      } else if (modelURI.endsWith("ecore")) {
-        Resource metamodelResource =
-            virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
-        EPackage mmPackage = (EPackage) metamodelResource.getContents().get(0);
-
-        Copier copier = new Copier();
-        EObject copy = copier.copy(mmPackage);
-        copier.copyReferences();
-        EPackage copiedPackage = (EPackage) copy;
-        EcoreUtil.remove(copiedPackage);
-
-        contributingEpackages.add(mmPackage);
-        for (int j = 0; j < epackagesWithAttsToHide.size(); j++) {
-          EPackage tempPack = (EPackage) epackagesWithAttsToHide.get(j);
-          if (tempPack.getNsURI().compareToIgnoreCase(copiedPackage.getNsURI()) == 0) {
-            EList<EClassifier> eClassifiersWithItemsToHide = tempPack.getEClassifiers();
-            for (EClassifier eClassifierWithItemsToHide : eClassifiersWithItemsToHide) {
-              EClassifier requiredEclassifier =
-                  copiedPackage.getEClassifier(eClassifierWithItemsToHide.getName());
-              EClass eClassWithItemsToHide = (EClass) requiredEclassifier;
-              EList<EStructuralFeature> attsToHide =
-                  ((EClass) eClassifierWithItemsToHide).getEStructuralFeatures();
-              for (EStructuralFeature eAttributeToHide : attsToHide) {
-                EStructuralFeature theAtt =
-                    eClassWithItemsToHide.getEStructuralFeature(eAttributeToHide.getName());
-                EClassifier originalClassifier =
-                    mmPackage.getEClassifier(eClassifierWithItemsToHide.getName());
-                EClass originalEClass = (EClass) originalClassifier;
-                hiddenAttributes.add(originalEClass.getEStructuralFeature(theAtt.getName()));
-                eClassWithItemsToHide.getEStructuralFeatures().remove(theAtt);
-              }
-
-            }
-          }
-        }
-        virtualResourceSet.getPackageRegistry().put(mmPackage.getNsURI(), copiedPackage);
       }
     }
   }

@@ -11,7 +11,6 @@
 
 package fr.inria.atlanmod.emfviews.core;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -39,11 +38,4 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
                                                                       IOException {
     return new EView(contributingModels, compositionMetamodel, correspondenceModelAbsolutePath);
   }
-
-  // FIXME: unused?
-  public Resource createViewtype(List<String> contributingMetamodels,
-                                 String filtersMMUri) throws FileNotFoundException, IOException {
-    return new Viewtype(contributingMetamodels, filtersMMUri);
-  }
-
 }
