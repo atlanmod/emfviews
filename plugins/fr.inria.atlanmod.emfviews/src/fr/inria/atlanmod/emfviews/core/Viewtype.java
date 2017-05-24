@@ -224,39 +224,51 @@ public class Viewtype extends ResourceImpl {
     }
   }
 
-  // Try to match all components of the path by with the named contents of the
-  // object. If all components match, return this element. Otherwise, return
-  // null.
+  /**
+   * Find and return the element that matches the path. Path is a dot-separated
+   * list of names describing the full hierarchy of the target element from the
+   * root object. E.g.,
+   *
+   * "packageName.className.attributeName"
+   *
+   * @param root the root object to begin the search with
+   * @param path dot-separated list of names to match
+   * @return the matc
+   */
   private EObject findElement(EObject root, String path) {
     String[] components = path.split("\\.");
     Queue<EObject> objs = new ArrayDeque<>();
     objs.add(root);
 
+    // Try to match each component with each object in the queue
     EObject o = null;
-    for (String c : components) {
-      boolean match = false;
-      while (!match) {
+    for (String comp : components) {
+      boolean componentMatched = false;
+      while (!componentMatched) {
         o = objs.poll();
-        // No more objects, give up
+        // No more objects to search, give up since we haven't matched all the
+        // components
         if (o == null) {
           return null;
         }
         EStructuralFeature nameFeature = o.eClass().getEStructuralFeature("name");
-        // Unnamed feature, cannot match
-        if (nameFeature == null) {
-          return null;
+        // Can only match named features
+        if (nameFeature != null) {
+          String objName = (String) o.eGet(nameFeature);
+          if (comp.equals(objName)) {
+            // Match: continue with the next component and the contents of the
+            // matching object
+            objs.clear();
+            objs.addAll(o.eContents());
+            componentMatched = true;
+          }
         }
-        String objName = (String) o.eGet(nameFeature);
-        if (c.equals(objName)) {
-          // Match: add the contents of the current object to the search, and
-          // continue with the next component
-          objs.clear();
-          objs.addAll(o.eContents());
-          match = true;
-        }
+        // Mismatch: continue with the next object in the queue
       }
     }
 
+    // Return the object that matched the last component, or null if the path
+    // was empty
     return o;
   }
 
