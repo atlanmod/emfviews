@@ -158,22 +158,12 @@ public class Viewtype extends ResourceImpl {
   private void cloneContributingMetamodels(String contributingModelsURIs) {
     contributingEpackages = new ArrayList<>();
 
-    // Get the EPackage from each metamodel URI
     for (String modelURI : contributingModelsURIs.split(",")) {
-      if (modelURI.startsWith("http")) {
-        contributingEpackages.add(EPackage.Registry.INSTANCE.getEPackage(modelURI));
-      } else if (modelURI.endsWith("ecore")) {
-        // XXX: Since the virtual resource set is empty at this point, this
-        // should merely delegate to the global registry, and be equivalent to
-        // the line above, so we can dispense of this case
-        Resource r =
-            virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
-        contributingEpackages.add((EPackage) r.getContents().get(0));
-      }
-    }
+      // Get the EPackage from each metamodel URI
+      EPackage p = EMFViewsUtil.getEPackageFromURI(modelURI);
+      contributingEpackages.add(p);
 
-    // Clone each package into our virtual resource set
-    for (EPackage p : contributingEpackages) {
+      // Clone the package into our virtual resource set
       EPackage copy = EcoreUtil.copy(p);
       virtualResourceSet.getPackageRegistry().put(p.getNsURI(), copy);
     }

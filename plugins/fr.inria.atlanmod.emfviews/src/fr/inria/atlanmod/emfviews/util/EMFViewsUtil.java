@@ -3,8 +3,12 @@ package fr.inria.atlanmod.emfviews.util;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 public final class EMFViewsUtil {
   // Prevent instances
@@ -56,5 +60,22 @@ public final class EMFViewsUtil {
     // Return the object that matched the last component, or null if the path
     // was empty
     return o;
+  }
+
+  // Return an EPackage from a modelURI, which can start with http or point to a
+  // workspace Ecore file. If the package cannot be found, return null.
+  public static EPackage getEPackageFromURI(String modelURI) {
+    // FIXME: this distinction between http and ecore seems arbitrary; can't we
+    // use URI with different protocols in the argument, and let EMF resolve it?
+    if (modelURI.startsWith("http")) {
+      return EPackage.Registry.INSTANCE.getEPackage(modelURI);
+    } else if (modelURI.endsWith("ecore")) {
+      // XXX: can we get the resource without creating the ResourceSet?
+      Resource r =
+          new ResourceSetImpl().getResource(URI.createPlatformResourceURI(modelURI, true), true);
+      return (EPackage) r.getContents().get(0);
+    } else {
+      return null;
+    }
   }
 }
