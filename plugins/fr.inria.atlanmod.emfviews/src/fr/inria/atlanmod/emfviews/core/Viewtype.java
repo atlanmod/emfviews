@@ -16,14 +16,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Queue;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
@@ -51,6 +49,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
+import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinks.Association;
 import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
@@ -215,61 +214,13 @@ public class Viewtype extends ResourceImpl {
         Filter f = (Filter) l;
         LinkedElement e = f.getFilteredElement();
         EObject root = virtualResourceSet.getPackageRegistry().getEPackage(e.getModelRef());
-        EObject filteredElement = findElement(root, e.getElementRef());
+        EObject filteredElement = EMFViewsUtil.findElement(root, e.getElementRef());
         if (filteredElement != null) {
           EcoreUtil.remove(filteredElement);
           hiddenAttributes.add(filteredElement);
         }
       }
     }
-  }
-
-  /**
-   * Find and return the element that matches the path. Path is a dot-separated
-   * list of names describing the full hierarchy of the target element from the
-   * root object. E.g.,
-   *
-   * "packageName.className.attributeName"
-   *
-   * @param root the root object to begin the search with
-   * @param path dot-separated list of names to match
-   * @return the matc
-   */
-  private EObject findElement(EObject root, String path) {
-    String[] components = path.split("\\.");
-    Queue<EObject> objs = new ArrayDeque<>();
-    objs.add(root);
-
-    // Try to match each component with each object in the queue
-    EObject o = null;
-    for (String comp : components) {
-      boolean componentMatched = false;
-      while (!componentMatched) {
-        o = objs.poll();
-        // No more objects to search, give up since we haven't matched all the
-        // components
-        if (o == null) {
-          return null;
-        }
-        EStructuralFeature nameFeature = o.eClass().getEStructuralFeature("name");
-        // Can only match named features
-        if (nameFeature != null) {
-          String objName = (String) o.eGet(nameFeature);
-          if (comp.equals(objName)) {
-            // Match: continue with the next component and the contents of the
-            // matching object
-            objs.clear();
-            objs.addAll(o.eContents());
-            componentMatched = true;
-          }
-        }
-        // Mismatch: continue with the next object in the queue
-      }
-    }
-
-    // Return the object that matched the last component, or null if the path
-    // was empty
-    return o;
   }
 
   private void loadContributingMetamodels(String contributingModelsURIs) {
