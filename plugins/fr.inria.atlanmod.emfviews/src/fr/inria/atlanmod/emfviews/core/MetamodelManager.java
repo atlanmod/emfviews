@@ -30,7 +30,7 @@ import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 
 public class MetamodelManager {
 
-  private Resource compositionMetamodel;
+  private Resource viewpoint;
 
   private List<EPackage> contributingMetamodels = new ArrayList<>();
 
@@ -45,10 +45,10 @@ public class MetamodelManager {
 
   private View virtualModel;
 
-  public MetamodelManager(Collection<Object> contributingMetamodels, Resource compositionMetamodel,
+  public MetamodelManager(Collection<Object> contributingMetamodels, Resource viewpoint,
                           View virtualModel) {
     this.virtualModel = virtualModel;
-    this.compositionMetamodel = compositionMetamodel;
+    this.viewpoint = viewpoint;
     this.contributingMetamodels = new ArrayList<>();
     for (Object object : contributingMetamodels) {
       if (object instanceof EPackage) {
@@ -102,7 +102,7 @@ public class MetamodelManager {
         }
       }
     } else {
-      for (Iterator<EObject> i = compositionMetamodel.getAllContents(); i.hasNext();) {
+      for (Iterator<EObject> i = viewpoint.getAllContents(); i.hasNext();) {
         EObject obj = i.next();
         if (obj instanceof EClass) {
           if (((EClass) obj).getEPackage().getName().equals("MergePackage")) {

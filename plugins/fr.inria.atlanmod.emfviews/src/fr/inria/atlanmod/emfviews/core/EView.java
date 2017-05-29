@@ -57,7 +57,7 @@ public class EView extends View {
     super();
     virtualResourceSet = new ResourceSetImpl();
 
-    compositionMetamodelURI = viewpointUri;
+    viewpointURI = viewpointUri;
     EmfViewsFactory vFac = new EmfViewsFactory();
     org.eclipse.emf.common.util.URI emfURI =
         org.eclipse.emf.common.util.URI.createURI(viewpointUri);
@@ -105,7 +105,7 @@ public class EView extends View {
     properties.load(inputStream);
     virtualResourceSet = new ResourceSetImpl();
 
-    String matchingModel = readVirtualCompositionMMProperties();
+    String matchingModel = readViewpointProperties();
 
     loadContributingMetamodels(new ArrayList<>(Arrays
         .asList(viewpointProperties.getProperty("contributingMetamodels").split(","))));
@@ -135,8 +135,8 @@ public class EView extends View {
     setVirtualContents();
   }
 
-  private String readVirtualCompositionMMProperties() throws FileNotFoundException, IOException {
-    String virtualMMPath = properties.getProperty("compositionMetamodel");
+  private String readViewpointProperties() throws FileNotFoundException, IOException {
+    String virtualMMPath = properties.getProperty("viewpoint");
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     // FIXME: Why not require the '/' in the properties file?
@@ -261,8 +261,8 @@ public class EView extends View {
     fileContent.append(contributingModelsLine);
     fileContent.append("\n");
 
-    String compositionMetamodelLine = "compositionMetamodel=" + compositionMetamodelURI;
-    fileContent.append(compositionMetamodelLine);
+    String viewpointLine = "viewpoint=" + viewpointURI;
+    fileContent.append(viewpointLine);
     fileContent.append("\n");
 
     String weavingModelLine = "weavingModel=" + weavingModelURI;

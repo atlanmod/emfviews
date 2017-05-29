@@ -81,8 +81,8 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
         .setDescription(Messages.getString("VirtualModelFileWizard.Page.Description")); //$NON-NLS-1$
     viewContainerFolderSelectionPage.setFileExtension("eview"); //$NON-NLS-1$
     addPage(viewContainerFolderSelectionPage);
-    String compositionMetamodel = virtualMetamodel.getFullPath().makeRelative().toString();
-    createViewScreen = new CreateViewScreen(compositionMetamodel);
+    String viewpoint = virtualMetamodel.getFullPath().makeRelative().toString();
+    createViewScreen = new CreateViewScreen(viewpoint);
 
     addPage(createViewScreen);
   }
@@ -109,7 +109,7 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
   @Override
   public boolean performFinish() {
 
-    String viewpointPath = createViewScreen.getCompositionMetaModelPath().get(0);
+    String viewpointPath = createViewScreen.getViewpointPath().get(0);
 
     ArrayList<String> inputmodelsPlatformUris = createViewScreen.getInputModelPaths();
     ArrayList<String> relativeInputmodelsUris = new ArrayList<>();
@@ -144,7 +144,7 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
       fileContent.append("contributingModels=");
       fileContent.append(contributingModelsToSerialize);
       fileContent.append("\n");
-      fileContent.append("compositionMetamodel=");
+      fileContent.append("viewpoint=");
       fileContent.append(viewpointPath);
       fileContent.append("\n");
       fileContent.append("weavingModel=");

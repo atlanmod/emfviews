@@ -42,15 +42,15 @@ public class CreateViewScreen extends WizardPage {
     return inputModelPaths;
   }
 
-  public ArrayList<String> getCompositionMetaModelPath() {
-    return compositionMetaModelPath;
+  public ArrayList<String> getViewpointPath() {
+    return viewpointPath;
   }
 
   public ArrayList<String> getLinksModelPath() {
     return linksModelPath;
   }
 
-  private ArrayList<String> compositionMetaModelPath;
+  private ArrayList<String> viewpointPath;
 
   private ArrayList<String> linksModelPath;
 
@@ -60,9 +60,9 @@ public class CreateViewScreen extends WizardPage {
    */
   private List inputmodelsList;
 
-  private List compositionMetaModelList;
+  private List viewpointList;
 
-  public CreateViewScreen(String virtualCompositionMetamodel) {
+  public CreateViewScreen(String viewpoint) {
 
     super(Messages.getString("VirtualModelFileScreen.Page.Name"));
     setTitle(Messages.getString("VirtualModelFileScreen.Title")); //$NON-NLS-1$
@@ -71,8 +71,8 @@ public class CreateViewScreen extends WizardPage {
 
     this.setPageComplete(false);
     inputModelPaths = new ArrayList<>();
-    compositionMetaModelPath = new ArrayList<>();
-    compositionMetaModelPath.add(virtualCompositionMetamodel);
+    viewpointPath = new ArrayList<>();
+    viewpointPath.add(viewpoint);
     linksModelPath = new ArrayList<>();
   }
 
@@ -105,12 +105,12 @@ public class CreateViewScreen extends WizardPage {
 
     GridData dataLists = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
 
-    compositionMetaModelList =
+    viewpointList =
         createModelControl(container,
                            Messages.getString("VirtualModelFileScreen.CompositionMetamodel"), //$NON-NLS-1$
                            new ModelSelection(container.getShell(), Messages
                                .getString("VirtualModelFileScreen.CompositionMetamodelCreation"), //$NON-NLS-1$
-                                              compositionMetaModelPath,
+                                              viewpointPath,
                                               ModelSelection.COMPOSITIONMETAMODEL),
                            dataLists); // $NON-NLS-2$
     inputmodelsList =
@@ -166,7 +166,7 @@ public class CreateViewScreen extends WizardPage {
             inputModelPaths.add(result[1].toString());
             break;
           case ModelSelection.COMPOSITIONMETAMODEL:
-            compositionMetaModelPath.add(result[1].toString());
+            viewpointPath.add(result[1].toString());
             break;
           case ModelSelection.LINKSMODEL:
             linksModelPath.add(result[1].toString());
@@ -205,12 +205,12 @@ public class CreateViewScreen extends WizardPage {
   private void updateLists() {
 
     inputmodelsList.removeAll();
-    compositionMetaModelList.removeAll();
+    viewpointList.removeAll();
     for (String path : inputModelPaths) {
       inputmodelsList.add(path);
     }
-    for (String path : compositionMetaModelPath) {
-      compositionMetaModelList.add(path);
+    for (String path : viewpointPath) {
+      viewpointList.add(path);
     }
     checkValid();
 
@@ -227,7 +227,7 @@ public class CreateViewScreen extends WizardPage {
       return false;
     }
 
-    if (compositionMetaModelPath.isEmpty()) {
+    if (viewpointPath.isEmpty()) {
 
       setErrorMessage(Messages
           .getString("VirtualModelFileWizard.INPUT_COMPOSITION_METAMODEL_ISSUE")); //$NON-NLS-1$

@@ -33,9 +33,9 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
   }
 
   // FIXME: unused?
-  public Resource createEView(List<String> contributingModels, String compositionMetamodel,
+  public Resource createEView(List<String> contributingModels, String viewpoint,
                               String weavingModelAbsolutePath) throws MalformedURLException,
                                                                       IOException {
-    return new EView(contributingModels, compositionMetamodel, weavingModelAbsolutePath);
+    return new EView(contributingModels, viewpoint, weavingModelAbsolutePath);
   }
 }

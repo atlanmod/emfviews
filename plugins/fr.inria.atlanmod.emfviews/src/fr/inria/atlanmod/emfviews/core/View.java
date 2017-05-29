@@ -46,7 +46,7 @@ public abstract class View extends ResourceImpl {
 
   protected String contributingModelsURIs;
 
-  protected String compositionMetamodelURI;
+  protected String viewpointURI;
 
   protected String contributingMetamodelsURIs;
 
@@ -105,13 +105,13 @@ public abstract class View extends ResourceImpl {
   }
   //
   // public View(List<URI> contributingModels, List<URI> contributingMetamodels,
-  // URI linksModel, URI compositionMetamodel) {
+  // URI linksModel, URI viewpoint) {
   // super();
   //
   // }
   //
   // public View(List<String> contributingModels,
-  // List<String> contributingMetamodels, String compositionMetamodel) {
+  // List<String> contributingMetamodels, String viewpoint) {
   // super();
   // }
 
@@ -174,8 +174,8 @@ public abstract class View extends ResourceImpl {
     fileContent.append(contributingModelsLine);
     fileContent.append("\n");
 
-    String compositionMetamodelLine = "compositionMetamodel=" + compositionMetamodelURI;
-    fileContent.append(compositionMetamodelLine);
+    String viewpointLine = "viewpoint=" + viewpointURI;
+    fileContent.append(viewpointLine);
     fileContent.append("\n");
 
     String contributingMetamodelsLine = "contributingMetamodels=" + contributingMetamodelsURIs;

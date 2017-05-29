@@ -1,4 +1,4 @@
 contributingModels=file:C:/newEmfViews2/secondinstanceworkspace/13_view_with_ocl/models/travelAgencyEnterpriseArchitecture.xmi,file:C:/newEmfViews2/secondinstanceworkspace/13_view_with_ocl/models/bookingTripProcess.xmi,file:C:/newEmfViews2/secondinstanceworkspace/13_view_with_ocl/models/processRequirements.xmi,file:C:/newEmfViews2/secondinstanceworkspace/13_view_with_ocl/models/petstore-app_profile.profile.uml,file:C:/newEmfViews2/secondinstanceworkspace/13_view_with_ocl/models/petstore-app_class_diagram.uml
-compositionMetamodel=14_view_with_ocl_and_ecl/viewpoints/vt.eviewpoint
+viewpoint=14_view_with_ocl_and_ecl/viewpoints/vt.eviewpoint
 weavingModel=14_view_with_ocl_and_ecl/views/v.xmi
 matchingModel=14_view_with_ocl_and_ecl/viewpoints/vt.ecl
