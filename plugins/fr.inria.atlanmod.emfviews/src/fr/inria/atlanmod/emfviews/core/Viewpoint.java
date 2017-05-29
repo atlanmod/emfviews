@@ -77,10 +77,10 @@ public class Viewpoint extends ResourceImpl {
   private String contributingMetamodels;
   private String filtersMM;
   private String correspondenceModel;
-  private String correspondenceModelBase;
+  private String matchingModel;
 
-  public String getCorrespondenceModelBase() {
-    return correspondenceModelBase;
+  public String getMatchingModel() {
+    return matchingModel;
   }
 
   private XMIResourceImpl correspondenceModelResource;
@@ -127,15 +127,15 @@ public class Viewpoint extends ResourceImpl {
     properties.load(inputStream);
     // FIXME: this should create a weaving model XMI from the ECL file, but do
     // we actually need it?
-    if (properties.getProperty("correspondenceModelBase") != null) {
-      correspondenceModelBase = properties.getProperty("correspondenceModelBase");
+    if (properties.getProperty("matchingModel") != null) {
+      matchingModel = properties.getProperty("matchingModel");
       // IWorkspace workspace = ResourcesPlugin.getWorkspace();
       // java.net.URI uri = workspace.getRoot()
       // .findMember("/" + properties.getProperty("correspondenceModel"))
       // .getLocationURI();
       // try {
       // VirtualLinksDelegator vld = new VirtualLinksDelegator(
-      // properties.getProperty("correspondenceModelBase"));
+      // properties.getProperty("matchingModel"));
       // vld.createVirtualMetamodelLinks(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
       // //extendedMMviewpoint.xmi is rewrited
       // } catch (CoreException e) {
@@ -492,14 +492,14 @@ public class Viewpoint extends ResourceImpl {
       correspondenceModel = correspondenceModelPath.toString();
     }
 
-    if (dslTechnology.compareToIgnoreCase("none") != 0 && correspondenceModelBase == null) {
-      IPath modelBasePath = file.getFullPath().removeFileExtension().addFileExtension("ecl");
+    if (dslTechnology.compareToIgnoreCase("none") != 0 && matchingModel == null) {
+      IPath matchingModelPath = file.getFullPath().removeFileExtension().addFileExtension("ecl");
 
       IWorkspace workspace = ResourcesPlugin.getWorkspace();
       String veamosA = new File(workspace.getRoot().getLocationURI().getPath()).getAbsolutePath();
-      String laRuta = veamosA.concat(modelBasePath.toString());
+      String laRuta = veamosA.concat(matchingModelPath.toString());
 
-      correspondenceModelBase = modelBasePath.toString();
+      matchingModel = matchingModelPath.toString();
 
       File fileModelBase = new File(laRuta);
       fileModelBase.createNewFile();
@@ -509,9 +509,9 @@ public class Viewpoint extends ResourceImpl {
       fileContent.append(correspondenceModelLine);
       fileContent.append("\n");
 
-      String correspondenceModelBaseLine =
-          "correspondenceModelBase=" + correspondenceModel.replaceAll("xmi", dslTechnology);
-      fileContent.append(correspondenceModelBaseLine);
+      String matchingModelLine =
+          "matchingModel=" + correspondenceModel.replaceAll("xmi", dslTechnology);
+      fileContent.append(matchingModelLine);
       fileContent.append("\n");
       String filtersMetamodelLine = "filtersMetamodel=" + filtersMM;
       fileContent.append(filtersMetamodelLine);

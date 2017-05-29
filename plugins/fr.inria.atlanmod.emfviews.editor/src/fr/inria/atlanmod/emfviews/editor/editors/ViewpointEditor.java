@@ -125,7 +125,7 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
                                            String addedMetamodelUri, String dslBase) {
     Properties properties = createPropertiesFromViewpointInTextEditor(existingViewpointDefinition);
     String correspondenceModel = properties.getProperty("correspondenceModel");
-    String correspondenceModelBase = properties.getProperty("correspondenceModelBase");
+    String matchingModel = properties.getProperty("matchingModel");
     String metamodels = properties.getProperty("contributingMetamodels");
 
     if (addedMetamodelUri != null) {
@@ -149,26 +149,25 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
       metamodels = mm;
     }
     if (dslBase != null) {
-      correspondenceModelBase = dslBase;
+      matchingModel = dslBase;
     }
 
     String updatedVMM = updateViewpoint("contributingMetamodels=" + metamodels,
                                         "correspondenceModel=" + correspondenceModel,
-                                        "correspondenceModelBase=" + correspondenceModelBase);
+                                        "matchingModel=" + matchingModel);
 
     return updatedVMM;
   }
 
   private String updateViewpoint(String contributingMetamodelsProperty,
-                                 String correspondenceModelProperty,
-                                 String correspondenceModelBaseProperty) {
+                                 String correspondenceModelProperty, String matchingModelProperty) {
     StringBuffer fileContent = new StringBuffer();
     fileContent.append(contributingMetamodelsProperty);
     fileContent.append("\n");
     fileContent.append(correspondenceModelProperty);
     fileContent.append("\n");
-    if (correspondenceModelBaseProperty != null) {
-      fileContent.append(correspondenceModelBaseProperty);
+    if (matchingModelProperty != null) {
+      fileContent.append(matchingModelProperty);
       fileContent.append("\n");
     }
 
@@ -361,18 +360,17 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
           selectLinksDslDialog.create();
 
           if (selectLinksDslDialog.open() == Window.OK) {
-            IFile correspondenceModelBaseFile = (IFile) selectLinksDslDialog.getResult()[0];
+            IFile matchingModelFile = (IFile) selectLinksDslDialog.getResult()[0];
 
-            String correspondenceModelBasePath =
-                correspondenceModelBaseFile.getFullPath().toString();
-            correspondenceModelBasePath = correspondenceModelBasePath.replaceFirst("/", "");
+            String matchingModelPath = matchingModelFile.getFullPath().toString();
+            matchingModelPath = matchingModelPath.replaceFirst("/", "");
 
-            linksDslText.setText(correspondenceModelBasePath);
+            linksDslText.setText(matchingModelPath);
 
             IDocument theDoc = viewpointTextEditor.getDocumentProvider()
                 .getDocument(viewpointTextEditor.getEditorInput());
             String editorText = theDoc.get();
-            theDoc.set(updateViewpointDefinition(editorText, null, correspondenceModelBasePath));
+            theDoc.set(updateViewpointDefinition(editorText, null, matchingModelPath));
 
           }
         }
@@ -601,8 +599,8 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
     }
     if (newPageIndex == 1) {
 
-      String correspondenceModelBase = properties.getProperty("correspondenceModelBase");
-      linksDslFile = correspondenceModelBase;
+      String matchingModel = properties.getProperty("matchingModel");
+      linksDslFile = matchingModel;
       updateLists();
       updateLinksDslText();
 

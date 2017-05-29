@@ -1,4 +1,4 @@
 contributingMetamodels=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0,http://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
 correspondenceModel=2_EAview/1_viewpoint/myEAviewpoint.xmi
-correspondenceModelBase=2_EAview/1_viewpoint/myEAviewpoint.ecl
+matchingModel=2_EAview/1_viewpoint/myEAviewpoint.ecl
 filtersMetamodel=/2_EAview/1_viewpoint/myEAviewpoint.ecore

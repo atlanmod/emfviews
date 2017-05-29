@@ -186,8 +186,8 @@ public abstract class View extends ResourceImpl {
 
     fileContent.append(correspondenceModelLine);
 
-    String correspondenceModelBaseLine = "correspondenceModelBase=" + correspondenceModelURI;
-    fileContent.append(correspondenceModelBaseLine);
+    String matchingModelLine = "matchingModel=" + correspondenceModelURI;
+    fileContent.append(matchingModelLine);
 
     InputStream stream = openContentStream(fileContent.toString());
     if (file.exists()) {

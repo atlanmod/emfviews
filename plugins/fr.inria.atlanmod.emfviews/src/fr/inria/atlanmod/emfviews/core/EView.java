@@ -105,7 +105,7 @@ public class EView extends View {
     properties.load(inputStream);
     virtualResourceSet = new ResourceSetImpl();
 
-    String correspondenceModelBase = readVirtualCompositionMMProperties();
+    String matchingModel = readVirtualCompositionMMProperties();
 
     loadContributingMetamodels(new ArrayList<>(Arrays
         .asList(viewpointProperties.getProperty("contributingMetamodels").split(","))));
@@ -116,10 +116,10 @@ public class EView extends View {
     loadContributingModels(new ArrayList<>(Arrays
         .asList(properties.getProperty("contributingModels").split(","))));
 
-    if (correspondenceModelBase != null) {
+    if (matchingModel != null) {
       // XXX: we could mark the correspondence model file as derived
       try {
-        VirtualLinksDelegator vld = new VirtualLinksDelegator(correspondenceModelBase);
+        VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModel);
 
         vld.createVirtualModelLinks(URI
             .createPlatformResourceURI(properties.getProperty("correspondenceModel"), true),
@@ -152,7 +152,7 @@ public class EView extends View {
     viewpoint = vFac.createResource(emfURI);
     viewpoint.load(uri.toURL().openStream(), null);
 
-    return viewpointProperties.getProperty("correspondenceModelBase");
+    return viewpointProperties.getProperty("matchingModel");
   }
 
   // FIXME: unused?
@@ -272,9 +272,8 @@ public class EView extends View {
 
     fileContent.append("\n");
     Viewpoint vm = (Viewpoint) viewpoint;
-    String correspondenceModelBaseLine =
-        "correspondenceModelBase=" + vm.getCorrespondenceModelBase();
-    fileContent.append(correspondenceModelBaseLine);
+    String matchingModelLine = "matchingModel=" + vm.getMatchingModel();
+    fileContent.append(matchingModelLine);
 
     InputStream stream = openContentStream(fileContent.toString());
     if (file.exists()) {

@@ -8,7 +8,7 @@ the viewpoint in the resources folder, like this:
 
 contributingMetamodels=Monoge_DoDAF2NAF/metamodels/DODAF.ecore
 correspondenceModel=Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.xmi
-correspondenceModelBase=Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.ecl
+matchingModel=Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.ecl
 filtersMetamodel=/Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.ecore
 originalMetamodel=http://DODAF/1.0
 viewpointModel=platform:/resource/Monoge_DoDAF2NAF/resources/extendedMMviewpoint.xmi
