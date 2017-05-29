@@ -109,7 +109,7 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
   @Override
   public boolean performFinish() {
 
-    String viewtypePath = createViewScreen.getCompositionMetaModelPath().get(0);
+    String viewpointPath = createViewScreen.getCompositionMetaModelPath().get(0);
 
     ArrayList<String> inputmodelsPlatformUris = createViewScreen.getInputModelPaths();
     ArrayList<String> relativeInputmodelsUris = new ArrayList<>();
@@ -136,7 +136,7 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
           .createURI(VirtualLinksUtil.toURI(linksModelPath.toString()).toString()));
 
       // FIXME: unused?
-      vm.createEView(relativeInputmodelsUris, viewtypePath, linksModelPath.toString());
+      vm.createEView(relativeInputmodelsUris, viewpointPath, linksModelPath.toString());
 
       IFile newViewFile = viewContainerFolderSelectionPage.createNewFile();
       StringBuffer fileContent = new StringBuffer();
@@ -145,7 +145,7 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
       fileContent.append(contributingModelsToSerialize);
       fileContent.append("\n");
       fileContent.append("compositionMetamodel=");
-      fileContent.append(viewtypePath);
+      fileContent.append(viewpointPath);
       fileContent.append("\n");
       fileContent.append("correspondenceModel=");
       fileContent.append(linksModelPath.toString());

@@ -5,7 +5,7 @@
     xmlns:eview="http://atlanmod.fr/eview"
     name="SmartEA integration">
   <conformsTo
-      uri="smartEAintegration/viewtype/extendedReqIf.eviewtype"/>
+      uri="smartEAintegration/viewpoint/extendedReqIf.eviewpoint"/>
   <contributingModels
       name="reqif"
       uri="smartEAintegration/models/processRequirements.xmi"/>

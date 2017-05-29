@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.TreeItem;
 
 public class AttributeSelectionAdapter extends SelectionAdapter {
 
-  ViewtypeEditor mpe;
+  ViewpointEditor mpe;
 
-  public AttributeSelectionAdapter(ViewtypeEditor mpe) {
+  public AttributeSelectionAdapter(ViewpointEditor mpe) {
     super();
     this.mpe = mpe;
 

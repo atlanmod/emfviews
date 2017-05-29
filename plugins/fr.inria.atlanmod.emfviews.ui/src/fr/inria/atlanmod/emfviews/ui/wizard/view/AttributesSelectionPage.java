@@ -45,7 +45,7 @@ public class AttributesSelectionPage extends WizardPage {
   }
 
   public void setTreeContents() {
-    CreateViewtypeScreen page = (CreateViewtypeScreen) getWizard()
+    CreateViewpointScreen page = (CreateViewpointScreen) getWizard()
         .getPage(Messages.getString("VirtualMetamodelFileScreen.Page.Name"));
     inputMetamodels = page.getInputMetaModelPaths();
     String nsURISs = "";

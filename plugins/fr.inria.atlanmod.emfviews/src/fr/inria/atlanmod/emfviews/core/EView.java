@@ -43,30 +43,31 @@ import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class EView extends View {
 
-  private Properties viewtypeProperties;
+  private Properties viewpointProperties;
 
-  private Resource viewtype;
+  private Resource viewpoint;
 
   public EView(URI uri) {
     super(uri);
   }
 
   // FIXME: unused?
-  public EView(List<String> contributingModels, String viewtypeUri,
+  public EView(List<String> contributingModels, String viewpointUri,
                String correspondenceModelAbsolutePath) throws MalformedURLException, IOException {
     super();
     virtualResourceSet = new ResourceSetImpl();
 
-    compositionMetamodelURI = viewtypeUri;
+    compositionMetamodelURI = viewpointUri;
     EmfViewsFactory vFac = new EmfViewsFactory();
-    org.eclipse.emf.common.util.URI emfURI = org.eclipse.emf.common.util.URI.createURI(viewtypeUri);
+    org.eclipse.emf.common.util.URI emfURI =
+        org.eclipse.emf.common.util.URI.createURI(viewpointUri);
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    java.net.URI uri = workspace.getRoot().findMember("/" + viewtypeUri).getLocationURI();
-    viewtypeProperties = new Properties();
-    viewtypeProperties.load(uri.toURL().openStream());
+    java.net.URI uri = workspace.getRoot().findMember("/" + viewpointUri).getLocationURI();
+    viewpointProperties = new Properties();
+    viewpointProperties.load(uri.toURL().openStream());
 
-    String contributingMetamodels = viewtypeProperties.getProperty("contributingMetamodels");
+    String contributingMetamodels = viewpointProperties.getProperty("contributingMetamodels");
     String[] contributingMMs = contributingMetamodels.split(",");
     ArrayList<String> contributingMMsURIs = new ArrayList<>();
     for (String contributingMM : contributingMMs) {
@@ -75,11 +76,11 @@ public class EView extends View {
 
     loadContributingMetamodels(contributingMMsURIs);
 
-    viewtype = vFac.createResource(emfURI);
-    viewtype.load(uri.toURL().openStream(), null);
+    viewpoint = vFac.createResource(emfURI);
+    viewpoint.load(uri.toURL().openStream(), null);
 
     metamodelManager =
-        new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewtype, this);
+        new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewpoint, this);
 
     loadContributingModels(contributingModels);
 
@@ -107,10 +108,10 @@ public class EView extends View {
     String correspondenceModelBase = readVirtualCompositionMMProperties();
 
     loadContributingMetamodels(new ArrayList<>(Arrays
-        .asList(viewtypeProperties.getProperty("contributingMetamodels").split(","))));
+        .asList(viewpointProperties.getProperty("contributingMetamodels").split(","))));
 
     metamodelManager =
-        new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewtype, this);
+        new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewpoint, this);
 
     loadContributingModels(new ArrayList<>(Arrays
         .asList(properties.getProperty("contributingModels").split(","))));
@@ -140,18 +141,18 @@ public class EView extends View {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     // FIXME: Why not require the '/' in the properties file?
     java.net.URI uri = workspace.getRoot().findMember("/" + virtualMMPath).getLocationURI();
-    viewtypeProperties = new Properties();
-    viewtypeProperties.load(uri.toURL().openStream());
+    viewpointProperties = new Properties();
+    viewpointProperties.load(uri.toURL().openStream());
 
     EmfViewsFactory vFac = new EmfViewsFactory();
 
     org.eclipse.emf.common.util.URI emfURI =
         org.eclipse.emf.common.util.URI.createURI(virtualMMPath);
 
-    viewtype = vFac.createResource(emfURI);
-    viewtype.load(uri.toURL().openStream(), null);
+    viewpoint = vFac.createResource(emfURI);
+    viewpoint.load(uri.toURL().openStream(), null);
 
-    return viewtypeProperties.getProperty("correspondenceModelBase");
+    return viewpointProperties.getProperty("correspondenceModelBase");
   }
 
   // FIXME: unused?
@@ -166,7 +167,7 @@ public class EView extends View {
     correspondenceModelResource.setURI(modelURI);
     correspondenceModelResource.getContents().add(virtualLinksModelLevel);
 
-    Viewtype vm = (Viewtype) viewtype;
+    Viewpoint vm = (Viewpoint) viewpoint;
     XMIResourceImpl correspondenceBetweenMetaModelResource = vm.getCorrespondenceModelResource();
 
     List<Association> associations = new ArrayList<>();
@@ -270,7 +271,7 @@ public class EView extends View {
     fileContent.append(correspondenceModelLine);
 
     fileContent.append("\n");
-    Viewtype vm = (Viewtype) viewtype;
+    Viewpoint vm = (Viewpoint) viewpoint;
     String correspondenceModelBaseLine =
         "correspondenceModelBase=" + vm.getCorrespondenceModelBase();
     fileContent.append(correspondenceModelBaseLine);

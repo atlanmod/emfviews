@@ -87,7 +87,7 @@ public class EmfViewsProjectCreator extends Wizard implements INewWizard, IExecu
         String[] paths = {
             "views", //$NON-NLS-1$
             "models", //$NON-NLS-1$
-            "viewtypes", //$NON-NLS-1$
+            "viewpoints", //$NON-NLS-1$
             "metamodels"//$NON-NLS-1$
 
         };

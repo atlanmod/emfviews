@@ -46,7 +46,7 @@
                      type="org.eclipse.core.resources.IResource">
                   <test
                         property="org.eclipse.core.resources.name"
-                        value="*.eviewtype">
+                        value="*.eviewpoint">
                   </test>
                </adapt>
             </iterate>
@@ -68,10 +68,10 @@
       </category>
       <wizard
             category="emfviewscategory"
-            class="fr.inria.atlanmod.emfviews.ui.wizard.view.CreateViewtypeWizard"
+            class="fr.inria.atlanmod.emfviews.ui.wizard.view.CreateViewpointWizard"
             icon="icons/VirtualModelWizard.png"
             id="virtualMetamodelFileWizard"
-            name="EMF Viewtype">
+            name="EMF Viewpoint">
       </wizard>
    </extension>
 

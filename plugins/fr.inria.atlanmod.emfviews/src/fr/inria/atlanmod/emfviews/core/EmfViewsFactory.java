@@ -25,8 +25,8 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
   public Resource createResource(URI uri) {
     if (uri.fileExtension().equals("eview")) {
       return new EView(uri);
-    } else if (uri.fileExtension().equals("eviewtype")) {
-      return new Viewtype(uri);
+    } else if (uri.fileExtension().equals("eviewpoint")) {
+      return new Viewpoint(uri);
     } else {
       return null;
     }

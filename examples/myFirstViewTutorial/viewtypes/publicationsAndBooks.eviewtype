@@ -1,4 +1,0 @@
-contributingMetamodels=myFirstViewTutorial/metamodels/Publication.ecore,myFirstViewTutorial/metamodels/Book.ecore
-correspondenceModel=myFirstViewTutorial/viewtypes/publicationsAndBooks.xmi
-correspondenceModelBase=myFirstViewTutorial/viewtypes/publicationsAndBooks.ecl
-filtersMetamodel=/myFirstViewTutorial/viewtypes/publicationsAndBooks.ecore

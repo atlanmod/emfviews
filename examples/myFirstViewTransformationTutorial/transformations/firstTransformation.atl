@@ -1,4 +1,4 @@
--- @path MM=/myFirstViewTutorial/viewtypes/publicationsAndBooks.eviewtype
+-- @path MM=/myFirstViewTutorial/viewpoints/publicationsAndBooks.eviewpoint
 -- @path MM1=/myFirstViewTutorial/metamodels/Book.ecore
 
 module virtualTrans;

@@ -58,31 +58,31 @@ import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 public class OclforEmfDelegate {
 
   VirtualLinks viewVirtualLinks;
-  List<Filter> viewtypeFilters;
+  List<Filter> viewpointFilters;
   List<Filter> viewFilters;
   ResourceSet virtualResourceSet;
   OCLHelper<EClassifier, EOperation, EStructuralFeature, org.eclipse.ocl.ecore.Constraint> helper;
   VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
 
-  public OclforEmfDelegate(VirtualLinks viewtypeVirtualLinks, ResourceSet virtualResourceSet,
+  public OclforEmfDelegate(VirtualLinks viewpointVirtualLinks, ResourceSet virtualResourceSet,
                            VirtualLinks viewVirtualLinks) {
     this.viewVirtualLinks = viewVirtualLinks;
-    EList<VirtualLink> allViewtypeVirtualLinks = viewtypeVirtualLinks.getVirtualLinks();
-    viewtypeFilters = new ArrayList<>();
+    EList<VirtualLink> allViewpointVirtualLinks = viewpointVirtualLinks.getVirtualLinks();
+    viewpointFilters = new ArrayList<>();
     this.virtualResourceSet = virtualResourceSet;
 
-    for (VirtualLink virtualLink : allViewtypeVirtualLinks) {
+    for (VirtualLink virtualLink : allViewpointVirtualLinks) {
       if (virtualLink instanceof Filter) {
-        viewtypeFilters.add((Filter) virtualLink);
+        viewpointFilters.add((Filter) virtualLink);
       }
     }
   }
 
   public void createViewFilterLinks() {
-    for (Filter viewtypeFilter : viewtypeFilters) {
+    for (Filter viewpointFilter : viewpointFilters) {
       // Part 1: Execute the ocl query.
-      if (!viewtypeFilter.isFilterOnlyEstructuralFeatures()) {
-        String oclQuery = viewtypeFilter.getOclQuery();
+      if (!viewpointFilter.isFilterOnlyEstructuralFeatures()) {
+        String oclQuery = viewpointFilter.getOclQuery();
         OCL<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter,
             EObject, CallOperationAction, SendSignalAction, org.eclipse.ocl.ecore.Constraint,
             EClass, EObject> ocl;
@@ -95,16 +95,16 @@ public class OclforEmfDelegate {
           // para su evaluacion. (Lo que pasa es que en el caso que estoy usando
           // no hay condiciones que se apliquen sobre el allInstances)
           // TODO El extentMap se necesita solo si el ocl es un allInstances.
-          ocl.setExtentMap(createExtentMapHelper(viewtypeFilter));
+          ocl.setExtentMap(createExtentMapHelper(viewpointFilter));
 
           OCLExpression<EClassifier> parsedQuery = helper.createQuery(oclQuery);
           Query<EClassifier, EClass, EObject> theQueryCreatedByOcl = ocl.createQuery(parsedQuery);
           Object objectsToFilter = theQueryCreatedByOcl.evaluate();
           if (objectsToFilter instanceof Collection) {
             Collection<EObject> objs = (Collection<EObject>) objectsToFilter;
-            createFilterLinks(objs, viewtypeFilter);
+            createFilterLinks(objs, viewpointFilter);
           } else if (objectsToFilter instanceof EObject) {
-            createFilterLink((EObject) objectsToFilter, viewtypeFilter);
+            createFilterLink((EObject) objectsToFilter, viewpointFilter);
           }
 
           // Part 2: Generate the link.
@@ -118,22 +118,22 @@ public class OclforEmfDelegate {
     }
   }
 
-  private void createFilterLinks(Collection<EObject> objectsToFilter, Filter viewtypeFilter) {
+  private void createFilterLinks(Collection<EObject> objectsToFilter, Filter viewpointFilter) {
     Iterator<EObject> iter = objectsToFilter.iterator();
     while (iter.hasNext()) {
       EObject objectToFilter = iter.next();
-      createFilterLink(objectToFilter, viewtypeFilter);
+      createFilterLink(objectToFilter, viewpointFilter);
 
     }
 
   }
 
-  private void createFilterLink(EObject objectToFilter, Filter viewtypeFilter) {
-    Filter filter = VirtualLinksUtil.createFilter(viewtypeFilter.getName(),
-                                                  viewtypeFilter.getOclQuery(), false);
+  private void createFilterLink(EObject objectToFilter, Filter viewpointFilter) {
+    Filter filter = VirtualLinksUtil.createFilter(viewpointFilter.getName(),
+                                                  viewpointFilter.getOclQuery(), false);
     LinkedElement filterLinkedElement = VirtualLinksUtil
-        .createLinkedElement(viewtypeFilter.getFilteredElement().getName(),
-                             viewtypeFilter.getFilteredElement().getModelRef(),
+        .createLinkedElement(viewpointFilter.getFilteredElement().getName(),
+                             viewpointFilter.getFilteredElement().getModelRef(),
                              objectToFilter.eResource().getURIFragment(objectToFilter), null);
     filter.setFilteredElement(filterLinkedElement);
     viewVirtualLinks.getVirtualLinks().add(filter);
@@ -141,10 +141,10 @@ public class OclforEmfDelegate {
 
   }
 
-  private Map<EClass, Set<? extends EObject>> createExtentMapHelper(Filter viewtypeFilter) {
+  private Map<EClass, Set<? extends EObject>> createExtentMapHelper(Filter viewpointFilter) {
     Map<EClass, Set<? extends EObject>> extents = new HashMap<>();
 
-    LinkedElement metaclassToFilter = viewtypeFilter.getFilteredElement();
+    LinkedElement metaclassToFilter = viewpointFilter.getFilteredElement();
 
     String metaclassRef = metaclassToFilter.getElementRef(); // EnterpriseArchitecture
     String metamodelUri = metaclassToFilter.getModelRef(); // http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0

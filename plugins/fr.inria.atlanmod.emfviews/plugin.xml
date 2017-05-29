@@ -9,7 +9,7 @@
       </parser>
       <parser
             class="fr.inria.atlanmod.emfviews.core.EmfViewsFactory"
-            type="eviewtype">
+            type="eviewpoint">
       </parser>
    </extension>
 
