@@ -125,6 +125,8 @@ public class Viewtype extends ResourceImpl {
   protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
     properties = new Properties();
     properties.load(inputStream);
+    // FIXME: this should create a weaving model XMI from the ECL file, but do
+    // we actually need it?
     if (properties.getProperty("correspondenceModelBase") != null) {
       correspondenceModelBase = properties.getProperty("correspondenceModelBase");
       // IWorkspace workspace = ResourcesPlugin.getWorkspace();
