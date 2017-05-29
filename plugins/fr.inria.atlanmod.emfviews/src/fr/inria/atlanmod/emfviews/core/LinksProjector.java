@@ -95,7 +95,7 @@ public class LinksProjector {
 
   }
 
-  public void save(VirtualLinks correspondenceModel) {
+  public void save(VirtualLinks weavingModel) {
     // FIXME: shouldn't we do something here?
   }
 

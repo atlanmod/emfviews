@@ -187,12 +187,12 @@ public class OclforEmfDelegate {
   }
 
   public void persistLinksModel(org.eclipse.emf.common.util.URI linksModelURI) {
-    XMIResourceImpl correspondenceModelResource = new XMIResourceImpl();
+    XMIResourceImpl weavingModelResource = new XMIResourceImpl();
 
-    correspondenceModelResource.setURI(linksModelURI);
-    correspondenceModelResource.getContents().add(viewVirtualLinks);
+    weavingModelResource.setURI(linksModelURI);
+    weavingModelResource.getContents().add(viewVirtualLinks);
     try {
-      correspondenceModelResource.save(null);
+      weavingModelResource.save(null);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

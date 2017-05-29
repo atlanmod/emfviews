@@ -180,10 +180,10 @@ public class EclDelegate implements IVirtualLinksDelegate {
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
 
-    XMIResourceImpl correspondenceModelResource = new XMIResourceImpl();
+    XMIResourceImpl weavingModelResource = new XMIResourceImpl();
 
-    correspondenceModelResource.setURI(linksModel);
-    correspondenceModelResource.getContents().add(virtualLinks);
+    weavingModelResource.setURI(linksModel);
+    weavingModelResource.getContents().add(virtualLinks);
 
     EclModule module = new EclModule();
     module.parse(f);
@@ -261,9 +261,9 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
       }
     }
-    correspondenceModelResource.setURI(linksModel);
-    correspondenceModelResource.getContents().add(virtualLinks);
-    correspondenceModelResource.save(null);
+    weavingModelResource.setURI(linksModel);
+    weavingModelResource.getContents().add(virtualLinks);
+    weavingModelResource.save(null);
 
   }
 

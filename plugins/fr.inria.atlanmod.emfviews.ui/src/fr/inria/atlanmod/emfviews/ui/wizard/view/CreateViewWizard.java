@@ -147,7 +147,7 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
       fileContent.append("compositionMetamodel=");
       fileContent.append(viewpointPath);
       fileContent.append("\n");
-      fileContent.append("correspondenceModel=");
+      fileContent.append("weavingModel=");
       fileContent.append(linksModelPath.toString());
       serializeView(newViewFile, fileContent);
 

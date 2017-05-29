@@ -76,14 +76,14 @@ public class Viewpoint extends ResourceImpl {
 
   private String contributingMetamodels;
   private String filtersMM;
-  private String correspondenceModel;
+  private String weavingModel;
   private String matchingModel;
 
   public String getMatchingModel() {
     return matchingModel;
   }
 
-  private XMIResourceImpl correspondenceModelResource;
+  private XMIResourceImpl weavingModelResource;
   private ArrayList<EPackage> contributingEpackages;
 
   public ArrayList<EPackage> getContributingEpackages() {
@@ -101,24 +101,24 @@ public class Viewpoint extends ResourceImpl {
 
   }
 
-  public XMIResourceImpl getCorrespondenceModelResource() {
-    return correspondenceModelResource;
+  public XMIResourceImpl getWeavingModelResource() {
+    return weavingModelResource;
   }
 
   // FIXME: unused?
-  public void setCorrespondenceModelResource(XMIResourceImpl correspondenceModelResource) {
-    this.correspondenceModelResource = correspondenceModelResource;
+  public void setWeavingModelResource(XMIResourceImpl weavingModelResource) {
+    this.weavingModelResource = weavingModelResource;
   }
 
   // FIXME: unused?
-  public void createCorrespondenceModel(URI modelURI) throws IOException {
+  public void createWeavingModel(URI modelURI) throws IOException {
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
-    correspondenceModelResource = new XMIResourceImpl();
-    correspondenceModelResource.setURI(modelURI);
-    correspondenceModelResource.getContents().add(virtualLinks);
-    correspondenceModelResource.save(null);
+    weavingModelResource = new XMIResourceImpl();
+    weavingModelResource.setURI(modelURI);
+    weavingModelResource.getContents().add(virtualLinks);
+    weavingModelResource.save(null);
   }
 
   @Override
@@ -131,7 +131,7 @@ public class Viewpoint extends ResourceImpl {
       matchingModel = properties.getProperty("matchingModel");
       // IWorkspace workspace = ResourcesPlugin.getWorkspace();
       // java.net.URI uri = workspace.getRoot()
-      // .findMember("/" + properties.getProperty("correspondenceModel"))
+      // .findMember("/" + properties.getProperty("weavingModel"))
       // .getLocationURI();
       // try {
       // VirtualLinksDelegator vld = new VirtualLinksDelegator(
@@ -144,7 +144,7 @@ public class Viewpoint extends ResourceImpl {
     }
 
     cloneContributingMetamodels(properties.getProperty("contributingMetamodels"));
-    loadCorrespondenceModel(properties.getProperty("correspondenceModel"));
+    loadWeavingModel(properties.getProperty("weavingModel"));
     setVirtualContents();
   }
 
@@ -190,20 +190,18 @@ public class Viewpoint extends ResourceImpl {
     }
   }
 
-  private void loadCorrespondenceModel(String correspondenceModelURI) throws FileNotFoundException,
-                                                                      IOException {
+  private void loadWeavingModel(String weavingModelURI) throws FileNotFoundException, IOException {
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-    correspondenceModelResource = new XMIResourceImpl();
+    weavingModelResource = new XMIResourceImpl();
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     // FIXME: why is the '/' not mandatory in the first place?
-    java.net.URI uri =
-        workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModelResource.load(uri.toURL().openStream(), null);
-    correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
+    java.net.URI uri = workspace.getRoot().findMember("/" + weavingModelURI).getLocationURI();
+    weavingModelResource.load(uri.toURL().openStream(), null);
+    weavingModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
 
     // Get the virtual links from the serialized resource
     // FIXME: this cast can fail if the XMI is not a VirtualLinks
-    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
+    VirtualLinks virtualLinks = (VirtualLinks) weavingModelResource.getContents().get(0);
 
     // Separate associations and filters links
     List<Association> associations = new ArrayList<>();
@@ -482,14 +480,14 @@ public class Viewpoint extends ResourceImpl {
     String contributingMetamodelsLine = "contributingMetamodels=" + contributingMetamodels;
     fileContent.append(contributingMetamodelsLine);
     fileContent.append("\n");
-    if (correspondenceModel == null) {
+    if (weavingModel == null) {
       IPath filePath = file.getFullPath().removeFileExtension();
-      IPath correspondenceModelPath = filePath.addFileExtension("xmi");
+      IPath weavingModelPath = filePath.addFileExtension("xmi");
 
-      URI linksURI = URI.createFileURI(correspondenceModelPath.toString());
-      createCorrespondenceModel(linksURI);
-      correspondenceModelPath = correspondenceModelPath.makeRelative();
-      correspondenceModel = correspondenceModelPath.toString();
+      URI linksURI = URI.createFileURI(weavingModelPath.toString());
+      createWeavingModel(linksURI);
+      weavingModelPath = weavingModelPath.makeRelative();
+      weavingModel = weavingModelPath.toString();
     }
 
     if (dslTechnology.compareToIgnoreCase("none") != 0 && matchingModel == null) {
@@ -504,13 +502,12 @@ public class Viewpoint extends ResourceImpl {
       File fileModelBase = new File(laRuta);
       fileModelBase.createNewFile();
 
-      String correspondenceModelLine = "correspondenceModel=" + correspondenceModel;
+      String weavingModelLine = "weavingModel=" + weavingModel;
 
-      fileContent.append(correspondenceModelLine);
+      fileContent.append(weavingModelLine);
       fileContent.append("\n");
 
-      String matchingModelLine =
-          "matchingModel=" + correspondenceModel.replaceAll("xmi", dslTechnology);
+      String matchingModelLine = "matchingModel=" + weavingModel.replaceAll("xmi", dslTechnology);
       fileContent.append(matchingModelLine);
       fileContent.append("\n");
       String filtersMetamodelLine = "filtersMetamodel=" + filtersMM;
@@ -530,10 +527,10 @@ public class Viewpoint extends ResourceImpl {
   @Override
   protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
     // VirtualLinksFactory linksFactory = VirtualLinksFactory.eINSTANCE;
-    VirtualLinks vLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
+    VirtualLinks vLinks = (VirtualLinks) weavingModelResource.getContents().get(0);
     vLinks.getVirtualLinks().clear();
     vLinks.getLinkedElements().clear();
-    correspondenceModelResource.save(null);
+    weavingModelResource.save(null);
     properties.store(outputStream, null);
   }
 

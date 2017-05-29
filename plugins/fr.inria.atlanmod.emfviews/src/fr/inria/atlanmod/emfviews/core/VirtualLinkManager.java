@@ -29,32 +29,32 @@ public class VirtualLinkManager {
 
   private View virtualModel;
 
-  private VirtualLinks correspondenceModel;
+  private VirtualLinks weavingModel;
 
   private Map<EObject, VirtualElement> virtualLinks = new HashMap<>();
 
-  public VirtualLinkManager(String correspondenceModelURI,
+  public VirtualLinkManager(String weavingModelURI,
                             View vModel) throws MalformedURLException, IOException {
     this.virtualModel = vModel;
 
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
 
-    XMIResourceImpl correspondenceModel = new XMIResourceImpl();
+    XMIResourceImpl weavingModelResource = new XMIResourceImpl();
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
     java.net.URI uri =
-        workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModel.load(uri.toURL().openStream(), null);
+        workspace.getRoot().findMember("/" + weavingModelURI).getLocationURI();
+    weavingModelResource.load(uri.toURL().openStream(), null);
 
-    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModel.getContents().get(0);
+    VirtualLinks virtualLinks = (VirtualLinks) weavingModelResource.getContents().get(0);
 
-    this.correspondenceModel = virtualLinks;
+    this.weavingModel = virtualLinks;
   }
 
   public void initialize() {
     LinksProjector projector = new LinksProjector(virtualModel);
-    projector.load(correspondenceModel);
+    projector.load(weavingModel);
   }
 
   public void setVirtualLink(EObject concreteElement, VirtualElement virtualElement) {
@@ -80,7 +80,7 @@ public class VirtualLinkManager {
 
   public void save() {
     LinksProjector projector = new LinksProjector(virtualModel);
-    projector.save(correspondenceModel);
+    projector.save(weavingModel);
   }
 
 }

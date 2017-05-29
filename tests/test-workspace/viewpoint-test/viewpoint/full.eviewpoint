@@ -1,3 +1,3 @@
 contributingMetamodels=viewpoint-test/metamodels/contentfwk.ecore,http://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
-correspondenceModel=viewpoint-test/viewpoint/weaving.xmi
+weavingModel=viewpoint-test/viewpoint/weaving.xmi
 matchingModel=viewpoint-test/viewpoint/matching.ecl

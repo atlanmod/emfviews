@@ -1,4 +1,4 @@
 contributingModels=myFirstViewTutorial/models/publication.xmi,myFirstViewTutorial/models/book.xmi
 compositionMetamodel=myFirstViewTutorial/viewpoints/publicationsAndBooks.eviewpoint
-correspondenceModel=myFirstViewTutorial/views/myPublicationsAndBooks.xmi
+weavingModel=myFirstViewTutorial/views/myPublicationsAndBooks.xmi
 matchingModel=myFirstViewTutorial/viewpoints/publicationsAndBooks.ecl

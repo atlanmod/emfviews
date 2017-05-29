@@ -50,9 +50,9 @@ public abstract class View extends ResourceImpl {
 
   protected String contributingMetamodelsURIs;
 
-  protected String correspondenceModelURI;
+  protected String weavingModelURI;
 
-  protected XMIResourceImpl correspondenceModelResource;
+  protected XMIResourceImpl weavingModelResource;
 
   /**
    * The contents of the virtual model
@@ -182,11 +182,11 @@ public abstract class View extends ResourceImpl {
     fileContent.append(contributingMetamodelsLine);
     fileContent.append("\n");
 
-    String correspondenceModelLine = "correspondenceModel=" + correspondenceModelURI;
+    String weavingModelLine = "weavingModel=" + weavingModelURI;
 
-    fileContent.append(correspondenceModelLine);
+    fileContent.append(weavingModelLine);
 
-    String matchingModelLine = "matchingModel=" + correspondenceModelURI;
+    String matchingModelLine = "matchingModel=" + weavingModelURI;
     fileContent.append(matchingModelLine);
 
     InputStream stream = openContentStream(fileContent.toString());
@@ -205,33 +205,31 @@ public abstract class View extends ResourceImpl {
   }
 
   // FIXME: unused?
-  public void createCorrespondenceModel(URI modelURI) throws IOException {
+  public void createWeavingModel(URI modelURI) throws IOException {
 
-    correspondenceModelURI = modelURI.toString();
+    weavingModelURI = modelURI.toString();
 
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinksModelLevel = vLinksFactory.createVirtualLinks();
 
-    correspondenceModelResource = new XMIResourceImpl();
+    weavingModelResource = new XMIResourceImpl();
 
-    correspondenceModelResource.setURI(modelURI);
-    correspondenceModelResource.getContents().add(virtualLinksModelLevel);
+    weavingModelResource.setURI(modelURI);
+    weavingModelResource.getContents().add(virtualLinksModelLevel);
 
-    // XMIResourceImpl correspondenceBetweenMetaModelResource = new
-    // XMIResourceImpl();
+    // XMIResourceImpl weavingForMetamodelResource = new XMIResourceImpl();
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-    java.net.URI uri =
-        workspace.getRoot().findMember("/" + correspondenceModelURI).getLocationURI();
-    correspondenceModelResource.load(uri.toURL().openStream(), null);
+    java.net.URI uri = workspace.getRoot().findMember("/" + weavingModelURI).getLocationURI();
+    weavingModelResource.load(uri.toURL().openStream(), null);
 
-    correspondenceModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
+    weavingModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
 
     List<Association> associations = new ArrayList<>();
 
-    VirtualLinks virtualLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
+    VirtualLinks virtualLinks = (VirtualLinks) weavingModelResource.getContents().get(0);
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
     for (VirtualLink virtualLink : allVirtualLinks) {
       if (virtualLink instanceof Association) {
@@ -307,7 +305,7 @@ public abstract class View extends ResourceImpl {
       }
     }
 
-    correspondenceModelResource.save(null);
+    weavingModelResource.save(null);
 
   }
 

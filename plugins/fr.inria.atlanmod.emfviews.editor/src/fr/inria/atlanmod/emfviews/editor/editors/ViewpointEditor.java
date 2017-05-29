@@ -124,7 +124,7 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
   private String updateViewpointDefinition(String existingViewpointDefinition,
                                            String addedMetamodelUri, String dslBase) {
     Properties properties = createPropertiesFromViewpointInTextEditor(existingViewpointDefinition);
-    String correspondenceModel = properties.getProperty("correspondenceModel");
+    String weavingModel = properties.getProperty("weavingModel");
     String matchingModel = properties.getProperty("matchingModel");
     String metamodels = properties.getProperty("contributingMetamodels");
 
@@ -152,19 +152,19 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
       matchingModel = dslBase;
     }
 
-    String updatedVMM = updateViewpoint("contributingMetamodels=" + metamodels,
-                                        "correspondenceModel=" + correspondenceModel,
-                                        "matchingModel=" + matchingModel);
+    String updatedVMM =
+        updateViewpoint("contributingMetamodels=" + metamodels, "weavingModel=" + weavingModel,
+                        "matchingModel=" + matchingModel);
 
     return updatedVMM;
   }
 
-  private String updateViewpoint(String contributingMetamodelsProperty,
-                                 String correspondenceModelProperty, String matchingModelProperty) {
+  private String updateViewpoint(String contributingMetamodelsProperty, String weavingModelProperty,
+                                 String matchingModelProperty) {
     StringBuffer fileContent = new StringBuffer();
     fileContent.append(contributingMetamodelsProperty);
     fileContent.append("\n");
-    fileContent.append(correspondenceModelProperty);
+    fileContent.append(weavingModelProperty);
     fileContent.append("\n");
     if (matchingModelProperty != null) {
       fileContent.append(matchingModelProperty);
@@ -476,9 +476,9 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
 
     // EcoreFactory theCoreFactory = EcoreFactory.eINSTANCE;
     if (elementsToFilter != null && elementsToFilter.size() > 0) {
-      String linksResourcePath = createPropertiesFromViewpointInTextEditor(viewpointTextEditor
-          .getDocumentProvider().getDocument(viewpointTextEditor.getEditorInput()).get())
-              .getProperty("correspondenceModel");
+      String linksResourcePath =
+          createPropertiesFromViewpointInTextEditor(viewpointTextEditor.getDocumentProvider()
+              .getDocument(viewpointTextEditor.getEditorInput()).get()).getProperty("weavingModel");
       java.net.URI linksUri = null;
       try {
         linksUri = VirtualLinksUtil.toURI(linksResourcePath);

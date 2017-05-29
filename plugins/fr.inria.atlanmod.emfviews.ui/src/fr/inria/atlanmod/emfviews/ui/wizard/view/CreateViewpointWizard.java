@@ -171,12 +171,12 @@ public class CreateViewpointWizard extends Wizard implements INewWizard, IExecut
       fileContent.append("contributingMetamodels=");
       fileContent.append(nsURISs);
       fileContent.append("\n");
-      String correspondenceModelLine = "correspondenceModel=" + org.eclipse.emf.common.util.URI
+      String weavingModelLine = "weavingModel=" + org.eclipse.emf.common.util.URI
           .createURI(viewpointFolderFullPath.addFileExtension("xmi").toString());
 
       // Up to this point it should serilize a viewpoint without an ecl file
       // and a links model with filters.
-      fileContent.append(correspondenceModelLine);
+      fileContent.append(weavingModelLine);
       fileContent.append("\n");
 
       // FIXME: this is incoherent with the Viewpoint editor: the eviewpoint

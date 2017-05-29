@@ -7,7 +7,7 @@ In the .eviewpoint they have to be specified the url of the original MM and the 
 the viewpoint in the resources folder, like this:
 
 contributingMetamodels=Monoge_DoDAF2NAF/metamodels/DODAF.ecore
-correspondenceModel=Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.xmi
+weavingModel=Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.xmi
 matchingModel=Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.ecl
 filtersMetamodel=/Monoge_DoDAF2NAF/viewpoints/DODAFextension4NAF.ecore
 originalMetamodel=http://DODAF/1.0

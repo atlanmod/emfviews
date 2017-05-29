@@ -53,7 +53,7 @@ public class EView extends View {
 
   // FIXME: unused?
   public EView(List<String> contributingModels, String viewpointUri,
-               String correspondenceModelAbsolutePath) throws MalformedURLException, IOException {
+               String weavingModelAbsolutePath) throws MalformedURLException, IOException {
     super();
     virtualResourceSet = new ResourceSetImpl();
 
@@ -84,15 +84,15 @@ public class EView extends View {
 
     loadContributingModels(contributingModels);
 
-    IPath filePath = new Path(correspondenceModelAbsolutePath).removeFileExtension();
-    IPath correspondenceModelPath = filePath.addFileExtension("xmi");
+    IPath filePath = new Path(weavingModelAbsolutePath).removeFileExtension();
+    IPath weavingModelPath = filePath.addFileExtension("xmi");
 
-    URI linksURI = URI.createFileURI(correspondenceModelPath.toString());
-    createCorrespondenceModel(linksURI);
-    correspondenceModelPath = correspondenceModelPath.makeRelative();
-    correspondenceModelURI = correspondenceModelPath.toString();
+    URI linksURI = URI.createFileURI(weavingModelPath.toString());
+    createWeavingModel(linksURI);
+    weavingModelPath = weavingModelPath.makeRelative();
+    weavingModelURI = weavingModelPath.toString();
 
-    this.vLinkManager = new VirtualLinkManager(correspondenceModelURI, this);
+    this.vLinkManager = new VirtualLinkManager(weavingModelURI, this);
     vLinkManager.initialize();
 
     setVirtualContents();
@@ -117,19 +117,19 @@ public class EView extends View {
         .asList(properties.getProperty("contributingModels").split(","))));
 
     if (matchingModel != null) {
-      // XXX: we could mark the correspondence model file as derived
+      // XXX: we could mark the weaving model file as derived
       try {
         VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModel);
 
         vld.createVirtualModelLinks(URI
-            .createPlatformResourceURI(properties.getProperty("correspondenceModel"), true),
+            .createPlatformResourceURI(properties.getProperty("weavingModel"), true),
                                     getContributingModels());
       } catch (Exception e) {
         e.printStackTrace();
       }
     }
 
-    this.vLinkManager = new VirtualLinkManager(properties.getProperty("correspondenceModel"), this);
+    this.vLinkManager = new VirtualLinkManager(properties.getProperty("weavingModel"), this);
     vLinkManager.initialize();
 
     setVirtualContents();
@@ -157,23 +157,22 @@ public class EView extends View {
 
   // FIXME: unused?
   @Override
-  public void createCorrespondenceModel(URI modelURI) throws IOException {
+  public void createWeavingModel(URI modelURI) throws IOException {
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     VirtualLinks virtualLinksModelLevel = vLinksFactory.createVirtualLinks();
 
-    correspondenceModelResource = new XMIResourceImpl();
+    weavingModelResource = new XMIResourceImpl();
 
-    correspondenceModelResource.setURI(modelURI);
-    correspondenceModelResource.getContents().add(virtualLinksModelLevel);
+    weavingModelResource.setURI(modelURI);
+    weavingModelResource.getContents().add(virtualLinksModelLevel);
 
     Viewpoint vm = (Viewpoint) viewpoint;
-    XMIResourceImpl correspondenceBetweenMetaModelResource = vm.getCorrespondenceModelResource();
+    XMIResourceImpl weavingForMetamodelResource = vm.getWeavingModelResource();
 
     List<Association> associations = new ArrayList<>();
 
-    VirtualLinks virtualLinks =
-        (VirtualLinks) correspondenceBetweenMetaModelResource.getContents().get(0);
+    VirtualLinks virtualLinks = (VirtualLinks) weavingForMetamodelResource.getContents().get(0);
     EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
     for (VirtualLink virtualLink : allVirtualLinks) {
       if (virtualLink instanceof Association) {
@@ -250,7 +249,7 @@ public class EView extends View {
         }
       }
     }
-    correspondenceModelResource.save(null);
+    weavingModelResource.save(null);
 
   }
 
@@ -266,9 +265,9 @@ public class EView extends View {
     fileContent.append(compositionMetamodelLine);
     fileContent.append("\n");
 
-    String correspondenceModelLine = "correspondenceModel=" + correspondenceModelURI;
+    String weavingModelLine = "weavingModel=" + weavingModelURI;
 
-    fileContent.append(correspondenceModelLine);
+    fileContent.append(weavingModelLine);
 
     fileContent.append("\n");
     Viewpoint vm = (Viewpoint) viewpoint;
