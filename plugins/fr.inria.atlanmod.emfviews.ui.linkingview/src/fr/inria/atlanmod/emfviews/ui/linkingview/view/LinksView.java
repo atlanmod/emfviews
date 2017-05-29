@@ -94,7 +94,7 @@ public class LinksView extends ViewPart {
     try {
       ExtensibleURIConverterImpl eui = new ExtensibleURIConverterImpl();
       InputStream is = eui.createInputStream(viewURI);
-      currentView.load(is, new HashMap<>());
+      currentView.load(is, null);
       linkedElementsViewer.setInput(currentView.getVirtualLinkManager().getVirtualLinks());
       ((LinksViewContentProvider) (linkedElementsViewer.getContentProvider()))
           .setLinkedModels(currentView.getContributingModels());

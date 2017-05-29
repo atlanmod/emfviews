@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -77,7 +76,7 @@ public class EView extends View {
     loadContributingMetamodels(contributingMMsURIs);
 
     viewtype = vFac.createResource(emfURI);
-    viewtype.load(uri.toURL().openStream(), new HashMap<>());
+    viewtype.load(uri.toURL().openStream(), null);
 
     metamodelManager =
         new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewtype, this);

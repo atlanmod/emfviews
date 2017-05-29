@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
@@ -417,7 +416,7 @@ public class ViewtypeEditor extends FormEditor implements IResourceChangeListene
       java.net.URI uri = fileEditorInput.getURI();
 
       try {
-        viewtypeResource.load(uri.toURL().openStream(), new HashMap<>());
+        viewtypeResource.load(uri.toURL().openStream(), null);
         form.setText("Viewtype contents");
 
         Composite body = form.getBody();
@@ -656,7 +655,7 @@ public class ViewtypeEditor extends FormEditor implements IResourceChangeListene
 
         java.net.URI uri = fileEditorInput.getURI();
         try {
-          viewtypeResource.load(uri.toURL().openStream(), new HashMap<>());
+          viewtypeResource.load(uri.toURL().openStream(), null);
           ArrayList<EClass> containingClasses = new ArrayList<>();
           ArrayList<EObject> realAttrsToDelete = new ArrayList<>();
           // Viewtype theVirtualMM = (Viewtype) viewtypeResource;

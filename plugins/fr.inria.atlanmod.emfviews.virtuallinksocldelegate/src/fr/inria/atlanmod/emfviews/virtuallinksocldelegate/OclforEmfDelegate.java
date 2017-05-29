@@ -192,7 +192,7 @@ public class OclforEmfDelegate {
     correspondenceModelResource.setURI(linksModelURI);
     correspondenceModelResource.getContents().add(viewVirtualLinks);
     try {
-      correspondenceModelResource.save(new HashMap<String, String>());
+      correspondenceModelResource.save(null);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

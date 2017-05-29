@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -532,7 +531,7 @@ public class Viewtype extends ResourceImpl {
     VirtualLinks vLinks = (VirtualLinks) correspondenceModelResource.getContents().get(0);
     vLinks.getVirtualLinks().clear();
     vLinks.getLinkedElements().clear();
-    correspondenceModelResource.save(new HashMap<String, String>());
+    correspondenceModelResource.save(null);
     properties.store(outputStream, null);
   }
 

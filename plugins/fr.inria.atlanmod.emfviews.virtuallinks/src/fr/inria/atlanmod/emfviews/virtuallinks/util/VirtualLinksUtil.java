@@ -13,7 +13,6 @@ package fr.inria.atlanmod.emfviews.virtuallinks.util;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -48,7 +47,7 @@ public class VirtualLinksUtil {
     XMIResourceImpl linksModelResource = new XMIResourceImpl();
     linksModelResource.setURI(theUri);
     linksModelResource.getContents().add(linksModel);
-    linksModelResource.save(new HashMap<String, String>());
+    linksModelResource.save(null);
 
   }
 
