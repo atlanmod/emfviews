@@ -90,6 +90,10 @@ public class Viewpoint extends ResourceImpl {
     return contributingEpackages;
   }
 
+  public String getContributingMetamodelsURIs() {
+    return contributingMetamodels;
+  }
+
   @Override
   public EList<EObject> getContents() {
     return virtualContents;
@@ -157,6 +161,7 @@ public class Viewpoint extends ResourceImpl {
   // Clone each metamodel into our virtual resource set, so that we can add and
   // remove elements from them without affecting the originals.
   private void cloneContributingMetamodels(String contributingModelsURIs) {
+    this.contributingMetamodels = contributingModelsURIs;
     contributingEpackages = new ArrayList<>();
 
     for (String modelURI : contributingModelsURIs.split(",")) {

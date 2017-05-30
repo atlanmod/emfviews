@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
+import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinks.Association;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
@@ -125,23 +126,10 @@ public abstract class View extends ResourceImpl {
   }
 
   protected void loadContributingMetamodels(List<String> contributingmetaModelsPaths) {
-
     for (String metamodelURI : contributingmetaModelsPaths) {
-      if (metamodelURI.startsWith("http")) {
-        virtualResourceSet.getPackageRegistry()
-            .put(metamodelURI, EPackage.Registry.INSTANCE.getEPackage(metamodelURI));
-
-      } else if (metamodelURI.endsWith("ecore")) {
-        Resource metamodelResource =
-            virtualResourceSet.getResource(URI.createPlatformResourceURI(metamodelURI, true), true);
-        EList<EObject> contents = metamodelResource.getContents();
-        // HYPO: the ECore contains only one EPackage we care about
-        EPackage thePack = (EPackage) contents.iterator().next();
-        virtualResourceSet.getPackageRegistry().put(thePack.getNsURI(), thePack);
-
-      }
+      EPackage p = EMFViewsUtil.getEPackageFromURI(metamodelURI);
+      virtualResourceSet.getPackageRegistry().put(p.getNsURI(), p);
     }
-
   }
 
   protected void setVirtualContents() {

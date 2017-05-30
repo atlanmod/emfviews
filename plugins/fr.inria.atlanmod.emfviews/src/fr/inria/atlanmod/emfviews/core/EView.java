@@ -43,8 +43,6 @@ import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class EView extends View {
 
-  private Properties viewpointProperties;
-
   private Resource viewpoint;
 
   public EView(URI uri) {
@@ -64,10 +62,10 @@ public class EView extends View {
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     java.net.URI uri = workspace.getRoot().findMember("/" + viewpointUri).getLocationURI();
-    viewpointProperties = new Properties();
-    viewpointProperties.load(uri.toURL().openStream());
+    viewpoint = vFac.createResource(emfURI);
+    viewpoint.load(uri.toURL().openStream(), null);
 
-    String contributingMetamodels = viewpointProperties.getProperty("contributingMetamodels");
+    String contributingMetamodels = ((Viewpoint) viewpoint).getContributingMetamodelsURIs();
     String[] contributingMMs = contributingMetamodels.split(",");
     ArrayList<String> contributingMMsURIs = new ArrayList<>();
     for (String contributingMM : contributingMMs) {
@@ -75,9 +73,6 @@ public class EView extends View {
     }
 
     loadContributingMetamodels(contributingMMsURIs);
-
-    viewpoint = vFac.createResource(emfURI);
-    viewpoint.load(uri.toURL().openStream(), null);
 
     metamodelManager =
         new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewpoint, this);
@@ -105,10 +100,13 @@ public class EView extends View {
     properties.load(inputStream);
     virtualResourceSet = new ResourceSetImpl();
 
-    String matchingModel = readViewpointProperties();
+    loadViewpoint();
+    String matchingModel = ((Viewpoint) viewpoint).getMatchingModel();
 
+    // FIXME: instead of peeking at the raw contributing model URIs, we could
+    // just get the contributing packages Viewpoint already collected.
     loadContributingMetamodels(new ArrayList<>(Arrays
-        .asList(viewpointProperties.getProperty("contributingMetamodels").split(","))));
+        .asList(((Viewpoint) viewpoint).getContributingMetamodelsURIs().split(","))));
 
     metamodelManager =
         new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewpoint, this);
@@ -135,24 +133,19 @@ public class EView extends View {
     setVirtualContents();
   }
 
-  private String readViewpointProperties() throws FileNotFoundException, IOException {
-    String virtualMMPath = properties.getProperty("viewpoint");
+  private void loadViewpoint() throws FileNotFoundException, IOException {
+    String viewpointPath = properties.getProperty("viewpoint");
 
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     // FIXME: Why not require the '/' in the properties file?
-    java.net.URI uri = workspace.getRoot().findMember("/" + virtualMMPath).getLocationURI();
-    viewpointProperties = new Properties();
-    viewpointProperties.load(uri.toURL().openStream());
+    java.net.URI viewpointURI =
+        workspace.getRoot().findMember("/" + viewpointPath).getLocationURI();
 
     EmfViewsFactory vFac = new EmfViewsFactory();
-
-    org.eclipse.emf.common.util.URI emfURI =
-        org.eclipse.emf.common.util.URI.createURI(virtualMMPath);
+    URI emfURI = URI.createURI(viewpointPath);
 
     viewpoint = vFac.createResource(emfURI);
-    viewpoint.load(uri.toURL().openStream(), null);
-
-    return viewpointProperties.getProperty("matchingModel");
+    viewpoint.load(viewpointURI.toURL().openStream(), null);
   }
 
   // FIXME: unused?
