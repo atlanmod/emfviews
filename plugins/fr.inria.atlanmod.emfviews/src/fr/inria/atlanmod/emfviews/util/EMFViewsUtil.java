@@ -73,6 +73,7 @@ public final class EMFViewsUtil {
       // XXX: can we get the resource without creating the ResourceSet?
       Resource r =
           new ResourceSetImpl().getResource(URI.createPlatformResourceURI(modelURI, true), true);
+      // HYPO: the Ecore contains only one EPackage we care about
       return (EPackage) r.getContents().get(0);
     } else {
       return null;

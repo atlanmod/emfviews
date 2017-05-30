@@ -63,10 +63,13 @@ public class MetamodelManager {
   private Map<String, List<EClass>> produceCompositionClasses() {
     Map<String, List<EClass>> compositionClassesByName = new HashMap<>();
 
+    // XXX: the test shows that getResourceSet() returns null; should it return
+    // the virtual resource set?
     if (virtualModel != null && virtualModel.getResourceSet() != null
         && virtualModel.getResourceSet().getPackageRegistry() != null
         && virtualModel.getResourceSet().getPackageRegistry().values() != null
         && virtualModel.getResourceSet().getPackageRegistry().values().size() > 0) {
+      // XXX: this list looks like a duplicate of contributingMetamodels
       Collection<Object> listOfVirtualMMPackages =
           virtualModel.getResourceSet().getPackageRegistry().values();
       ArrayList<EPackage> packs = new ArrayList<>();
@@ -125,6 +128,10 @@ public class MetamodelManager {
   }
 
   private void buildMaps() {
+    // XXX: A more elegant way of building these maps would be to advance in
+    // parallel into the concrete and virtual trees, check if named objects
+    // exist on both side, and add them to the maps. That would work the same
+    // for packages, classes and features.
 
     Map<String, List<EClass>> contributingClassesByName = new HashMap<>();
     Map<String, List<EClass>> compositionClassesByName = null;
@@ -147,6 +154,13 @@ public class MetamodelManager {
     }
 
     // XXX: why the special case for lists of a single EClass? Performance?
+    // The > 1 case has a check to make sure the classes are actually part of
+    // the same package, but that's not an issue with the == 1 case, because if
+    // there is only one class of this name, it must be from the same package.
+    // So the two cases are just a consequence of mushing the classes together
+    // without keeping the package information.
+    // Shouldn't we rather map classes starting from the package and going down?
+    // Or using qualified names?
     for (List<EClass> lcec : contributingClassesByName.values()) {
       if (lcec.size() > 1) {
         for (EClass cec : lcec) {
