@@ -39,7 +39,7 @@ public class TestViewpoint {
     // First check the metamodels (Viewpoint)
     {
       Viewpoint v = new Viewpoint(URI
-          .createPlatformResourceURI("viewpoint-test/viewpoint/full.eviewpoint", true));
+          .createPlatformResourceURI("/viewpoint-test/viewpoint/full.eviewpoint", true));
       v.load(null);
 
       // FIXME: after this point, ideally we should just compare the Viewpoint
@@ -70,7 +70,7 @@ public class TestViewpoint {
 
     // Then, do the same for models (EView)
     {
-      EView v = new EView(URI.createPlatformResourceURI("viewpoint-test/view/full.eview", true));
+      EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/full.eview", true));
       v.load(null);
 
       EList<EObject> l = v.getContents();
