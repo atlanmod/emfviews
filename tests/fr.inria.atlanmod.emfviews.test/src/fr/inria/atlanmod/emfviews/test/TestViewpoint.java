@@ -1,7 +1,9 @@
 package fr.inria.atlanmod.emfviews.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -10,6 +12,9 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.inria.atlanmod.emfviews.core.EView;
@@ -98,5 +103,64 @@ public class TestViewpoint {
       EObject container = dp.eClass().eContainer();
       assertEquals("bpmn2", container.eGet(container.eClass().getEStructuralFeature("name")));
     }
+  }
+
+  @Test
+  @Ignore // skipped because it's unclear whether view updates should work like
+          // this
+  public void testViewUpdate() throws IOException {
+    // When modifying a contributing model, the change should propagate to the
+    // virtual model
+
+    // Get the virtual model
+    EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/full.eview", true));
+    v.load(null);
+
+    // Get the concrete model loaded by the virtual model. We could also load
+    // the model ourselves from the resource, but it would have no connection to
+    // the model used by the view.
+    Resource m = v.getContributingModels().get(0);
+
+    // Descend into the contents
+    EObject ea = m.getContents().get(0);
+    EObject vea = v.getContents().get(0);
+
+    // Get an interesting feature in both concrete and virtual models
+    @SuppressWarnings("unchecked")
+    EList<EObject> ea_labels =
+        (EList<EObject>) ea.eGet(ea.eClass().getEStructuralFeature("labels"));
+    @SuppressWarnings("unchecked")
+    EList<EObject> vea_labels =
+        (EList<EObject>) vea.eGet(vea.eClass().getEStructuralFeature("labels"));
+
+    // Make sure there is at least one label
+    assertTrue(ea_labels.size() > 0);
+
+    // Make sure the virtual values are equal to the concrete values
+
+    // Save the feature to avoid searching it in the loop. We cannot use the
+    // same feature for both since the virtual model might have added/filtered
+    // features, so the indices might not be the same.
+    EStructuralFeature label_ft = ea_labels.get(0).eClass().getEStructuralFeature("name");
+    EStructuralFeature vlabel_ft = vea_labels.get(0).eClass().getEStructuralFeature("name");
+
+    for (int i = 0; i < ea_labels.size(); ++i) {
+      EObject l = ea_labels.get(i);
+      EObject vl = vea_labels.get(i);
+      assertEquals(l.eGet(label_ft), vl.eGet(vlabel_ft));
+    }
+
+    // Now change the concrete value (after making sure we are changing it)
+    assertNotEquals("foo", ea_labels.get(0).eGet(label_ft));
+    assertNotEquals("foo", vea_labels.get(0).eGet(vlabel_ft));
+    ea_labels.get(0).eSet(label_ft, "foo");
+
+    // Make sure it's reflected in the virtual model
+    assertEquals("foo", vea_labels.get(0).eGet(vlabel_ft));
+
+    // XXX: The test currently fails because EStoreEObjectImpl will cache any
+    // value returned by get() automatically, unless we override eIsCaching and
+    // return false. Not caching would allow us to propagate changes from
+    // contributing models to the view, at the cost of performance.
   }
 }
