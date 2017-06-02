@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -163,4 +164,37 @@ public class TestViewpoint {
     // return false. Not caching would allow us to propagate changes from
     // contributing models to the view, at the cost of performance.
   }
+
+  @Test
+  public void testAccessToFilteredFeature() throws IOException {
+    // We should not be able to access a filtered feature in any way.
+
+    // Get the view
+    EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/full.eview", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+
+    // Find the Business Architecture instance where there are filtered elements
+    EObject vba = l.get(0).eContents().get(1);
+
+    // Make sure filtered features are absent
+    for (EObject e : vba.eContents()) {
+      assertEquals(e.eClass().getName(), "Process");
+    }
+
+    // If we have the original feature from the unfiltered model
+    Resource m = v.getContributingModels().get(0);
+    EObject ba = m.getContents().get(0).eContents().get(1);
+    EStructuralFeature f = ba.eClass().getEStructuralFeature("drivers");
+
+    // Make sure we cannot access it that way
+    try {
+      vba.eGet(f);
+      fail("Expected the feature to not be found");
+    } catch (IllegalArgumentException ex) {
+      assertEquals("The feature 'drivers' is not a valid feature", ex.getMessage());
+    }
+  }
+
 }
