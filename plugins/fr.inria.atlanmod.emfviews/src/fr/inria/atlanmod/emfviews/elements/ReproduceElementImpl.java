@@ -35,6 +35,7 @@ public class ReproduceElementImpl extends VirtualElement {
     this.init(vModel, concreteElement, tempEClass);
   }
 
+  // FIXME: unused?
   public ReproduceElementImpl(View vModel, EObject concreteElement, EClass eClass) {
     this.init(vModel, concreteElement, eClass);
   }
@@ -86,7 +87,7 @@ public class ReproduceElementImpl extends VirtualElement {
     this.eProperties().setEResource(vModel);
     this.concreteElement = concreteElement;
     this.eSetClass(eClass);
-    this.eClass();
+    this.eClass(); // FIXME: seems useless
     setTranslationRule(ReproduceRule.INSTANCE);
     eSetStore(this.getTranslationRule());
   }

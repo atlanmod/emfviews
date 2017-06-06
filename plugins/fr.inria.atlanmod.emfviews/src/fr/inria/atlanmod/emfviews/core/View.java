@@ -140,6 +140,9 @@ public abstract class View extends ResourceImpl {
 
     for (Resource r : contributingModels) {
       ArrayList<EObject> oneOftheSublists = new ArrayList<>();
+      // FIXME: do we only care about the first contents? Contentfwk, BPMN and
+      // ReqIf all have a single "master" class which contains the rest, but
+      // maybe not all models are written like this.
       oneOftheSublists.add(translateToVirtualElement(r.getContents().get(0)));
       sublists.add(oneOftheSublists);
     }
