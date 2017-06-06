@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:minimalref="http://inria.fr/atlanmod/emfviews/tests/minimalref">
+  <minimalref:A manyB="/1 /2"/>
+  <minimalref:B parentA="/0"/>
+  <minimalref:B parentA="/0"/>
+</xmi:XMI>

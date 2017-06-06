@@ -3,6 +3,7 @@ package fr.inria.atlanmod.emfviews.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -13,6 +14,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Ignore;
@@ -195,6 +197,46 @@ public class TestViewpoint {
     } catch (IllegalArgumentException ex) {
       assertEquals("The feature 'drivers' is not a valid feature", ex.getMessage());
     }
+  }
+
+  @Test
+  public void testOppositeToFilteredReference() throws IOException {
+    // When we filter a reference that has an opposite, the opposite reference
+    // should still be accessible.
+
+    // Create the view
+    EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/minimal.eview", true));
+    v.load(null);
+
+    // The model has a many ref from A to B, and a single ref from B to A, but
+    // the metamodel has filtered the ref in A.
+    EList<EObject> l = v.getContents();
+    EObject a = l.get(0);
+
+    // Make sure the ref in A is filtered
+    assertEquals("A", a.eClass().getName());
+    assertNull(a.eClass().getEStructuralFeature("manyB"));
+
+    // The opposite feature should still exist on the metamodel for B
+    EObject b1 = l.get(1);
+    EStructuralFeature parentA = b1.eClass().getEStructuralFeature("parentA");
+    assertNotNull(parentA);
+
+    // Somehow, we can still access the original feature from its opposite,
+    // even though it's filtered
+    assertTrue(parentA instanceof EReference);
+    EReference manyB = ((EReference) parentA).getEOpposite();
+    assertNotNull(manyB);
+    assertEquals("manyB", manyB.getName());
+    // XXX: shouldn't the feature be hidden? Or is getEOpposite pulling from the
+    // unfiltered metamodel?
+
+    // Of course, we cannot actually access its value in `a` because that
+    // feature is not valid anymore
+
+    // But we should be able to access the value of b1.parentA
+    assertEquals(a, b1.eGet(parentA));
+    // XXX: this fails with a weird NPE
   }
 
 }
