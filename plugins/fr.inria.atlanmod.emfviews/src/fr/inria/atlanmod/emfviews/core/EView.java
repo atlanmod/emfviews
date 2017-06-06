@@ -114,7 +114,7 @@ public class EView extends View {
     loadContributingModels(new ArrayList<>(Arrays
         .asList(properties.getProperty("contributingModels").split(","))));
 
-    if (matchingModel != null) {
+    if (matchingModel != null && !matchingModel.isEmpty()) {
       // XXX: we could mark the weaving model file as derived
       try {
         VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModel);
