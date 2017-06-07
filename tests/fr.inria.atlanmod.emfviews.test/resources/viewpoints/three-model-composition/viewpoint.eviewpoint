@@ -1,0 +1,3 @@
+contributingMetamodels=resources/metamodels/contentfwk.ecore,http://www.omg.org/spec/BPMN/20100524/MODEL-XMI,http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
+weavingModel=resources/viewpoints/three-model-composition/weaving.xmi
+matchingModel=resources/viewpoints/three-model-composition/matching.ecl

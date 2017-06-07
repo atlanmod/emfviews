@@ -39,7 +39,7 @@ public class TestViewpoint {
   // 2. Assert that the virtual metamodel is the same as the concrete metamodel
 
   @Test
-  public void testFull() throws IOException {
+  public void testThreeModelComposition() throws IOException {
     // Based on the EA_viewtest examples, this is an integration test combining
     // three metamodels (contentfwk, BPMN2 and reqif10), with filters and
     // associations.
@@ -47,7 +47,7 @@ public class TestViewpoint {
     // First check the metamodels (Viewpoint)
     {
       Viewpoint v = new Viewpoint(URI
-          .createPlatformResourceURI("/viewpoint-test/viewpoint/full.eviewpoint", true));
+          .createURI("resources/viewpoints/three-model-composition/viewpoint.eviewpoint", true));
       v.load(null);
 
       // FIXME: after this point, ideally we should just compare the Viewpoint
@@ -78,7 +78,8 @@ public class TestViewpoint {
 
     // Then, do the same for models (EView)
     {
-      EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/full.eview", true));
+      EView v =
+          new EView(URI.createURI("resources/views/three-model-composition/view.eview", true));
       v.load(null);
 
       EList<EObject> l = v.getContents();
@@ -116,7 +117,7 @@ public class TestViewpoint {
     // virtual model
 
     // Get the virtual model
-    EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/full.eview", true));
+    EView v = new EView(URI.createURI("resources/views/three-model-composition/view.eview", true));
     v.load(null);
 
     // Get the concrete model loaded by the virtual model. We could also load
@@ -172,7 +173,7 @@ public class TestViewpoint {
     // We should not be able to access a filtered feature in any way.
 
     // Get the view
-    EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/full.eview", true));
+    EView v = new EView(URI.createURI("resources/views/three-model-composition/view.eview", true));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -205,7 +206,7 @@ public class TestViewpoint {
     // should still be accessible.
 
     // Create the view
-    EView v = new EView(URI.createPlatformResourceURI("/viewpoint-test/view/minimal.eview", true));
+    EView v = new EView(URI.createURI("resources/views/minimal/view.eview", true));
     v.load(null);
 
     // The model has a many ref from A to B, and a single ref from B to A, but

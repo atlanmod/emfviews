@@ -65,11 +65,9 @@ public abstract class View extends ResourceImpl {
     EList<Resource> allResources = virtualResourceSet.getResources();
     for (Resource resource : allResources) {
       // XXX: why skip ECore resources?
-      if (resource.getURI().toString().startsWith("platform")
-          && !resource.getURI().toString().endsWith("ecore")) {
+      if (!resource.getURI().toString().endsWith("ecore")) {
         contributingModels.add(resource);
       }
-
     }
 
     return contributingModels;
@@ -117,10 +115,10 @@ public abstract class View extends ResourceImpl {
   // }
 
   protected void loadContributingModels(List<String> contributingModelsPaths) {
-    // XXX: do we need to force loading the resources here? We don't do anything
-    // with the return value.
+    // This loads the resources into the virtual resource set as a side effect,
+    // so we can get them in getContributingModels later.
     for (String modelURI : contributingModelsPaths) {
-      virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
+      virtualResourceSet.getResource(URI.createURI(modelURI, true), true);
     }
 
   }

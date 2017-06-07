@@ -1,0 +1,3 @@
+contributingModels=resources/models/travelAgencyEA.xmi,resources/models/bookingTripRequirements.xmi,resources/models/bookingTripProcess.xmi
+viewpoint=resources/viewpoints/three-model-composition/viewpoint.eviewpoint
+weavingModel=resources/views/three-model-composition/weaving.xmi

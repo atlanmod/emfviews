@@ -10,7 +10,6 @@
  *******************************************************************************/
 package fr.inria.atlanmod.emfviews.core;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -119,8 +118,7 @@ public class EView extends View {
       try {
         VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModel);
 
-        vld.createVirtualModelLinks(URI
-            .createPlatformResourceURI(properties.getProperty("weavingModel"), true),
+        vld.createVirtualModelLinks(URI.createURI(properties.getProperty("weavingModel"), true),
                                     getContributingModels());
       } catch (Exception e) {
         e.printStackTrace();
@@ -133,19 +131,9 @@ public class EView extends View {
     setVirtualContents();
   }
 
-  private void loadViewpoint() throws FileNotFoundException, IOException {
-    String viewpointPath = properties.getProperty("viewpoint");
-
-    IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    // FIXME: Why not require the '/' in the properties file?
-    java.net.URI viewpointURI =
-        workspace.getRoot().findMember("/" + viewpointPath).getLocationURI();
-
-    EmfViewsFactory vFac = new EmfViewsFactory();
-    URI emfURI = URI.createURI(viewpointPath);
-
-    viewpoint = vFac.createResource(emfURI);
-    viewpoint.load(viewpointURI.toURL().openStream(), null);
+  private void loadViewpoint() throws IOException {
+    viewpoint = new Viewpoint(URI.createURI(properties.getProperty("viewpoint")));
+    viewpoint.load(null);
   }
 
   // FIXME: unused?
@@ -161,7 +149,7 @@ public class EView extends View {
     weavingModelResource.getContents().add(virtualLinksModelLevel);
 
     Viewpoint vm = (Viewpoint) viewpoint;
-    XMIResourceImpl weavingForMetamodelResource = vm.getWeavingModelResource();
+    Resource weavingForMetamodelResource = vm.getWeavingModelResource();
 
     List<Association> associations = new ArrayList<>();
 

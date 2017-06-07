@@ -101,8 +101,7 @@ public class AttributesSelectionPage extends WizardPage {
                                                     contributingEcoreModelPackage);
 
       } else if (modelURI.endsWith("ecore")) {
-        Resource metamodelResource =
-            virtualResourceSet.getResource(URI.createPlatformResourceURI(modelURI, true), true);
+        Resource metamodelResource = virtualResourceSet.getResource(URI.createURI(modelURI, true), true);
         EPackage mmPackage = (EPackage) metamodelResource.getContents().get(0);
         virtualResourceSet.getPackageRegistry().put(mmPackage.getNsURI(), mmPackage);
       }

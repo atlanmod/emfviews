@@ -16,10 +16,10 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 import fr.inria.atlanmod.emfviews.elements.VirtualElement;
@@ -33,19 +33,15 @@ public class VirtualLinkManager {
 
   private Map<EObject, VirtualElement> virtualLinks = new HashMap<>();
 
-  public VirtualLinkManager(String weavingModelURI,
-                            View vModel) throws MalformedURLException, IOException {
+  public VirtualLinkManager(String weavingModelURI, View vModel) throws MalformedURLException,
+                                                                 IOException {
     this.virtualModel = vModel;
 
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
 
-    XMIResourceImpl weavingModelResource = new XMIResourceImpl();
-
-    IWorkspace workspace = ResourcesPlugin.getWorkspace();
-
-    java.net.URI uri =
-        workspace.getRoot().findMember("/" + weavingModelURI).getLocationURI();
-    weavingModelResource.load(uri.toURL().openStream(), null);
+    Resource weavingModelResource =
+        new ResourceSetImpl().getResource(URI.createURI(weavingModelURI), true);
+    weavingModelResource.load(null);
 
     VirtualLinks virtualLinks = (VirtualLinks) weavingModelResource.getContents().get(0);
 

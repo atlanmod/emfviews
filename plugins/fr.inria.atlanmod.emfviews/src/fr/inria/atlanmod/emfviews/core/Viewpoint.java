@@ -83,7 +83,7 @@ public class Viewpoint extends ResourceImpl {
     return matchingModel;
   }
 
-  private XMIResourceImpl weavingModelResource;
+  private Resource weavingModelResource;
   private ArrayList<EPackage> contributingEpackages;
 
   public ArrayList<EPackage> getContributingEpackages() {
@@ -105,7 +105,7 @@ public class Viewpoint extends ResourceImpl {
 
   }
 
-  public XMIResourceImpl getWeavingModelResource() {
+  public Resource getWeavingModelResource() {
     return weavingModelResource;
   }
 
@@ -133,14 +133,10 @@ public class Viewpoint extends ResourceImpl {
     // we actually need it?
     if (properties.getProperty("matchingModel") != null) {
       matchingModel = properties.getProperty("matchingModel");
-      // IWorkspace workspace = ResourcesPlugin.getWorkspace();
-      // java.net.URI uri = workspace.getRoot()
-      // .findMember("/" + properties.getProperty("weavingModel"))
-      // .getLocationURI();
       // try {
       // VirtualLinksDelegator vld = new VirtualLinksDelegator(
       // properties.getProperty("matchingModel"));
-      // vld.createVirtualMetamodelLinks(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
+      // vld.createVirtualMetamodelLinks(URI.createURI(properties.getProperty("weavingModel"));
       // //extendedMMviewpoint.xmi is rewrited
       // } catch (CoreException e) {
       // e.printStackTrace();
@@ -197,12 +193,7 @@ public class Viewpoint extends ResourceImpl {
 
   private void loadWeavingModel(String weavingModelURI) throws FileNotFoundException, IOException {
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-    weavingModelResource = new XMIResourceImpl();
-    IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    // FIXME: why is the '/' not mandatory in the first place?
-    java.net.URI uri = workspace.getRoot().findMember("/" + weavingModelURI).getLocationURI();
-    weavingModelResource.load(uri.toURL().openStream(), null);
-    weavingModelResource.setURI(org.eclipse.emf.common.util.URI.createURI(uri.toString()));
+    weavingModelResource = new ResourceSetImpl().getResource(URI.createURI(weavingModelURI), true);
 
     // Get the virtual links from the serialized resource
     // FIXME: this cast can fail if the XMI is not a VirtualLinks
@@ -286,8 +277,8 @@ public class Viewpoint extends ResourceImpl {
       System.out.println("Extension");
       // EPackage originalPackage =
       // virtualResourceSet.getPackageRegistry().getEPackage(properties.getProperty("originalMetamodel"));
-      Resource metamodelResource = virtualResourceSet.getResource(URI
-          .createPlatformResourceURI(properties.getProperty("contributingMetamodels"), true), true);
+      Resource metamodelResource = virtualResourceSet
+          .getResource(URI.createURI(properties.getProperty("contributingMetamodels"), true), true);
       System.out
           .println("originalMetamodel2:  " + metamodelResource.getContents().get(0).toString());
       EPackage originalPackage = (EPackage) metamodelResource.getContents().get(0);

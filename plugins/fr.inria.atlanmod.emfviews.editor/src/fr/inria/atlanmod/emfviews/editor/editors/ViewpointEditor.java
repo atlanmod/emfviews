@@ -621,8 +621,7 @@ public class ViewpointEditor extends FormEditor implements IResourceChangeListen
             } else {
               ResourceSet virtualResourceSet = new ResourceSetImpl();
               Resource metamodelResource = virtualResourceSet
-                  .getResource(URI.createPlatformResourceURI(inputMetaModelPaths.get(i), true),
-                               true);
+                  .getResource(URI.createURI(inputMetaModelPaths.get(i), true), true);
               EPackage mmPackage = (EPackage) metamodelResource.getContents().get(0);
               if (mmPackage.getNsURI().compareToIgnoreCase(tempTreePack.getNsURI()) == 0) {
                 packageNeedsDeletion = false;
