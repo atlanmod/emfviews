@@ -236,7 +236,8 @@ public class TestViewpoint {
 
     // But we should be able to access the value of b1.parentA
     assertEquals(a, b1.eGet(parentA));
-    // XXX: this fails with a weird NPE
+    // XXX: this fails with a weird NPE from EStructuralFeatureImpl, but can
+    // work if we bypass that code in the debugger
   }
 
 }
