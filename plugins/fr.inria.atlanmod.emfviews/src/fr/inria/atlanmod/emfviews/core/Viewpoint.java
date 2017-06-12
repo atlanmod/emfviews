@@ -11,7 +11,6 @@
 package fr.inria.atlanmod.emfviews.core;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,11 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -44,7 +38,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinks.Association;
@@ -52,7 +45,6 @@ import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 
 public class Viewpoint extends ResourceImpl {
 
@@ -75,8 +67,6 @@ public class Viewpoint extends ResourceImpl {
   }
 
   private String contributingMetamodels;
-  private String filtersMM;
-  private String weavingModel;
   private String matchingModel;
 
   public String getMatchingModel() {
@@ -110,19 +100,8 @@ public class Viewpoint extends ResourceImpl {
   }
 
   // FIXME: unused?
-  public void setWeavingModelResource(XMIResourceImpl weavingModelResource) {
+  public void setWeavingModelResource(Resource weavingModelResource) {
     this.weavingModelResource = weavingModelResource;
-  }
-
-  // FIXME: unused?
-  public void createWeavingModel(URI modelURI) throws IOException {
-    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
-    weavingModelResource = new XMIResourceImpl();
-    weavingModelResource.setURI(modelURI);
-    weavingModelResource.getContents().add(virtualLinks);
-    weavingModelResource.save(null);
   }
 
   @Override
@@ -467,56 +446,6 @@ public class Viewpoint extends ResourceImpl {
         // Register the new virtual MM
       EPackage.Registry.INSTANCE.put("http://Extended_Metamodel/1.0", extendedPackage);
     } // end if (composition or extension)
-
-  }
-
-  // FIXME: unused?
-  public void serialize(IFile file, String dslTechnology) throws IOException, CoreException {
-    StringBuffer fileContent = new StringBuffer();
-    String contributingMetamodelsLine = "contributingMetamodels=" + contributingMetamodels;
-    fileContent.append(contributingMetamodelsLine);
-    fileContent.append("\n");
-    if (weavingModel == null) {
-      IPath filePath = file.getFullPath().removeFileExtension();
-      IPath weavingModelPath = filePath.addFileExtension("xmi");
-
-      URI linksURI = URI.createFileURI(weavingModelPath.toString());
-      createWeavingModel(linksURI);
-      weavingModelPath = weavingModelPath.makeRelative();
-      weavingModel = weavingModelPath.toString();
-    }
-
-    if (dslTechnology.compareToIgnoreCase("none") != 0 && matchingModel == null) {
-      IPath matchingModelPath = file.getFullPath().removeFileExtension().addFileExtension("ecl");
-
-      IWorkspace workspace = ResourcesPlugin.getWorkspace();
-      String veamosA = new File(workspace.getRoot().getLocationURI().getPath()).getAbsolutePath();
-      String laRuta = veamosA.concat(matchingModelPath.toString());
-
-      matchingModel = matchingModelPath.toString();
-
-      File fileModelBase = new File(laRuta);
-      fileModelBase.createNewFile();
-
-      String weavingModelLine = "weavingModel=" + weavingModel;
-
-      fileContent.append(weavingModelLine);
-      fileContent.append("\n");
-
-      String matchingModelLine = "matchingModel=" + weavingModel.replaceAll("xmi", dslTechnology);
-      fileContent.append(matchingModelLine);
-      fileContent.append("\n");
-      String filtersMetamodelLine = "filtersMetamodel=" + filtersMM;
-      fileContent.append(filtersMetamodelLine);
-
-      InputStream stream = openContentStream(fileContent.toString());
-      if (file.exists()) {
-        file.setContents(stream, true, true, null);
-      } else {
-        file.create(stream, true, null);
-      }
-      stream.close();
-    }
 
   }
 
