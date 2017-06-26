@@ -79,6 +79,9 @@ public class LinksProjector {
   }
 
   private EObject getReferencedObject(String elementRef, String packageNsuri) {
+    // FIXME: Associations use Resource.getEObject to find the element, but
+    // Filters use EMFViewsUtil.findElement
+
     EObject referencedElement = null;
     List<Resource> contributingModels = virtualModel.getContributingModels();
     boolean elemFound = false;
@@ -90,7 +93,9 @@ public class LinksProjector {
         elemFound = true;
       }
 
-    } // FIXME: what if null? (Maybe this cannot happen at this point?)
+    } // FIXME: what if null? Can happen when elementRef is a bad URIFragment or
+      // object ID. Shouldn't happen if we trust ECL to generate these
+      // correctly, but the XMI can also be created manually.
     return referencedElement;
 
   }
