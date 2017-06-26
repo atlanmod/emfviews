@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://inria.fr/virtualLinks">
+  <virtualLinks xsi:type="virtualLinks:Association" name="assoc" upperBound="1"
+                associationTypeName="assoc"
+                sourceElement="//@linkedElements.0"
+                targetElements="//@linkedElements.1"/>
+  <linkedElements elementRef="/"
+                  modelRef="http://inria.fr/atlanmod/emfviews/tests/minimalA"/>
+  <linkedElements elementRef="/"
+                  modelRef="http://inria.fr/atlanmod/emfviews/tests/minimalB"/>
+</virtualLinks:VirtualLinks>

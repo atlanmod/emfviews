@@ -1,0 +1,3 @@
+contributingModels=resources/models/minimalA.xmi,resources/models/minimalB.xmi
+viewpoint=resources/viewpoints/minimal-assoc/viewpoint.eviewpoint
+weavingModel=resources/views/minimal-assoc/weaving.xmi

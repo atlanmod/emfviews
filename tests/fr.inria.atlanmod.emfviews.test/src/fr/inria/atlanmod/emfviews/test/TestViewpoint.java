@@ -240,4 +240,27 @@ public class TestViewpoint {
     // work if we bypass that code in the debugger
   }
 
+  @Test
+  public void testVirtualAssociation() throws IOException {
+    // Creating a virtual association between two minimal models.
+
+    // Create the view
+    EView v = new EView(URI.createURI("resources/views/minimal-assoc/view.eview", true));
+    v.load(null);
+
+    // Get the virtual model
+    EList<EObject> l = v.getContents();
+
+    // Check it contains attributes from the source models
+    EObject A = l.get(0);
+    EObject B = l.get(1);
+    System.out.println(v.getURIFragment(A));
+    System.out.println(v.getURIFragment(B));
+    assertEquals(true, A.eGet(A.eClass().getEStructuralFeature("a")));
+    assertEquals(42, B.eGet(B.eClass().getEStructuralFeature("b")));
+
+    // Check it contains the virtual association
+    assertEquals(B, A.eGet(A.eClass().getEStructuralFeature("assoc")));
+  }
+
 }
