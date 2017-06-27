@@ -254,8 +254,6 @@ public class TestViewpoint {
     // Check it contains attributes from the source models
     EObject A = l.get(0);
     EObject B = l.get(1);
-    System.out.println(v.getURIFragment(A));
-    System.out.println(v.getURIFragment(B));
     assertEquals(true, A.eGet(A.eClass().getEStructuralFeature("a")));
     assertEquals(42, B.eGet(B.eClass().getEStructuralFeature("b")));
 
