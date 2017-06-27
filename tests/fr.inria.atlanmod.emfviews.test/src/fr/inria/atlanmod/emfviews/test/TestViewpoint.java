@@ -157,14 +157,7 @@ public class TestViewpoint {
     ea_labels.get(0).eSet(label_ft, "foo");
 
     // Make sure it's reflected in the virtual model
-    // assertEquals("foo", vea_labels.get(0).eGet(vlabel_ft));
-    // XXX: The test currently fails because EStoreEObjectImpl will cache any
-    // value returned by get() automatically, unless we override eIsCaching and
-    // return false. Not caching would allow us to propagate changes from
-    // contributing models to the view, at the cost of performance.
-
-    // This is the current behavior:
-    assertEquals("Software Kind", vea_labels.get(0).eGet(vlabel_ft));
+    assertEquals("foo", vea_labels.get(0).eGet(vlabel_ft));
   }
 
   @Test

@@ -31,4 +31,11 @@ public abstract class VirtualElement extends EStoreEObjectImpl {
     this.translationRule = rule;
   }
 
+  @Override
+  protected boolean eIsCaching() {
+    // Make sure the default implementation does not do any caching of property
+    // values, so that updating a property is reflected in the view.
+    return false;
+  }
+
 }
