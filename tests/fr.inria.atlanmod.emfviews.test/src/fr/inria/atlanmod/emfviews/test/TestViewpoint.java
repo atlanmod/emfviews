@@ -199,10 +199,10 @@ public class TestViewpoint {
     }
   }
 
-  @Test(expected = NullPointerException.class)
-  public void testOppositeToFilteredReference() throws IOException {
-    // When we filter a reference that has an opposite, the opposite reference
-    // should still be accessible.
+  @Test
+  public void testFilterBidirectionalReference() throws IOException {
+    // When we filter a reference that has an opposite, its opposite still
+    // exists, but its EOpposite link should be null.
 
     // Create the view
     EView v = new EView(URI.createURI("resources/views/minimal/view.eview", true));
@@ -222,22 +222,9 @@ public class TestViewpoint {
     EStructuralFeature parentA = b1.eClass().getEStructuralFeature("parentA");
     assertNotNull(parentA);
 
-    // Somehow, we can still access the original feature from its opposite,
-    // even though it's filtered
-    assertTrue(parentA instanceof EReference);
+    // Make sure we cannot access the feature through its opposite
     EReference manyB = ((EReference) parentA).getEOpposite();
-    assertNotNull(manyB);
-    assertEquals("manyB", manyB.getName());
-    // XXX: shouldn't the feature be hidden? Or is getEOpposite pulling from the
-    // unfiltered metamodel?
-
-    // Of course, we cannot actually access its value in `a` because that
-    // feature is not valid anymore
-
-    // But we should be able to access the value of b1.parentA
-    assertEquals(a, b1.eGet(parentA));
-    // XXX: this fails with a weird NPE from EStructuralFeatureImpl, but can
-    // work if we bypass that code in the debugger
+    assertNull(manyB);
   }
 
   @Test

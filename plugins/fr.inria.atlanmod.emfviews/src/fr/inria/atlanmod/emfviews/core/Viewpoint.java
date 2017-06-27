@@ -164,7 +164,7 @@ public class Viewpoint extends ResourceImpl {
       EObject root = virtualResourceSet.getPackageRegistry().getEPackage(e.getModelRef());
       EObject filteredElement = EMFViewsUtil.findElement(root, e.getElementRef());
       if (filteredElement != null) {
-        EcoreUtil.remove(filteredElement);
+        EcoreUtil.delete(filteredElement);
         hiddenAttributes.add(filteredElement);
       }
     }
