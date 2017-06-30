@@ -19,10 +19,9 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class VirtualLinksUtil {
 
@@ -38,11 +37,11 @@ public class VirtualLinksUtil {
     return resourceUri;
   }
 
-  public static VirtualLinks createLinksModel() {
-    return VirtualLinksFactory.eINSTANCE.createVirtualLinks();
+  public static WeavingModel createLinksModel() {
+    return VirtualLinksFactory.eINSTANCE.createWeavingModel();
   }
 
-  public static void persistLinksModel(VirtualLinks linksModel,
+  public static void persistLinksModel(WeavingModel linksModel,
                                        org.eclipse.emf.common.util.URI theUri) throws IOException {
     XMIResourceImpl linksModelResource = new XMIResourceImpl();
     linksModelResource.setURI(theUri);
@@ -51,32 +50,12 @@ public class VirtualLinksUtil {
 
   }
 
-  public static Filter createFilter(String name, String oclQuery, boolean filterOnlyFeatures) {
-    Filter filter = VirtualLinksFactory.eINSTANCE.createFilter();
+  public static ElementFilter createFilter(String name, String oclQuery,
+                                           boolean filterOnlyFeatures) {
+    ElementFilter filter = VirtualLinksFactory.eINSTANCE.createElementFilter();
     filter.setName(name);
-    filter.setOclQuery(oclQuery);
-    filter.setFilterOnlyEstructuralFeatures(filterOnlyFeatures);
 
     return filter;
-  }
-
-  public static LinkedElement createLinkedElement(String name, String modelRef, String elementRef,
-                                                  String features) {
-    LinkedElement linkedElement = VirtualLinksFactory.eINSTANCE.createLinkedElement();
-    linkedElement.setName(name);
-    linkedElement.setModelRef(modelRef);
-    linkedElement.setElementRef(elementRef);
-    if (features != null)
-      linkedElement.setEstructuralFeatures(features);
-
-    return linkedElement;
-  }
-
-  public static void associateFilters(VirtualLinks virtualLinks, Filter filter,
-                                      LinkedElement linkedElement) {
-    filter.setFilteredElement(linkedElement);
-    virtualLinks.getVirtualLinks().add(filter);
-    virtualLinks.getLinkedElements().add(linkedElement);
   }
 
 }

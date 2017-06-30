@@ -2,72 +2,113 @@
  */
 package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.ContributingModel;
+import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
+import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
+import fr.inria.atlanmod.emfviews.virtuallinks.NewConcept;
+import fr.inria.atlanmod.emfviews.virtuallinks.NewProperty;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.Association;
-import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
-
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
- * end-user-doc -->
- *
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Package</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLinksPackage {
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  private EClass virtualLinksEClass = null;
+  private EClass weavingModelEClass = null;
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  private EClass linkedElementEClass = null;
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  private EClass associationEClass = null;
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   private EClass virtualLinkEClass = null;
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  private EClass filterEClass = null;
+  private EClass newConceptEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass newPropertyEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass newAssociationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass elementFilterEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass contributingModelEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass concreteElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass linkedElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass virtualElementEClass = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
-   * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
-   * package package URI value.
-   * <p>
-   * Note: the correct way to create the package is via the static factory
-   * method {@link #init init()}, which also performs initialization of the
-   * package, or returns the registered package, if one already exists. <!--
-   * begin-user-doc --> <!-- end-user-doc -->
-   *
+   * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+   * package URI value.
+   * <p>Note: the correct way to create the package is via the static
+   * factory method {@link #init init()}, which also performs
+   * initialization of the package, or returns the registered package,
+   * if one already exists.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @see org.eclipse.emf.ecore.EPackage.Registry
    * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#eNS_URI
    * @see #init()
@@ -78,38 +119,29 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   private static boolean isInited = false;
 
   /**
-   * Creates, registers, and initializes the <b>Package</b> for this model, and
-   * for any others upon which it depends.
-   *
-   * <p>
-   * This method is used to initialize {@link VirtualLinksPackage#eINSTANCE}
-   * when that field is accessed. Clients should not invoke it directly.
-   * Instead, they should simply access that field to obtain the package. <!--
-   * begin-user-doc --> <!-- end-user-doc -->
-   *
+   * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+   * 
+   * <p>This method is used to initialize {@link VirtualLinksPackage#eINSTANCE} when that field is accessed.
+   * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @see #eNS_URI
    * @see #createPackageContents()
    * @see #initializePackageContents()
    * @generated
    */
   public static VirtualLinksPackage init() {
-    if (isInited)
-      return (VirtualLinksPackage) EPackage.Registry.INSTANCE
-          .getEPackage(VirtualLinksPackage.eNS_URI);
+    if (isInited) return (VirtualLinksPackage)EPackage.Registry.INSTANCE.getEPackage(VirtualLinksPackage.eNS_URI);
 
     // Obtain or create and register package
-    VirtualLinksPackageImpl theVirtualLinksPackage =
-        (VirtualLinksPackageImpl) (EPackage.Registry.INSTANCE
-            .get(eNS_URI) instanceof VirtualLinksPackageImpl
-                ? EPackage.Registry.INSTANCE.get(eNS_URI)
-                : new VirtualLinksPackageImpl());
+    VirtualLinksPackageImpl theVirtualLinksPackage = (VirtualLinksPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof VirtualLinksPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new VirtualLinksPackageImpl());
 
     isInited = true;
 
@@ -122,328 +154,357 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     // Mark meta-data to indicate it can't be changed
     theVirtualLinksPackage.freeze();
 
+  
     // Update the registry and return the package
     EPackage.Registry.INSTANCE.put(VirtualLinksPackage.eNS_URI, theVirtualLinksPackage);
     return theVirtualLinksPackage;
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EClass getVirtualLinks() {
-    return virtualLinksEClass;
+  public EClass getWeavingModel() {
+    return weavingModelEClass;
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EReference getVirtualLinks_VirtualLinks() {
-    return (EReference) virtualLinksEClass.getEStructuralFeatures().get(0);
+  public EReference getWeavingModel_VirtualLinks() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(0);
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EReference getVirtualLinks_LinkedElements() {
-    return (EReference) virtualLinksEClass.getEStructuralFeatures().get(1);
+  public EReference getWeavingModel_ContributingModels() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(1);
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EClass getLinkedElement() {
-    return linkedElementEClass;
+  public EAttribute getWeavingModel_Whitelist() {
+    return (EAttribute)weavingModelEClass.getEStructuralFeatures().get(2);
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EAttribute getLinkedElement_ElementRef() {
-    return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getLinkedElement_ModelRef() {
-    return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getLinkedElement_Name() {
-    return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getLinkedElement_EstructuralFeatures() {
-    return (EAttribute) linkedElementEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EClass getAssociation() {
-    return associationEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getAssociation_LowerBound() {
-    return (EAttribute) associationEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getAssociation_UpperBound() {
-    return (EAttribute) associationEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getAssociation_AssociationTypeName() {
-    return (EAttribute) associationEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EReference getAssociation_Opposite() {
-    return (EReference) associationEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EReference getAssociation_SourceElement() {
-    return (EReference) associationEClass.getEStructuralFeatures().get(4);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EReference getAssociation_TargetElements() {
-    return (EReference) associationEClass.getEStructuralFeatures().get(5);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getAssociation_OclExpression() {
-    return (EAttribute) associationEClass.getEStructuralFeatures().get(6);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getAssociation_SourceAttribute() {
-    return (EAttribute) associationEClass.getEStructuralFeatures().get(7);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
-  public EAttribute getAssociation_TargetAttribute() {
-    return (EAttribute) associationEClass.getEStructuralFeatures().get(8);
-  }
-
-  /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
-   * @generated
-   */
-  @Override
   public EClass getVirtualLink() {
     return virtualLinkEClass;
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
   public EAttribute getVirtualLink_Name() {
-    return (EAttribute) virtualLinkEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)virtualLinkEClass.getEStructuralFeatures().get(0);
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EClass getFilter() {
-    return filterEClass;
+  public EClass getNewConcept() {
+    return newConceptEClass;
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EReference getFilter_FilteredElement() {
-    return (EReference) filterEClass.getEStructuralFeatures().get(0);
+  public EReference getNewConcept_SuperConcepts() {
+    return (EReference)newConceptEClass.getEStructuralFeatures().get(0);
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EAttribute getFilter_OclQuery() {
-    return (EAttribute) filterEClass.getEStructuralFeatures().get(1);
+  public EReference getNewConcept_SubConcepts() {
+    return (EReference)newConceptEClass.getEStructuralFeatures().get(1);
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public EAttribute getFilter_FilterOnlyEstructuralFeatures() {
-    return (EAttribute) filterEClass.getEStructuralFeatures().get(2);
+  public EClass getNewProperty() {
+    return newPropertyEClass;
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-  @Override
+  public EReference getNewProperty_Parent() {
+    return (EReference)newPropertyEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNewProperty_Type() {
+    return (EAttribute)newPropertyEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNewProperty_Optional() {
+    return (EAttribute)newPropertyEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNewAssociation() {
+    return newAssociationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNewAssociation_Source() {
+    return (EReference)newAssociationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNewAssociation_Target() {
+    return (EReference)newAssociationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNewAssociation_LowerBound() {
+    return (EAttribute)newAssociationEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNewAssociation_UpperBound() {
+    return (EAttribute)newAssociationEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNewAssociation_Opposite() {
+    return (EReference)newAssociationEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getElementFilter() {
+    return elementFilterEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getElementFilter_Target() {
+    return (EReference)elementFilterEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getContributingModel() {
+    return contributingModelEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getContributingModel_URI() {
+    return (EAttribute)contributingModelEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getContributingModel_ConcreteElements() {
+    return (EReference)contributingModelEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getConcreteElement() {
+    return concreteElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getConcreteElement_Model() {
+    return (EReference)concreteElementEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getConcreteElement_Path() {
+    return (EAttribute)concreteElementEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getLinkedElement() {
+    return linkedElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getVirtualElement() {
+    return virtualElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public VirtualLinksFactory getVirtualLinksFactory() {
-    return (VirtualLinksFactory) getEFactoryInstance();
+    return (VirtualLinksFactory)getEFactoryInstance();
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   private boolean isCreated = false;
 
   /**
-   * Creates the meta-model objects for the package. This method is guarded to
-   * have no affect on any invocation but its first. <!-- begin-user-doc -->
+   * Creates the meta-model objects for the package.  This method is
+   * guarded to have no affect on any invocation but its first.
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   *
    * @generated
    */
   public void createPackageContents() {
-    if (isCreated)
-      return;
+    if (isCreated) return;
     isCreated = true;
 
     // Create classes and their features
-    virtualLinksEClass = createEClass(VIRTUAL_LINKS);
-    createEReference(virtualLinksEClass, VIRTUAL_LINKS__VIRTUAL_LINKS);
-    createEReference(virtualLinksEClass, VIRTUAL_LINKS__LINKED_ELEMENTS);
-
-    linkedElementEClass = createEClass(LINKED_ELEMENT);
-    createEAttribute(linkedElementEClass, LINKED_ELEMENT__ELEMENT_REF);
-    createEAttribute(linkedElementEClass, LINKED_ELEMENT__MODEL_REF);
-    createEAttribute(linkedElementEClass, LINKED_ELEMENT__NAME);
-    createEAttribute(linkedElementEClass, LINKED_ELEMENT__ESTRUCTURAL_FEATURES);
-
-    associationEClass = createEClass(ASSOCIATION);
-    createEAttribute(associationEClass, ASSOCIATION__LOWER_BOUND);
-    createEAttribute(associationEClass, ASSOCIATION__UPPER_BOUND);
-    createEAttribute(associationEClass, ASSOCIATION__ASSOCIATION_TYPE_NAME);
-    createEReference(associationEClass, ASSOCIATION__OPPOSITE);
-    createEReference(associationEClass, ASSOCIATION__SOURCE_ELEMENT);
-    createEReference(associationEClass, ASSOCIATION__TARGET_ELEMENTS);
-    createEAttribute(associationEClass, ASSOCIATION__OCL_EXPRESSION);
-    createEAttribute(associationEClass, ASSOCIATION__SOURCE_ATTRIBUTE);
-    createEAttribute(associationEClass, ASSOCIATION__TARGET_ATTRIBUTE);
+    weavingModelEClass = createEClass(WEAVING_MODEL);
+    createEReference(weavingModelEClass, WEAVING_MODEL__VIRTUAL_LINKS);
+    createEReference(weavingModelEClass, WEAVING_MODEL__CONTRIBUTING_MODELS);
+    createEAttribute(weavingModelEClass, WEAVING_MODEL__WHITELIST);
 
     virtualLinkEClass = createEClass(VIRTUAL_LINK);
     createEAttribute(virtualLinkEClass, VIRTUAL_LINK__NAME);
 
-    filterEClass = createEClass(FILTER);
-    createEReference(filterEClass, FILTER__FILTERED_ELEMENT);
-    createEAttribute(filterEClass, FILTER__OCL_QUERY);
-    createEAttribute(filterEClass, FILTER__FILTER_ONLY_ESTRUCTURAL_FEATURES);
+    newConceptEClass = createEClass(NEW_CONCEPT);
+    createEReference(newConceptEClass, NEW_CONCEPT__SUPER_CONCEPTS);
+    createEReference(newConceptEClass, NEW_CONCEPT__SUB_CONCEPTS);
+
+    newPropertyEClass = createEClass(NEW_PROPERTY);
+    createEReference(newPropertyEClass, NEW_PROPERTY__PARENT);
+    createEAttribute(newPropertyEClass, NEW_PROPERTY__TYPE);
+    createEAttribute(newPropertyEClass, NEW_PROPERTY__OPTIONAL);
+
+    newAssociationEClass = createEClass(NEW_ASSOCIATION);
+    createEReference(newAssociationEClass, NEW_ASSOCIATION__SOURCE);
+    createEReference(newAssociationEClass, NEW_ASSOCIATION__TARGET);
+    createEAttribute(newAssociationEClass, NEW_ASSOCIATION__LOWER_BOUND);
+    createEAttribute(newAssociationEClass, NEW_ASSOCIATION__UPPER_BOUND);
+    createEReference(newAssociationEClass, NEW_ASSOCIATION__OPPOSITE);
+
+    elementFilterEClass = createEClass(ELEMENT_FILTER);
+    createEReference(elementFilterEClass, ELEMENT_FILTER__TARGET);
+
+    contributingModelEClass = createEClass(CONTRIBUTING_MODEL);
+    createEAttribute(contributingModelEClass, CONTRIBUTING_MODEL__URI);
+    createEReference(contributingModelEClass, CONTRIBUTING_MODEL__CONCRETE_ELEMENTS);
+
+    concreteElementEClass = createEClass(CONCRETE_ELEMENT);
+    createEReference(concreteElementEClass, CONCRETE_ELEMENT__MODEL);
+    createEAttribute(concreteElementEClass, CONCRETE_ELEMENT__PATH);
+
+    linkedElementEClass = createEClass(LINKED_ELEMENT);
+
+    virtualElementEClass = createEClass(VIRTUAL_ELEMENT);
   }
 
   /**
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
-   *
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   private boolean isInitialized = false;
 
   /**
-   * Complete the initialization of the package and its meta-model. This method
-   * is guarded to have no affect on any invocation but its first. <!--
-   * begin-user-doc --> <!-- end-user-doc -->
-   *
+   * Complete the initialization of the package and its meta-model.  This
+   * method is guarded to have no affect on any invocation but its first.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
   public void initializePackageContents() {
-    if (isInitialized)
-      return;
+    if (isInitialized) return;
     isInitialized = true;
 
     // Initialize package
@@ -456,92 +517,58 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     // Set bounds for type parameters
 
     // Add supertypes to classes
-    associationEClass.getESuperTypes().add(this.getVirtualLink());
-    filterEClass.getESuperTypes().add(this.getVirtualLink());
+    newConceptEClass.getESuperTypes().add(this.getVirtualLink());
+    newConceptEClass.getESuperTypes().add(this.getVirtualElement());
+    newPropertyEClass.getESuperTypes().add(this.getVirtualLink());
+    newPropertyEClass.getESuperTypes().add(this.getVirtualElement());
+    newAssociationEClass.getESuperTypes().add(this.getVirtualLink());
+    newAssociationEClass.getESuperTypes().add(this.getVirtualElement());
+    elementFilterEClass.getESuperTypes().add(this.getVirtualLink());
+    concreteElementEClass.getESuperTypes().add(this.getLinkedElement());
+    virtualElementEClass.getESuperTypes().add(this.getLinkedElement());
 
     // Initialize classes, features, and operations; add parameters
-    initEClass(virtualLinksEClass, VirtualLinks.class, "VirtualLinks", !IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getVirtualLinks_VirtualLinks(), this.getVirtualLink(), null, "virtualLinks",
-                   null, 0, -1, VirtualLinks.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
-    initEReference(getVirtualLinks_LinkedElements(), this.getLinkedElement(), null,
-                   "linkedElements", null, 0, -1, VirtualLinks.class, !IS_TRANSIENT, !IS_VOLATILE,
-                   IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
-                   !IS_DERIVED, IS_ORDERED);
+    initEClass(weavingModelEClass, WeavingModel.class, "WeavingModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getWeavingModel_VirtualLinks(), this.getVirtualLink(), null, "virtualLinks", null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getWeavingModel_ContributingModels(), this.getContributingModel(), null, "contributingModels", null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getWeavingModel_Whitelist(), ecorePackage.getEBoolean(), "whitelist", null, 0, 1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(linkedElementEClass, LinkedElement.class, "LinkedElement", !IS_ABSTRACT,
-               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getLinkedElement_ElementRef(), ecorePackage.getEString(), "elementRef", null, 0,
-                   1, LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getLinkedElement_ModelRef(), ecorePackage.getEString(), "modelRef", null, 0, 1,
-                   LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getLinkedElement_Name(), ecorePackage.getEString(), "name", null, 0, 1,
-                   LinkedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getLinkedElement_EstructuralFeatures(), ecorePackage.getEString(),
-                   "estructuralFeatures", null, 0, 1, LinkedElement.class, !IS_TRANSIENT,
-                   !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+    initEClass(virtualLinkEClass, VirtualLink.class, "VirtualLink", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getVirtualLink_Name(), ecorePackage.getEString(), "name", null, 1, 1, VirtualLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(associationEClass, Association.class, "Association", !IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getAssociation_LowerBound(), ecorePackage.getEInt(), "lowerBound", null, 1, 1,
-                   Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-    initEAttribute(getAssociation_UpperBound(), ecorePackage.getEInt(), "upperBound", null, 1, 1,
-                   Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-    initEAttribute(getAssociation_AssociationTypeName(), ecorePackage.getEString(),
-                   "associationTypeName", null, 1, 1, Association.class, !IS_TRANSIENT,
-                   !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED,
-                   !IS_ORDERED);
-    initEReference(getAssociation_Opposite(), this.getAssociation(), null, "opposite", null, 0, 1,
-                   Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                   IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-    initEReference(getAssociation_SourceElement(), this.getLinkedElement(), null, "sourceElement",
-                   null, 1, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
-    initEReference(getAssociation_TargetElements(), this.getLinkedElement(), null, "targetElements",
-                   null, 1, -1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
-    initEAttribute(getAssociation_OclExpression(), ecorePackage.getEString(), "oclExpression", null,
-                   0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAssociation_SourceAttribute(), ecorePackage.getEString(), "sourceAttribute",
-                   null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getAssociation_TargetAttribute(), ecorePackage.getEString(), "targetAttribute",
-                   null, 0, 1, Association.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(newConceptEClass, NewConcept.class, "NewConcept", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNewConcept_SuperConcepts(), this.getLinkedElement(), null, "superConcepts", null, 0, 1, NewConcept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNewConcept_SubConcepts(), this.getLinkedElement(), null, "subConcepts", null, 0, 1, NewConcept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(virtualLinkEClass, VirtualLink.class, "VirtualLink", IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getVirtualLink_Name(), ecorePackage.getEString(), "name", null, 0, 1,
-                   VirtualLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(newPropertyEClass, NewProperty.class, "NewProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNewProperty_Parent(), this.getLinkedElement(), null, "parent", null, 1, 1, NewProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getNewProperty_Type(), ecorePackage.getEString(), "type", null, 1, 1, NewProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getNewProperty_Optional(), ecorePackage.getEBoolean(), "optional", null, 1, 1, NewProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(filterEClass, Filter.class, "Filter", !IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getFilter_FilteredElement(), this.getLinkedElement(), null, "filteredElement",
-                   null, 1, 1, Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
-    initEAttribute(getFilter_OclQuery(), ecorePackage.getEString(), "oclQuery", null, 0, 1,
-                   Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                   IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getFilter_FilterOnlyEstructuralFeatures(), ecorePackage.getEBoolean(),
-                   "filterOnlyEstructuralFeatures", null, 0, 1, Filter.class, !IS_TRANSIENT,
-                   !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+    initEClass(newAssociationEClass, NewAssociation.class, "NewAssociation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNewAssociation_Source(), this.getLinkedElement(), null, "source", null, 1, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNewAssociation_Target(), this.getLinkedElement(), null, "target", null, 1, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getNewAssociation_LowerBound(), ecorePackage.getEInt(), "lowerBound", null, 1, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+    initEAttribute(getNewAssociation_UpperBound(), ecorePackage.getEInt(), "upperBound", null, 1, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+    initEReference(getNewAssociation_Opposite(), this.getLinkedElement(), null, "opposite", null, 0, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
+    initEClass(elementFilterEClass, ElementFilter.class, "ElementFilter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getElementFilter_Target(), this.getConcreteElement(), null, "target", null, 1, 1, ElementFilter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(contributingModelEClass, ContributingModel.class, "ContributingModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getContributingModel_URI(), ecorePackage.getEString(), "URI", null, 1, 1, ContributingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getContributingModel_ConcreteElements(), this.getConcreteElement(), this.getConcreteElement_Model(), "concreteElements", null, 0, -1, ContributingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(concreteElementEClass, ConcreteElement.class, "ConcreteElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getConcreteElement_Model(), this.getContributingModel(), this.getContributingModel_ConcreteElements(), "model", null, 1, 1, ConcreteElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getConcreteElement_Path(), ecorePackage.getEString(), "path", null, 1, 1, ConcreteElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(linkedElementEClass, LinkedElement.class, "LinkedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(virtualElementEClass, VirtualElement.class, "VirtualElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);
   }
 
-} // VirtualLinksPackageImpl
+} //VirtualLinksPackageImpl

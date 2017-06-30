@@ -1,43 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="virtuallinks" nsURI="http://inria.fr/virtualLinks" nsPrefix="virtualLinks">
-  <eClassifiers xsi:type="ecore:EClass" name="VirtualLinks">
+  <eClassifiers xsi:type="ecore:EClass" name="WeavingModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="virtualLinks" upperBound="-1"
         eType="#//VirtualLink" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="linkedElements" upperBound="-1"
-        eType="#//LinkedElement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contributingModels" upperBound="-1"
+        eType="#//ContributingModel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="whitelist" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="LinkedElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementRef" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelRef" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="estructuralFeatures" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VirtualLink" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Association" eSuperTypes="#//VirtualLink">
+  <eClassifiers xsi:type="ecore:EClass" name="NewConcept" eSuperTypes="#//VirtualLink #//VirtualElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superConcepts" eType="#//LinkedElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subConcepts" eType="#//LinkedElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NewProperty" eSuperTypes="#//VirtualLink #//VirtualElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
+        eType="#//LinkedElement"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NewAssociation" eSuperTypes="#//VirtualLink #//VirtualElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//LinkedElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//LinkedElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lowerBound" ordered="false"
         unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="upperBound" ordered="false"
         unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="associationTypeName" ordered="false"
-        unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" ordered="false"
-        eType="#//Association"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceElement" lowerBound="1"
         eType="#//LinkedElement"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="targetElements" lowerBound="1"
-        upperBound="-1" eType="#//LinkedElement"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oclExpression" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VirtualLink" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementFilter" eSuperTypes="#//VirtualLink">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//ConcreteElement"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Filter" eSuperTypes="#//VirtualLink">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="filteredElement" lowerBound="1"
-        eType="#//LinkedElement"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oclQuery" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filterOnlyEstructuralFeatures"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ContributingModel">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="URI" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="concreteElements" upperBound="-1"
+        eType="#//ConcreteElement" containment="true" eOpposite="#//ConcreteElement/model"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteElement" eSuperTypes="#//LinkedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="model" lowerBound="1" eType="#//ContributingModel"
+        eOpposite="#//ContributingModel/concreteElements"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LinkedElement" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VirtualElement" abstract="true" eSuperTypes="#//LinkedElement"/>
 </ecore:EPackage>

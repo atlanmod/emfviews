@@ -2,27 +2,25 @@
  */
 package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Linked Element</b></em>'.
+ * An implementation of the model object '<em><b>Virtual Element</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public abstract class LinkedElementImpl extends MinimalEObjectImpl.Container implements LinkedElement {
+public abstract class VirtualElementImpl extends LinkedElementImpl implements VirtualElement {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected LinkedElementImpl() {
+  protected VirtualElementImpl() {
     super();
   }
 
@@ -33,7 +31,7 @@ public abstract class LinkedElementImpl extends MinimalEObjectImpl.Container imp
    */
   @Override
   protected EClass eStaticClass() {
-    return VirtualLinksPackage.Literals.LINKED_ELEMENT;
+    return VirtualLinksPackage.Literals.VIRTUAL_ELEMENT;
   }
 
-} //LinkedElementImpl
+} //VirtualElementImpl
