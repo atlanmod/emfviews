@@ -211,8 +211,8 @@ public class TestViewpoint {
     assertNull(a.eClass().getEStructuralFeature("manyB"));
 
     // The opposite feature should still exist on the metamodel for B
-    EObject b1 = l.get(1);
-    EStructuralFeature parentA = b1.eClass().getEStructuralFeature("parentA");
+    EObject b = l.get(1);
+    EStructuralFeature parentA = b.eClass().getEStructuralFeature("parentA");
     assertNotNull(parentA);
 
     // Make sure we cannot access the feature through its opposite
