@@ -11,10 +11,6 @@
 
 package fr.inria.atlanmod.emfviews.core;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.List;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
@@ -30,12 +26,5 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
     } else {
       return null;
     }
-  }
-
-  // FIXME: unused?
-  public Resource createEView(List<String> contributingModels, String viewpoint,
-                              String weavingModelAbsolutePath) throws MalformedURLException,
-                                                                      IOException {
-    return new EView(contributingModels, viewpoint, weavingModelAbsolutePath);
   }
 }

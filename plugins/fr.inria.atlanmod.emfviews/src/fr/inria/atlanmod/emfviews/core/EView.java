@@ -12,32 +12,15 @@ package fr.inria.atlanmod.emfviews.core;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.Association;
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class EView extends View {
@@ -46,50 +29,6 @@ public class EView extends View {
 
   public EView(URI uri) {
     super(uri);
-  }
-
-  // FIXME: unused?
-  public EView(List<String> contributingModels, String viewpointUri,
-               String weavingModelAbsolutePath) throws MalformedURLException, IOException {
-    super();
-    virtualResourceSet = new ResourceSetImpl();
-
-    viewpointURI = viewpointUri;
-    EmfViewsFactory vFac = new EmfViewsFactory();
-    org.eclipse.emf.common.util.URI emfURI =
-        org.eclipse.emf.common.util.URI.createURI(viewpointUri);
-
-    IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    java.net.URI uri = workspace.getRoot().findMember("/" + viewpointUri).getLocationURI();
-    viewpoint = vFac.createResource(emfURI);
-    viewpoint.load(uri.toURL().openStream(), null);
-
-    String contributingMetamodels = ((Viewpoint) viewpoint).getContributingMetamodelsURIs();
-    String[] contributingMMs = contributingMetamodels.split(",");
-    ArrayList<String> contributingMMsURIs = new ArrayList<>();
-    for (String contributingMM : contributingMMs) {
-      contributingMMsURIs.add(contributingMM);
-    }
-
-    loadContributingMetamodels(contributingMMsURIs);
-
-    metamodelManager =
-        new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewpoint, this);
-
-    loadContributingModels(contributingModels);
-
-    IPath filePath = new Path(weavingModelAbsolutePath).removeFileExtension();
-    IPath weavingModelPath = filePath.addFileExtension("xmi");
-
-    URI linksURI = URI.createFileURI(weavingModelPath.toString());
-    createWeavingModel(linksURI);
-    weavingModelPath = weavingModelPath.makeRelative();
-    weavingModelURI = weavingModelPath.toString();
-
-    this.vLinkManager = new VirtualLinkManager(weavingModelURI, this);
-    vLinkManager.initialize();
-
-    setVirtualContents();
   }
 
   @Override
@@ -134,135 +73,6 @@ public class EView extends View {
   private void loadViewpoint() throws IOException {
     viewpoint = new Viewpoint(URI.createURI(properties.getProperty("viewpoint")));
     viewpoint.load(null);
-  }
-
-  // FIXME: unused?
-  @Override
-  public void createWeavingModel(URI modelURI) throws IOException {
-    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    VirtualLinks virtualLinksModelLevel = vLinksFactory.createVirtualLinks();
-
-    weavingModelResource = new XMIResourceImpl();
-
-    weavingModelResource.setURI(modelURI);
-    weavingModelResource.getContents().add(virtualLinksModelLevel);
-
-    Viewpoint vm = (Viewpoint) viewpoint;
-    Resource weavingForMetamodelResource = vm.getWeavingModelResource();
-
-    List<Association> associations = new ArrayList<>();
-
-    VirtualLinks virtualLinks = (VirtualLinks) weavingForMetamodelResource.getContents().get(0);
-    EList<VirtualLink> allVirtualLinks = virtualLinks.getVirtualLinks();
-    for (VirtualLink virtualLink : allVirtualLinks) {
-      if (virtualLink instanceof Association) {
-        Association association = (Association) virtualLink;
-        associations.add(association);
-      }
-
-    }
-    for (Association association : associations) {
-      LinkedElement sourceElement = association.getSourceElement();
-      String sourceCLassName = sourceElement.getName();
-      String sourcePackagensURI = sourceElement.getModelRef();
-
-      LinkedElement targetElement = association.getTargetElements().get(0);
-      String targetCLassName = targetElement.getName();
-      String targetPackagensURI = targetElement.getModelRef();
-
-      String sourceAtt = association.getSourceAttribute();
-      String targetAtt = association.getTargetAttribute();
-      if (sourceAtt != null && targetAtt != null) {
-        Resource sourceResource = getcontributingModel(sourcePackagensURI);
-        TreeIterator<EObject> sourceModelContents = sourceResource.getAllContents();
-
-        ArrayList<EObject> sourceModelElementsThatConform = new ArrayList<>();
-        while (sourceModelContents.hasNext()) {
-          EObject eObject = sourceModelContents.next();
-          if (eObject.eClass().getName().compareToIgnoreCase(sourceCLassName) == 0) {
-            sourceModelElementsThatConform.add(eObject);
-          }
-
-        }
-
-        Resource targetResource = getcontributingModel(targetPackagensURI);
-        TreeIterator<EObject> targetModelContents = targetResource.getAllContents();
-        ArrayList<EObject> targetModelElementsThatConform = new ArrayList<>();
-        while (targetModelContents.hasNext()) {
-          EObject eObject = targetModelContents.next();
-          if (eObject.eClass().getName().compareToIgnoreCase(targetCLassName) == 0) {
-            targetModelElementsThatConform.add(eObject);
-          }
-
-        }
-        for (EObject tempSourceElement : sourceModelElementsThatConform) {
-          boolean matchFound = false;
-          String theSourceAttVal = (String) tempSourceElement
-              .eGet(tempSourceElement.eClass().getEStructuralFeature(sourceAtt));
-
-          for (int i = 0; i < targetModelElementsThatConform.size() && !matchFound; i++) {
-            EObject tempTargetElement = targetModelElementsThatConform.get(i);
-            String tempTargetAttVal = (String) tempSourceElement
-                .eGet(tempTargetElement.eClass().getEStructuralFeature(targetAtt));
-            if (theSourceAttVal.compareToIgnoreCase(tempTargetAttVal) == 0) {
-              matchFound = true;
-              Association associationModelLevel = vLinksFactory.createAssociation();
-              associationModelLevel.setName(association.getName());
-              LinkedElement lSource = vLinksFactory.createLinkedElement();
-              lSource.setModelRef(sourcePackagensURI);
-              lSource.setElementRef(sourceResource.getURIFragment(tempSourceElement));
-
-              associationModelLevel.setSourceElement(lSource);
-              LinkedElement lTarget = vLinksFactory.createLinkedElement();
-              lTarget.setModelRef(targetPackagensURI);
-              lTarget.setElementRef(targetResource.getURIFragment(tempTargetElement));
-
-              associationModelLevel.getTargetElements().add(lTarget);
-
-              virtualLinksModelLevel.getVirtualLinks().add(associationModelLevel);
-
-              virtualLinksModelLevel.getLinkedElements().add(lSource);
-              virtualLinksModelLevel.getLinkedElements().add(lTarget);
-            }
-          }
-
-        }
-      }
-    }
-    weavingModelResource.save(null);
-
-  }
-
-  // FIXME: unused?
-  @Override
-  public void serialize(IFile file) throws IOException, CoreException {
-    StringBuffer fileContent = new StringBuffer();
-    String contributingModelsLine = "contributingModels=" + getContributingModelsUris();
-    fileContent.append(contributingModelsLine);
-    fileContent.append("\n");
-
-    String viewpointLine = "viewpoint=" + viewpointURI;
-    fileContent.append(viewpointLine);
-    fileContent.append("\n");
-
-    String weavingModelLine = "weavingModel=" + weavingModelURI;
-
-    fileContent.append(weavingModelLine);
-
-    fileContent.append("\n");
-    Viewpoint vm = (Viewpoint) viewpoint;
-    String matchingModelLine = "matchingModel=" + vm.getMatchingModel();
-    fileContent.append(matchingModelLine);
-
-    InputStream stream = openContentStream(fileContent.toString());
-    if (file.exists()) {
-      file.setContents(stream, true, true, null);
-    } else {
-      file.create(stream, true, null);
-    }
-    stream.close();
-
   }
 
 }
