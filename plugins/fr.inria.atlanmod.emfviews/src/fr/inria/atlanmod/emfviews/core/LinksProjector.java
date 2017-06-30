@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.InternalEObject.EStore;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
-import fr.inria.atlanmod.emfviews.virtuallinks.Association;
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class LinksProjector {
 
@@ -36,35 +36,26 @@ public class LinksProjector {
 
   }
 
-  public void load(VirtualLinks virtualLinks) {
+  public void load(WeavingModel virtualLinks) {
 
-    List<Association> associations = new ArrayList<>();
+    List<NewAssociation> associations = new ArrayList<>();
     EList<VirtualLink> links = virtualLinks.getVirtualLinks();
     for (VirtualLink link : links) {
-      if (link instanceof Association) {
-        associations.add((Association) link);
+      if (link instanceof NewAssociation) {
+        associations.add((NewAssociation) link);
       }
     }
     loadAssociations(associations);
 
   }
 
-  private void loadAssociations(List<Association> associations) {
+  private void loadAssociations(List<NewAssociation> associations) {
 
-    for (Association association : associations) {
-      LinkedElement sourceElementLink = association.getSourceElement();
-      String sourceElementRef = sourceElementLink.getElementRef();
-      String sourceModelURI = sourceElementLink.getModelRef();
+    for (NewAssociation association : associations) {
+      // TODO: Handle VirtualElement variants
 
-      EObject sourceElement = getReferencedObject(sourceElementRef, sourceModelURI);
-
-      List<EObject> targetElements = new ArrayList<>();
-
-      for (LinkedElement targetEnd : (List<LinkedElement>) association.getTargetElements()) {
-        String targetElementRef = targetEnd.getElementRef();
-        String targetModelURI = targetEnd.getModelRef();
-        targetElements.add(getReferencedObject(targetElementRef, targetModelURI));
-      }
+      EObject sourceElement = getReferencedObject((ConcreteElement) association.getSource());
+      EObject targetElement = getReferencedObject((ConcreteElement) association.getTarget());
 
       ReproduceElementImpl vElement = (ReproduceElementImpl) virtualModel.getVirtualLinkManager()
           .getVirtualElement(sourceElement);
@@ -73,34 +64,23 @@ public class LinksProjector {
       EStructuralFeature virtualFeature =
           virtualModel.getMetamodelManager().getVirtualAssociation(vElement, virtualFeatureName);
 
-      vElement.setVirtualAssociation(virtualFeature, EStore.NO_INDEX, targetElements);
-
+      vElement.setVirtualAssociation(virtualFeature, EStore.NO_INDEX, targetElement);
     }
   }
 
-  private EObject getReferencedObject(String elementRef, String packageNsuri) {
+  private EObject getReferencedObject(ConcreteElement elem) {
     // FIXME: Associations use Resource.getEObject to find the element, but
     // Filters use EMFViewsUtil.findElement
 
-    EObject referencedElement = null;
-    List<Resource> contributingModels = virtualModel.getContributingModels();
-    boolean elemFound = false;
-    for (int i = 0; i < contributingModels.size() && !elemFound; i++) {
-      Resource r = contributingModels.get(i);
-      EObject firstElem = r.getContents().get(0);
-      if (firstElem.eClass().getEPackage().getNsURI().compareToIgnoreCase(packageNsuri) == 0) {
-        referencedElement = r.getEObject(elementRef);
-        elemFound = true;
-      }
+    Resource model = virtualModel.getContributingModel(elem.getModel().getURI());
 
-    } // FIXME: what if null? Can happen when elementRef is a bad URIFragment or
-      // object ID. Shouldn't happen if we trust ECL to generate these
-      // correctly, but the XMI can also be created manually.
-    return referencedElement;
-
+    // FIXME: what if null? Can happen when elementRef is a bad URIFragment or
+    // object ID. Shouldn't happen if we trust ECL to generate these
+    // correctly, but the XMI can also be created manually.
+    return model.getEObject(elem.getPath());
   }
 
-  public void save(VirtualLinks weavingModel) {
+  public void save(WeavingModel weavingModel) {
     // FIXME: shouldn't we do something here?
   }
 

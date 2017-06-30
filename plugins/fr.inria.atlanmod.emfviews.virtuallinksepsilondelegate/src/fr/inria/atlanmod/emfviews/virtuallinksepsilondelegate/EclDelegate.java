@@ -39,12 +39,16 @@ import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.Model;
+import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.ContributingModel;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
@@ -178,12 +182,12 @@ public class EclDelegate implements IVirtualLinksDelegate {
     br.close();
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    VirtualLinks virtualLinks = vLinksFactory.createVirtualLinks();
+    WeavingModel weavingModel = vLinksFactory.createWeavingModel();
 
     XMIResourceImpl weavingModelResource = new XMIResourceImpl();
 
     weavingModelResource.setURI(linksModel);
-    weavingModelResource.getContents().add(virtualLinks);
+    weavingModelResource.getContents().add(weavingModel);
 
     EclModule module = new EclModule();
     module.parse(f);
@@ -233,36 +237,51 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     List<Match> matches = mt.getMatches();
 
+    HashMap<String, ContributingModel> modelsByURI = new HashMap<>();
+
     for (Match match : matches) {
       if (match.isMatching()) {
         EObject left = (EObject) match.getLeft();
         EObject right = (EObject) match.getRight();
 
-        Association vAsso = vLinksFactory.createAssociation();
+        NewAssociation vAsso = vLinksFactory.createNewAssociation();
         vAsso.setName(match.getRule().getName());
-        vAsso.setAssociationTypeName(match.getRule().getName());
         vAsso.setLowerBound(0);
         vAsso.setUpperBound(1);
 
-        LinkedElement lSource = vLinksFactory.createLinkedElement();
-        lSource.setModelRef(left.eClass().getEPackage().getNsURI());
+        ConcreteElement lSource = vLinksFactory.createConcreteElement();
+        lSource.setPath(left.eResource().getURIFragment(left));
 
-        lSource.setElementRef(left.eResource().getURIFragment(left));
-        vAsso.setSourceElement(lSource);
+        String sourceModelURI = left.eClass().getEPackage().getNsURI();
+        if (!modelsByURI.containsKey(sourceModelURI)) {
+          ContributingModel m = vLinksFactory.createContributingModel();
+          m.setURI(sourceModelURI);
+          modelsByURI.put(sourceModelURI, m);
+          weavingModel.getContributingModels().add(m);
+        }
+        lSource.setModel(modelsByURI.get(sourceModelURI));
 
-        LinkedElement lTarget = vLinksFactory.createLinkedElement();
-        lTarget.setModelRef(right.eClass().getEPackage().getNsURI());
-        lTarget.setElementRef(right.eResource().getURIFragment(right));
-        vAsso.getTargetElements().add(lTarget);
+        vAsso.setSource(lSource);
 
-        virtualLinks.getVirtualLinks().add(vAsso);
-        virtualLinks.getLinkedElements().add(lSource);
-        virtualLinks.getLinkedElements().add(lTarget);
+        ConcreteElement lTarget = vLinksFactory.createConcreteElement();
+        lTarget.setPath(right.eResource().getURIFragment(right));
 
+        String targetModelURI = right.eClass().getEPackage().getNsURI();
+        if (!modelsByURI.containsKey(targetModelURI)) {
+          ContributingModel m = vLinksFactory.createContributingModel();
+          m.setURI(targetModelURI);
+          modelsByURI.put(targetModelURI, m);
+          weavingModel.getContributingModels().add(m);
+        }
+        lTarget.setModel(modelsByURI.get(targetModelURI));
+
+        vAsso.setTarget(lTarget);
+
+        weavingModel.getVirtualLinks().add(vAsso);
       }
     }
     weavingModelResource.setURI(linksModel);
-    weavingModelResource.getContents().add(virtualLinks);
+    weavingModelResource.getContents().add(weavingModel);
     weavingModelResource.save(null);
 
   }

@@ -23,13 +23,13 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
 import fr.inria.atlanmod.emfviews.elements.VirtualElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class VirtualLinkManager {
 
   private View virtualModel;
 
-  private VirtualLinks weavingModel;
+  private WeavingModel weavingModel;
 
   private Map<EObject, VirtualElement> virtualLinks = new HashMap<>();
 
@@ -43,7 +43,7 @@ public class VirtualLinkManager {
         new ResourceSetImpl().getResource(URI.createURI(weavingModelURI), true);
     weavingModelResource.load(null);
 
-    VirtualLinks virtualLinks = (VirtualLinks) weavingModelResource.getContents().get(0);
+    WeavingModel virtualLinks = (WeavingModel) weavingModelResource.getContents().get(0);
 
     this.weavingModel = virtualLinks;
   }

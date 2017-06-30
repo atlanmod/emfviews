@@ -62,10 +62,10 @@
   </contributingModels>
 
   <contributingModels URI="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI">
-    <concreteElements path="BPMN.Process"/>
+    <concreteElements path="bpmn2.Process"/>
   </contributingModels>
 
   <contributingModels URI="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd">
-    <concreteElements path="reqif.SpecObject"/>
+    <concreteElements path="reqif10.SpecObject"/>
   </contributingModels>
 </virtualLinks:WeavingModel>
