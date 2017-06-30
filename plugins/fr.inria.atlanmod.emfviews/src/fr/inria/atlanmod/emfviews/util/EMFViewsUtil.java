@@ -23,7 +23,7 @@ public final class EMFViewsUtil {
    *
    * @param root the root object to begin the search with
    * @param path dot-separated list of names to match
-   * @return the matc
+   * @return the matching object, or null if it couldn't be found
    */
   public static EObject findElement(EObject root, String path) {
     String[] components = path.split("\\.");
