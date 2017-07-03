@@ -39,14 +39,11 @@ import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.Model;
-import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.ContributingModel;
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
@@ -61,7 +58,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
                                           URI modelLinksURI) throws Exception {
 
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    VirtualLinks virtualLinks = VirtualLinksUtil.createLinksModel();
+    WeavingModel virtualLinks = VirtualLinksUtil.createLinksModel();
 
     EclModule eclModule = new EclModule();
 
@@ -75,14 +72,16 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     br = new BufferedReader(fr);
 
-    Map<String, String> metamodelsMap = new HashMap<>();
+    Map<String, ContributingModel> metamodelsMap = new HashMap<>();
 
     while ((sCurrentLine = br.readLine()) != null) {
       if (sCurrentLine.startsWith("//alias")) {
         String metamodelAlias =
             sCurrentLine.substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
         String packageUri = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
-        metamodelsMap.put(metamodelAlias, packageUri);
+        ContributingModel m = vLinksFactory.createContributingModel();
+        m.setURI(packageUri);
+        metamodelsMap.put(metamodelAlias, m);
       }
       sb.append(sCurrentLine);
       sb.append("\n");
@@ -108,31 +107,23 @@ public class EclDelegate implements IVirtualLinksDelegate {
       String targetMetamodelAlias = rightParameterTypeParts[0];
       String targetElementName = rightParameterTypeParts[1];
 
-      Association vAsso = vLinksFactory.createAssociation();
+      NewAssociation vAsso = vLinksFactory.createNewAssociation();
       vAsso.setName(ruleName);
-      vAsso.setAssociationTypeName(ruleName);
-
       vAsso.setLowerBound(0);
       vAsso.setUpperBound(1);
 
-      LinkedElement sourceElement = vLinksFactory.createLinkedElement();
+      ConcreteElement sourceElement = vLinksFactory.createConcreteElement();
+      sourceElement.setPath("//" + sourceElementName);
+      sourceElement.setModel(metamodelsMap.get(sourceMetamodelAlias));
 
-      sourceElement.setElementRef("//" + sourceElementName);
+      vAsso.setSource(sourceElement);
 
-      sourceElement.setModelRef(metamodelsMap.get(sourceMetamodelAlias));
-      sourceElement.setName(sourceElementName);
+      ConcreteElement targetElement = vLinksFactory.createConcreteElement();
+      targetElement.setPath("//" + targetElementName);
+      targetElement.setModel(metamodelsMap.get(targetMetamodelAlias));
 
-      vAsso.setSourceElement(sourceElement);
+      vAsso.setTarget(targetElement);
 
-      LinkedElement targetElement = vLinksFactory.createLinkedElement();
-      targetElement.setElementRef("//" + targetElementName);
-      targetElement.setModelRef(metamodelsMap.get(targetMetamodelAlias));
-      targetElement.setName(targetElementName);
-
-      vAsso.getTargetElements().add(targetElement);
-
-      virtualLinks.getLinkedElements().add(sourceElement);
-      virtualLinks.getLinkedElements().add(targetElement);
       virtualLinks.getVirtualLinks().add(vAsso);
 
     }
