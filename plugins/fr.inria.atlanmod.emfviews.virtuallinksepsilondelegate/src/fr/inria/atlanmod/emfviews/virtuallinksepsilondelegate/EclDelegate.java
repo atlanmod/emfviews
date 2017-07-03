@@ -51,8 +51,6 @@ import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class EclDelegate implements IVirtualLinksDelegate {
 
-  // FIXME: This only works with Epsilon 1.2, but 1.4 is the latest one.
-
   @Override
   public void createVirtualMetamodelLinks(String linksDslFilePath,
                                           URI modelLinksURI) throws Exception {
@@ -87,8 +85,17 @@ public class EclDelegate implements IVirtualLinksDelegate {
       sb.append("\n");
     }
     br.close();
+
     eclModule.parse(sb.toString());
-    AST ast = eclModule.getAst();
+
+    // FIXME: this method does not exist on Epsilon 1.4, and there doesn't seem
+    // to be a way to get the AST back. However, it also looks like we are
+    // interested in matchRule contents, so maybe there's a way to get the
+    // inform from eclModule.getDeclaredMatchRule or something similar.
+    //
+    // Also, we might not need this code at all, since it's never actually
+    // called anywhere.
+    AST ast = eclModule.getAST();
     for (AST matchRuleAst : AstUtil.getChildren(ast, EclParser.MATCH)) {
       // The rule AST
       String ruleName = matchRuleAst.getFirstChild().getText();
@@ -210,7 +217,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
         properties.put(EmfModel.PROPERTY_METAMODEL_URI,
                        inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()));
         properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
-        inputModel.load(properties, null);
+        inputModel.load(properties);
         inputModel.setCachingEnabled(true);
         TreeIterator<EObject> modelContents = modelResource.getAllContents();
         ArrayList<EObject> allModelContents = new ArrayList<>();
@@ -291,7 +298,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
     properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
     properties.put(Model.PROPERTY_READONLOAD, readOnLoad + "");
     properties.put(Model.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
-    emfModel.load(properties, null);
+    emfModel.load(properties);
     return emfModel;
   }
 
