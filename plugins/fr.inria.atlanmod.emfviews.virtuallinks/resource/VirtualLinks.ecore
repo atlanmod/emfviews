@@ -7,6 +7,18 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="contributingModels" upperBound="-1"
         eType="#//ContributingModel" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="whitelist" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newConcepts" upperBound="-1"
+        eType="#//NewConcept" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newProperties" upperBound="-1"
+        eType="#//NewProperty" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="newAssociations" upperBound="-1"
+        eType="#//NewAssociation" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementFilters" upperBound="-1"
+        eType="#//ElementFilter" changeable="false" volatile="true" transient="true"
+        derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VirtualLink" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

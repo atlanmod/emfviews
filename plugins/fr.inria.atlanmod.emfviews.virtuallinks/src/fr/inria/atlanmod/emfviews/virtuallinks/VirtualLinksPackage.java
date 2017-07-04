@@ -94,13 +94,49 @@ public interface VirtualLinksPackage extends EPackage {
   int WEAVING_MODEL__WHITELIST = 2;
 
   /**
+   * The feature id for the '<em><b>New Concepts</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WEAVING_MODEL__NEW_CONCEPTS = 3;
+
+  /**
+   * The feature id for the '<em><b>New Properties</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WEAVING_MODEL__NEW_PROPERTIES = 4;
+
+  /**
+   * The feature id for the '<em><b>New Associations</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WEAVING_MODEL__NEW_ASSOCIATIONS = 5;
+
+  /**
+   * The feature id for the '<em><b>Element Filters</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WEAVING_MODEL__ELEMENT_FILTERS = 6;
+
+  /**
    * The number of structural features of the '<em>Weaving Model</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL_FEATURE_COUNT = 3;
+  int WEAVING_MODEL_FEATURE_COUNT = 7;
 
   /**
    * The number of operations of the '<em>Weaving Model</em>' class.
@@ -588,6 +624,50 @@ public interface VirtualLinksPackage extends EPackage {
   EAttribute getWeavingModel_Whitelist();
 
   /**
+   * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewConcepts <em>New Concepts</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference list '<em>New Concepts</em>'.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewConcepts()
+   * @see #getWeavingModel()
+   * @generated
+   */
+  EReference getWeavingModel_NewConcepts();
+
+  /**
+   * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewProperties <em>New Properties</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference list '<em>New Properties</em>'.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewProperties()
+   * @see #getWeavingModel()
+   * @generated
+   */
+  EReference getWeavingModel_NewProperties();
+
+  /**
+   * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewAssociations <em>New Associations</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference list '<em>New Associations</em>'.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewAssociations()
+   * @see #getWeavingModel()
+   * @generated
+   */
+  EReference getWeavingModel_NewAssociations();
+
+  /**
+   * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getElementFilters <em>Element Filters</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference list '<em>Element Filters</em>'.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getElementFilters()
+   * @see #getWeavingModel()
+   * @generated
+   */
+  EReference getWeavingModel_ElementFilters();
+
+  /**
    * Returns the meta object for class '{@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink <em>Virtual Link</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -909,6 +989,38 @@ public interface VirtualLinksPackage extends EPackage {
      * @generated
      */
     EAttribute WEAVING_MODEL__WHITELIST = eINSTANCE.getWeavingModel_Whitelist();
+
+    /**
+     * The meta object literal for the '<em><b>New Concepts</b></em>' reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WEAVING_MODEL__NEW_CONCEPTS = eINSTANCE.getWeavingModel_NewConcepts();
+
+    /**
+     * The meta object literal for the '<em><b>New Properties</b></em>' reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WEAVING_MODEL__NEW_PROPERTIES = eINSTANCE.getWeavingModel_NewProperties();
+
+    /**
+     * The meta object literal for the '<em><b>New Associations</b></em>' reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WEAVING_MODEL__NEW_ASSOCIATIONS = eINSTANCE.getWeavingModel_NewAssociations();
+
+    /**
+     * The meta object literal for the '<em><b>Element Filters</b></em>' reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WEAVING_MODEL__ELEMENT_FILTERS = eINSTANCE.getWeavingModel_ElementFilters();
 
     /**
      * The meta object literal for the '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl <em>Virtual Link</em>}' class.

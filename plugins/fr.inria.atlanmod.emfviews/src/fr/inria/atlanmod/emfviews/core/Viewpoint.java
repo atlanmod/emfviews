@@ -40,7 +40,6 @@ import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl {
@@ -196,24 +195,11 @@ public class Viewpoint extends ResourceImpl {
     // FIXME: this cast can fail if the XMI is not a VirtualLinks
     WeavingModel wm = (WeavingModel) weavingModelResource.getContents().get(0);
 
-    // Separate associations and filters links
-    // TODO: add direct links to these to the VirtualLinks API
-    // (derived references in EMF?)
-    List<NewAssociation> associations = new ArrayList<>();
-    List<ElementFilter> filters = new ArrayList<>();
-    for (VirtualLink link : wm.getVirtualLinks()) {
-      if (link instanceof NewAssociation) {
-        associations.add((NewAssociation) link);
-      } else if (link instanceof ElementFilter) {
-        filters.add((ElementFilter) link);
-      }
-    }
-
     // Remove filtered elements from the packages in the resource set
-    filterMetamodels(filters);
+    filterMetamodels(wm.getElementFilters());
 
     // Add virtual associations
-    for (NewAssociation a : associations) {
+    for (NewAssociation a : wm.getNewAssociations()) {
       // Each association is turned into an EReference
 
       EObject source = findEObjectOrBail(a.getSource());

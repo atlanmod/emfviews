@@ -201,6 +201,42 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getWeavingModel_NewConcepts() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getWeavingModel_NewProperties() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(4);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getWeavingModel_NewAssociations() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getWeavingModel_ElementFilters() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(6);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getVirtualLink() {
     return virtualLinkEClass;
   }
@@ -453,6 +489,10 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     createEReference(weavingModelEClass, WEAVING_MODEL__VIRTUAL_LINKS);
     createEReference(weavingModelEClass, WEAVING_MODEL__CONTRIBUTING_MODELS);
     createEAttribute(weavingModelEClass, WEAVING_MODEL__WHITELIST);
+    createEReference(weavingModelEClass, WEAVING_MODEL__NEW_CONCEPTS);
+    createEReference(weavingModelEClass, WEAVING_MODEL__NEW_PROPERTIES);
+    createEReference(weavingModelEClass, WEAVING_MODEL__NEW_ASSOCIATIONS);
+    createEReference(weavingModelEClass, WEAVING_MODEL__ELEMENT_FILTERS);
 
     virtualLinkEClass = createEClass(VIRTUAL_LINK);
     createEAttribute(virtualLinkEClass, VIRTUAL_LINK__NAME);
@@ -532,6 +572,10 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     initEReference(getWeavingModel_VirtualLinks(), this.getVirtualLink(), null, "virtualLinks", null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_ContributingModels(), this.getContributingModel(), null, "contributingModels", null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getWeavingModel_Whitelist(), ecorePackage.getEBoolean(), "whitelist", null, 0, 1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getWeavingModel_NewConcepts(), this.getNewConcept(), null, "newConcepts", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getWeavingModel_NewProperties(), this.getNewProperty(), null, "newProperties", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getWeavingModel_NewAssociations(), this.getNewAssociation(), null, "newAssociations", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getWeavingModel_ElementFilters(), this.getElementFilter(), null, "elementFilters", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
     initEClass(virtualLinkEClass, VirtualLink.class, "VirtualLink", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVirtualLink_Name(), ecorePackage.getEString(), "name", null, 1, 1, VirtualLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
