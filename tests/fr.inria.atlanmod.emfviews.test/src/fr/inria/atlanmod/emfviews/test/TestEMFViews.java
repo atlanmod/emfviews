@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
 
@@ -296,6 +297,40 @@ public class TestEMFViews {
       EList<EClass> sups = ((EClass) ((EPackage) l.get(1)).getEClassifier("B")).getESuperTypes();
       assertEquals(1, sups.size());
       assertEquals(C, sups.get(0));
+    }
+  }
+
+  @Test
+  public void addProperty() throws IOException {
+    // A new property should be added to its target concept.
+
+    Viewpoint v =
+        new Viewpoint(URI.createURI("resources/viewpoints/addproperty/viewpoint.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    EPackage p = (EPackage) l.get(0);
+    EClass A = (EClass) p.getEClassifier("A");
+
+    // Check the new property is created on A
+    {
+      EStructuralFeature f = A.getEStructuralFeature("newProperty");
+      assertNotNull(f);
+      assertEquals("newProperty", f.getName());
+      assertEquals(EcorePackage.Literals.ESTRING, f.getEType());
+      // It's not optional by default
+      assertEquals(1, f.getLowerBound());
+      assertEquals(1, f.getUpperBound());
+    }
+
+    // Check the optional property is also created
+    {
+      EStructuralFeature f = A.getEStructuralFeature("newOptionalProperty");
+      assertNotNull(f);
+      assertEquals("newOptionalProperty", f.getName());
+      assertEquals(EcorePackage.Literals.ESTRING, f.getEType());
+      assertEquals(0, f.getLowerBound());
+      assertEquals(1, f.getUpperBound());
     }
   }
 

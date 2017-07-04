@@ -22,12 +22,15 @@ import java.util.Properties;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -40,6 +43,7 @@ import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewConcept;
+import fr.inria.atlanmod.emfviews.virtuallinks.NewProperty;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl {
@@ -251,7 +255,41 @@ public class Viewpoint extends ResourceImpl {
       }
     }
 
-    // TODO: newProperty
+    // Add new properties
+    for (NewProperty p : wm.getNewProperties()) {
+      // TODO: put the validation into a separate class, as this is getting out
+      // of hand
+      EObject parent = findEObjectOrBail(p.getParent());
+      if (!(parent instanceof EClass))
+        throw new InvalidLinkedElementException(String
+            .format("Parent of new property '%s' should be an EClass", p.getName()));
+      EClass parentClass = (EClass) parent;
+
+      String n = p.getName();
+      if (n == null)
+        throw new ViewpointException("New property name is null");
+      if (!n.matches("[a-zA-Z][a-zA-Z0-9]*"))
+        throw new ViewpointException(String
+            .format("New property name '%s' should be non-empty, start with a letter, and contain only letters or digits",
+                    n));
+
+      for (EStructuralFeature f : parentClass.getEAllStructuralFeatures()) {
+        if (n.equalsIgnoreCase(f.getName()))
+          throw new ViewpointException(String
+              .format("New property name '%s' is already taken in class '%s'", n,
+                      parentClass.getName()));
+      }
+
+      EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
+      attr.setName(n);
+      attr.setEType(getTypeFromName(p.getType()));
+      attr.setUpperBound(1);
+      if (p.isOptional())
+        attr.setLowerBound(0);
+      else
+        attr.setLowerBound(1);
+      parentClass.getEStructuralFeatures().add(attr);
+    }
 
     // Add virtual associations
     for (NewAssociation a : wm.getNewAssociations()) {
@@ -271,6 +309,13 @@ public class Viewpoint extends ResourceImpl {
 
       // TODO: opposite
     }
+  }
+
+  private EClassifier getTypeFromName(String name) {
+    // TODO: support more types
+    // We can pattern match on primitive data type, but should we support
+    // non-primitive types?
+    return EcorePackage.Literals.ESTRING;
   }
 
   @Override

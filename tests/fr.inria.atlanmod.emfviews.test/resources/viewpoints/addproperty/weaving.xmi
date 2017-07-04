@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://inria.fr/virtualLinks"
+                           name="addproperty">
+  <virtualLinks xsi:type="virtualLinks:NewProperty"
+                name="newProperty"
+                type="String"
+                parent="//@contributingModels.0/@concreteElements.0"/>
+  <virtualLinks xsi:type="virtualLinks:NewProperty"
+                name="newOptionalProperty"
+                type="String"
+                optional="true"
+                parent="//@contributingModels.0/@concreteElements.0"/>
+  <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">
+    <concreteElements path="minimalA.A"/>
+  </contributingModels>
+</virtualLinks:WeavingModel>
