@@ -55,25 +55,31 @@ public class Viewpoint extends ResourceImpl {
    * Contains all the attributes we have removed from packages in the virtual
    * resource set. Used by the ViewpointEditor.
    */
-  private ArrayList<EObject> hiddenAttributes;
-
-  public ArrayList<EObject> getHiddenAttributes() {
-    return hiddenAttributes;
-  }
+  private List<EObject> hiddenAttributes;
 
   private String contributingMetamodels;
   private String matchingModel;
 
+  private Resource weavingModelResource;
+  private List<EPackage> contributingEpackages;
   private EPackage virtualPackage;
+
+  private Resource attributesToHideMM;
+
+  public Viewpoint(URI uri) {
+    super(uri);
+    virtualResourceSet = new ResourceSetImpl();
+  }
 
   public String getMatchingModel() {
     return matchingModel;
   }
 
-  private Resource weavingModelResource;
-  private ArrayList<EPackage> contributingEpackages;
+  public List<EObject> getHiddenAttributes() {
+    return hiddenAttributes;
+  }
 
-  public ArrayList<EPackage> getContributingEpackages() {
+  public List<EPackage> getContributingEpackages() {
     return contributingEpackages;
   }
 
@@ -86,12 +92,6 @@ public class Viewpoint extends ResourceImpl {
     return virtualContents;
   }
 
-  public Viewpoint(URI uri) {
-    super(uri);
-    virtualResourceSet = new ResourceSetImpl();
-
-  }
-
   public Resource getWeavingModelResource() {
     return weavingModelResource;
   }
@@ -99,6 +99,10 @@ public class Viewpoint extends ResourceImpl {
   // FIXME: unused?
   public void setWeavingModelResource(Resource weavingModelResource) {
     this.weavingModelResource = weavingModelResource;
+  }
+
+  public Resource getAttributesToHideMM() {
+    return attributesToHideMM;
   }
 
   @Override
@@ -122,12 +126,6 @@ public class Viewpoint extends ResourceImpl {
     cloneContributingMetamodels(properties.getProperty("contributingMetamodels"));
     loadWeavingModel(properties.getProperty("weavingModel"));
     setVirtualContents();
-  }
-
-  Resource attributesToHideMM;
-
-  public Resource getAttributesToHideMM() {
-    return attributesToHideMM;
   }
 
   // Clone each metamodel into our virtual resource set, so that we can add and
