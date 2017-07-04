@@ -22,23 +22,10 @@ import org.junit.Test;
 import fr.inria.atlanmod.emfviews.core.EView;
 import fr.inria.atlanmod.emfviews.core.Viewpoint;
 
-public class TestViewpoint {
-
-  // To test Filters:
-  // 1. Load an EViewpoint file
-  // 2. Assert that filtered elements are absent from the contents of the
-  // Viewpoint
-
-  // To test Associations:
-  // 1. Load an EViewpoint file
-  // 2. Assert that the virtual association is present
-
-  // To test reproduce:
-  // 1. Load an EViewpoint file
-  // 2. Assert that the virtual metamodel is the same as the concrete metamodel
+public class TestEMFViews {
 
   @Test
-  public void testThreeModelComposition() throws IOException {
+  public void threeModelComposition() throws IOException {
     // Based on the EA_viewtest examples, this is an integration test combining
     // three metamodels (contentfwk, BPMN2 and reqif10), with filters and
     // associations.
@@ -109,7 +96,7 @@ public class TestViewpoint {
   }
 
   @Test
-  public void testViewUpdate() throws IOException {
+  public void viewUpdate() throws IOException {
     // When modifying a contributing model, the change should propagate to the
     // virtual model
 
@@ -161,7 +148,7 @@ public class TestViewpoint {
   }
 
   @Test
-  public void testAccessToFilteredFeature() throws IOException {
+  public void accessToFilteredFeature() throws IOException {
     // We should not be able to access a filtered feature in any way.
 
     // Get the view
@@ -193,7 +180,7 @@ public class TestViewpoint {
   }
 
   @Test
-  public void testFilterBidirectionalReference() throws IOException {
+  public void filterBidirectionalReference() throws IOException {
     // When we filter a reference that has an opposite, its opposite still
     // exists, but its EOpposite link should be null.
 
@@ -221,7 +208,7 @@ public class TestViewpoint {
   }
 
   @Test
-  public void testVirtualAssociation() throws IOException {
+  public void virtualAssociation() throws IOException {
     // Creating a virtual association between two minimal models.
 
     // Create the view
