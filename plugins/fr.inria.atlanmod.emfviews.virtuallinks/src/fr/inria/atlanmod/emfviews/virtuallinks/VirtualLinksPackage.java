@@ -67,13 +67,22 @@ public interface VirtualLinksPackage extends EPackage {
   int WEAVING_MODEL = 0;
 
   /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WEAVING_MODEL__NAME = 0;
+
+  /**
    * The feature id for the '<em><b>Virtual Links</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__VIRTUAL_LINKS = 0;
+  int WEAVING_MODEL__VIRTUAL_LINKS = 1;
 
   /**
    * The feature id for the '<em><b>Contributing Models</b></em>' containment reference list.
@@ -82,7 +91,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__CONTRIBUTING_MODELS = 1;
+  int WEAVING_MODEL__CONTRIBUTING_MODELS = 2;
 
   /**
    * The feature id for the '<em><b>Whitelist</b></em>' attribute.
@@ -91,7 +100,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__WHITELIST = 2;
+  int WEAVING_MODEL__WHITELIST = 3;
 
   /**
    * The feature id for the '<em><b>New Concepts</b></em>' reference list.
@@ -100,7 +109,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__NEW_CONCEPTS = 3;
+  int WEAVING_MODEL__NEW_CONCEPTS = 4;
 
   /**
    * The feature id for the '<em><b>New Properties</b></em>' reference list.
@@ -109,7 +118,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__NEW_PROPERTIES = 4;
+  int WEAVING_MODEL__NEW_PROPERTIES = 5;
 
   /**
    * The feature id for the '<em><b>New Associations</b></em>' reference list.
@@ -118,7 +127,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__NEW_ASSOCIATIONS = 5;
+  int WEAVING_MODEL__NEW_ASSOCIATIONS = 6;
 
   /**
    * The feature id for the '<em><b>Element Filters</b></em>' reference list.
@@ -127,7 +136,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__ELEMENT_FILTERS = 6;
+  int WEAVING_MODEL__ELEMENT_FILTERS = 7;
 
   /**
    * The number of structural features of the '<em>Weaving Model</em>' class.
@@ -136,7 +145,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL_FEATURE_COUNT = 7;
+  int WEAVING_MODEL_FEATURE_COUNT = 8;
 
   /**
    * The number of operations of the '<em>Weaving Model</em>' class.
@@ -591,6 +600,17 @@ public interface VirtualLinksPackage extends EPackage {
   EClass getWeavingModel();
 
   /**
+   * Returns the meta object for the attribute '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getName()
+   * @see #getWeavingModel()
+   * @generated
+   */
+  EAttribute getWeavingModel_Name();
+
+  /**
    * Returns the meta object for the containment reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getVirtualLinks <em>Virtual Links</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -965,6 +985,14 @@ public interface VirtualLinksPackage extends EPackage {
      * @generated
      */
     EClass WEAVING_MODEL = eINSTANCE.getWeavingModel();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute WEAVING_MODEL__NAME = eINSTANCE.getWeavingModel_Name();
 
     /**
      * The meta object literal for the '<em><b>Virtual Links</b></em>' containment reference list feature.

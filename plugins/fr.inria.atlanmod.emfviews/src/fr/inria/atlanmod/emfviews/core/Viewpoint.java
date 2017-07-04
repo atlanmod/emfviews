@@ -39,6 +39,7 @@ import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
 import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
+import fr.inria.atlanmod.emfviews.virtuallinks.NewConcept;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl {
@@ -196,6 +197,41 @@ public class Viewpoint extends ResourceImpl {
 
     // Remove filtered elements from the packages in the resource set
     filterMetamodels(wm.getElementFilters());
+
+    {
+      // The viewpointPackage holds all the new concepts
+
+      // First we make sure the chosen name is non-empty and does not clash with
+      // any contributing packages
+      String n = wm.getName();
+      if (n == null)
+        throw new ViewpointException("Weaving model name is null");
+      if (!n.matches("[a-z][a-z0-9]*"))
+        throw new ViewpointException(String
+            .format("Weaving model name '%s' should be non-empty, all lowercase", n));
+      for (EPackage p : contributingEpackages) {
+        if (n.equalsIgnoreCase(p.getName()))
+          throw new ViewpointException(String
+              .format("Weaving model name '%s' is the same as contributing package '%s'", n,
+                      p.getNsURI()));
+      }
+
+      // Then, if we have some concepts to put in the package
+      if (!wm.getNewConcepts().isEmpty()) {
+        virtualPackage = EcoreFactory.eINSTANCE.createEPackage();
+        virtualPackage.setName(n);
+        virtualPackage.setNsURI("http://inria/atlanmod/emfviews/viewpoint/" + n);
+        // TODO: should we set NsPrefix as well?
+        virtualResourceSet.getPackageRegistry().put(virtualPackage.getNsURI(), virtualPackage);
+      }
+    }
+
+    // Add new concepts
+    for (NewConcept c : wm.getNewConcepts()) {
+      EClass n = EcoreFactory.eINSTANCE.createEClass();
+      n.setName(c.getName());
+      virtualPackage.getEClassifiers().add(n);
+    }
 
     // Add virtual associations
     for (NewAssociation a : wm.getNewAssociations()) {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
 <virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                           xmlns:virtualLinks="http://inria.fr/virtualLinks">
+                           xmlns:virtualLinks="http://inria.fr/virtualLinks"
+                           name="minimal">
   <virtualLinks xsi:type="virtualLinks:ElementFilter"
                 name="manyB"
                 target="//@contributingModels.0/@concreteElements.0"/>

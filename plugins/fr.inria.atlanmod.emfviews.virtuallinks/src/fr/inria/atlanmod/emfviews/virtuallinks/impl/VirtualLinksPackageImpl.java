@@ -174,8 +174,8 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getWeavingModel_VirtualLinks() {
-    return (EReference)weavingModelEClass.getEStructuralFeatures().get(0);
+  public EAttribute getWeavingModel_Name() {
+    return (EAttribute)weavingModelEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -183,7 +183,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getWeavingModel_ContributingModels() {
+  public EReference getWeavingModel_VirtualLinks() {
     return (EReference)weavingModelEClass.getEStructuralFeatures().get(1);
   }
 
@@ -192,8 +192,17 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getWeavingModel_ContributingModels() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EAttribute getWeavingModel_Whitelist() {
-    return (EAttribute)weavingModelEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)weavingModelEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -202,15 +211,6 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * @generated
    */
   public EReference getWeavingModel_NewConcepts() {
-    return (EReference)weavingModelEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getWeavingModel_NewProperties() {
     return (EReference)weavingModelEClass.getEStructuralFeatures().get(4);
   }
 
@@ -219,7 +219,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getWeavingModel_NewAssociations() {
+  public EReference getWeavingModel_NewProperties() {
     return (EReference)weavingModelEClass.getEStructuralFeatures().get(5);
   }
 
@@ -228,8 +228,17 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getWeavingModel_ElementFilters() {
+  public EReference getWeavingModel_NewAssociations() {
     return (EReference)weavingModelEClass.getEStructuralFeatures().get(6);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getWeavingModel_ElementFilters() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(7);
   }
 
   /**
@@ -486,6 +495,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
 
     // Create classes and their features
     weavingModelEClass = createEClass(WEAVING_MODEL);
+    createEAttribute(weavingModelEClass, WEAVING_MODEL__NAME);
     createEReference(weavingModelEClass, WEAVING_MODEL__VIRTUAL_LINKS);
     createEReference(weavingModelEClass, WEAVING_MODEL__CONTRIBUTING_MODELS);
     createEAttribute(weavingModelEClass, WEAVING_MODEL__WHITELIST);
@@ -569,6 +579,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
 
     // Initialize classes, features, and operations; add parameters
     initEClass(weavingModelEClass, WeavingModel.class, "WeavingModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getWeavingModel_Name(), ecorePackage.getEString(), "name", null, 1, 1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_VirtualLinks(), this.getVirtualLink(), null, "virtualLinks", null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_ContributingModels(), this.getContributingModel(), null, "contributingModels", null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getWeavingModel_Whitelist(), ecorePackage.getEBoolean(), "whitelist", null, 0, 1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

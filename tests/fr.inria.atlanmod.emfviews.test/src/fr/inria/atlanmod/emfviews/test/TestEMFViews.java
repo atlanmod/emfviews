@@ -228,4 +228,16 @@ public class TestEMFViews {
     assertEquals(B, A.eGet(A.eClass().getEStructuralFeature("assoc")));
   }
 
+  @Test
+  public void addConcept() throws IOException {
+    Viewpoint v =
+        new Viewpoint(URI.createURI("resources/viewpoints/addconcept/viewpoint.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    EPackage p = (EPackage) l.get(1);
+    assertEquals("addconcept", p.getName());
+    assertNotNull(p.getEClassifier("C"));
+  }
+
 }
