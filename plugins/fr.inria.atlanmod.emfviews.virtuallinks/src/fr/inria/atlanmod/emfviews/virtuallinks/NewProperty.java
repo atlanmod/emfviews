@@ -85,7 +85,7 @@ public interface NewProperty extends VirtualLink, VirtualElement {
    * @return the value of the '<em>Optional</em>' attribute.
    * @see #setOptional(boolean)
    * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getNewProperty_Optional()
-   * @model required="true"
+   * @model
    * @generated
    */
   boolean isOptional();
