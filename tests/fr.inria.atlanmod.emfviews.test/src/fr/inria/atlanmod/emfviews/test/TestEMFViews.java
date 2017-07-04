@@ -45,8 +45,8 @@ public class TestEMFViews {
       // Ensure we have the three packages we want
       assertEquals(3, l.size());
       assertEquals("contentfwk", ((EPackage) l.get(0)).getName());
-      assertEquals("reqif10", ((EPackage) l.get(1)).getName());
-      assertEquals("bpmn2", ((EPackage) l.get(2)).getName());
+      assertEquals("bpmn2", ((EPackage) l.get(1)).getName());
+      assertEquals("reqif10", ((EPackage) l.get(2)).getName());
 
       // Ensure the filtered elements are absent
       EClass c = (EClass) ((EPackage) l.get(0)).getEClassifier("BusinessArchitecture");

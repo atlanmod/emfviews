@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -64,6 +63,8 @@ public class Viewpoint extends ResourceImpl {
 
   private String contributingMetamodels;
   private String matchingModel;
+
+  private EPackage virtualPackage;
 
   public String getMatchingModel() {
     return matchingModel;
@@ -229,16 +230,23 @@ public class Viewpoint extends ResourceImpl {
   }
 
   private void setVirtualContents() {
-    Collection<Object> localPackages = virtualResourceSet.getPackageRegistry().values();
     List<List<EObject>> sublists = new ArrayList<>();
 
-    for (Object object : localPackages) {
-      if (object instanceof EPackage) {
-        List<EObject> oneOftheSublists = new ArrayList<>();
-        oneOftheSublists.add((EObject) object);
-        sublists.add(oneOftheSublists);
-      }
+    // The order of packages in the virtual contents matters. We use the order
+    // specified by the contributing models, and the virtual package is last.
+    for (EPackage p : contributingEpackages) {
+      List<EObject> oneOftheSublists = new ArrayList<>();
+      oneOftheSublists.add((EObject) virtualResourceSet.getPackageRegistry().get(p.getNsURI()));
+      sublists.add(oneOftheSublists);
     }
+
+    // The virtual package is not included if there are no new concepts.
+    if (virtualPackage != null) {
+      List<EObject> l = new ArrayList<>();
+      l.add(virtualPackage);
+      sublists.add(l);
+    }
+
     this.virtualContents = new VirtualContents<>(this, sublists);
   }
 
