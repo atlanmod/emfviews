@@ -231,6 +231,14 @@ public class Viewpoint extends ResourceImpl {
       EClass n = EcoreFactory.eINSTANCE.createEClass();
       n.setName(c.getName());
       virtualPackage.getEClassifiers().add(n);
+
+      for (LinkedElement e : c.getSuperConcepts()) {
+        EObject sup = findEObjectOrBail(e);
+        if (!(sup instanceof EClass))
+          throw new InvalidLinkedElementException(String
+              .format("Superconcept '%s' of new concept '%s' should be an EClass", e, c.getName()));
+        n.getESuperTypes().add((EClass) sup);
+      }
     }
 
     // Add virtual associations

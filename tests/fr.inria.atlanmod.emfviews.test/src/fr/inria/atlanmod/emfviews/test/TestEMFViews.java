@@ -230,14 +230,43 @@ public class TestEMFViews {
 
   @Test
   public void addConcept() throws IOException {
+    // A new concept in the weaving model should be added to the virtual package
+
     Viewpoint v =
         new Viewpoint(URI.createURI("resources/viewpoints/addconcept/viewpoint.eviewpoint", true));
     v.load(null);
 
     EList<EObject> l = v.getContents();
+    // The virtual package comes after packages from the contributing models
     EPackage p = (EPackage) l.get(1);
+    // The virtual package takes the WeavingModel name
     assertEquals("addconcept", p.getName());
+    // And it holds our new concept
     assertNotNull(p.getEClassifier("C"));
+  }
+
+  @Test
+  public void addSubconcept() throws IOException {
+    // A new subconcept in the weaving model should be added to the virtual
+    // package, and should reference its superconcept.
+
+    Viewpoint v =
+        new Viewpoint(URI.createURI("resources/viewpoints/addconcept/subconcept.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    // The virtual package comes after packages from the contributing models
+    EPackage p = (EPackage) l.get(2);
+    // The virtual package takes the WeavingModel name
+    assertEquals("subconcept", p.getName());
+    // It holds our new concept
+    EClass c = (EClass) p.getEClassifier("C");
+    assertNotNull(c);
+    // C has A and B as super types
+    EList<EClass> sups = c.getESuperTypes();
+    assertEquals(2, sups.size());
+    assertEquals(((EPackage) l.get(0)).getEClassifier("A"), sups.get(0));
+    assertEquals(((EPackage) l.get(1)).getEClassifier("B"), sups.get(1));
   }
 
 }
