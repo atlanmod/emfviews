@@ -178,6 +178,7 @@ public class Viewpoint extends ResourceImpl {
    *          packages in the resource set.
    */
   private void filterMetamodels(List<ElementFilter> filters) {
+    // TODO: whitelisting
     hiddenAttributes = new ArrayList<>();
 
     for (ElementFilter f : filters) {
@@ -240,7 +241,17 @@ public class Viewpoint extends ResourceImpl {
               .format("Superconcept '%s' of new concept '%s' should be an EClass", e, c.getName()));
         n.getESuperTypes().add((EClass) sup);
       }
+
+      for (LinkedElement e : c.getSubConcepts()) {
+        EObject sub = findEObjectOrBail(e);
+        if (!(sub instanceof EClass))
+          throw new InvalidLinkedElementException(String
+              .format("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName()));
+        ((EClass) sub).getESuperTypes().add(n);
+      }
     }
+
+    // TODO: newProperty
 
     // Add virtual associations
     for (NewAssociation a : wm.getNewAssociations()) {
