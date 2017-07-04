@@ -213,7 +213,7 @@ public interface VirtualLinksPackage extends EPackage {
   int NEW_CONCEPT__NAME = VIRTUAL_LINK__NAME;
 
   /**
-   * The feature id for the '<em><b>Super Concepts</b></em>' reference.
+   * The feature id for the '<em><b>Super Concepts</b></em>' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -222,7 +222,7 @@ public interface VirtualLinksPackage extends EPackage {
   int NEW_CONCEPT__SUPER_CONCEPTS = VIRTUAL_LINK_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Sub Concepts</b></em>' reference.
+   * The feature id for the '<em><b>Sub Concepts</b></em>' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -719,10 +719,10 @@ public interface VirtualLinksPackage extends EPackage {
   EClass getNewConcept();
 
   /**
-   * Returns the meta object for the reference '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSuperConcepts <em>Super Concepts</em>}'.
+   * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSuperConcepts <em>Super Concepts</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Super Concepts</em>'.
+   * @return the meta object for the reference list '<em>Super Concepts</em>'.
    * @see fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSuperConcepts()
    * @see #getNewConcept()
    * @generated
@@ -730,10 +730,10 @@ public interface VirtualLinksPackage extends EPackage {
   EReference getNewConcept_SuperConcepts();
 
   /**
-   * Returns the meta object for the reference '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSubConcepts <em>Sub Concepts</em>}'.
+   * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSubConcepts <em>Sub Concepts</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Sub Concepts</em>'.
+   * @return the meta object for the reference list '<em>Sub Concepts</em>'.
    * @see fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSubConcepts()
    * @see #getNewConcept()
    * @generated
@@ -1079,7 +1079,7 @@ public interface VirtualLinksPackage extends EPackage {
     EClass NEW_CONCEPT = eINSTANCE.getNewConcept();
 
     /**
-     * The meta object literal for the '<em><b>Super Concepts</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Super Concepts</b></em>' reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1087,7 +1087,7 @@ public interface VirtualLinksPackage extends EPackage {
     EReference NEW_CONCEPT__SUPER_CONCEPTS = eINSTANCE.getNewConcept_SuperConcepts();
 
     /**
-     * The meta object literal for the '<em><b>Sub Concepts</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Sub Concepts</b></em>' reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

@@ -6,12 +6,10 @@ import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewConcept;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
-import org.eclipse.emf.common.notify.Notification;
-
+import java.util.Collection;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,24 +27,24 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class NewConceptImpl extends VirtualLinkImpl implements NewConcept {
   /**
-   * The cached value of the '{@link #getSuperConcepts() <em>Super Concepts</em>}' reference.
+   * The cached value of the '{@link #getSuperConcepts() <em>Super Concepts</em>}' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getSuperConcepts()
    * @generated
    * @ordered
    */
-  protected LinkedElement superConcepts;
+  protected EList<LinkedElement> superConcepts;
 
   /**
-   * The cached value of the '{@link #getSubConcepts() <em>Sub Concepts</em>}' reference.
+   * The cached value of the '{@link #getSubConcepts() <em>Sub Concepts</em>}' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getSubConcepts()
    * @generated
    * @ordered
    */
-  protected LinkedElement subConcepts;
+  protected EList<LinkedElement> subConcepts;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,14 +70,9 @@ public class NewConceptImpl extends VirtualLinkImpl implements NewConcept {
    * <!-- end-user-doc -->
    * @generated
    */
-  public LinkedElement getSuperConcepts() {
-    if (superConcepts != null && superConcepts.eIsProxy()) {
-      InternalEObject oldSuperConcepts = (InternalEObject)superConcepts;
-      superConcepts = (LinkedElement)eResolveProxy(oldSuperConcepts);
-      if (superConcepts != oldSuperConcepts) {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, VirtualLinksPackage.NEW_CONCEPT__SUPER_CONCEPTS, oldSuperConcepts, superConcepts));
-      }
+  public EList<LinkedElement> getSuperConcepts() {
+    if (superConcepts == null) {
+      superConcepts = new EObjectResolvingEList<LinkedElement>(LinkedElement.class, this, VirtualLinksPackage.NEW_CONCEPT__SUPER_CONCEPTS);
     }
     return superConcepts;
   }
@@ -89,58 +82,11 @@ public class NewConceptImpl extends VirtualLinkImpl implements NewConcept {
    * <!-- end-user-doc -->
    * @generated
    */
-  public LinkedElement basicGetSuperConcepts() {
-    return superConcepts;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setSuperConcepts(LinkedElement newSuperConcepts) {
-    LinkedElement oldSuperConcepts = superConcepts;
-    superConcepts = newSuperConcepts;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.NEW_CONCEPT__SUPER_CONCEPTS, oldSuperConcepts, superConcepts));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public LinkedElement getSubConcepts() {
-    if (subConcepts != null && subConcepts.eIsProxy()) {
-      InternalEObject oldSubConcepts = (InternalEObject)subConcepts;
-      subConcepts = (LinkedElement)eResolveProxy(oldSubConcepts);
-      if (subConcepts != oldSubConcepts) {
-        if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, VirtualLinksPackage.NEW_CONCEPT__SUB_CONCEPTS, oldSubConcepts, subConcepts));
-      }
+  public EList<LinkedElement> getSubConcepts() {
+    if (subConcepts == null) {
+      subConcepts = new EObjectResolvingEList<LinkedElement>(LinkedElement.class, this, VirtualLinksPackage.NEW_CONCEPT__SUB_CONCEPTS);
     }
     return subConcepts;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public LinkedElement basicGetSubConcepts() {
-    return subConcepts;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setSubConcepts(LinkedElement newSubConcepts) {
-    LinkedElement oldSubConcepts = subConcepts;
-    subConcepts = newSubConcepts;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.NEW_CONCEPT__SUB_CONCEPTS, oldSubConcepts, subConcepts));
   }
 
   /**
@@ -152,11 +98,9 @@ public class NewConceptImpl extends VirtualLinkImpl implements NewConcept {
   public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case VirtualLinksPackage.NEW_CONCEPT__SUPER_CONCEPTS:
-        if (resolve) return getSuperConcepts();
-        return basicGetSuperConcepts();
+        return getSuperConcepts();
       case VirtualLinksPackage.NEW_CONCEPT__SUB_CONCEPTS:
-        if (resolve) return getSubConcepts();
-        return basicGetSubConcepts();
+        return getSubConcepts();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -166,14 +110,17 @@ public class NewConceptImpl extends VirtualLinkImpl implements NewConcept {
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case VirtualLinksPackage.NEW_CONCEPT__SUPER_CONCEPTS:
-        setSuperConcepts((LinkedElement)newValue);
+        getSuperConcepts().clear();
+        getSuperConcepts().addAll((Collection<? extends LinkedElement>)newValue);
         return;
       case VirtualLinksPackage.NEW_CONCEPT__SUB_CONCEPTS:
-        setSubConcepts((LinkedElement)newValue);
+        getSubConcepts().clear();
+        getSubConcepts().addAll((Collection<? extends LinkedElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -188,10 +135,10 @@ public class NewConceptImpl extends VirtualLinkImpl implements NewConcept {
   public void eUnset(int featureID) {
     switch (featureID) {
       case VirtualLinksPackage.NEW_CONCEPT__SUPER_CONCEPTS:
-        setSuperConcepts((LinkedElement)null);
+        getSuperConcepts().clear();
         return;
       case VirtualLinksPackage.NEW_CONCEPT__SUB_CONCEPTS:
-        setSubConcepts((LinkedElement)null);
+        getSubConcepts().clear();
         return;
     }
     super.eUnset(featureID);
@@ -206,9 +153,9 @@ public class NewConceptImpl extends VirtualLinkImpl implements NewConcept {
   public boolean eIsSet(int featureID) {
     switch (featureID) {
       case VirtualLinksPackage.NEW_CONCEPT__SUPER_CONCEPTS:
-        return superConcepts != null;
+        return superConcepts != null && !superConcepts.isEmpty();
       case VirtualLinksPackage.NEW_CONCEPT__SUB_CONCEPTS:
-        return subConcepts != null;
+        return subConcepts != null && !subConcepts.isEmpty();
     }
     return super.eIsSet(featureID);
   }

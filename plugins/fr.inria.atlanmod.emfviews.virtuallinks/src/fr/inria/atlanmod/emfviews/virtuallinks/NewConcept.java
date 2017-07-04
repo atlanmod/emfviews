@@ -2,6 +2,8 @@
  */
 package fr.inria.atlanmod.emfviews.virtuallinks;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -22,55 +24,35 @@ package fr.inria.atlanmod.emfviews.virtuallinks;
  */
 public interface NewConcept extends VirtualLink, VirtualElement {
   /**
-   * Returns the value of the '<em><b>Super Concepts</b></em>' reference.
+   * Returns the value of the '<em><b>Super Concepts</b></em>' reference list.
+   * The list contents are of type {@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Super Concepts</em>' reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Super Concepts</em>' reference.
-   * @see #setSuperConcepts(LinkedElement)
+   * @return the value of the '<em>Super Concepts</em>' reference list.
    * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getNewConcept_SuperConcepts()
    * @model
    * @generated
    */
-  LinkedElement getSuperConcepts();
+  EList<LinkedElement> getSuperConcepts();
 
   /**
-   * Sets the value of the '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSuperConcepts <em>Super Concepts</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Super Concepts</em>' reference.
-   * @see #getSuperConcepts()
-   * @generated
-   */
-  void setSuperConcepts(LinkedElement value);
-
-  /**
-   * Returns the value of the '<em><b>Sub Concepts</b></em>' reference.
+   * Returns the value of the '<em><b>Sub Concepts</b></em>' reference list.
+   * The list contents are of type {@link fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Sub Concepts</em>' reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Sub Concepts</em>' reference.
-   * @see #setSubConcepts(LinkedElement)
+   * @return the value of the '<em>Sub Concepts</em>' reference list.
    * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getNewConcept_SubConcepts()
    * @model
    * @generated
    */
-  LinkedElement getSubConcepts();
-
-  /**
-   * Sets the value of the '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewConcept#getSubConcepts <em>Sub Concepts</em>}' reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Sub Concepts</em>' reference.
-   * @see #getSubConcepts()
-   * @generated
-   */
-  void setSubConcepts(LinkedElement value);
+  EList<LinkedElement> getSubConcepts();
 
 } // NewConcept
