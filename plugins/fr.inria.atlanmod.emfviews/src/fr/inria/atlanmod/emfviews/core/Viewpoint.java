@@ -154,7 +154,8 @@ public class Viewpoint extends ResourceImpl {
       EObject model = virtualResourceSet.getPackageRegistry().getEPackage(e.getModel().getURI());
       if (model == null) {
         throw new InvalidLinkedElementException(String
-            .format("Model '%s' of concrete element cannot be found", e.getModel().getURI()));
+            .format("Model '%s' of concrete element cannot be found in package registry",
+                    e.getModel().getURI()));
       }
 
       EObject obj = EMFViewsUtil.findElement(model, e.getPath());
