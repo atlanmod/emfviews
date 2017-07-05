@@ -15,17 +15,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class EView extends View {
 
-  private Resource viewpoint;
+  private Viewpoint viewpoint;
 
   public EView(URI uri) {
     super(uri);
@@ -39,12 +39,11 @@ public class EView extends View {
     virtualResourceSet = new ResourceSetImpl();
 
     loadViewpoint();
-    String matchingModel = ((Viewpoint) viewpoint).getMatchingModel();
+    Optional<String> matchingModelPath = viewpoint.getMatchingModelPath();
 
     // FIXME: instead of peeking at the raw contributing model URIs, we could
     // just get the contributing packages Viewpoint already collected.
-    loadContributingMetamodels(new ArrayList<>(Arrays
-        .asList(((Viewpoint) viewpoint).getContributingMetamodelsURIs().split(","))));
+    loadContributingMetamodels(viewpoint.getContributingMetamodelsPaths());
 
     metamodelManager =
         new MetamodelManager(virtualResourceSet.getPackageRegistry().values(), viewpoint, this);
@@ -52,10 +51,10 @@ public class EView extends View {
     loadContributingModels(new ArrayList<>(Arrays
         .asList(properties.getProperty("contributingModels").split(","))));
 
-    if (matchingModel != null && !matchingModel.isEmpty()) {
+    if (matchingModelPath.isPresent() && !matchingModelPath.get().isEmpty()) {
       // XXX: we could mark the weaving model file as derived
       try {
-        VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModel);
+        VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelPath.get());
 
         vld.createVirtualModelLinks(URI.createURI(properties.getProperty("weavingModel"), true),
                                     getContributingModels());

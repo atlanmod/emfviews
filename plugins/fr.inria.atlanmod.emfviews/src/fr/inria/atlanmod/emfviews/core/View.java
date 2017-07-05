@@ -102,7 +102,9 @@ public abstract class View extends ResourceImpl {
 
   protected void loadContributingMetamodels(List<String> contributingmetaModelsPaths) {
     for (String metamodelURI : contributingmetaModelsPaths) {
-      EPackage p = EMFViewsUtil.getEPackageFromURI(metamodelURI);
+      EPackage p = EMFViewsUtil.getEPackageFromPath(metamodelURI)
+          .orElseThrow(() -> new ViewOperationException("Cannot load contributing metamodel "
+              + metamodelURI));
       virtualResourceSet.getPackageRegistry().put(p.getNsURI(), p);
     }
   }

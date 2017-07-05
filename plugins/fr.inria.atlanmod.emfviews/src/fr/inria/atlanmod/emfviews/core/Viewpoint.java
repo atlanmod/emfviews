@@ -10,14 +10,13 @@
  *******************************************************************************/
 package fr.inria.atlanmod.emfviews.core;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.eclipse.emf.common.util.EList;
@@ -28,13 +27,13 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
@@ -48,48 +47,69 @@ import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl {
 
-  private Properties properties;
+  private static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
+  private static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
+  private static String EVIEWPOINT_MATCHING_MODEL = "matchingModel";
 
-  private ResourceSet virtualResourceSet;
-  /**
-   * The contents of the virtual model
-   */
-  private EList<EObject> virtualContents; // list of resources
+  // Paths and URIs serialized in the EViewpoint file
+  private List<String> contributingMetamodelsPaths;
+  private URI weavingModelURI;
+  private Optional<String> matchingModelPath;
 
-  /**
-   * Contains all the attributes we have removed from packages in the virtual
-   * resource set. Used by the ViewpointEditor.
-   */
-  private List<EObject> hiddenAttributes;
+  private List<EPackage> contributingEPackages; // original, unmodified EPackages
+  private WeavingModel weavingModel; // how to modify the EPackages
 
-  private String contributingMetamodels;
-  private String matchingModel;
-
-  private Resource weavingModelResource;
-  private List<EPackage> contributingEpackages;
-  private EPackage virtualPackage;
-
-  private Resource attributesToHideMM;
+  private ResourceSet virtualResourceSet; // contains the cloned and modified EPackages
+  private EPackage virtualPackage; // contains the new concepts
+  private EList<EObject> virtualContents; // built from the modified EPackages and the VirtualPackage
 
   public Viewpoint(URI uri) {
     super(uri);
+  }
+
+  @Override
+  protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
+    Properties p = new Properties();
+    p.load(inputStream);
+
+    parseProperties(p);
+
+    contributingEPackages = loadMetamodels(contributingMetamodelsPaths);
     virtualResourceSet = new ResourceSetImpl();
+    EPackage.Registry registry = virtualResourceSet.getPackageRegistry();
+    // Clone each metamodel into our virtual resource set, so that we can add and
+    // remove elements from them without affecting the originals.
+    cloneEPackages(contributingEPackages, registry);
+
+    weavingModel = loadWeavingModel(weavingModelURI);
+    matchingModelPath.ifPresent(this::loadMatchingModel);
+
+    applyFilters(weavingModel.getElementFilters(), registry);
+    // The virtualPackage holds all the new concepts, but is created only if
+    // if we have some concepts to put in it
+    List<NewConcept> concepts = weavingModel.getNewConcepts();
+    if (!concepts.isEmpty()) {
+      virtualPackage = createVirtualPackage(weavingModel.getName());
+      registry.put(virtualPackage.getNsURI(), virtualPackage);
+      createNewConcepts(weavingModel.getNewConcepts(), virtualPackage, registry);
+    }
+
+    createNewProperties(weavingModel.getNewProperties(), registry);
+    createNewAssociations(weavingModel.getNewAssociations(), registry);
+
+    virtualContents = buildVirtualContents();
+
+    validateVirtualResourceSet(virtualResourceSet);
   }
 
-  public String getMatchingModel() {
-    return matchingModel;
-  }
-
-  public List<EObject> getHiddenAttributes() {
-    return hiddenAttributes;
-  }
-
-  public List<EPackage> getContributingEpackages() {
-    return contributingEpackages;
-  }
-
-  public String getContributingMetamodelsURIs() {
-    return contributingMetamodels;
+  @Override
+  protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
+    Properties p = new Properties();
+    p.setProperty(EVIEWPOINT_CONTRIBUTING_METAMODELS,
+                  String.join(",", contributingMetamodelsPaths));
+    p.setProperty(EVIEWPOINT_WEAVING_MODEL, weavingModelURI.toString());
+    p.setProperty(EVIEWPOINT_MATCHING_MODEL, matchingModelPath.orElse(""));
+    p.store(outputStream, null);
   }
 
   @Override
@@ -97,189 +117,121 @@ public class Viewpoint extends ResourceImpl {
     return virtualContents;
   }
 
-  public Resource getWeavingModelResource() {
-    return weavingModelResource;
-  }
-
-  // FIXME: unused?
-  public void setWeavingModelResource(Resource weavingModelResource) {
-    this.weavingModelResource = weavingModelResource;
-  }
-
-  public Resource getAttributesToHideMM() {
-    return attributesToHideMM;
-  }
-
   @Override
-  protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
-    properties = new Properties();
-    properties.load(inputStream);
-    // FIXME: this should create a weaving model XMI from the ECL file, but do
-    // we actually need it?
-    if (properties.getProperty("matchingModel") != null) {
-      matchingModel = properties.getProperty("matchingModel");
-      // try {
-      // VirtualLinksDelegator vld = new VirtualLinksDelegator(
-      // properties.getProperty("matchingModel"));
-      // vld.createVirtualMetamodelLinks(URI.createURI(properties.getProperty("weavingModel"));
-      // //extendedMMviewpoint.xmi is rewrited
-      // } catch (CoreException e) {
-      // e.printStackTrace();
-      // }
-    }
-
-    cloneContributingMetamodels(properties.getProperty("contributingMetamodels"));
-    loadWeavingModel(properties.getProperty("weavingModel"));
-    setVirtualContents();
+  public ResourceSet getResourceSet() {
+    return virtualResourceSet;
   }
 
-  // Clone each metamodel into our virtual resource set, so that we can add and
-  // remove elements from them without affecting the originals.
-  private void cloneContributingMetamodels(String contributingModelsURIs) {
-    this.contributingMetamodels = contributingModelsURIs;
-    contributingEpackages = new ArrayList<>();
+  private void parseProperties(Properties p) {
+    // Parse contributingMetamodels line
+    contributingMetamodelsPaths = new ArrayList<>();
+    for (String path : p.getProperty(EVIEWPOINT_CONTRIBUTING_METAMODELS).split(",")) {
+      contributingMetamodelsPaths.add(path);
+    }
 
-    for (String modelURI : contributingModelsURIs.split(",")) {
+    // Parse weavingModel line
+    String weavingModelPath = p.getProperty(EVIEWPOINT_WEAVING_MODEL);
+    try {
+      weavingModelURI = URI.createURI(weavingModelPath);
+    } catch (IllegalArgumentException ex) {
+      throw EX("Weaving model path is an invalid URI: '%s'", ex);
+    }
+
+    // Parse matchingModel line
+    try {
+      matchingModelPath = Optional.ofNullable(p.getProperty(EVIEWPOINT_MATCHING_MODEL));
+    } catch (IllegalArgumentException ex) {
+      matchingModelPath = Optional.empty();
+    }
+  }
+
+  // Return a list of EPackage from the list of metamodels paths
+  private List<EPackage> loadMetamodels(List<String> metamodelsPaths) {
+    List<EPackage> packages = new ArrayList<>();
+    for (String path : metamodelsPaths) {
       // Get the EPackage from each metamodel URI
-      EPackage p = EMFViewsUtil.getEPackageFromURI(modelURI);
-      contributingEpackages.add(p);
+      EPackage p = EMFViewsUtil.getEPackageFromPath(path)
+          .orElseThrow(() -> EX("Could not load EPackage from contributing metamodel '%s'", path));
+      packages.add(p);
+    }
+    return packages;
+  }
 
-      // Clone the package into our virtual resource set
+  // Clone the packages into the given package registry
+  private void cloneEPackages(List<EPackage> packages, EPackage.Registry registry) {
+    for (EPackage p : packages) {
       EPackage copy = EcoreUtil.copy(p);
-      virtualResourceSet.getPackageRegistry().put(p.getNsURI(), copy);
+      registry.put(p.getNsURI(), copy);
     }
   }
 
-  // TODO: might move into virtuallinks.util
-  private EObject findEObjectOrBail(LinkedElement elem) {
-    if (elem instanceof ConcreteElement) {
-      ConcreteElement e = (ConcreteElement) elem;
-
-      EObject model = virtualResourceSet.getPackageRegistry().getEPackage(e.getModel().getURI());
-      if (model == null) {
-        throw new InvalidLinkedElementException(String
-            .format("Model '%s' of concrete element cannot be found in package registry",
-                    e.getModel().getURI()));
-      }
-
-      EObject obj = EMFViewsUtil.findElement(model, e.getPath());
-      if (obj == null) {
-        throw new InvalidLinkedElementException(String
-            .format("Concrete element '%s' cannot be found in model '%s'", e.getPath(),
-                    e.getModel().getURI()));
-      }
-      return obj;
-    } else {
-      // TODO: handle non-concrete elements
-      throw new UnsupportedOperationException("Cannot link to non-concrete elements");
-    }
+  // Load and return the weaving model from URI
+  private WeavingModel loadWeavingModel(URI weavingModelURI) {
+    Resource r = new ResourceSetImpl().getResource(weavingModelURI, true);
+    EObject wm = r.getContents().get(0);
+    if (!(wm instanceof WeavingModel)) throw EX("Resource at '%s' is not a WeavingModel", r);
+    return (WeavingModel) wm;
   }
 
-  /**
-   * Apply the given filters to all the packages in the virtual resource set.
-   *
-   * @param filters The filters describing the elements to remove from the
-   *          packages in the resource set.
-   */
-  private void filterMetamodels(List<ElementFilter> filters) {
+  // FIXME: this should create a weaving model XMI from the ECL file, but
+  // do we actually need it?
+  private void loadMatchingModel(String matchingModelPath) {
+    // VirtualLinksDelegator vld = new VirtualLinksDelegator(
+    // properties.getProperty("matchingModel"));
+    // vld.createVirtualMetamodelLinks(URI.createURI(properties.getProperty("weavingModel"));
+    // //extendedMMviewpoint.xmi is rewrited
+  }
+
+  // Apply the given filters to all the packages in the virtual resource set.
+  private void applyFilters(List<ElementFilter> filters, EPackage.Registry registry) {
     // TODO: whitelisting
-    hiddenAttributes = new ArrayList<>();
 
     for (ElementFilter f : filters) {
       LinkedElement l = f.getTarget();
-      EObject filteredElement = findEObjectOrBail(l);
+      EObject filteredElement = findEObject(l, registry);
       EcoreUtil.delete(filteredElement);
-      hiddenAttributes.add(filteredElement);
     }
   }
 
-  private void loadWeavingModel(String weavingModelURI) throws FileNotFoundException, IOException {
-    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-    weavingModelResource = new ResourceSetImpl().getResource(URI.createURI(weavingModelURI), true);
+  private EPackage createVirtualPackage(String name) {
+    EPackage p = EcoreFactory.eINSTANCE.createEPackage();
+    p.setName(name);
+    p.setNsURI("http://inria/atlanmod/emfviews/viewpoint/" + name);
+    p.setNsPrefix(name);
+    return p;
+  }
 
-    // Get the virtual links from the serialized resource
-    // FIXME: this cast can fail if the XMI is not a VirtualLinks
-    WeavingModel wm = (WeavingModel) weavingModelResource.getContents().get(0);
-
-    // Remove filtered elements from the packages in the resource set
-    filterMetamodels(wm.getElementFilters());
-
-    {
-      // The viewpointPackage holds all the new concepts
-
-      // First we make sure the chosen name is non-empty and does not clash with
-      // any contributing packages
-      String n = wm.getName();
-      if (n == null)
-        throw new ViewpointException("Weaving model name is null");
-      if (!n.matches("[a-z][a-z0-9]*"))
-        throw new ViewpointException(String
-            .format("Weaving model name '%s' should be non-empty, all lowercase", n));
-      for (EPackage p : contributingEpackages) {
-        if (n.equalsIgnoreCase(p.getName()))
-          throw new ViewpointException(String
-              .format("Weaving model name '%s' is the same as contributing package '%s'", n,
-                      p.getNsURI()));
-      }
-
-      // Then, if we have some concepts to put in the package
-      if (!wm.getNewConcepts().isEmpty()) {
-        virtualPackage = EcoreFactory.eINSTANCE.createEPackage();
-        virtualPackage.setName(n);
-        virtualPackage.setNsURI("http://inria/atlanmod/emfviews/viewpoint/" + n);
-        // TODO: should we set NsPrefix as well?
-        virtualResourceSet.getPackageRegistry().put(virtualPackage.getNsURI(), virtualPackage);
-      }
-    }
-
-    // Add new concepts
-    for (NewConcept c : wm.getNewConcepts()) {
-      EClass n = EcoreFactory.eINSTANCE.createEClass();
-      n.setName(c.getName());
-      virtualPackage.getEClassifiers().add(n);
+  private void createNewConcepts(List<NewConcept> concepts, EPackage virtualPackage,
+                                 EPackage.Registry registry) {
+    for (NewConcept c : concepts) {
+      EClass klass = EcoreFactory.eINSTANCE.createEClass();
+      klass.setName(c.getName());
+      virtualPackage.getEClassifiers().add(klass);
 
       for (LinkedElement e : c.getSuperConcepts()) {
-        EObject sup = findEObjectOrBail(e);
+        EObject sup = findEObject(e, registry);
         if (!(sup instanceof EClass))
-          throw new InvalidLinkedElementException(String
-              .format("Superconcept '%s' of new concept '%s' should be an EClass", e, c.getName()));
-        n.getESuperTypes().add((EClass) sup);
+          throw EX("Superconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
+        klass.getESuperTypes().add((EClass) sup);
       }
 
       for (LinkedElement e : c.getSubConcepts()) {
-        EObject sub = findEObjectOrBail(e);
+        EObject sub = findEObject(e, registry);
         if (!(sub instanceof EClass))
-          throw new InvalidLinkedElementException(String
-              .format("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName()));
-        ((EClass) sub).getESuperTypes().add(n);
+          throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
+        ((EClass) sub).getESuperTypes().add(klass);
       }
     }
+  }
 
-    // Add new properties
-    for (NewProperty p : wm.getNewProperties()) {
-      // TODO: put the validation into a separate class, as this is getting out
-      // of hand
-      EObject parent = findEObjectOrBail(p.getParent());
+  private void createNewProperties(List<NewProperty> properties, EPackage.Registry registry) {
+    for (NewProperty p : properties) {
+      EObject parent = findEObject(p.getParent(), registry);
       if (!(parent instanceof EClass))
-        throw new InvalidLinkedElementException(String
-            .format("Parent of new property '%s' should be an EClass", p.getName()));
+        throw EX("Parent of new property '%s' should be an EClass", p.getName());
       EClass parentClass = (EClass) parent;
 
       String n = p.getName();
-      if (n == null)
-        throw new ViewpointException("New property name is null");
-      if (!n.matches("[a-zA-Z][a-zA-Z0-9]*"))
-        throw new ViewpointException(String
-            .format("New property name '%s' should be non-empty, start with a letter, and contain only letters or digits",
-                    n));
-
-      for (EStructuralFeature f : parentClass.getEAllStructuralFeatures()) {
-        if (n.equalsIgnoreCase(f.getName()))
-          throw new ViewpointException(String
-              .format("New property name '%s' is already taken in class '%s'", n,
-                      parentClass.getName()));
-      }
-
       EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
       attr.setName(n);
       attr.setEType(getTypeFromName(p.getType()));
@@ -290,24 +242,50 @@ public class Viewpoint extends ResourceImpl {
         attr.setLowerBound(1);
       parentClass.getEStructuralFeatures().add(attr);
     }
+  }
 
-    // Add virtual associations
-    for (NewAssociation a : wm.getNewAssociations()) {
+  private void createNewAssociations(List<NewAssociation> associations,
+                                     EPackage.Registry registry) {
+    for (NewAssociation a : associations) {
       // Each association is turned into an EReference
 
-      EObject source = findEObjectOrBail(a.getSource());
-      EObject target = findEObjectOrBail(a.getTarget());
+      EObject source = findEObject(a.getSource(), registry);
+      EObject target = findEObject(a.getTarget(), registry);
 
       EReference ref = EcoreFactory.eINSTANCE.createEReference();
       ref.setName(a.getName());
-      // XXX: target: EClassifier should be a model constraint
+      if (!(target instanceof EClassifier))
+        throw EX("Target '%s' of new association '%s' should be an EClassifier", target,
+                 a.getName());
       ref.setEType((EClassifier) target);
       ref.setLowerBound(a.getLowerBound());
       ref.setUpperBound(a.getUpperBound());
-      // XXX: source: EClass should be a model constraint
+      if (!(source instanceof EClass))
+        throw EX("Source '%s' of new association '%s' should be an EClass", source, a.getName());
       ((EClass) source).getEStructuralFeatures().add(ref);
 
       // TODO: opposite
+    }
+  }
+
+  private EObject findEObject(LinkedElement elem, EPackage.Registry registry) {
+    if (elem instanceof ConcreteElement) {
+      ConcreteElement e = (ConcreteElement) elem;
+
+      String modelURI = e.getModel().getURI();
+      EObject model = registry.getEPackage(modelURI);
+      if (model == null)
+        throw EX("Model '%s' of concrete element cannot be found in package registry", modelURI);
+
+      String path = e.getPath();
+      EObject obj = EMFViewsUtil.findElement(model, path)
+          .orElseThrow(() -> EX("ConcreteElement '%s' cannot be found in model '%s'", path,
+                                modelURI));
+
+      return obj;
+    } else {
+      // TODO: handle non-concrete elements
+      throw EX("Cannot link to non-concrete elements");
     }
   }
 
@@ -318,22 +296,12 @@ public class Viewpoint extends ResourceImpl {
     return EcorePackage.Literals.ESTRING;
   }
 
-  @Override
-  protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
-    // VirtualLinksFactory linksFactory = VirtualLinksFactory.eINSTANCE;
-    WeavingModel vLinks = (WeavingModel) weavingModelResource.getContents().get(0);
-    vLinks.getVirtualLinks().clear();
-    vLinks.getContributingModels().clear();
-    weavingModelResource.save(null);
-    properties.store(outputStream, null);
-  }
-
-  private void setVirtualContents() {
+  private VirtualContents<EObject> buildVirtualContents() {
     List<List<EObject>> sublists = new ArrayList<>();
 
     // The order of packages in the virtual contents matters. We use the order
     // specified by the contributing models, and the virtual package is last.
-    for (EPackage p : contributingEpackages) {
+    for (EPackage p : contributingEPackages) {
       List<EObject> oneOftheSublists = new ArrayList<>();
       oneOftheSublists.add((EObject) virtualResourceSet.getPackageRegistry().get(p.getNsURI()));
       sublists.add(oneOftheSublists);
@@ -346,17 +314,30 @@ public class Viewpoint extends ResourceImpl {
       sublists.add(l);
     }
 
-    this.virtualContents = new VirtualContents<>(this, sublists);
+    return new VirtualContents<>(this, sublists);
   }
 
-  // FIXME: unused?
-  private InputStream openContentStream(String contents) {
-    return new ByteArrayInputStream(contents.getBytes());
+  private void validateVirtualResourceSet(ResourceSet r) {
+    for (Object p : r.getPackageRegistry().values()) {
+      // Since we inherit from Resource, which has an internal Diagnostic interface, we have to use the fully qualified
+      // name here
+      org.eclipse.emf.common.util.Diagnostic d = Diagnostician.INSTANCE.validate((EObject) p);
+      if ((d.getSeverity() & org.eclipse.emf.common.util.Diagnostic.ERROR) != 0) {
+        throw EX("Ecore validation error: '%s'", d);
+      }
+    }
   }
 
-  @Override
-  public ResourceSet getResourceSet() {
-    return virtualResourceSet;
+  private ViewpointException EX(String msg, Object... args) {
+    return new ViewpointException(msg, args);
+  }
+
+  public Optional<String> getMatchingModelPath() {
+    return matchingModelPath;
+  }
+
+  public List<String> getContributingMetamodelsPaths() {
+    return contributingMetamodelsPaths;
   }
 
 }

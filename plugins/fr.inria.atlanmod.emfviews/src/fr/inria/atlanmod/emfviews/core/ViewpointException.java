@@ -10,4 +10,8 @@ public class ViewpointException extends RuntimeException {
   public ViewpointException(String msg) {
     super(msg);
   }
+
+  public ViewpointException(String msg, Object... args) {
+    this(String.format(msg, args));
+  }
 }
