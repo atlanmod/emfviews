@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.emfviews.util;
 
 import java.util.ArrayDeque;
+import java.util.Optional;
 import java.util.Queue;
 
 import org.eclipse.emf.common.util.URI;
@@ -15,17 +16,16 @@ public final class EMFViewsUtil {
   private EMFViewsUtil() {}
 
   /**
-   * Find and return the element that matches the path. Path is a dot-separated
-   * list of names describing the full hierarchy of the target element from the
-   * root object. E.g.,
+   * Find and return the element that matches the path. Path is a dot-separated list of names describing the full
+   * hierarchy of the target element from the root object. E.g.,
    *
    * "packageName.className.attributeName"
    *
    * @param root the root object to begin the search with
    * @param path dot-separated list of names to match
-   * @return the matching object, or null if it couldn't be found
+   * @return the matching object, if it can be found
    */
-  public static EObject findElement(EObject root, String path) {
+  public static Optional<EObject> findElement(EObject root, String path) {
     String[] components = path.split("\\.");
     Queue<EObject> objs = new ArrayDeque<>();
     objs.add(root);
@@ -39,7 +39,7 @@ public final class EMFViewsUtil {
         // No more objects to search, give up since we haven't matched all the
         // components
         if (o == null) {
-          return null;
+          return Optional.empty();
         }
         EStructuralFeature nameFeature = o.eClass().getEStructuralFeature("name");
         // Can only match named features
@@ -59,23 +59,23 @@ public final class EMFViewsUtil {
 
     // Return the object that matched the last component, or null if the path
     // was empty
-    return o;
+    return Optional.ofNullable(o);
   }
 
   // Return an EPackage from a modelURI, which can start with http or point to a
   // workspace Ecore file. If the package cannot be found, return null.
-  public static EPackage getEPackageFromURI(String modelURI) {
+  public static Optional<EPackage> getEPackageFromPath(String modelPath) {
     // FIXME: this distinction between http and ecore seems arbitrary; can't we
     // use URI with different protocols in the argument, and let EMF resolve it?
-    if (modelURI.startsWith("http")) {
-      return EPackage.Registry.INSTANCE.getEPackage(modelURI);
-    } else if (modelURI.endsWith("ecore")) {
+    if (modelPath.startsWith("http://")) {
+      return Optional.of(EPackage.Registry.INSTANCE.getEPackage(modelPath));
+    } else if (modelPath.endsWith(".ecore")) {
       // XXX: can we get the resource without creating the ResourceSet?
-      Resource r = new ResourceSetImpl().getResource(URI.createURI(modelURI, true), true);
+      Resource r = new ResourceSetImpl().getResource(URI.createURI(modelPath, true), true);
       // HYPO: the Ecore contains only one EPackage we care about
-      return (EPackage) r.getContents().get(0);
+      return Optional.of((EPackage) r.getContents().get(0));
     } else {
-      return null;
+      return Optional.empty();
     }
   }
 }
