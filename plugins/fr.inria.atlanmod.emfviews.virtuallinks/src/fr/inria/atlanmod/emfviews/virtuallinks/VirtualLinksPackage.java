@@ -386,13 +386,22 @@ public interface VirtualLinksPackage extends EPackage {
   int NEW_ASSOCIATION__OPPOSITE = VIRTUAL_LINK_FEATURE_COUNT + 4;
 
   /**
+   * The feature id for the '<em><b>Composition</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NEW_ASSOCIATION__COMPOSITION = VIRTUAL_LINK_FEATURE_COUNT + 5;
+
+  /**
    * The number of structural features of the '<em>New Association</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int NEW_ASSOCIATION_FEATURE_COUNT = VIRTUAL_LINK_FEATURE_COUNT + 5;
+  int NEW_ASSOCIATION_FEATURE_COUNT = VIRTUAL_LINK_FEATURE_COUNT + 6;
 
   /**
    * The number of operations of the '<em>New Association</em>' class.
@@ -869,6 +878,17 @@ public interface VirtualLinksPackage extends EPackage {
   EReference getNewAssociation_Opposite();
 
   /**
+   * Returns the meta object for the attribute '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation#isComposition <em>Composition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Composition</em>'.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation#isComposition()
+   * @see #getNewAssociation()
+   * @generated
+   */
+  EAttribute getNewAssociation_Composition();
+
+  /**
    * Returns the meta object for class '{@link fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter <em>Element Filter</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1205,6 +1225,14 @@ public interface VirtualLinksPackage extends EPackage {
      * @generated
      */
     EReference NEW_ASSOCIATION__OPPOSITE = eINSTANCE.getNewAssociation_Opposite();
+
+    /**
+     * The meta object literal for the '<em><b>Composition</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NEW_ASSOCIATION__COMPOSITION = eINSTANCE.getNewAssociation_Composition();
 
     /**
      * The meta object literal for the '{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.ElementFilterImpl <em>Element Filter</em>}' class.

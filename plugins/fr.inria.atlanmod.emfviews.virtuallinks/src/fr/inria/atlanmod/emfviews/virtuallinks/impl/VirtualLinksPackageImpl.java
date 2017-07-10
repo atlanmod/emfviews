@@ -390,6 +390,15 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getNewAssociation_Composition() {
+    return (EAttribute)newAssociationEClass.getEStructuralFeatures().get(5);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getElementFilter() {
     return elementFilterEClass;
   }
@@ -532,6 +541,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     createEAttribute(newAssociationEClass, NEW_ASSOCIATION__LOWER_BOUND);
     createEAttribute(newAssociationEClass, NEW_ASSOCIATION__UPPER_BOUND);
     createEReference(newAssociationEClass, NEW_ASSOCIATION__OPPOSITE);
+    createEAttribute(newAssociationEClass, NEW_ASSOCIATION__COMPOSITION);
 
     elementFilterEClass = createEClass(ELEMENT_FILTER);
     createEReference(elementFilterEClass, ELEMENT_FILTER__TARGET);
@@ -617,6 +627,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     initEAttribute(getNewAssociation_LowerBound(), ecorePackage.getEInt(), "lowerBound", null, 1, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
     initEAttribute(getNewAssociation_UpperBound(), ecorePackage.getEInt(), "upperBound", null, 1, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
     initEReference(getNewAssociation_Opposite(), this.getLinkedElement(), null, "opposite", null, 0, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+    initEAttribute(getNewAssociation_Composition(), ecorePackage.getEBoolean(), "composition", null, 0, 1, NewAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(elementFilterEClass, ElementFilter.class, "ElementFilter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getElementFilter_Target(), this.getConcreteElement(), null, "target", null, 1, 1, ElementFilter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

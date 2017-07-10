@@ -17,6 +17,7 @@ package fr.inria.atlanmod.emfviews.virtuallinks;
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation#getLowerBound <em>Lower Bound</em>}</li>
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation#getUpperBound <em>Upper Bound</em>}</li>
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation#getOpposite <em>Opposite</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation#isComposition <em>Composition</em>}</li>
  * </ul>
  *
  * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getNewAssociation()
@@ -153,5 +154,31 @@ public interface NewAssociation extends VirtualLink, VirtualElement {
    * @generated
    */
   void setOpposite(LinkedElement value);
+
+  /**
+   * Returns the value of the '<em><b>Composition</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Composition</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Composition</em>' attribute.
+   * @see #setComposition(boolean)
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getNewAssociation_Composition()
+   * @model
+   * @generated
+   */
+  boolean isComposition();
+
+  /**
+   * Sets the value of the '{@link fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation#isComposition <em>Composition</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Composition</em>' attribute.
+   * @see #isComposition()
+   * @generated
+   */
+  void setComposition(boolean value);
 
 } // NewAssociation

@@ -299,6 +299,8 @@ public class Viewpoint extends ResourceImpl {
         opp.setEOpposite(ref);
       }
 
+      // TODO: composition
+
       ((EClass) source).getEStructuralFeatures().add(ref);
     }
   }

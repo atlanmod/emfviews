@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.NewAssociationImpl#getLowerBound <em>Lower Bound</em>}</li>
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.NewAssociationImpl#getUpperBound <em>Upper Bound</em>}</li>
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.NewAssociationImpl#getOpposite <em>Opposite</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.NewAssociationImpl#isComposition <em>Composition</em>}</li>
  * </ul>
  *
  * @generated
@@ -100,6 +101,26 @@ public class NewAssociationImpl extends VirtualLinkImpl implements NewAssociatio
    * @ordered
    */
   protected LinkedElement opposite;
+
+  /**
+   * The default value of the '{@link #isComposition() <em>Composition</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isComposition()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean COMPOSITION_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isComposition() <em>Composition</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isComposition()
+   * @generated
+   * @ordered
+   */
+  protected boolean composition = COMPOSITION_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -281,6 +302,27 @@ public class NewAssociationImpl extends VirtualLinkImpl implements NewAssociatio
    * <!-- end-user-doc -->
    * @generated
    */
+  public boolean isComposition() {
+    return composition;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setComposition(boolean newComposition) {
+    boolean oldComposition = composition;
+    composition = newComposition;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.NEW_ASSOCIATION__COMPOSITION, oldComposition, composition));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
@@ -297,6 +339,8 @@ public class NewAssociationImpl extends VirtualLinkImpl implements NewAssociatio
       case VirtualLinksPackage.NEW_ASSOCIATION__OPPOSITE:
         if (resolve) return getOpposite();
         return basicGetOpposite();
+      case VirtualLinksPackage.NEW_ASSOCIATION__COMPOSITION:
+        return isComposition();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -323,6 +367,9 @@ public class NewAssociationImpl extends VirtualLinkImpl implements NewAssociatio
         return;
       case VirtualLinksPackage.NEW_ASSOCIATION__OPPOSITE:
         setOpposite((LinkedElement)newValue);
+        return;
+      case VirtualLinksPackage.NEW_ASSOCIATION__COMPOSITION:
+        setComposition((Boolean)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -351,6 +398,9 @@ public class NewAssociationImpl extends VirtualLinkImpl implements NewAssociatio
       case VirtualLinksPackage.NEW_ASSOCIATION__OPPOSITE:
         setOpposite((LinkedElement)null);
         return;
+      case VirtualLinksPackage.NEW_ASSOCIATION__COMPOSITION:
+        setComposition(COMPOSITION_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -373,6 +423,8 @@ public class NewAssociationImpl extends VirtualLinkImpl implements NewAssociatio
         return upperBound != UPPER_BOUND_EDEFAULT;
       case VirtualLinksPackage.NEW_ASSOCIATION__OPPOSITE:
         return opposite != null;
+      case VirtualLinksPackage.NEW_ASSOCIATION__COMPOSITION:
+        return composition != COMPOSITION_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }
@@ -391,6 +443,8 @@ public class NewAssociationImpl extends VirtualLinkImpl implements NewAssociatio
     result.append(lowerBound);
     result.append(", upperBound: ");
     result.append(upperBound);
+    result.append(", composition: ");
+    result.append(composition);
     result.append(')');
     return result.toString();
   }
