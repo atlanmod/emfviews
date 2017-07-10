@@ -1,0 +1,3 @@
+contributingMetamodels=resources/metamodels/minimalA.ecore
+weavingModel=resources/viewpoints/synthetic-elements/property-to-newconcept.xmi
+matchingModel=

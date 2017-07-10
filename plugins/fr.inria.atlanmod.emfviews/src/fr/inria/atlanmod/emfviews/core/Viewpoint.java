@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,6 +44,7 @@ import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewConcept;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewProperty;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl {
@@ -62,6 +64,10 @@ public class Viewpoint extends ResourceImpl {
   private ResourceSet virtualResourceSet; // contains the cloned and modified EPackages
   private EPackage virtualPackage; // contains the new concepts
   private EList<EObject> virtualContents; // built from the modified EPackages and the VirtualPackage
+
+  // map to keep track of the EObject created by each New* element from the weaving model,
+  // in order to be able to use VirtualElement as LinkedElements in findEObject
+  private Map<VirtualElement, EObject> syntheticElements;
 
   public Viewpoint(URI uri) {
     super(uri);
@@ -85,6 +91,7 @@ public class Viewpoint extends ResourceImpl {
     matchingModelPath.ifPresent(this::loadMatchingModel);
 
     applyFilters(weavingModel.getElementFilters(), registry);
+    syntheticElements = new HashMap<>();
     // The virtualPackage holds all the new concepts, but is created only if
     // if we have some concepts to put in it
     List<NewConcept> concepts = weavingModel.getNewConcepts();
@@ -221,6 +228,8 @@ public class Viewpoint extends ResourceImpl {
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
         ((EClass) sub).getESuperTypes().add(klass);
       }
+
+      syntheticElements.put(c, klass);
     }
   }
 
@@ -242,6 +251,8 @@ public class Viewpoint extends ResourceImpl {
       else
         attr.setLowerBound(1);
       parentClass.getEStructuralFeatures().add(attr);
+
+      syntheticElements.put(p, attr);
     }
   }
 
@@ -266,6 +277,8 @@ public class Viewpoint extends ResourceImpl {
       ((EClass) source).getEStructuralFeatures().add(ref);
 
       // TODO: opposite
+
+      syntheticElements.put(a, ref);
     }
   }
 
@@ -284,9 +297,18 @@ public class Viewpoint extends ResourceImpl {
                                 modelURI));
 
       return obj;
+
+    } else if (elem instanceof VirtualElement) {
+      if (!syntheticElements.containsKey(elem))
+        throw EX("Virtual element '%s' does not exist or has not been created yet", elem);
+
+      EObject obj = syntheticElements.get(elem);
+      if (obj == null) throw EX("Virtual element '%s' is null.  This is a bug.", elem);
+
+      return obj;
+
     } else {
-      // TODO: handle non-concrete elements
-      throw EX("Cannot link to non-concrete elements");
+      throw EX("Unknown instance of LinkedElement: '%s'", elem.eClass().getName());
     }
   }
 

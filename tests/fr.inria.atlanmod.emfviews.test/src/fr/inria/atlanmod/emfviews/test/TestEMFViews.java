@@ -25,6 +25,8 @@ import fr.inria.atlanmod.emfviews.core.Viewpoint;
 
 public class TestEMFViews {
 
+  // TODO: test failures
+
   @Test
   public void threeModelComposition() throws IOException {
     // Based on the EA_viewtest examples, this is an integration test combining
@@ -334,4 +336,68 @@ public class TestEMFViews {
     }
   }
 
+  @Test
+  public void addPropertyToNewConcept() throws IOException {
+    // We can link virtual elements from NewConcept/NewProperties/NewAssociation.
+    // E.g., we can add properties to a new concept in the same weaving model.
+
+    Viewpoint v = new Viewpoint(URI
+        .createURI("resources/viewpoints/synthetic-elements/property-to-newconcept.eviewpoint",
+                   true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    // The virtual package comes after packages from the contributing models
+    EPackage p = (EPackage) l.get(1);
+    // It holds our new concept
+    EClass C = (EClass) p.getEClassifier("NewConcept");
+    assertNotNull(C);
+    // And the new concept holds our new property
+    EStructuralFeature f = C.getEStructuralFeature("newProperty");
+    assertNotNull(f);
+  }
+
+  @Test
+  public void addSuperconceptToNewConcept() throws IOException {
+    // We can add concepts and a concept that generalizes those.
+
+    Viewpoint v = new Viewpoint(URI
+        .createURI("resources/viewpoints/synthetic-elements/concept-to-newconcept.eviewpoint",
+                   true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
+    assertNotNull(A);
+    // The virtual package comes after packages from the contributing models
+    EPackage p = (EPackage) l.get(1);
+    // It holds our new concepts
+    EClass C1 = (EClass) p.getEClassifier("NewConcept");
+    assertNotNull(C1);
+    EClass C2 = (EClass) p.getEClassifier("SuperConcept");
+    assertNotNull(C2);
+    // And the super concept has one existing and one new concepts has subconcepts
+    assertEquals(C2, A.getESuperTypes().get(0));
+    assertEquals(C2, C1.getESuperTypes().get(0));
+  }
+
+  @Test
+  public void addAssociationToNewConcept() throws IOException {
+    // We can add new properties and an association between them.
+
+    Viewpoint v = new Viewpoint(URI
+        .createURI("resources/viewpoints/synthetic-elements/assoc-to-newconcept.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
+    // The virtual package comes after packages from the contributing models
+    EPackage p = (EPackage) l.get(1);
+    // It holds our new concept
+    EClass C = (EClass) p.getEClassifier("C");
+    // There is a reference from A to C
+    EStructuralFeature AtoC = A.getEStructuralFeature("refToC");
+    assertNotNull(AtoC);
+    assertEquals(C, AtoC.getEType());
+  }
 }
