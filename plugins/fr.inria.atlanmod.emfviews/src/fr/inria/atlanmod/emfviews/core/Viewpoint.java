@@ -183,15 +183,6 @@ public class Viewpoint extends ResourceImpl {
     return (WeavingModel) wm;
   }
 
-  // FIXME: this should create a weaving model XMI from the ECL file, but
-  // do we actually need it?
-  private void loadMatchingModel(String matchingModelPath) {
-    // VirtualLinksDelegator vld = new VirtualLinksDelegator(
-    // properties.getProperty("matchingModel"));
-    // vld.createVirtualMetamodelLinks(URI.createURI(properties.getProperty("weavingModel"));
-    // //extendedMMviewpoint.xmi is rewrited
-  }
-
   // Apply the given filters to all the packages in the virtual resource set.
   private void applyFilters(List<ElementFilter> filters, EPackage.Registry registry) {
     // TODO: whitelisting

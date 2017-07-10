@@ -27,13 +27,10 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.ecl.execute.EclOperationFactory;
-import org.eclipse.epsilon.ecl.parse.EclParser;
 import org.eclipse.epsilon.ecl.trace.Match;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
@@ -50,92 +47,6 @@ import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class EclDelegate implements IVirtualLinksDelegate {
-
-  @Override
-  public void createVirtualMetamodelLinks(String linksDslFilePath,
-                                          URI modelLinksURI) throws Exception {
-
-    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    WeavingModel virtualLinks = VirtualLinksUtil.createLinksModel();
-
-    EclModule eclModule = new EclModule();
-
-    java.net.URI uri = VirtualLinksUtil.toURI(linksDslFilePath);
-
-    File f = new File(uri.getSchemeSpecificPart());
-    FileReader fr = new FileReader(f);
-    BufferedReader br = null;
-    String sCurrentLine = "";
-    StringBuffer sb = new StringBuffer();
-
-    br = new BufferedReader(fr);
-
-    Map<String, ContributingModel> metamodelsMap = new HashMap<>();
-
-    while ((sCurrentLine = br.readLine()) != null) {
-      if (sCurrentLine.startsWith("//alias")) {
-        String metamodelAlias =
-            sCurrentLine.substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
-        String packageUri = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
-        ContributingModel m = vLinksFactory.createContributingModel();
-        m.setURI(packageUri);
-        metamodelsMap.put(metamodelAlias, m);
-      }
-      sb.append(sCurrentLine);
-      sb.append("\n");
-    }
-    br.close();
-
-    eclModule.parse(sb.toString());
-
-    // FIXME: this method does not exist on Epsilon 1.4, and there doesn't seem
-    // to be a way to get the AST back. However, it also looks like we are
-    // interested in matchRule contents, so maybe there's a way to get the
-    // inform from eclModule.getDeclaredMatchRule or something similar.
-    //
-    // Also, we might not need this code at all, since it's never actually
-    // called anywhere.
-    AST ast = eclModule.getAST();
-    for (AST matchRuleAst : AstUtil.getChildren(ast, EclParser.MATCH)) {
-      // The rule AST
-      String ruleName = matchRuleAst.getFirstChild().getText();
-
-      // The left parameter
-      AST leftParameterAst = matchRuleAst.getFirstChild().getNextSibling();
-
-      String leftParameterType = leftParameterAst.getFirstChild().getNextSibling().getText();
-      String[] leftParameterTypeParts = leftParameterType.split("!");
-      String sourceMetamodelAlias = leftParameterTypeParts[0];
-      String sourceElementName = leftParameterTypeParts[1];
-
-      AST rightParameterAst = leftParameterAst.getNextSibling();
-      String rightParameterType = rightParameterAst.getFirstChild().getNextSibling().getText();
-      String[] rightParameterTypeParts = rightParameterType.split("!");
-      String targetMetamodelAlias = rightParameterTypeParts[0];
-      String targetElementName = rightParameterTypeParts[1];
-
-      NewAssociation vAsso = vLinksFactory.createNewAssociation();
-      vAsso.setName(ruleName);
-      vAsso.setLowerBound(0);
-      vAsso.setUpperBound(1);
-
-      ConcreteElement sourceElement = vLinksFactory.createConcreteElement();
-      sourceElement.setPath("//" + sourceElementName);
-      sourceElement.setModel(metamodelsMap.get(sourceMetamodelAlias));
-
-      vAsso.setSource(sourceElement);
-
-      ConcreteElement targetElement = vLinksFactory.createConcreteElement();
-      targetElement.setPath("//" + targetElementName);
-      targetElement.setModel(metamodelsMap.get(targetMetamodelAlias));
-
-      vAsso.setTarget(targetElement);
-
-      virtualLinks.getVirtualLinks().add(vAsso);
-
-    }
-    VirtualLinksUtil.persistLinksModel(virtualLinks, modelLinksURI);
-  }
 
   @Override
   public void createVirtualModelLinks(String linksDslFile, URI linksModel,
@@ -288,8 +199,9 @@ public class EclDelegate implements IVirtualLinksDelegate {
                                          boolean readOnLoad,
                                          boolean storeOnDisposal) throws EolModelLoadingException,
                                                                   URISyntaxException {
-    if (metamodel.contains("UML"))
+    if (metamodel.contains("UML")) {
       UMLResourcesUtil.init(null);
+    }
     EmfModel emfModel = new EmfModel();
     StringProperties properties = new StringProperties();
     properties.put(Model.PROPERTY_NAME, name);

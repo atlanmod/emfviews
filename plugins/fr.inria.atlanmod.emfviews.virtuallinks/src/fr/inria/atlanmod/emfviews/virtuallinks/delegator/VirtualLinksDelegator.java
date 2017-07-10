@@ -50,16 +50,6 @@ public class VirtualLinksDelegator {
         (IVirtualLinksDelegate) matchingConfigElements[0].createExecutableExtension("class");
   }
 
-  public void createVirtualMetamodelLinks(URI virtualLinksModelURI) throws CoreException {
-
-    try {
-      virtualLinksDelegate.createVirtualMetamodelLinks(linksDslFile, virtualLinksModelURI);
-    } catch (Exception e) {
-
-      e.printStackTrace();
-    }
-  }
-
   public void createVirtualModelLinks(URI linksModelURI,
                                       List<Resource> contributingModels) throws Exception {
 
