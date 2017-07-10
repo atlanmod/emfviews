@@ -300,10 +300,10 @@ public class Viewpoint extends ResourceImpl {
 
     } else if (elem instanceof VirtualElement) {
       if (!syntheticElements.containsKey(elem))
-        throw EX("Virtual element '%s' does not exist or has not been created yet", elem);
+        throw EX("Virtual element for '%s' does not exist or has not been created yet", elem);
 
       EObject obj = syntheticElements.get(elem);
-      if (obj == null) throw EX("Virtual element '%s' is null.  This is a bug.", elem);
+      if (obj == null) throw EX("Virtual element for '%s' is null.  This shouldn't happen.", elem);
 
       return obj;
 
