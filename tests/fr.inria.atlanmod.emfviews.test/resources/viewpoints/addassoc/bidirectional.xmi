@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://inria.fr/virtualLinks"
+                           name="view">
+  <virtualLinks xsi:type="virtualLinks:NewAssociation"
+                name="refToB"
+                lowerBound="0" upperBound="1"
+                source="//@contributingModels.0/@concreteElements.0"
+                target="//@contributingModels.1/@concreteElements.0"
+                opposite="//@virtualLinks.1"/>
+  <virtualLinks xsi:type="virtualLinks:NewAssociation"
+                name="refToA"
+                lowerBound="0" upperBound="1"
+                source="//@contributingModels.1/@concreteElements.0"
+                target="//@contributingModels.0/@concreteElements.0"
+                opposite="//@virtualLinks.0"/>
+  <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">
+    <concreteElements path="minimalA.A"/>
+  </contributingModels>
+  <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalB">
+    <concreteElements path="minimalB.B"/>
+  </contributingModels>
+</virtualLinks:WeavingModel>

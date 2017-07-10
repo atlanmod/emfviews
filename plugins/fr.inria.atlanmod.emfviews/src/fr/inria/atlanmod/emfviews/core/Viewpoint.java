@@ -88,21 +88,24 @@ public class Viewpoint extends ResourceImpl {
     cloneEPackages(contributingEPackages, registry);
 
     weavingModel = loadWeavingModel(weavingModelURI);
-    matchingModelPath.ifPresent(this::loadMatchingModel);
 
+    // Filter concrete elements
     applyFilters(weavingModel.getElementFilters(), registry);
-    syntheticElements = new HashMap<>();
+
+    // Create all New* elements first, and set their EMF attribute after to avoid any circular dependencies
+    syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
+
     // The virtualPackage holds all the new concepts, but is created only if
-    // if we have some concepts to put in it
+    // we have some concepts to put in it
     List<NewConcept> concepts = weavingModel.getNewConcepts();
     if (!concepts.isEmpty()) {
       virtualPackage = createVirtualPackage(weavingModel.getName());
       registry.put(virtualPackage.getNsURI(), virtualPackage);
-      createNewConcepts(weavingModel.getNewConcepts(), virtualPackage, registry);
+      buildNewConcepts(weavingModel.getNewConcepts(), virtualPackage, registry);
     }
 
-    createNewProperties(weavingModel.getNewProperties(), registry);
-    createNewAssociations(weavingModel.getNewAssociations(), registry);
+    buildNewProperties(weavingModel.getNewProperties(), registry);
+    buildNewAssociations(weavingModel.getNewAssociations(), registry);
 
     virtualContents = buildVirtualContents();
 
@@ -200,6 +203,22 @@ public class Viewpoint extends ResourceImpl {
     }
   }
 
+  private Map<VirtualElement, EObject> createSyntheticElements(List<VirtualElement> elems) {
+    Map<VirtualElement, EObject> map = new HashMap<>();
+    for (VirtualElement v : elems) {
+      if (v instanceof NewConcept) {
+        map.put(v, EcoreFactory.eINSTANCE.createEClass());
+      } else if (v instanceof NewProperty) {
+        map.put(v, EcoreFactory.eINSTANCE.createEAttribute());
+      } else if (v instanceof NewAssociation) {
+        map.put(v, EcoreFactory.eINSTANCE.createEReference());
+      } else {
+        throw EX("Unknown instance of virtual element, '%s'", v);
+      }
+    }
+    return map;
+  }
+
   private EPackage createVirtualPackage(String name) {
     EPackage p = EcoreFactory.eINSTANCE.createEPackage();
     p.setName(name);
@@ -208,10 +227,10 @@ public class Viewpoint extends ResourceImpl {
     return p;
   }
 
-  private void createNewConcepts(List<NewConcept> concepts, EPackage virtualPackage,
-                                 EPackage.Registry registry) {
+  private void buildNewConcepts(List<NewConcept> concepts, EPackage virtualPackage,
+                                EPackage.Registry registry) {
     for (NewConcept c : concepts) {
-      EClass klass = EcoreFactory.eINSTANCE.createEClass();
+      EClass klass = (EClass) syntheticElements.get(c);
       klass.setName(c.getName());
       virtualPackage.getEClassifiers().add(klass);
 
@@ -228,12 +247,10 @@ public class Viewpoint extends ResourceImpl {
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
         ((EClass) sub).getESuperTypes().add(klass);
       }
-
-      syntheticElements.put(c, klass);
     }
   }
 
-  private void createNewProperties(List<NewProperty> properties, EPackage.Registry registry) {
+  private void buildNewProperties(List<NewProperty> properties, EPackage.Registry registry) {
     for (NewProperty p : properties) {
       EObject parent = findEObject(p.getParent(), registry);
       if (!(parent instanceof EClass))
@@ -241,7 +258,7 @@ public class Viewpoint extends ResourceImpl {
       EClass parentClass = (EClass) parent;
 
       String n = p.getName();
-      EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
+      EAttribute attr = (EAttribute) syntheticElements.get(p);
       attr.setName(n);
       attr.setEType(getTypeFromName(p.getType())
           .orElseThrow(() -> EX("Invalid type '%s' for new property '%s'", p.getType(), n)));
@@ -251,20 +268,17 @@ public class Viewpoint extends ResourceImpl {
       else
         attr.setLowerBound(1);
       parentClass.getEStructuralFeatures().add(attr);
-
-      syntheticElements.put(p, attr);
     }
   }
 
-  private void createNewAssociations(List<NewAssociation> associations,
-                                     EPackage.Registry registry) {
+  private void buildNewAssociations(List<NewAssociation> associations, EPackage.Registry registry) {
     for (NewAssociation a : associations) {
       // Each association is turned into an EReference
 
       EObject source = findEObject(a.getSource(), registry);
       EObject target = findEObject(a.getTarget(), registry);
 
-      EReference ref = EcoreFactory.eINSTANCE.createEReference();
+      EReference ref = (EReference) syntheticElements.get(a);
       ref.setName(a.getName());
       if (!(target instanceof EClassifier))
         throw EX("Target '%s' of new association '%s' should be an EClassifier", target,
@@ -274,11 +288,18 @@ public class Viewpoint extends ResourceImpl {
       ref.setUpperBound(a.getUpperBound());
       if (!(source instanceof EClass))
         throw EX("Source '%s' of new association '%s' should be an EClass", source, a.getName());
+
+      LinkedElement opposite = a.getOpposite();
+      if (opposite != null) {
+        EObject o = findEObject(opposite, registry);
+        if (!(o instanceof EReference))
+          throw EX("Opposite of new association '%s' should be an EReference", a.getName());
+        EReference opp = (EReference) o;
+        ref.setEOpposite(opp);
+        opp.setEOpposite(ref);
+      }
+
       ((EClass) source).getEStructuralFeatures().add(ref);
-
-      // TODO: opposite
-
-      syntheticElements.put(a, ref);
     }
   }
 

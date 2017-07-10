@@ -130,13 +130,22 @@ public interface VirtualLinksPackage extends EPackage {
   int WEAVING_MODEL__NEW_ASSOCIATIONS = 6;
 
   /**
+   * The feature id for the '<em><b>Virtual Elements</b></em>' reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WEAVING_MODEL__VIRTUAL_ELEMENTS = 7;
+
+  /**
    * The feature id for the '<em><b>Element Filters</b></em>' reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL__ELEMENT_FILTERS = 7;
+  int WEAVING_MODEL__ELEMENT_FILTERS = 8;
 
   /**
    * The number of structural features of the '<em>Weaving Model</em>' class.
@@ -145,7 +154,7 @@ public interface VirtualLinksPackage extends EPackage {
    * @generated
    * @ordered
    */
-  int WEAVING_MODEL_FEATURE_COUNT = 8;
+  int WEAVING_MODEL_FEATURE_COUNT = 9;
 
   /**
    * The number of operations of the '<em>Weaving Model</em>' class.
@@ -677,6 +686,17 @@ public interface VirtualLinksPackage extends EPackage {
   EReference getWeavingModel_NewAssociations();
 
   /**
+   * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getVirtualElements <em>Virtual Elements</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference list '<em>Virtual Elements</em>'.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getVirtualElements()
+   * @see #getWeavingModel()
+   * @generated
+   */
+  EReference getWeavingModel_VirtualElements();
+
+  /**
    * Returns the meta object for the reference list '{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getElementFilters <em>Element Filters</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1041,6 +1061,14 @@ public interface VirtualLinksPackage extends EPackage {
      * @generated
      */
     EReference WEAVING_MODEL__NEW_ASSOCIATIONS = eINSTANCE.getWeavingModel_NewAssociations();
+
+    /**
+     * The meta object literal for the '<em><b>Virtual Elements</b></em>' reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WEAVING_MODEL__VIRTUAL_ELEMENTS = eINSTANCE.getWeavingModel_VirtualElements();
 
     /**
      * The meta object literal for the '<em><b>Element Filters</b></em>' reference list feature.

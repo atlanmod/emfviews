@@ -21,34 +21,40 @@ import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewConcept;
 import fr.inria.atlanmod.emfviews.virtuallinks.NewProperty;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Weaving
- * Model</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Weaving Model</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getName <em>Name</em>}</li>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getVirtualLinks <em>Virtual Links</em>}</li>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getContributingModels <em>Contributing Models</em>}</li>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#isWhitelist <em>Whitelist</em>}</li>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getNewConcepts <em>New Concepts</em>}</li>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getNewProperties <em>New Properties</em>}</li>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getNewAssociations <em>New Associations</em>}</li>
- *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getElementFilters <em>Element Filters</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getName <em>Name</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getVirtualLinks <em>Virtual Links</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getContributingModels <em>Contributing
+ * Models</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#isWhitelist <em>Whitelist</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getNewConcepts <em>New Concepts</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getNewProperties <em>New
+ * Properties</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getNewAssociations <em>New
+ * Associations</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getVirtualElements <em>Virtual
+ * Elements</em>}</li>
+ * <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.impl.WeavingModelImpl#getElementFilters <em>Element
+ * Filters</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class WeavingModelImpl extends MinimalEObjectImpl.Container implements WeavingModel {
   /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+   * -->
+   *
    * @see #getName()
    * @generated
    * @ordered
@@ -56,9 +62,8 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
   protected static final String NAME_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @see #getName()
    * @generated
    * @ordered
@@ -66,8 +71,9 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getVirtualLinks() <em>Virtual Links</em>}' containment reference list.
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The cached value of the '{@link #getVirtualLinks() <em>Virtual Links</em>}' containment reference list. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
+   *
    * @see #getVirtualLinks()
    * @generated
    * @ordered
@@ -76,8 +82,8 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
 
   /**
    * The cached value of the '{@link #getContributingModels() <em>Contributing Models</em>}' containment reference list.
-   * <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @see #getContributingModels()
    * @generated
    * @ordered
@@ -85,8 +91,9 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
   protected EList<ContributingModel> contributingModels;
 
   /**
-   * The default value of the '{@link #isWhitelist() <em>Whitelist</em>}' attribute.
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The default value of the '{@link #isWhitelist() <em>Whitelist</em>}' attribute. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
+   *
    * @see #isWhitelist()
    * @generated
    * @ordered
@@ -94,8 +101,9 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
   protected static final boolean WHITELIST_EDEFAULT = false;
 
   /**
-   * The cached value of the '{@link #isWhitelist() <em>Whitelist</em>}' attribute.
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The cached value of the '{@link #isWhitelist() <em>Whitelist</em>}' attribute. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
+   *
    * @see #isWhitelist()
    * @generated
    * @ordered
@@ -104,6 +112,7 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   protected WeavingModelImpl() {
@@ -112,6 +121,7 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
@@ -120,52 +130,62 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
+  @Override
   public String getName() {
     return name;
   }
 
   /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
+  @Override
   public void setName(String newName) {
     String oldName = name;
     name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.WEAVING_MODEL__NAME, oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.WEAVING_MODEL__NAME,
+                                    oldName, name));
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
   public EList<VirtualLink> getVirtualLinks() {
     if (virtualLinks == null) {
-      virtualLinks = new EObjectContainmentEList<VirtualLink>(VirtualLink.class, this, VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS);
+      virtualLinks =
+          new EObjectContainmentEList<>(VirtualLink.class, this,
+                                        VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS);
     }
     return virtualLinks;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
   public EList<ContributingModel> getContributingModels() {
     if (contributingModels == null) {
-      contributingModels = new EObjectContainmentEList<ContributingModel>(ContributingModel.class, this, VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS);
+      contributingModels =
+          new EObjectContainmentEList<>(ContributingModel.class, this,
+                                        VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS);
     }
     return contributingModels;
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
@@ -175,6 +195,7 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
@@ -182,7 +203,9 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
     boolean oldWhitelist = whitelist;
     whitelist = newWhitelist;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.WEAVING_MODEL__WHITELIST, oldWhitelist, whitelist));
+      eNotify(new ENotificationImpl(this, Notification.SET,
+                                    VirtualLinksPackage.WEAVING_MODEL__WHITELIST, oldWhitelist,
+                                    whitelist));
   }
 
   /**
@@ -248,6 +271,25 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
    * @generated NOT
    */
   @Override
+  public EList<VirtualElement> getVirtualElements() {
+    ArrayList<VirtualElement> virtualElements = new ArrayList<>();
+    for (VirtualLink l : getVirtualLinks()) {
+      if (l instanceof VirtualElement) {
+        virtualElements.add((VirtualElement) l);
+      }
+    }
+    return new EcoreEList.UnmodifiableEList<>(this,
+                                              VirtualLinksPackage.eINSTANCE
+                                                  .getWeavingModel_VirtualElements(),
+                                              virtualElements.size(), virtualElements.toArray());
+  }
+
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @generated NOT
+   */
+  @Override
   public EList<ElementFilter> getElementFilters() {
     ArrayList<ElementFilter> elementFilters = new ArrayList<>();
     for (VirtualLink l : getVirtualLinks()) {
@@ -263,125 +305,135 @@ public class WeavingModelImpl extends MinimalEObjectImpl.Container implements We
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID,
                                           NotificationChain msgs) {
     switch (featureID) {
-      case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
-        return ((InternalEList<?>)getVirtualLinks()).basicRemove(otherEnd, msgs);
-      case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
-        return ((InternalEList<?>)getContributingModels()).basicRemove(otherEnd, msgs);
+    case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
+      return ((InternalEList<?>) getVirtualLinks()).basicRemove(otherEnd, msgs);
+    case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
+      return ((InternalEList<?>) getContributingModels()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
-      case VirtualLinksPackage.WEAVING_MODEL__NAME:
-        return getName();
-      case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
-        return getVirtualLinks();
-      case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
-        return getContributingModels();
-      case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
-        return isWhitelist();
-      case VirtualLinksPackage.WEAVING_MODEL__NEW_CONCEPTS:
-        return getNewConcepts();
-      case VirtualLinksPackage.WEAVING_MODEL__NEW_PROPERTIES:
-        return getNewProperties();
-      case VirtualLinksPackage.WEAVING_MODEL__NEW_ASSOCIATIONS:
-        return getNewAssociations();
-      case VirtualLinksPackage.WEAVING_MODEL__ELEMENT_FILTERS:
-        return getElementFilters();
+    case VirtualLinksPackage.WEAVING_MODEL__NAME:
+      return getName();
+    case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
+      return getVirtualLinks();
+    case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
+      return getContributingModels();
+    case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
+      return isWhitelist();
+    case VirtualLinksPackage.WEAVING_MODEL__NEW_CONCEPTS:
+      return getNewConcepts();
+    case VirtualLinksPackage.WEAVING_MODEL__NEW_PROPERTIES:
+      return getNewProperties();
+    case VirtualLinksPackage.WEAVING_MODEL__NEW_ASSOCIATIONS:
+      return getNewAssociations();
+    case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_ELEMENTS:
+      return getVirtualElements();
+    case VirtualLinksPackage.WEAVING_MODEL__ELEMENT_FILTERS:
+      return getElementFilters();
     }
     return super.eGet(featureID, resolve, coreType);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue) {
     switch (featureID) {
-      case VirtualLinksPackage.WEAVING_MODEL__NAME:
-        setName((String)newValue);
-        return;
-      case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
-        getVirtualLinks().clear();
-        getVirtualLinks().addAll((Collection<? extends VirtualLink>)newValue);
-        return;
-      case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
-        getContributingModels().clear();
-        getContributingModels().addAll((Collection<? extends ContributingModel>)newValue);
-        return;
-      case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
-        setWhitelist((Boolean)newValue);
-        return;
+    case VirtualLinksPackage.WEAVING_MODEL__NAME:
+      setName((String) newValue);
+      return;
+    case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
+      getVirtualLinks().clear();
+      getVirtualLinks().addAll((Collection<? extends VirtualLink>) newValue);
+      return;
+    case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
+      getContributingModels().clear();
+      getContributingModels().addAll((Collection<? extends ContributingModel>) newValue);
+      return;
+    case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
+      setWhitelist((Boolean) newValue);
+      return;
     }
     super.eSet(featureID, newValue);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
   public void eUnset(int featureID) {
     switch (featureID) {
-      case VirtualLinksPackage.WEAVING_MODEL__NAME:
-        setName(NAME_EDEFAULT);
-        return;
-      case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
-        getVirtualLinks().clear();
-        return;
-      case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
-        getContributingModels().clear();
-        return;
-      case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
-        setWhitelist(WHITELIST_EDEFAULT);
-        return;
+    case VirtualLinksPackage.WEAVING_MODEL__NAME:
+      setName(NAME_EDEFAULT);
+      return;
+    case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
+      getVirtualLinks().clear();
+      return;
+    case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
+      getContributingModels().clear();
+      return;
+    case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
+      setWhitelist(WHITELIST_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override
   public boolean eIsSet(int featureID) {
     switch (featureID) {
-      case VirtualLinksPackage.WEAVING_MODEL__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
-        return virtualLinks != null && !virtualLinks.isEmpty();
-      case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
-        return contributingModels != null && !contributingModels.isEmpty();
-      case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
-        return whitelist != WHITELIST_EDEFAULT;
-      case VirtualLinksPackage.WEAVING_MODEL__NEW_CONCEPTS:
-        return !getNewConcepts().isEmpty();
-      case VirtualLinksPackage.WEAVING_MODEL__NEW_PROPERTIES:
-        return !getNewProperties().isEmpty();
-      case VirtualLinksPackage.WEAVING_MODEL__NEW_ASSOCIATIONS:
-        return !getNewAssociations().isEmpty();
-      case VirtualLinksPackage.WEAVING_MODEL__ELEMENT_FILTERS:
-        return !getElementFilters().isEmpty();
+    case VirtualLinksPackage.WEAVING_MODEL__NAME:
+      return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+    case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_LINKS:
+      return virtualLinks != null && !virtualLinks.isEmpty();
+    case VirtualLinksPackage.WEAVING_MODEL__CONTRIBUTING_MODELS:
+      return contributingModels != null && !contributingModels.isEmpty();
+    case VirtualLinksPackage.WEAVING_MODEL__WHITELIST:
+      return whitelist != WHITELIST_EDEFAULT;
+    case VirtualLinksPackage.WEAVING_MODEL__NEW_CONCEPTS:
+      return !getNewConcepts().isEmpty();
+    case VirtualLinksPackage.WEAVING_MODEL__NEW_PROPERTIES:
+      return !getNewProperties().isEmpty();
+    case VirtualLinksPackage.WEAVING_MODEL__NEW_ASSOCIATIONS:
+      return !getNewAssociations().isEmpty();
+    case VirtualLinksPackage.WEAVING_MODEL__VIRTUAL_ELEMENTS:
+      return !getVirtualElements().isEmpty();
+    case VirtualLinksPackage.WEAVING_MODEL__ELEMENT_FILTERS:
+      return !getElementFilters().isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   @Override

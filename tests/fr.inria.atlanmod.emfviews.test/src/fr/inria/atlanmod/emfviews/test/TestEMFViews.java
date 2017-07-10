@@ -337,6 +337,31 @@ public class TestEMFViews {
   }
 
   @Test
+  public void addBidirectionalAssociation() throws IOException {
+    // A NewAssociation from A to B should create an EReference in A with EType B.
+
+    Viewpoint v = new Viewpoint(URI
+        .createURI("resources/viewpoints/addassoc/bidirectional.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
+    EClass B = (EClass) ((EPackage) l.get(1)).getEClassifier("B");
+
+    // Check the references exist with the right EType
+    EReference AtoB = (EReference) A.getEStructuralFeature("refToB");
+    assertNotNull(AtoB);
+    assertEquals(B, AtoB.getEType());
+    EReference BtoA = (EReference) B.getEStructuralFeature("refToA");
+    assertNotNull(BtoA);
+    assertEquals(A, BtoA.getEType());
+
+    // Check they are each other's opposite
+    assertEquals(AtoB, BtoA.getEOpposite());
+    assertEquals(BtoA, AtoB.getEOpposite());
+  }
+
+  @Test
   public void addPropertyToNewConcept() throws IOException {
     // We can link virtual elements from NewConcept/NewProperties/NewAssociation.
     // E.g., we can add properties to a new concept in the same weaving model.

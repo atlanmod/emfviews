@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewConcepts <em>New Concepts</em>}</li>
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewProperties <em>New Properties</em>}</li>
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getNewAssociations <em>New Associations</em>}</li>
+ *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getVirtualElements <em>Virtual Elements</em>}</li>
  *   <li>{@link fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel#getElementFilters <em>Element Filters</em>}</li>
  * </ul>
  *
@@ -161,6 +162,22 @@ public interface WeavingModel extends EObject {
    * @generated
    */
   EList<NewAssociation> getNewAssociations();
+
+  /**
+   * Returns the value of the '<em><b>Virtual Elements</b></em>' reference list.
+   * The list contents are of type {@link fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Virtual Elements</em>' reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Virtual Elements</em>' reference list.
+   * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getWeavingModel_VirtualElements()
+   * @model transient="true" changeable="false" volatile="true" derived="true"
+   * @generated
+   */
+  EList<VirtualElement> getVirtualElements();
 
   /**
    * Returns the value of the '<em><b>Element Filters</b></em>' reference list.

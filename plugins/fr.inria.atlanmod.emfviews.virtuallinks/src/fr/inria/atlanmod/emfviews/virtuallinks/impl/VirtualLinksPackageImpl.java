@@ -237,8 +237,17 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getWeavingModel_ElementFilters() {
+  public EReference getWeavingModel_VirtualElements() {
     return (EReference)weavingModelEClass.getEStructuralFeatures().get(7);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getWeavingModel_ElementFilters() {
+    return (EReference)weavingModelEClass.getEStructuralFeatures().get(8);
   }
 
   /**
@@ -502,6 +511,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     createEReference(weavingModelEClass, WEAVING_MODEL__NEW_CONCEPTS);
     createEReference(weavingModelEClass, WEAVING_MODEL__NEW_PROPERTIES);
     createEReference(weavingModelEClass, WEAVING_MODEL__NEW_ASSOCIATIONS);
+    createEReference(weavingModelEClass, WEAVING_MODEL__VIRTUAL_ELEMENTS);
     createEReference(weavingModelEClass, WEAVING_MODEL__ELEMENT_FILTERS);
 
     virtualLinkEClass = createEClass(VIRTUAL_LINK);
@@ -586,6 +596,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     initEReference(getWeavingModel_NewConcepts(), this.getNewConcept(), null, "newConcepts", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_NewProperties(), this.getNewProperty(), null, "newProperties", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_NewAssociations(), this.getNewAssociation(), null, "newAssociations", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getWeavingModel_VirtualElements(), this.getVirtualElement(), null, "virtualElements", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_ElementFilters(), this.getElementFilter(), null, "elementFilters", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
     initEClass(virtualLinkEClass, VirtualLink.class, "VirtualLink", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

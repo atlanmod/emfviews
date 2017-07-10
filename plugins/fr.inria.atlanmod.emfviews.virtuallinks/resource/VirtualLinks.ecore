@@ -17,6 +17,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="newAssociations" upperBound="-1"
         eType="#//NewAssociation" changeable="false" volatile="true" transient="true"
         derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="virtualElements" upperBound="-1"
+        eType="#//VirtualElement" changeable="false" volatile="true" transient="true"
+        derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elementFilters" upperBound="-1"
         eType="#//ElementFilter" changeable="false" volatile="true" transient="true"
         derived="true"/>
