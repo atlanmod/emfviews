@@ -234,7 +234,8 @@ public class Viewpoint extends ResourceImpl {
       String n = p.getName();
       EAttribute attr = EcoreFactory.eINSTANCE.createEAttribute();
       attr.setName(n);
-      attr.setEType(getTypeFromName(p.getType()));
+      attr.setEType(getTypeFromName(p.getType())
+          .orElseThrow(() -> EX("Invalid type '%s' for new property '%s'", p.getType(), n)));
       attr.setUpperBound(1);
       if (p.isOptional())
         attr.setLowerBound(0);
@@ -289,11 +290,17 @@ public class Viewpoint extends ResourceImpl {
     }
   }
 
-  private EClassifier getTypeFromName(String name) {
+  private Optional<EClassifier> getTypeFromName(String name) {
     // TODO: support more types
     // We can pattern match on primitive data type, but should we support
     // non-primitive types?
-    return EcorePackage.Literals.ESTRING;
+    switch (name) {
+    case "String":
+      return Optional.of(EcorePackage.Literals.ESTRING);
+
+    default:
+      return Optional.empty();
+    }
   }
 
   private VirtualContents<EObject> buildVirtualContents() {
