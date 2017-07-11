@@ -327,12 +327,27 @@ public class Viewpoint extends ResourceImpl {
   }
 
   private Optional<EClassifier> getTypeFromName(String name) {
-    // TODO: support more types
-    // We can pattern match on primitive data type, but should we support
-    // non-primitive types?
     switch (name) {
+    case "boolean":
+      return Optional.of(EcorePackage.Literals.EBOOLEAN);
+    case "byte":
+      return Optional.of(EcorePackage.Literals.EBYTE);
+    case "char":
+      return Optional.of(EcorePackage.Literals.ECHAR);
+    case "double":
+      return Optional.of(EcorePackage.Literals.EDOUBLE);
+    case "float":
+      return Optional.of(EcorePackage.Literals.EFLOAT);
+    case "int":
+      return Optional.of(EcorePackage.Literals.EINT);
+    case "long":
+      return Optional.of(EcorePackage.Literals.ELONG);
+    case "short":
+      return Optional.of(EcorePackage.Literals.ESHORT);
     case "String":
       return Optional.of(EcorePackage.Literals.ESTRING);
+    case "Date":
+      return Optional.of(EcorePackage.Literals.EDATE);
 
     default:
       return Optional.empty();
