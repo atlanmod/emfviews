@@ -9,7 +9,7 @@
                 parent="//@contributingModels.0/@concreteElements.0"/>
   <virtualLinks xsi:type="virtualLinks:NewProperty"
                 name="newOptionalProperty"
-                type="String"
+                type="int"
                 optional="true"
                 parent="//@contributingModels.0/@concreteElements.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">

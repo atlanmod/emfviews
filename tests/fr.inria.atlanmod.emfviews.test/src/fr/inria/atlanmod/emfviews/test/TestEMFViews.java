@@ -330,7 +330,7 @@ public class TestEMFViews {
       EStructuralFeature f = A.getEStructuralFeature("newOptionalProperty");
       assertNotNull(f);
       assertEquals("newOptionalProperty", f.getName());
-      assertEquals(EcorePackage.Literals.ESTRING, f.getEType());
+      assertEquals(EcorePackage.Literals.EINT, f.getEType());
       assertEquals(0, f.getLowerBound());
       assertEquals(1, f.getUpperBound());
     }
