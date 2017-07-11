@@ -337,6 +337,24 @@ public class TestEMFViews {
   }
 
   @Test
+  public void addCompositionAssociation() throws IOException {
+    Viewpoint v =
+        new Viewpoint(URI.createURI("resources/viewpoints/addassoc/composition.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
+    EClass B = (EClass) ((EPackage) l.get(1)).getEClassifier("B");
+
+    // Check the references exist with the right EType
+    EReference AtoB = (EReference) A.getEStructuralFeature("refToB");
+    assertNotNull(AtoB);
+    assertEquals(B, AtoB.getEType());
+    // And it's a containment
+    assertEquals(true, AtoB.isContainment());
+  }
+
+  @Test
   public void addBidirectionalAssociation() throws IOException {
     // A NewAssociation from A to B should create an EReference in A with EType B.
 

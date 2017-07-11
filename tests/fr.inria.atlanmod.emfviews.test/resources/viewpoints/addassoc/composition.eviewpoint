@@ -1,0 +1,3 @@
+contributingMetamodels=resources/metamodels/minimalA.ecore,resources/metamodels/minimalB.ecore
+weavingModel=resources/viewpoints/addassoc/composition.xmi
+matchingModel=
