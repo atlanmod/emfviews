@@ -21,10 +21,12 @@ import java.util.Optional;
 import java.util.Properties;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -90,7 +92,7 @@ public class Viewpoint extends ResourceImpl {
     weavingModel = loadWeavingModel(weavingModelURI);
 
     // Filter concrete elements
-    applyFilters(weavingModel.getElementFilters(), registry);
+    applyFilters(weavingModel.getElementFilters(), registry, !weavingModel.isWhitelist());
 
     // Create all New* elements first, and set their EMF attribute after to avoid any circular dependencies
     syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
@@ -184,13 +186,41 @@ public class Viewpoint extends ResourceImpl {
   }
 
   // Apply the given filters to all the packages in the virtual resource set.
-  private void applyFilters(List<ElementFilter> filters, EPackage.Registry registry) {
-    // TODO: whitelisting
+  private void applyFilters(List<ElementFilter> filters, EPackage.Registry registry,
+                            boolean blacklist) {
+    if (blacklist) {
+      for (ElementFilter f : filters) {
+        LinkedElement l = f.getTarget();
+        EObject filteredElement = findEObject(l, registry);
+        EcoreUtil.delete(filteredElement);
+      }
+    } else {
+      // Whitelisting: build a list of objects to delete, then delete them
+      // XXX: complexity is O(n*m) where n is the total numbef of EObjects
+      // in all packages from the registry, and m is the number of filters.
+      List<EObject> filtered = new ArrayList<>();
 
-    for (ElementFilter f : filters) {
-      LinkedElement l = f.getTarget();
-      EObject filteredElement = findEObject(l, registry);
-      EcoreUtil.delete(filteredElement);
+      for (Object po : registry.values()) {
+        EPackage p = (EPackage) po;
+        TreeIterator<EObject> it = p.eAllContents();
+        while (it.hasNext()) {
+          EObject o = it.next();
+
+          // XXX: Cannot target elements that do not have a name, so we leave them alone
+          // Crucially, EGenericType is not an ENamedElement, but is contained by
+          // EStructuralFeature, and we don't want to delete those.
+          if ((o instanceof ENamedElement)) {
+            String path = EMFViewsUtil.getEObjectPath(o);
+
+            // If path is not a prefix for any element filter, we can delete this object
+            if (!filters.stream().anyMatch(f -> f.getTarget().getPath().startsWith(path))) {
+              filtered.add(o);
+            }
+          }
+        }
+      }
+
+      filtered.forEach(o -> EcoreUtil.delete(o));
     }
   }
 

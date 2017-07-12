@@ -1,10 +1,14 @@
 package fr.inria.atlanmod.emfviews.util;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -60,6 +64,20 @@ public final class EMFViewsUtil {
     // Return the object that matched the last component, or null if the path
     // was empty
     return Optional.ofNullable(o);
+  }
+
+  // Returns the path to the EObject, such that
+  // findElement(o.eContainer(), getEObjectPath(o)) == o
+  public static String getEObjectPath(EObject o) {
+    List<String> comps = new ArrayList<>();
+
+    while (o != null) {
+      comps.add(((ENamedElement) o).getName());
+      o = o.eContainer();
+    }
+
+    Collections.reverse(comps);
+    return String.join(".", comps);
   }
 
   // Return an EPackage from a modelURI, which can start with http or point to a

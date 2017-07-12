@@ -443,4 +443,49 @@ public class TestEMFViews {
     assertNotNull(AtoC);
     assertEquals(C, AtoC.getEType());
   }
+
+  @Test
+  public void filterBlacklist() throws IOException {
+    // Filtered elements should not exist on the viewpoint.
+
+    Viewpoint v =
+        new Viewpoint(URI.createURI("resources/viewpoints/filter/blacklist.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    // There is only the A and B packages
+    assertEquals(2, l.size());
+
+    // A has no features, since it was filtered
+    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
+    assertEquals(0, A.getEStructuralFeatures().size());
+
+    // B has its feature, since it was not filtered
+    EClass B = (EClass) ((EPackage) l.get(1)).getEClassifier("B");
+    assertNotNull(B.getEStructuralFeature("b"));
+  }
+
+  @Test
+  public void filterWhitelist() throws IOException {
+    // In a weaving model in whitelist mode, filtered elements should be
+    // the only remaining elements in the view.
+
+    Viewpoint v =
+        new Viewpoint(URI.createURI("resources/viewpoints/filter/whitelist.eviewpoint", true));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    // There is only the contentfwk package
+    assertEquals(1, l.size());
+    EPackage p = (EPackage) l.get(0);
+
+    // Package has only one classifier
+    assertEquals(1, p.getEClassifiers().size());
+    EClass C = (EClass) p.getEClassifiers().get(0);
+
+    // Only 1 feature is left
+    assertEquals(1, C.getEStructuralFeatures().size());
+    assertNotNull(C.getEStructuralFeature("ID"));
+  }
+
 }
