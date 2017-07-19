@@ -430,4 +430,8 @@ public class Viewpoint extends ResourceImpl {
     return contributingMetamodelsPaths;
   }
 
+  public List<EPackage> getContributingEPackages() {
+    return contributingEPackages;
+  }
+
 }

@@ -58,6 +58,10 @@ public class TestEMFViews {
       // and make sure the feature we left is in there
       assertNotNull(getFeature(c, "processes"));
 
+      // The original model is *not* modified
+      c = v.getContributingEPackages().get(0).getEClassifier("BusinessArchitecture");
+      assertEquals(16, getFeatures(c).size());
+
       // Ensure our virtual associations are in there
       EObject p = getClassifier(l.get(0), "Process");
       assertNotNull(getFeature(p, "detailedProcess"));
@@ -453,6 +457,10 @@ public class TestEMFViews {
     EObject A = getClassifier(l.get(0), "A");
     assertEquals(0, getFeatures(A).size());
 
+    // The original model is *not* modified
+    A = v.getContributingEPackages().get(0).getEClassifier("A");
+    assertEquals(1, getFeatures(A).size());
+
     // B has its feature, since it was not filtered
     EObject B = getClassifier(l.get(1), "B");
     assertNotNull(getFeature(B, "b"));
@@ -479,6 +487,10 @@ public class TestEMFViews {
     // Only 1 feature is left
     assertEquals(1, getFeatures(C).size());
     assertNotNull(getFeature(C, "ID"));
+
+    // The original model is *not* modified
+    p = v.getContributingEPackages().get(0);
+    assertEquals(53, getClassifiers(p).size());
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
