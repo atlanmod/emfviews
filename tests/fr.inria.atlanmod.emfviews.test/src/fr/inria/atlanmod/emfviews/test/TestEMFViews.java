@@ -8,13 +8,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -28,7 +27,7 @@ public class TestEMFViews {
   // TODO: test failures
 
   @Test
-  public void threeModelComposition() throws IOException {
+  public void threeModelComposition() throws IOException, InvocationTargetException {
     // Based on the EA_viewtest examples, this is an integration test combining
     // three metamodels (contentfwk, BPMN2 and reqif10), with filters and
     // associations.
@@ -47,22 +46,22 @@ public class TestEMFViews {
 
       // Ensure we have the three packages we want
       assertEquals(3, l.size());
-      assertEquals("contentfwk", ((EPackage) l.get(0)).getName());
-      assertEquals("bpmn2", ((EPackage) l.get(1)).getName());
-      assertEquals("reqif10", ((EPackage) l.get(2)).getName());
+      assertEquals("contentfwk", eGet(l.get(0), "name"));
+      assertEquals("bpmn2", eGet(l.get(1), "name"));
+      assertEquals("reqif10", eGet(l.get(2), "name"));
 
       // Ensure the filtered elements are absent
-      EClass c = (EClass) ((EPackage) l.get(0)).getEClassifier("BusinessArchitecture");
-      assertEquals(1, c.getFeatureCount());
+      EObject c = getClassifier(l.get(0), "BusinessArchitecture");
+      assertEquals(1, getFeatures(c).size());
       // and make sure the feature we left is in there
-      assertNotNull(c.getEStructuralFeature("processes"));
+      assertNotNull(getFeature(c, "processes"));
 
       // Ensure our virtual associations are in there
-      EClass p = (EClass) ((EPackage) l.get(0)).getEClassifier("Process");
-      assertNotNull(p.getEStructuralFeature("detailedProcess"));
+      EObject p = getClassifier(l.get(0), "Process");
+      assertNotNull(getFeature(p, "detailedProcess"));
 
-      EClass r = (EClass) ((EPackage) l.get(0)).getEClassifier("Requirement");
-      assertNotNull(r.getEStructuralFeature("detailedRequirement"));
+      EObject r = getClassifier(l.get(0), "Requirement");
+      assertNotNull(getFeature(r, "detailedRequirement"));
     }
 
     // Then, do the same for models (EView)
@@ -92,9 +91,8 @@ public class TestEMFViews {
       // Furthermore, the detailed process for "Booking a trip" should link to a
       // BPMN Process
       EObject p = ba.eContents().get(0);
-      EObject dp = (EObject) p.eGet(p.eClass().getEStructuralFeature("detailedProcess"));
-      EObject container = dp.eClass().eContainer();
-      assertEquals("bpmn2", container.eGet(container.eClass().getEStructuralFeature("name")));
+      EObject dp = (EObject) eGet(p, "detailedProcess");
+      assertEquals("bpmn2", eGet(dp.eClass().eContainer(), "name"));
     }
   }
 
@@ -117,12 +115,8 @@ public class TestEMFViews {
     EObject vea = v.getContents().get(0);
 
     // Get an interesting feature in both concrete and virtual models
-    @SuppressWarnings("unchecked")
-    EList<EObject> ea_labels =
-        (EList<EObject>) ea.eGet(ea.eClass().getEStructuralFeature("labels"));
-    @SuppressWarnings("unchecked")
-    EList<EObject> vea_labels =
-        (EList<EObject>) vea.eGet(vea.eClass().getEStructuralFeature("labels"));
+    EList<EObject> ea_labels = eList(ea, "labels");
+    EList<EObject> vea_labels = eList(vea, "labels");
 
     // Make sure there is at least one label
     assertTrue(ea_labels.size() > 0);
@@ -202,16 +196,15 @@ public class TestEMFViews {
 
     // The opposite feature should still exist on the metamodel for B
     EObject b = l.get(1);
-    EStructuralFeature parentA = b.eClass().getEStructuralFeature("parentA");
+    EObject parentA = b.eClass().getEStructuralFeature("parentA");
     assertNotNull(parentA);
 
     // Make sure we cannot access the feature through its opposite
-    EReference manyB = ((EReference) parentA).getEOpposite();
-    assertNull(manyB);
+    assertNull(eGet(parentA, "eOpposite"));
   }
 
   @Test
-  public void virtualAssociation() throws IOException {
+  public void virtualAssociation() throws IOException, InvocationTargetException {
     // Creating a virtual association between two minimal models.
 
     // Create the view
@@ -224,15 +217,15 @@ public class TestEMFViews {
     // Check it contains attributes from the source models
     EObject A = l.get(0);
     EObject B = l.get(1);
-    assertEquals(true, A.eGet(A.eClass().getEStructuralFeature("a")));
-    assertEquals(42, B.eGet(B.eClass().getEStructuralFeature("b")));
+    assertEquals(true, eGet(A, "a"));
+    assertEquals(42, eGet(B, "b"));
 
     // Check it contains the virtual association
-    assertEquals(B, A.eGet(A.eClass().getEStructuralFeature("assoc")));
+    assertEquals(B, eGet(A, "assoc"));
   }
 
   @Test
-  public void addConcept() throws IOException {
+  public void addConcept() throws IOException, InvocationTargetException {
     // A new concept in the weaving model should be added to the virtual package
 
     Viewpoint v =
@@ -241,15 +234,15 @@ public class TestEMFViews {
 
     EList<EObject> l = v.getContents();
     // The virtual package comes after packages from the contributing models
-    EPackage p = (EPackage) l.get(1);
+    EObject p = l.get(1);
     // The virtual package takes the WeavingModel name
-    assertEquals("addconcept", p.getName());
+    assertEquals("addconcept", eGet(p, "name"));
     // And it holds our new concept
-    assertNotNull(p.getEClassifier("C"));
+    assertNotNull(getClassifier(p, "C"));
   }
 
   @Test
-  public void addSubConcept() throws IOException {
+  public void addSubConcept() throws IOException, InvocationTargetException {
     // A new subconcept in the weaving model should be added to the virtual
     // package, and should reference its superconcept.
 
@@ -259,21 +252,21 @@ public class TestEMFViews {
 
     EList<EObject> l = v.getContents();
     // The virtual package comes after packages from the contributing models
-    EPackage p = (EPackage) l.get(2);
+    EObject p = l.get(2);
     // The virtual package takes the WeavingModel name
-    assertEquals("subconcept", p.getName());
+    assertEquals("subconcept", eGet(p, "name"));
     // It holds our new concept
-    EClass c = (EClass) p.getEClassifier("C");
+    EObject c = getClassifier(p, "C");
     assertNotNull(c);
     // C has A and B as super types
-    EList<EClass> sups = c.getESuperTypes();
+    EList<EObject> sups = eList(c, "eSuperTypes");
     assertEquals(2, sups.size());
-    assertEquals(((EPackage) l.get(0)).getEClassifier("A"), sups.get(0));
-    assertEquals(((EPackage) l.get(1)).getEClassifier("B"), sups.get(1));
+    assertEquals(getClassifier(l.get(0), "A"), sups.get(0));
+    assertEquals(getClassifier(l.get(1), "B"), sups.get(1));
   }
 
   @Test
-  public void addSuperConcept() throws IOException {
+  public void addSuperConcept() throws IOException, InvocationTargetException {
     // A new subconcept in the weaving model should be added to the virtual
     // package, and should reference its superconcept.
 
@@ -283,27 +276,27 @@ public class TestEMFViews {
 
     EList<EObject> l = v.getContents();
     // The virtual package comes after packages from the contributing models
-    EPackage p = (EPackage) l.get(2);
+    EObject p = l.get(2);
     // The virtual package takes the WeavingModel name
-    assertEquals("superconcept", p.getName());
+    assertEquals("superconcept", eGet(p, "name"));
     // It holds our new concept
-    EClass C = (EClass) p.getEClassifier("C");
+    EObject C = getClassifier(p, "C");
     assertNotNull(C);
     // A and B both have C as super type
     {
-      EList<EClass> sups = ((EClass) ((EPackage) l.get(0)).getEClassifier("A")).getESuperTypes();
+      EList<EObject> sups = eList(getClassifier(l.get(0), "A"), "eSuperTypes");
       assertEquals(1, sups.size());
       assertEquals(C, sups.get(0));
     }
     {
-      EList<EClass> sups = ((EClass) ((EPackage) l.get(1)).getEClassifier("B")).getESuperTypes();
+      EList<EObject> sups = eList(getClassifier(l.get(1), "B"), "eSuperTypes");
       assertEquals(1, sups.size());
       assertEquals(C, sups.get(0));
     }
   }
 
   @Test
-  public void addProperty() throws IOException {
+  public void addProperty() throws IOException, InvocationTargetException {
     // A new property should be added to its target concept.
 
     Viewpoint v =
@@ -311,51 +304,50 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EPackage p = (EPackage) l.get(0);
-    EClass A = (EClass) p.getEClassifier("A");
+    EObject A = getClassifier(l.get(0), "A");
 
     // Check the new property is created on A
     {
-      EStructuralFeature f = A.getEStructuralFeature("newProperty");
+      EObject f = getFeature(A, "newProperty");
       assertNotNull(f);
-      assertEquals("newProperty", f.getName());
-      assertEquals(EcorePackage.Literals.ESTRING, f.getEType());
+      assertEquals("newProperty", eGet(f, "name"));
+      assertEquals(EcorePackage.Literals.ESTRING, eGet(f, "eType"));
       // It's not optional by default
-      assertEquals(1, f.getLowerBound());
-      assertEquals(1, f.getUpperBound());
+      assertEquals(1, eGet(f, "lowerBound"));
+      assertEquals(1, eGet(f, "upperBound"));
     }
 
     // Check the optional property is also created
     {
-      EStructuralFeature f = A.getEStructuralFeature("newOptionalProperty");
+      EObject f = getFeature(A, "newOptionalProperty");
       assertNotNull(f);
-      assertEquals("newOptionalProperty", f.getName());
-      assertEquals(EcorePackage.Literals.EINT, f.getEType());
-      assertEquals(0, f.getLowerBound());
-      assertEquals(1, f.getUpperBound());
+      assertEquals("newOptionalProperty", eGet(f, "name"));
+      assertEquals(EcorePackage.Literals.EINT, eGet(f, "eType"));
+      assertEquals(0, eGet(f, "lowerBound"));
+      assertEquals(1, eGet(f, "upperBound"));
     }
   }
 
   @Test
-  public void addCompositionAssociation() throws IOException {
+  public void addCompositionAssociation() throws IOException, InvocationTargetException {
     Viewpoint v =
         new Viewpoint(URI.createURI("resources/viewpoints/addassoc/composition.eviewpoint", true));
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
-    EClass B = (EClass) ((EPackage) l.get(1)).getEClassifier("B");
+    EObject A = getClassifier(l.get(0), "A");
+    EObject B = getClassifier(l.get(1), "B");
 
     // Check the references exist with the right EType
-    EReference AtoB = (EReference) A.getEStructuralFeature("refToB");
+    EObject AtoB = getFeature(A, "refToB");
     assertNotNull(AtoB);
-    assertEquals(B, AtoB.getEType());
+    assertEquals(B, eGet(AtoB, "eType"));
     // And it's a containment
-    assertEquals(true, AtoB.isContainment());
+    assertEquals(true, eGet(AtoB, "containment"));
   }
 
   @Test
-  public void addBidirectionalAssociation() throws IOException {
+  public void addBidirectionalAssociation() throws IOException, InvocationTargetException {
     // A NewAssociation from A to B should create an EReference in A with EType B.
 
     Viewpoint v = new Viewpoint(URI
@@ -363,24 +355,24 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
-    EClass B = (EClass) ((EPackage) l.get(1)).getEClassifier("B");
+    EObject A = getClassifier(l.get(0), "A");
+    EObject B = getClassifier(l.get(1), "B");
 
     // Check the references exist with the right EType
-    EReference AtoB = (EReference) A.getEStructuralFeature("refToB");
+    EObject AtoB = getFeature(A, "refToB");
     assertNotNull(AtoB);
-    assertEquals(B, AtoB.getEType());
-    EReference BtoA = (EReference) B.getEStructuralFeature("refToA");
+    assertEquals(B, eGet(AtoB, "eType"));
+    EObject BtoA = getFeature(B, "refToA");
     assertNotNull(BtoA);
-    assertEquals(A, BtoA.getEType());
+    assertEquals(A, eGet(BtoA, "eType"));
 
     // Check they are each other's opposite
-    assertEquals(AtoB, BtoA.getEOpposite());
-    assertEquals(BtoA, AtoB.getEOpposite());
+    assertEquals(AtoB, eGet(BtoA, "eOpposite"));
+    assertEquals(BtoA, eGet(AtoB, "eOpposite"));
   }
 
   @Test
-  public void addPropertyToNewConcept() throws IOException {
+  public void addPropertyToNewConcept() throws IOException, InvocationTargetException {
     // We can link virtual elements from NewConcept/NewProperties/NewAssociation.
     // E.g., we can add properties to a new concept in the same weaving model.
 
@@ -391,17 +383,16 @@ public class TestEMFViews {
 
     EList<EObject> l = v.getContents();
     // The virtual package comes after packages from the contributing models
-    EPackage p = (EPackage) l.get(1);
+    EObject p = l.get(1);
     // It holds our new concept
-    EClass C = (EClass) p.getEClassifier("NewConcept");
+    EObject C = getClassifier(p, "NewConcept");
     assertNotNull(C);
     // And the new concept holds our new property
-    EStructuralFeature f = C.getEStructuralFeature("newProperty");
-    assertNotNull(f);
+    assertNotNull(getFeature(C, "newProperty"));
   }
 
   @Test
-  public void addSuperconceptToNewConcept() throws IOException {
+  public void addSuperconceptToNewConcept() throws IOException, InvocationTargetException {
     // We can add concepts and a concept that generalizes those.
 
     Viewpoint v = new Viewpoint(URI
@@ -410,22 +401,22 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
+    EObject A = getClassifier(l.get(0), "A");
     assertNotNull(A);
     // The virtual package comes after packages from the contributing models
-    EPackage p = (EPackage) l.get(1);
+    EObject p = l.get(1);
     // It holds our new concepts
-    EClass C1 = (EClass) p.getEClassifier("NewConcept");
+    EObject C1 = getClassifier(p, "NewConcept");
     assertNotNull(C1);
-    EClass C2 = (EClass) p.getEClassifier("SuperConcept");
+    EObject C2 = getClassifier(p, "SuperConcept");
     assertNotNull(C2);
     // And the super concept has one existing and one new concepts has subconcepts
-    assertEquals(C2, A.getESuperTypes().get(0));
-    assertEquals(C2, C1.getESuperTypes().get(0));
+    assertEquals(C2, eList(A, "eSuperTypes").get(0));
+    assertEquals(C2, eList(C1, "eSuperTypes").get(0));
   }
 
   @Test
-  public void addAssociationToNewConcept() throws IOException {
+  public void addAssociationToNewConcept() throws IOException, InvocationTargetException {
     // We can add new properties and an association between them.
 
     Viewpoint v = new Viewpoint(URI
@@ -433,19 +424,19 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
+    EObject A = getClassifier(l.get(0), "A");
     // The virtual package comes after packages from the contributing models
-    EPackage p = (EPackage) l.get(1);
+    EObject p = l.get(1);
     // It holds our new concept
-    EClass C = (EClass) p.getEClassifier("C");
+    EObject C = getClassifier(p, "C");
     // There is a reference from A to C
-    EStructuralFeature AtoC = A.getEStructuralFeature("refToC");
+    EObject AtoC = getFeature(A, "refToC");
     assertNotNull(AtoC);
-    assertEquals(C, AtoC.getEType());
+    assertEquals(C, eGet(AtoC, "eType"));
   }
 
   @Test
-  public void filterBlacklist() throws IOException {
+  public void filterBlacklist() throws IOException, InvocationTargetException {
     // Filtered elements should not exist on the viewpoint.
 
     Viewpoint v =
@@ -457,16 +448,16 @@ public class TestEMFViews {
     assertEquals(2, l.size());
 
     // A has no features, since it was filtered
-    EClass A = (EClass) ((EPackage) l.get(0)).getEClassifier("A");
-    assertEquals(0, A.getEStructuralFeatures().size());
+    EObject A = getClassifier(l.get(0), "A");
+    assertEquals(0, getFeatures(A).size());
 
     // B has its feature, since it was not filtered
-    EClass B = (EClass) ((EPackage) l.get(1)).getEClassifier("B");
-    assertNotNull(B.getEStructuralFeature("b"));
+    EObject B = getClassifier(l.get(1), "B");
+    assertNotNull(getFeature(B, "b"));
   }
 
   @Test
-  public void filterWhitelist() throws IOException {
+  public void filterWhitelist() throws IOException, InvocationTargetException {
     // In a weaving model in whitelist mode, filtered elements should be
     // the only remaining elements in the view.
 
@@ -477,15 +468,47 @@ public class TestEMFViews {
     EList<EObject> l = v.getContents();
     // There is only the contentfwk package
     assertEquals(1, l.size());
-    EPackage p = (EPackage) l.get(0);
+    EObject p = l.get(0);
 
     // Package has only one classifier
-    assertEquals(1, p.getEClassifiers().size());
-    EClass C = (EClass) p.getEClassifiers().get(0);
+    assertEquals(1, getClassifiers(p).size());
+    EObject C = getClassifiers(p).get(0);
 
     // Only 1 feature is left
-    assertEquals(1, C.getEStructuralFeatures().size());
-    assertNotNull(C.getEStructuralFeature("ID"));
+    assertEquals(1, getFeatures(C).size());
+    assertNotNull(getFeature(C, "ID"));
+  }
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Helpers for reducing the boilerplate of calling the reflective EMF API
+
+  Object eGet(EObject o, String featureName) {
+    return o.eGet(o.eClass().getEStructuralFeature(featureName));
+  }
+
+  Object eInvoke(EObject o, int operationID, Object... args) throws InvocationTargetException {
+    return o.eInvoke(o.eClass().getEOperation(operationID), ECollections.asEList(args));
+  }
+
+  EObject getClassifier(EObject o, String classifierName) throws InvocationTargetException {
+    return (EObject) eInvoke(o, EcorePackage.EPACKAGE___GET_ECLASSIFIER__STRING, classifierName);
+  }
+
+  EObject getFeature(EObject o, String featureName) throws InvocationTargetException {
+    return (EObject) eInvoke(o, EcorePackage.ECLASS___GET_ESTRUCTURAL_FEATURE__STRING, featureName);
+  }
+
+  @SuppressWarnings("unchecked")
+  EList<EObject> eList(EObject o, String featureName) {
+    return (EList<EObject>) eGet(o, featureName);
+  }
+
+  EList<EObject> getClassifiers(EObject o) {
+    return eList(o, "eClassifiers");
+  }
+
+  EList<EObject> getFeatures(EObject o) {
+    return eList(o, "eStructuralFeatures");
   }
 
 }
