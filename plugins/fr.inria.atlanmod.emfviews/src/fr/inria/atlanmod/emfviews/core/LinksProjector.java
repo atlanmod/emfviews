@@ -11,19 +11,17 @@
 
 package fr.inria.atlanmod.emfviews.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject.EStore;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import fr.inria.atlanmod.emfviews.elements.ReproduceElementImpl;
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class LinksProjector {
@@ -37,25 +35,16 @@ public class LinksProjector {
   }
 
   public void load(WeavingModel virtualLinks) {
-
-    List<NewAssociation> associations = new ArrayList<>();
-    EList<VirtualLink> links = virtualLinks.getVirtualLinks();
-    for (VirtualLink link : links) {
-      if (link instanceof NewAssociation) {
-        associations.add((NewAssociation) link);
-      }
-    }
-    loadAssociations(associations);
-
+    loadAssociations(virtualLinks.getVirtualAssociations());
   }
 
-  private void loadAssociations(List<NewAssociation> associations) {
+  private void loadAssociations(List<VirtualAssociation> associations) {
 
-    for (NewAssociation association : associations) {
-      // TODO: Handle VirtualElement variants
+    for (VirtualAssociation association : associations) {
+      // TODO: Handle VirtualConcept variants
 
-      EObject sourceElement = getReferencedObject((ConcreteElement) association.getSource());
-      EObject targetElement = getReferencedObject((ConcreteElement) association.getTarget());
+      EObject sourceElement = getReferencedObject((ConcreteConcept) association.getSource());
+      EObject targetElement = getReferencedObject((ConcreteConcept) association.getTarget());
 
       ReproduceElementImpl vElement = (ReproduceElementImpl) virtualModel.getVirtualLinkManager()
           .getVirtualElement(sourceElement);

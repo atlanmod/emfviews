@@ -3,9 +3,9 @@
                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:virtualLinks="http://inria.fr/virtualLinks"
                            name="addpropertytonewconcept">
-  <virtualLinks xsi:type="virtualLinks:NewConcept"
+  <virtualLinks xsi:type="virtualLinks:VirtualConcept"
                 name="NewConcept"/>
-  <virtualLinks xsi:type="virtualLinks:NewProperty"
+  <virtualLinks xsi:type="virtualLinks:VirtualProperty"
                 name="newProperty"
                 type="String"
                 parent="//@virtualLinks.0"/>

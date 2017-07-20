@@ -2,15 +2,15 @@
 <virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:virtualLinks="http://inria.fr/virtualLinks">
-  <virtualLinks xsi:type="virtualLinks:NewAssociation"
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation"
                 name="assoc"
                 lowerBound="0" upperBound="1"
                 source="//@contributingModels.0/@concreteElements.0"
                 target="//@contributingModels.1/@concreteElements.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">
-    <concreteElements path="/"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="/"/>
   </contributingModels>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalB">
-    <concreteElements path="/"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="/"/>
   </contributingModels>
 </virtualLinks:WeavingModel>

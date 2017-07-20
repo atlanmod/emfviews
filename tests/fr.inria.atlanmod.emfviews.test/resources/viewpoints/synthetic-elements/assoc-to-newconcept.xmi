@@ -3,15 +3,16 @@
                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:virtualLinks="http://inria.fr/virtualLinks"
                            name="assoctonewconcept">
-  <virtualLinks xsi:type="virtualLinks:NewConcept"
+  <virtualLinks xsi:type="virtualLinks:VirtualConcept"
                 name="C"/>
-  <virtualLinks xsi:type="virtualLinks:NewAssociation"
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation"
                 name="refToC"
                 source="//@contributingModels.0/@concreteElements.0"
                 target="//@virtualLinks.0"
                 lowerBound="0"
                 upperBound="1"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">
-    <concreteElements path="minimalA.A"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept"
+                      path="minimalA.A"/>
   </contributingModels>
 </virtualLinks:WeavingModel>

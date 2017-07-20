@@ -8,51 +8,50 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="contributingModels" upperBound="-1"
         eType="#//ContributingModel" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="whitelist" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="newConcepts" upperBound="-1"
-        eType="#//NewConcept" changeable="false" volatile="true" transient="true"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="virtualConcepts" upperBound="-1"
+        eType="#//VirtualConcept" changeable="false" volatile="true" transient="true"
         derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="newProperties" upperBound="-1"
-        eType="#//NewProperty" changeable="false" volatile="true" transient="true"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="virtualProperties" upperBound="-1"
+        eType="#//VirtualProperty" changeable="false" volatile="true" transient="true"
         derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="newAssociations" upperBound="-1"
-        eType="#//NewAssociation" changeable="false" volatile="true" transient="true"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="virtualAssociations" upperBound="-1"
+        eType="#//VirtualAssociation" changeable="false" volatile="true" transient="true"
         derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="virtualElements" upperBound="-1"
         eType="#//VirtualElement" changeable="false" volatile="true" transient="true"
         derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elementFilters" upperBound="-1"
-        eType="#//ElementFilter" changeable="false" volatile="true" transient="true"
-        derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="filters" upperBound="-1"
+        eType="#//Filter" changeable="false" volatile="true" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VirtualLink" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NewConcept" eSuperTypes="#//VirtualLink #//VirtualElement">
+  <eClassifiers xsi:type="ecore:EClass" name="VirtualConcept" eSuperTypes="#//VirtualLink #//VirtualElement #//Concept">
     <eStructuralFeatures xsi:type="ecore:EReference" name="superConcepts" upperBound="-1"
-        eType="#//LinkedElement"/>
+        eType="#//Concept"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="subConcepts" upperBound="-1"
-        eType="#//LinkedElement"/>
+        eType="#//Concept"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NewProperty" eSuperTypes="#//VirtualLink #//VirtualElement">
+  <eClassifiers xsi:type="ecore:EClass" name="VirtualProperty" eSuperTypes="#//VirtualLink #//VirtualElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
-        eType="#//LinkedElement"/>
+        eType="#//Concept"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NewAssociation" eSuperTypes="#//VirtualLink #//VirtualElement">
+  <eClassifiers xsi:type="ecore:EClass" name="VirtualAssociation" eSuperTypes="#//VirtualLink #//VirtualElement #//Association">
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
-        eType="#//LinkedElement"/>
+        eType="#//Concept"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
-        eType="#//LinkedElement"/>
+        eType="#//Concept"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="lowerBound" ordered="false"
         unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="upperBound" ordered="false"
         unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="opposite" ordered="false"
-        eType="#//LinkedElement"/>
+        eType="#//Association"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="composition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ElementFilter" eSuperTypes="#//VirtualLink">
+  <eClassifiers xsi:type="ecore:EClass" name="Filter" eSuperTypes="#//VirtualLink">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//ConcreteElement"/>
   </eClassifiers>
@@ -61,11 +60,15 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="concreteElements" upperBound="-1"
         eType="#//ConcreteElement" containment="true" eOpposite="#//ConcreteElement/model"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConcreteElement" eSuperTypes="#//LinkedElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteElement" eSuperTypes="#//Element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="model" lowerBound="1" eType="#//ContributingModel"
         eOpposite="#//ContributingModel/concreteElements"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="LinkedElement" abstract="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="VirtualElement" abstract="true" eSuperTypes="#//LinkedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Concept" abstract="true" eSuperTypes="#//Element"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Association" abstract="true" eSuperTypes="#//Element"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteConcept" eSuperTypes="#//ConcreteElement #//Concept"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ConcreteAssociation" eSuperTypes="#//ConcreteElement #//Association"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Element" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VirtualElement" abstract="true" eSuperTypes="#//Element"/>
 </ecore:EPackage>

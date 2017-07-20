@@ -4,22 +4,21 @@ package fr.inria.atlanmod.emfviews.virtuallinks.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.Concept;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual Element</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Concept</b></em>'. <!-- end-user-doc -->
  *
  * @generated
  */
-public abstract class VirtualElementImpl extends ElementImpl implements VirtualElement {
+public abstract class ConceptImpl extends ElementImpl implements Concept {
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @generated
    */
-  protected VirtualElementImpl() {
+  protected ConceptImpl() {
     super();
   }
 
@@ -30,7 +29,7 @@ public abstract class VirtualElementImpl extends ElementImpl implements VirtualE
    */
   @Override
   protected EClass eStaticClass() {
-    return VirtualLinksPackage.Literals.VIRTUAL_ELEMENT;
+    return VirtualLinksPackage.Literals.CONCEPT;
   }
 
-} // VirtualElementImpl
+} // ConceptImpl

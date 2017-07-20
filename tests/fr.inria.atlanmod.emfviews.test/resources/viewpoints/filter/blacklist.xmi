@@ -4,7 +4,7 @@
                            xmlns:virtualLinks="http://inria.fr/virtualLinks"
                            name="filter"
                            whitelist="false">
-  <virtualLinks xsi:type="virtualLinks:ElementFilter"
+  <virtualLinks xsi:type="virtualLinks:Filter"
                 name=""
                 target="//@contributingModels.0/@concreteElements.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">

@@ -40,13 +40,15 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.Concept;
 import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
-import fr.inria.atlanmod.emfviews.virtuallinks.NewConcept;
-import fr.inria.atlanmod.emfviews.virtuallinks.NewProperty;
+import fr.inria.atlanmod.emfviews.virtuallinks.Element;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualAssociation;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualConcept;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl {
@@ -92,22 +94,22 @@ public class Viewpoint extends ResourceImpl {
     weavingModel = loadWeavingModel(weavingModelURI);
 
     // Filter concrete elements
-    applyFilters(weavingModel.getElementFilters(), registry, !weavingModel.isWhitelist());
+    applyFilters(weavingModel.getFilters(), registry, !weavingModel.isWhitelist());
 
     // Create all New* elements first, and set their EMF attribute after to avoid any circular dependencies
     syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
 
     // The virtualPackage holds all the new concepts, but is created only if
     // we have some concepts to put in it
-    List<NewConcept> concepts = weavingModel.getNewConcepts();
+    List<VirtualConcept> concepts = weavingModel.getVirtualConcepts();
     if (!concepts.isEmpty()) {
       virtualPackage = createVirtualPackage(weavingModel.getName());
       registry.put(virtualPackage.getNsURI(), virtualPackage);
-      buildNewConcepts(weavingModel.getNewConcepts(), virtualPackage, registry);
+      buildNewConcepts(concepts, virtualPackage, registry);
     }
 
-    buildNewProperties(weavingModel.getNewProperties(), registry);
-    buildNewAssociations(weavingModel.getNewAssociations(), registry);
+    buildNewProperties(weavingModel.getVirtualProperties(), registry);
+    buildNewAssociations(weavingModel.getVirtualAssociations(), registry);
 
     virtualContents = buildVirtualContents();
 
@@ -186,11 +188,10 @@ public class Viewpoint extends ResourceImpl {
   }
 
   // Apply the given filters to all the packages in the virtual resource set.
-  private void applyFilters(List<ElementFilter> filters, EPackage.Registry registry,
-                            boolean blacklist) {
+  private void applyFilters(List<Filter> filters, EPackage.Registry registry, boolean blacklist) {
     if (blacklist) {
-      for (ElementFilter f : filters) {
-        LinkedElement l = f.getTarget();
+      for (Filter f : filters) {
+        ConcreteElement l = f.getTarget();
         EObject filteredElement = findEObject(l, registry);
         EcoreUtil.delete(filteredElement);
       }
@@ -227,11 +228,11 @@ public class Viewpoint extends ResourceImpl {
   private Map<VirtualElement, EObject> createSyntheticElements(List<VirtualElement> elems) {
     Map<VirtualElement, EObject> map = new HashMap<>();
     for (VirtualElement v : elems) {
-      if (v instanceof NewConcept) {
+      if (v instanceof VirtualConcept) {
         map.put(v, EcoreFactory.eINSTANCE.createEClass());
-      } else if (v instanceof NewProperty) {
+      } else if (v instanceof VirtualProperty) {
         map.put(v, EcoreFactory.eINSTANCE.createEAttribute());
-      } else if (v instanceof NewAssociation) {
+      } else if (v instanceof VirtualAssociation) {
         map.put(v, EcoreFactory.eINSTANCE.createEReference());
       } else {
         throw EX("Unknown instance of virtual element, '%s'", v);
@@ -248,21 +249,21 @@ public class Viewpoint extends ResourceImpl {
     return p;
   }
 
-  private void buildNewConcepts(List<NewConcept> concepts, EPackage virtualPackage,
+  private void buildNewConcepts(List<VirtualConcept> concepts, EPackage virtualPackage,
                                 EPackage.Registry registry) {
-    for (NewConcept c : concepts) {
+    for (VirtualConcept c : concepts) {
       EClass klass = (EClass) syntheticElements.get(c);
       klass.setName(c.getName());
       virtualPackage.getEClassifiers().add(klass);
 
-      for (LinkedElement e : c.getSuperConcepts()) {
+      for (Concept e : c.getSuperConcepts()) {
         EObject sup = findEObject(e, registry);
         if (!(sup instanceof EClass))
           throw EX("Superconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
         klass.getESuperTypes().add((EClass) sup);
       }
 
-      for (LinkedElement e : c.getSubConcepts()) {
+      for (Concept e : c.getSubConcepts()) {
         EObject sub = findEObject(e, registry);
         if (!(sub instanceof EClass))
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
@@ -271,8 +272,8 @@ public class Viewpoint extends ResourceImpl {
     }
   }
 
-  private void buildNewProperties(List<NewProperty> properties, EPackage.Registry registry) {
-    for (NewProperty p : properties) {
+  private void buildNewProperties(List<VirtualProperty> properties, EPackage.Registry registry) {
+    for (VirtualProperty p : properties) {
       EObject parent = findEObject(p.getParent(), registry);
       if (!(parent instanceof EClass))
         throw EX("Parent of new property '%s' should be an EClass", p.getName());
@@ -292,8 +293,9 @@ public class Viewpoint extends ResourceImpl {
     }
   }
 
-  private void buildNewAssociations(List<NewAssociation> associations, EPackage.Registry registry) {
-    for (NewAssociation a : associations) {
+  private void buildNewAssociations(List<VirtualAssociation> associations,
+                                    EPackage.Registry registry) {
+    for (VirtualAssociation a : associations) {
       // Each association is turned into an EReference
 
       EObject source = findEObject(a.getSource(), registry);
@@ -310,7 +312,7 @@ public class Viewpoint extends ResourceImpl {
       if (!(source instanceof EClass))
         throw EX("Source '%s' of new association '%s' should be an EClass", source, a.getName());
 
-      LinkedElement opposite = a.getOpposite();
+      Association opposite = a.getOpposite();
       if (opposite != null) {
         EObject o = findEObject(opposite, registry);
         if (!(o instanceof EReference))
@@ -326,7 +328,7 @@ public class Viewpoint extends ResourceImpl {
     }
   }
 
-  private EObject findEObject(LinkedElement elem, EPackage.Registry registry) {
+  private EObject findEObject(Element elem, EPackage.Registry registry) {
     if (elem instanceof ConcreteElement) {
       ConcreteElement e = (ConcreteElement) elem;
 

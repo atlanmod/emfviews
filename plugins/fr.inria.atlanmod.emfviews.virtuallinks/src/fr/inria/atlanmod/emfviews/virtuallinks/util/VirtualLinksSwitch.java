@@ -2,39 +2,46 @@
  */
 package fr.inria.atlanmod.emfviews.virtuallinks.util;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
 
+import fr.inria.atlanmod.emfviews.virtuallinks.Association;
+import fr.inria.atlanmod.emfviews.virtuallinks.Concept;
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteAssociation;
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteConcept;
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.ContributingModel;
+import fr.inria.atlanmod.emfviews.virtuallinks.Element;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualAssociation;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualConcept;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLink;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualProperty;
+import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
+
 /**
- * <!-- begin-user-doc -->
- * The <b>Switch</b> for the model's inheritance hierarchy.
- * It supports the call {@link #doSwitch(EObject) doSwitch(object)}
- * to invoke the <code>caseXXX</code> method for each class of the model,
- * starting with the actual class of the object
- * and proceeding up the inheritance hierarchy
- * until a non-null result is returned,
- * which is the result of the switch.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
+ * {@link #doSwitch(EObject) doSwitch(object)} to invoke the <code>caseXXX</code> method for each class of the model,
+ * starting with the actual class of the object and proceeding up the inheritance hierarchy until a non-null result is
+ * returned, which is the result of the switch. <!-- end-user-doc -->
+ *
  * @see fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksPackage
  * @generated
  */
 public class VirtualLinksSwitch<T> extends Switch<T> {
   /**
-   * The cached model package
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   protected static VirtualLinksPackage modelPackage;
 
   /**
-   * Creates an instance of the switch.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @generated
    */
   public VirtualLinksSwitch() {
@@ -44,9 +51,8 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   }
 
   /**
-   * Checks whether this is a switch for the given package.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @param ePackage the package in question.
    * @return whether this is a switch for the given package.
    * @generated
@@ -58,96 +64,201 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
 
   /**
    * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
    * @return the first non-null result returned by a <code>caseXXX</code> call.
    * @generated
    */
   @Override
   protected T doSwitch(int classifierID, EObject theEObject) {
     switch (classifierID) {
-      case VirtualLinksPackage.WEAVING_MODEL: {
-        WeavingModel weavingModel = (WeavingModel)theEObject;
-        T result = caseWeavingModel(weavingModel);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+    case VirtualLinksPackage.WEAVING_MODEL: {
+      WeavingModel weavingModel = (WeavingModel) theEObject;
+      T result = caseWeavingModel(weavingModel);
+      if (result == null) {
+        result = defaultCase(theEObject);
       }
-      case VirtualLinksPackage.VIRTUAL_LINK: {
-        VirtualLink virtualLink = (VirtualLink)theEObject;
-        T result = caseVirtualLink(virtualLink);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      return result;
+    }
+    case VirtualLinksPackage.VIRTUAL_LINK: {
+      VirtualLink virtualLink = (VirtualLink) theEObject;
+      T result = caseVirtualLink(virtualLink);
+      if (result == null) {
+        result = defaultCase(theEObject);
       }
-      case VirtualLinksPackage.NEW_CONCEPT: {
-        NewConcept newConcept = (NewConcept)theEObject;
-        T result = caseNewConcept(newConcept);
-        if (result == null) result = caseVirtualLink(newConcept);
-        if (result == null) result = caseVirtualElement(newConcept);
-        if (result == null) result = caseLinkedElement(newConcept);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      return result;
+    }
+    case VirtualLinksPackage.VIRTUAL_CONCEPT: {
+      VirtualConcept virtualConcept = (VirtualConcept) theEObject;
+      T result = caseVirtualConcept(virtualConcept);
+      if (result == null) {
+        result = caseVirtualLink(virtualConcept);
       }
-      case VirtualLinksPackage.NEW_PROPERTY: {
-        NewProperty newProperty = (NewProperty)theEObject;
-        T result = caseNewProperty(newProperty);
-        if (result == null) result = caseVirtualLink(newProperty);
-        if (result == null) result = caseVirtualElement(newProperty);
-        if (result == null) result = caseLinkedElement(newProperty);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      if (result == null) {
+        result = caseVirtualElement(virtualConcept);
       }
-      case VirtualLinksPackage.NEW_ASSOCIATION: {
-        NewAssociation newAssociation = (NewAssociation)theEObject;
-        T result = caseNewAssociation(newAssociation);
-        if (result == null) result = caseVirtualLink(newAssociation);
-        if (result == null) result = caseVirtualElement(newAssociation);
-        if (result == null) result = caseLinkedElement(newAssociation);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      if (result == null) {
+        result = caseConcept(virtualConcept);
       }
-      case VirtualLinksPackage.ELEMENT_FILTER: {
-        ElementFilter elementFilter = (ElementFilter)theEObject;
-        T result = caseElementFilter(elementFilter);
-        if (result == null) result = caseVirtualLink(elementFilter);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      if (result == null) {
+        result = caseElement(virtualConcept);
       }
-      case VirtualLinksPackage.CONTRIBUTING_MODEL: {
-        ContributingModel contributingModel = (ContributingModel)theEObject;
-        T result = caseContributingModel(contributingModel);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      if (result == null) {
+        result = defaultCase(theEObject);
       }
-      case VirtualLinksPackage.CONCRETE_ELEMENT: {
-        ConcreteElement concreteElement = (ConcreteElement)theEObject;
-        T result = caseConcreteElement(concreteElement);
-        if (result == null) result = caseLinkedElement(concreteElement);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      return result;
+    }
+    case VirtualLinksPackage.VIRTUAL_PROPERTY: {
+      VirtualProperty virtualProperty = (VirtualProperty) theEObject;
+      T result = caseVirtualProperty(virtualProperty);
+      if (result == null) {
+        result = caseVirtualLink(virtualProperty);
       }
-      case VirtualLinksPackage.LINKED_ELEMENT: {
-        LinkedElement linkedElement = (LinkedElement)theEObject;
-        T result = caseLinkedElement(linkedElement);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      if (result == null) {
+        result = caseVirtualElement(virtualProperty);
       }
-      case VirtualLinksPackage.VIRTUAL_ELEMENT: {
-        VirtualElement virtualElement = (VirtualElement)theEObject;
-        T result = caseVirtualElement(virtualElement);
-        if (result == null) result = caseLinkedElement(virtualElement);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
+      if (result == null) {
+        result = caseElement(virtualProperty);
       }
-      default: return defaultCase(theEObject);
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.VIRTUAL_ASSOCIATION: {
+      VirtualAssociation virtualAssociation = (VirtualAssociation) theEObject;
+      T result = caseVirtualAssociation(virtualAssociation);
+      if (result == null) {
+        result = caseVirtualLink(virtualAssociation);
+      }
+      if (result == null) {
+        result = caseVirtualElement(virtualAssociation);
+      }
+      if (result == null) {
+        result = caseAssociation(virtualAssociation);
+      }
+      if (result == null) {
+        result = caseElement(virtualAssociation);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.FILTER: {
+      Filter filter = (Filter) theEObject;
+      T result = caseFilter(filter);
+      if (result == null) {
+        result = caseVirtualLink(filter);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.CONTRIBUTING_MODEL: {
+      ContributingModel contributingModel = (ContributingModel) theEObject;
+      T result = caseContributingModel(contributingModel);
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.CONCRETE_ELEMENT: {
+      ConcreteElement concreteElement = (ConcreteElement) theEObject;
+      T result = caseConcreteElement(concreteElement);
+      if (result == null) {
+        result = caseElement(concreteElement);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.CONCEPT: {
+      Concept concept = (Concept) theEObject;
+      T result = caseConcept(concept);
+      if (result == null) {
+        result = caseElement(concept);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.ASSOCIATION: {
+      Association association = (Association) theEObject;
+      T result = caseAssociation(association);
+      if (result == null) {
+        result = caseElement(association);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.CONCRETE_CONCEPT: {
+      ConcreteConcept concreteConcept = (ConcreteConcept) theEObject;
+      T result = caseConcreteConcept(concreteConcept);
+      if (result == null) {
+        result = caseConcreteElement(concreteConcept);
+      }
+      if (result == null) {
+        result = caseConcept(concreteConcept);
+      }
+      if (result == null) {
+        result = caseElement(concreteConcept);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.CONCRETE_ASSOCIATION: {
+      ConcreteAssociation concreteAssociation = (ConcreteAssociation) theEObject;
+      T result = caseConcreteAssociation(concreteAssociation);
+      if (result == null) {
+        result = caseConcreteElement(concreteAssociation);
+      }
+      if (result == null) {
+        result = caseAssociation(concreteAssociation);
+      }
+      if (result == null) {
+        result = caseElement(concreteAssociation);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.ELEMENT: {
+      Element element = (Element) theEObject;
+      T result = caseElement(element);
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    case VirtualLinksPackage.VIRTUAL_ELEMENT: {
+      VirtualElement virtualElement = (VirtualElement) theEObject;
+      T result = caseVirtualElement(virtualElement);
+      if (result == null) {
+        result = caseElement(virtualElement);
+      }
+      if (result == null) {
+        result = defaultCase(theEObject);
+      }
+      return result;
+    }
+    default:
+      return defaultCase(theEObject);
     }
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Weaving Model</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Weaving Model</em>'. <!-- begin-user-doc -->
+   * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Weaving Model</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -158,11 +269,9 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Virtual Link</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Virtual Link</em>'. <!-- begin-user-doc -->
+   * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Virtual Link</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -173,71 +282,61 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>New Concept</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Virtual Concept</em>'. <!-- begin-user-doc -->
+   * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>New Concept</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Virtual Concept</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseNewConcept(NewConcept object) {
+  public T caseVirtualConcept(VirtualConcept object) {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>New Property</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Virtual Property</em>'. <!-- begin-user-doc
+   * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>New Property</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Virtual Property</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseNewProperty(NewProperty object) {
+  public T caseVirtualProperty(VirtualProperty object) {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>New Association</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Virtual Association</em>'. <!-- begin-user-doc
+   * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>New Association</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Virtual Association</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseNewAssociation(NewAssociation object) {
+  public T caseVirtualAssociation(VirtualAssociation object) {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Element Filter</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Filter</em>'. <!-- begin-user-doc --> This
+   * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Element Filter</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Filter</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseElementFilter(ElementFilter object) {
+  public T caseFilter(Filter object) {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Contributing Model</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Contributing Model</em>'. <!-- begin-user-doc
+   * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Contributing Model</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -248,11 +347,9 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Concrete Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Concrete Element</em>'. <!-- begin-user-doc
+   * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Concrete Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -263,26 +360,75 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Linked Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Concept</em>'. <!-- begin-user-doc --> This
+   * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Linked Element</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Concept</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseLinkedElement(LinkedElement object) {
+  public T caseConcept(Concept object) {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Virtual Element</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>Association</em>'. <!-- begin-user-doc -->
+   * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Association</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAssociation(Association object) {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Concrete Concept</em>'. <!-- begin-user-doc
+   * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Concrete Concept</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseConcreteConcept(ConcreteConcept object) {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Concrete Association</em>'. <!--
+   * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+   * end-user-doc -->
+   *
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Concrete Association</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseConcreteAssociation(ConcreteAssociation object) {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Element</em>'. <!-- begin-user-doc --> This
+   * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseElement(Element object) {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Virtual Element</em>'. <!-- begin-user-doc -->
+   * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Virtual Element</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -293,11 +439,10 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch, but this is the last case anyway.
-   * <!-- end-user-doc -->
+   * Returns the result of interpreting the object as an instance of '<em>EObject</em>'. <!-- begin-user-doc --> This
+   * implementation returns null; returning a non-null result will terminate the switch, but this is the last case
+   * anyway. <!-- end-user-doc -->
+   *
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject)
@@ -308,4 +453,4 @@ public class VirtualLinksSwitch<T> extends Switch<T> {
     return null;
   }
 
-} //VirtualLinksSwitch
+} // VirtualLinksSwitch

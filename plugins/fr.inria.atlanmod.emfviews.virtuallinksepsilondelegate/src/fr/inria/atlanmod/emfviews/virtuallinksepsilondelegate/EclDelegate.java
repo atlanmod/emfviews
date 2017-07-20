@@ -38,9 +38,9 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.models.Model;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import fr.inria.atlanmod.emfviews.virtuallinks.ContributingModel;
-import fr.inria.atlanmod.emfviews.virtuallinks.NewAssociation;
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
@@ -153,12 +153,12 @@ public class EclDelegate implements IVirtualLinksDelegate {
         EObject left = (EObject) match.getLeft();
         EObject right = (EObject) match.getRight();
 
-        NewAssociation vAsso = vLinksFactory.createNewAssociation();
+        VirtualAssociation vAsso = vLinksFactory.createVirtualAssociation();
         vAsso.setName(match.getRule().getName());
         vAsso.setLowerBound(0);
         vAsso.setUpperBound(1);
 
-        ConcreteElement lSource = vLinksFactory.createConcreteElement();
+        ConcreteConcept lSource = vLinksFactory.createConcreteConcept();
         lSource.setPath(left.eResource().getURIFragment(left));
 
         String sourceModelURI = left.eClass().getEPackage().getNsURI();
@@ -172,8 +172,9 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
         vAsso.setSource(lSource);
 
-        ConcreteElement lTarget = vLinksFactory.createConcreteElement();
+        ConcreteConcept lTarget = vLinksFactory.createConcreteConcept();
         lTarget.setPath(right.eResource().getURIFragment(right));
+        // TODO: check the linked elements are concepts
 
         String targetModelURI = right.eClass().getEPackage().getNsURI();
         if (!modelsByURI.containsKey(targetModelURI)) {

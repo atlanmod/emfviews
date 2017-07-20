@@ -3,7 +3,7 @@
                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:virtualLinks="http://inria.fr/virtualLinks"
                            name="minimal">
-  <virtualLinks xsi:type="virtualLinks:ElementFilter"
+  <virtualLinks xsi:type="virtualLinks:Filter"
                 name="manyB"
                 target="//@contributingModels.0/@concreteElements.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalref">

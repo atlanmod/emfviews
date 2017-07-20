@@ -3,12 +3,13 @@
                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:virtualLinks="http://inria.fr/virtualLinks"
                            name="addsuperconcepttonewconcept">
-  <virtualLinks xsi:type="virtualLinks:NewConcept"
+  <virtualLinks xsi:type="virtualLinks:VirtualConcept"
                 name="NewConcept"/>
-  <virtualLinks xsi:type="virtualLinks:NewConcept"
+  <virtualLinks xsi:type="virtualLinks:VirtualConcept"
                 name="SuperConcept"
                 subConcepts="//@contributingModels.0/@concreteElements.0 //@virtualLinks.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">
-    <concreteElements path="minimalA.A"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept"
+                      path="minimalA.A"/>
   </contributingModels>
 </virtualLinks:WeavingModel>

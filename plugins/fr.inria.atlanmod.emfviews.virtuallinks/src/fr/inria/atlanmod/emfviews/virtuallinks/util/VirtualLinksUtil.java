@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
-import fr.inria.atlanmod.emfviews.virtuallinks.ElementFilter;
+import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
@@ -50,9 +50,8 @@ public class VirtualLinksUtil {
 
   }
 
-  public static ElementFilter createFilter(String name, String oclQuery,
-                                           boolean filterOnlyFeatures) {
-    ElementFilter filter = VirtualLinksFactory.eINSTANCE.createElementFilter();
+  public static Filter createFilter(String name, String oclQuery, boolean filterOnlyFeatures) {
+    Filter filter = VirtualLinksFactory.eINSTANCE.createFilter();
     filter.setName(name);
 
     return filter;

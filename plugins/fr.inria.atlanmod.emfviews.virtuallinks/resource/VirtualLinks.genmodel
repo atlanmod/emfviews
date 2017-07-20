@@ -2,40 +2,60 @@
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.inria.atlanmod.emfviews.virtuallinks/src" modelPluginID="fr.inria.atlanmod.emfviews.virtuallinks"
     modelName="VirtualLinks" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    testsDirectory="/fr.inria.atlanmod.emfviews.virtuallinks.tests/src" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="7.0" copyrightFields="false" testsPluginID="fr.inria.atlanmod.emfviews.virtuallinks.tests"
-    operationReflection="true" importOrganizing="true">
+    codeFormatting="true" commentFormatting="true" testsDirectory="/fr.inria.atlanmod.emfviews.virtuallinks.tests/src"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
+    testsPluginID="fr.inria.atlanmod.emfviews.virtuallinks.tests" operationReflection="true"
+    importOrganizing="true" cleanup="true">
   <foreignModel>VirtualLinks.ecore</foreignModel>
   <genPackages prefix="VirtualLinks" basePackage="fr.inria.atlanmod.emfviews" disposableProviderFactory="true"
       ecorePackage="VirtualLinks.ecore#/">
-    <genClasses ecoreClass="VirtualLinks.ecore#//VirtualLinks">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualLinks/virtualLinks"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualLinks/linkedElements"/>
-    </genClasses>
-    <genClasses ecoreClass="VirtualLinks.ecore#//LinkedElement">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//LinkedElement/elementRef"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//LinkedElement/modelRef"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//LinkedElement/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//LinkedElement/estructuralFeatures"/>
-    </genClasses>
-    <genClasses ecoreClass="VirtualLinks.ecore#//Association">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Association/lowerBound"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Association/upperBound"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Association/associationTypeName"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//Association/opposite"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//Association/sourceElement"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//Association/targetElements"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Association/oclExpression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Association/sourceAttribute"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Association/targetAttribute"/>
+    <genClasses ecoreClass="VirtualLinks.ecore#//WeavingModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//WeavingModel/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//WeavingModel/virtualLinks"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//WeavingModel/contributingModels"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//WeavingModel/whitelist"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualLinks.ecore#//WeavingModel/virtualConcepts"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualLinks.ecore#//WeavingModel/virtualProperties"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualLinks.ecore#//WeavingModel/virtualAssociations"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualLinks.ecore#//WeavingModel/virtualElements"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualLinks.ecore#//WeavingModel/filters"/>
     </genClasses>
     <genClasses image="false" ecoreClass="VirtualLinks.ecore#//VirtualLink">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//VirtualLink/name"/>
     </genClasses>
-    <genClasses ecoreClass="VirtualLinks.ecore#//Filter">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//Filter/filteredElement"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Filter/oclQuery"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//Filter/filterOnlyEstructuralFeatures"/>
+    <genClasses ecoreClass="VirtualLinks.ecore#//VirtualConcept">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualConcept/superConcepts"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualConcept/subConcepts"/>
     </genClasses>
+    <genClasses ecoreClass="VirtualLinks.ecore#//VirtualProperty">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualProperty/parent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//VirtualProperty/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//VirtualProperty/optional"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualLinks.ecore#//VirtualAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualAssociation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualAssociation/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//VirtualAssociation/lowerBound"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//VirtualAssociation/upperBound"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//VirtualAssociation/opposite"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//VirtualAssociation/composition"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualLinks.ecore#//Filter">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//Filter/target"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualLinks.ecore#//ContributingModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//ContributingModel/URI"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VirtualLinks.ecore#//ContributingModel/concreteElements"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualLinks.ecore#//ConcreteElement">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualLinks.ecore#//ConcreteElement/model"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualLinks.ecore#//ConcreteElement/path"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="VirtualLinks.ecore#//Concept"/>
+    <genClasses ecoreClass="VirtualLinks.ecore#//Association"/>
+    <genClasses ecoreClass="VirtualLinks.ecore#//ConcreteConcept"/>
+    <genClasses ecoreClass="VirtualLinks.ecore#//ConcreteAssociation"/>
+    <genClasses image="false" ecoreClass="VirtualLinks.ecore#//Element"/>
+    <genClasses image="false" ecoreClass="VirtualLinks.ecore#//VirtualElement"/>
   </genPackages>
 </genmodel:GenModel>
