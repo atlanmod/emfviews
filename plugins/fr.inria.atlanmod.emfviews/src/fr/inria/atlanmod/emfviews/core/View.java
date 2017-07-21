@@ -92,12 +92,14 @@ public abstract class View extends ResourceImpl {
   }
 
   protected void loadContributingModels(List<String> contributingModelsPaths) {
-    // This loads the resources into the virtual resource set as a side effect,
-    // so we can get them in getContributingModels later.
     for (String modelURI : contributingModelsPaths) {
-      virtualResourceSet.getResource(URI.createURI(modelURI, true), true);
+      Resource r = virtualResourceSet.getResource(URI.createURI(modelURI, true), true);
+      if (r != null) {
+        virtualResourceSet.getResources().add(r);
+      } else {
+        // XXX: maybe signal an error here?
+      }
     }
-
   }
 
   protected void loadContributingMetamodels(List<String> contributingmetaModelsPaths) {
