@@ -13,7 +13,9 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -490,16 +492,19 @@ public class TestEMFViews {
     return o.eGet(f);
   }
 
-  Object eInvoke(EObject o, int operationID, Object... args) throws InvocationTargetException {
-    return o.eInvoke(o.eClass().getEOperation(operationID), ECollections.asEList(args));
+  Object eInvoke(EObject o, EOperation operation, Object... args) throws InvocationTargetException {
+    return o.eInvoke(operation, ECollections.asEList(args));
   }
 
   EObject getClassifier(EObject o, String classifierName) throws InvocationTargetException {
-    return (EObject) eInvoke(o, EcorePackage.EPACKAGE___GET_ECLASSIFIER__STRING, classifierName);
+    return (EClassifier) eInvoke(o, EcorePackage.Literals.EPACKAGE___GET_ECLASSIFIER__STRING,
+                                 classifierName);
   }
 
   EObject getFeature(EObject o, String featureName) throws InvocationTargetException {
-    return (EObject) eInvoke(o, EcorePackage.ECLASS___GET_ESTRUCTURAL_FEATURE__STRING, featureName);
+    return (EStructuralFeature) eInvoke(o,
+                                        EcorePackage.Literals.ECLASS___GET_ESTRUCTURAL_FEATURE__STRING,
+                                        featureName);
   }
 
   @SuppressWarnings("unchecked")
