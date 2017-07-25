@@ -483,7 +483,11 @@ public class TestEMFViews {
   // Helpers for reducing the boilerplate of calling the reflective EMF API
 
   Object eGet(EObject o, String featureName) {
-    return o.eGet(o.eClass().getEStructuralFeature(featureName));
+    EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
+    // Throw immediately rather than waiting for other objects to complain
+    // about the missing feature
+    if (f == null) throw new NullPointerException();
+    return o.eGet(f);
   }
 
   Object eInvoke(EObject o, int operationID, Object... args) throws InvocationTargetException {
