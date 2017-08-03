@@ -439,6 +439,10 @@ public class TestEMFViews {
     EObject AtoC = getFeature(A, "refToC");
     assertNotNull(AtoC);
     assertEquals(C, eGet(AtoC, "eType"));
+
+    // The original model is *not* modified
+    A = v.getContributingEPackages().get(0).getEClassifier("A");
+    assertEquals(1, getFeatures(A).size());
   }
 
   @Test
