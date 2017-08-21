@@ -31,20 +31,14 @@ public abstract class TranslationRule implements EStore {
   @SuppressWarnings("unchecked")
   @Override
   public int size(InternalEObject object, EStructuralFeature feature) {
-    try {
-      return ((EList<Object>) get(object, feature, EStore.NO_INDEX)).size();
-    } catch (Exception e) {}
-    return 0;
+    return ((EList<Object>) get(object, feature, EStore.NO_INDEX)).size();
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public boolean contains(InternalEObject object, EStructuralFeature feature, Object value) {
-    try {
-      EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
-      return ret.contains(value);
-    } catch (Exception e) {}
-    return false;
+    EList<Object> ret = (EList<Object>) get(object, feature, EStore.NO_INDEX);
+    return ret.contains(value);
   }
 
   @SuppressWarnings("unchecked")
