@@ -332,6 +332,10 @@ public class TestEMFViews {
       assertEquals(0, eGet(f, "lowerBound"));
       assertEquals(1, eGet(f, "upperBound"));
     }
+
+    // The original metamodel is *not* modified
+    assertEquals(1,
+                 getFeatures(getClassifier(v.getContributingEPackages().get(0), "A").get()).size());
   }
 
   @Test
