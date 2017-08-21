@@ -9,11 +9,11 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -53,7 +53,7 @@ public class TestEMFViews {
       assertEquals("reqif10", eGet(l.get(2), "name"));
 
       // Ensure the filtered elements are absent
-      EObject c = getClassifier(l.get(0), "BusinessArchitecture");
+      EObject c = getClassifier(l.get(0), "BusinessArchitecture").get();
       assertEquals(1, getFeatures(c).size());
       // and make sure the feature we left is in there
       assertNotNull(getFeature(c, "processes"));
@@ -63,10 +63,10 @@ public class TestEMFViews {
       assertEquals(16, getFeatures(c).size());
 
       // Ensure our virtual associations are in there
-      EObject p = getClassifier(l.get(0), "Process");
+      EObject p = getClassifier(l.get(0), "Process").get();
       assertNotNull(getFeature(p, "detailedProcess"));
 
-      EObject r = getClassifier(l.get(0), "Requirement");
+      EObject r = getClassifier(l.get(0), "Requirement").get();
       assertNotNull(getFeature(r, "detailedRequirement"));
     }
 
@@ -210,7 +210,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void virtualAssociation() throws IOException, InvocationTargetException {
+  public void virtualAssociation() throws IOException {
     // Creating a virtual association between two minimal models.
 
     // Create the view
@@ -231,7 +231,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void addConcept() throws IOException, InvocationTargetException {
+  public void addConcept() throws IOException {
     // A new concept in the weaving model should be added to the virtual package
 
     Viewpoint v =
@@ -248,7 +248,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void addSubConcept() throws IOException, InvocationTargetException {
+  public void addSubConcept() throws IOException {
     // A new subconcept in the weaving model should be added to the virtual
     // package, and should reference its superconcept.
 
@@ -262,17 +262,17 @@ public class TestEMFViews {
     // The virtual package takes the WeavingModel name
     assertEquals("subconcept", eGet(p, "name"));
     // It holds our new concept
-    EObject c = getClassifier(p, "C");
+    EObject c = getClassifier(p, "C").get();
     assertNotNull(c);
     // C has A and B as super types
     EList<EObject> sups = eList(c, "eSuperTypes");
     assertEquals(2, sups.size());
-    assertEquals(getClassifier(l.get(0), "A"), sups.get(0));
-    assertEquals(getClassifier(l.get(1), "B"), sups.get(1));
+    assertEquals(getClassifier(l.get(0), "A").get(), sups.get(0));
+    assertEquals(getClassifier(l.get(1), "B").get(), sups.get(1));
   }
 
   @Test
-  public void addSuperConcept() throws IOException, InvocationTargetException {
+  public void addSuperConcept() throws IOException {
     // A new subconcept in the weaving model should be added to the virtual
     // package, and should reference its superconcept.
 
@@ -286,16 +286,16 @@ public class TestEMFViews {
     // The virtual package takes the WeavingModel name
     assertEquals("superconcept", eGet(p, "name"));
     // It holds our new concept
-    EObject C = getClassifier(p, "C");
+    EObject C = getClassifier(p, "C").get();
     assertNotNull(C);
     // A and B both have C as super type
     {
-      EList<EObject> sups = eList(getClassifier(l.get(0), "A"), "eSuperTypes");
+      EList<EObject> sups = eList(getClassifier(l.get(0), "A").get(), "eSuperTypes");
       assertEquals(1, sups.size());
       assertEquals(C, sups.get(0));
     }
     {
-      EList<EObject> sups = eList(getClassifier(l.get(1), "B"), "eSuperTypes");
+      EList<EObject> sups = eList(getClassifier(l.get(1), "B").get(), "eSuperTypes");
       assertEquals(1, sups.size());
       assertEquals(C, sups.get(0));
     }
@@ -310,7 +310,7 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EObject A = getClassifier(l.get(0), "A");
+    EObject A = getClassifier(l.get(0), "A").get();
 
     // Check the new property is created on A
     {
@@ -341,8 +341,8 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EObject A = getClassifier(l.get(0), "A");
-    EObject B = getClassifier(l.get(1), "B");
+    EObject A = getClassifier(l.get(0), "A").get();
+    EObject B = getClassifier(l.get(1), "B").get();
 
     // Check the references exist with the right EType
     EObject AtoB = getFeature(A, "refToB");
@@ -361,8 +361,8 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EObject A = getClassifier(l.get(0), "A");
-    EObject B = getClassifier(l.get(1), "B");
+    EObject A = getClassifier(l.get(0), "A").get();
+    EObject B = getClassifier(l.get(1), "B").get();
 
     // Check the references exist with the right EType
     EObject AtoB = getFeature(A, "refToB");
@@ -391,14 +391,14 @@ public class TestEMFViews {
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
     // It holds our new concept
-    EObject C = getClassifier(p, "NewConcept");
+    EObject C = getClassifier(p, "NewConcept").get();
     assertNotNull(C);
     // And the new concept holds our new property
     assertNotNull(getFeature(C, "newProperty"));
   }
 
   @Test
-  public void addSuperconceptToNewConcept() throws IOException, InvocationTargetException {
+  public void addSuperconceptToNewConcept() throws IOException {
     // We can add concepts and a concept that generalizes those.
 
     Viewpoint v = new Viewpoint(URI
@@ -407,14 +407,14 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EObject A = getClassifier(l.get(0), "A");
+    EObject A = getClassifier(l.get(0), "A").get();
     assertNotNull(A);
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
     // It holds our new concepts
-    EObject C1 = getClassifier(p, "NewConcept");
+    EObject C1 = getClassifier(p, "NewConcept").get();
     assertNotNull(C1);
-    EObject C2 = getClassifier(p, "SuperConcept");
+    EObject C2 = getClassifier(p, "SuperConcept").get();
     assertNotNull(C2);
     // And the super concept has one existing and one new concepts has subconcepts
     assertEquals(C2, eList(A, "eSuperTypes").get(0));
@@ -430,11 +430,11 @@ public class TestEMFViews {
     v.load(null);
 
     EList<EObject> l = v.getContents();
-    EObject A = getClassifier(l.get(0), "A");
+    EObject A = getClassifier(l.get(0), "A").get();
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
     // It holds our new concept
-    EObject C = getClassifier(p, "C");
+    EObject C = getClassifier(p, "C").get();
     // There is a reference from A to C
     EObject AtoC = getFeature(A, "refToC");
     assertNotNull(AtoC);
@@ -458,7 +458,7 @@ public class TestEMFViews {
     assertEquals(2, l.size());
 
     // A has no features, since it was filtered
-    EObject A = getClassifier(l.get(0), "A");
+    EObject A = getClassifier(l.get(0), "A").get();
     assertEquals(0, getFeatures(A).size());
 
     // The original model is *not* modified
@@ -466,7 +466,7 @@ public class TestEMFViews {
     assertEquals(1, getFeatures(A).size());
 
     // B has its feature, since it was not filtered
-    EObject B = getClassifier(l.get(1), "B");
+    EObject B = getClassifier(l.get(1), "B").get();
     assertNotNull(getFeature(B, "b"));
   }
 
@@ -509,15 +509,22 @@ public class TestEMFViews {
   }
 
   Object eInvoke(EObject o, EOperation operation, Object... args) throws InvocationTargetException {
+    // TODO: remove
     return o.eInvoke(operation, ECollections.asEList(args));
   }
 
-  EObject getClassifier(EObject o, String classifierName) throws InvocationTargetException {
-    return (EClassifier) eInvoke(o, EcorePackage.Literals.EPACKAGE___GET_ECLASSIFIER__STRING,
-                                 classifierName);
+  Optional<EObject> getClassifier(EObject o, String classifierName) {
+    // XXX: we could memoize this like the EPackage one does, but for the tests it's okay
+    for (EObject c : getClassifiers(o)) {
+      if (classifierName.equals(eGet(c, "name"))) {
+        return Optional.of(c);
+      }
+    }
+    return Optional.empty();
   }
 
   EObject getFeature(EObject o, String featureName) throws InvocationTargetException {
+    // TODO: use eGet as above
     return (EStructuralFeature) eInvoke(o,
                                         EcorePackage.Literals.ECLASS___GET_ESTRUCTURAL_FEATURE__STRING,
                                         featureName);
