@@ -33,37 +33,32 @@ public class ReproduceRule extends TranslationRule {
   @SuppressWarnings("unchecked")
   @Override
   public Object get(InternalEObject object, EStructuralFeature feature, int index) {
-    try {
-      ReproduceElementImpl vElement = (ReproduceElementImpl) object;
+    ReproduceElementImpl vElement = (ReproduceElementImpl) object;
 
-      View vModel = (View) vElement.eResource();
-      if (vModel.getMetamodelManager().isVirtualAssociation(feature)) {
-        return vElement.getVirtualAssociation(feature, index);
-      }
-      EStructuralFeature cFeature = vElement.getConcreteFeature(feature);
-      Object value = vElement.getConcreteElement().eGet(cFeature);
-      if (feature instanceof EReference) {
-        if (feature.isMany()) {
-          value = new VirtualModelList<>(object, feature, Arrays.asList((List<EObject>) value));
-          if (index != NO_INDEX) {
-            value = ((VirtualModelList<EObject>) value).get(index);
-          }
-        } else {
-          value = vModel.translateToVirtualElement((EObject) value);
-          if (value instanceof FilterElement) {
-            value = null;
-          }
+    View vModel = (View) vElement.eResource();
+    if (vModel.getMetamodelManager().isVirtualAssociation(feature)) {
+      return vElement.getVirtualAssociation(feature, index);
+    }
+    EStructuralFeature cFeature = vElement.getConcreteFeature(feature);
+    Object value = vElement.getConcreteElement().eGet(cFeature);
+    if (feature instanceof EReference) {
+      if (feature.isMany()) {
+        value = new VirtualModelList<>(object, feature, Arrays.asList((List<EObject>) value));
+        if (index != NO_INDEX) {
+          value = ((VirtualModelList<EObject>) value).get(index);
         }
       } else {
-        if (feature.getUpperBound() != 1 && index != NO_INDEX) {
-          value = ((List<Object>) value).get(index);
+        value = vModel.translateToVirtualElement((EObject) value);
+        if (value instanceof FilterElement) {
+          value = null;
         }
       }
-      return value;
-    } catch (Exception e) {
-
+    } else {
+      if (feature.getUpperBound() != 1 && index != NO_INDEX) {
+        value = ((List<Object>) value).get(index);
+      }
     }
-    return null;
+    return value;
   }
 
   @SuppressWarnings("unchecked")
@@ -81,7 +76,7 @@ public class ReproduceRule extends TranslationRule {
       if (feature.getUpperBound() != 1) {
         if (index != NO_INDEX) {
           oldValue = new VirtualModelList<>(object, feature,
-                                            Arrays.asList((List<EObject>) cElement.eGet(cFeature)));
+              Arrays.asList((List<EObject>) cElement.eGet(cFeature)));
           value = ((ReproduceElementImpl) value).getConcreteElement();
           cElement.eSet(cFeature, value);
         } else {
@@ -114,25 +109,20 @@ public class ReproduceRule extends TranslationRule {
 
   @Override
   public boolean isSet(InternalEObject object, EStructuralFeature feature) {
-    try {
-      View vModel = (View) object.eResource();
-      ReproduceElementImpl vElement = (ReproduceElementImpl) object;
-      if (vModel.getMetamodelManager().isVirtualAssociation(feature)) {
-        if (vElement.getVirtualAssociation(feature, NO_INDEX) == null) {
-          return false;
-        } else {
-          return true;
-        }
+    View vModel = (View) object.eResource();
+    ReproduceElementImpl vElement = (ReproduceElementImpl) object;
+    if (vModel.getMetamodelManager().isVirtualAssociation(feature)) {
+      if (vElement.getVirtualAssociation(feature, NO_INDEX) == null) {
+        return false;
       } else {
-        EStructuralFeature cFeature =
-            vModel.getMetamodelManager().translateFromVirtualFeature(vElement, feature);
-        EObject cElement = ((ReproduceElementImpl) object).getConcreteElement();
-        return cElement.eIsSet(cFeature);
+        return true;
       }
-    } catch (Exception e) {
-
+    } else {
+      EStructuralFeature cFeature =
+          vModel.getMetamodelManager().translateFromVirtualFeature(vElement, feature);
+      EObject cElement = ((ReproduceElementImpl) object).getConcreteElement();
+      return cElement.eIsSet(cFeature);
     }
-    return false;
   }
 
   @Override
