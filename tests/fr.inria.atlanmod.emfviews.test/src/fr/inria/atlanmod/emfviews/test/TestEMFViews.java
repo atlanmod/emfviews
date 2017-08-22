@@ -11,11 +11,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -29,7 +27,7 @@ public class TestEMFViews {
   // TODO: test failures
 
   @Test
-  public void threeModelComposition() throws IOException, InvocationTargetException {
+  public void threeModelComposition() throws IOException {
     // Based on the EA_viewtest examples, this is an integration test combining
     // three metamodels (contentfwk, BPMN2 and reqif10), with filters and
     // associations.
@@ -302,7 +300,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void addProperty() throws IOException, InvocationTargetException {
+  public void addProperty() throws IOException {
     // A new property should be added to its target concept.
 
     Viewpoint v =
@@ -314,8 +312,7 @@ public class TestEMFViews {
 
     // Check the new property is created on A
     {
-      EObject f = getFeature(A, "newProperty");
-      assertNotNull(f);
+      EObject f = getFeature(A, "newProperty").get();
       assertEquals("newProperty", eGet(f, "name"));
       assertEquals(EcorePackage.Literals.ESTRING, eGet(f, "eType"));
       // It's not optional by default
@@ -325,8 +322,7 @@ public class TestEMFViews {
 
     // Check the optional property is also created
     {
-      EObject f = getFeature(A, "newOptionalProperty");
-      assertNotNull(f);
+      EObject f = getFeature(A, "newOptionalProperty").get();
       assertEquals("newOptionalProperty", eGet(f, "name"));
       assertEquals(EcorePackage.Literals.EINT, eGet(f, "eType"));
       assertEquals(0, eGet(f, "lowerBound"));
@@ -339,7 +335,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void addCompositionAssociation() throws IOException, InvocationTargetException {
+  public void addCompositionAssociation() throws IOException {
     Viewpoint v =
         new Viewpoint(URI.createURI("resources/viewpoints/addassoc/composition.eviewpoint", true));
     v.load(null);
@@ -349,15 +345,14 @@ public class TestEMFViews {
     EObject B = getClassifier(l.get(1), "B").get();
 
     // Check the references exist with the right EType
-    EObject AtoB = getFeature(A, "refToB");
-    assertNotNull(AtoB);
+    EObject AtoB = getFeature(A, "refToB").get();
     assertEquals(B, eGet(AtoB, "eType"));
     // And it's a containment
     assertEquals(true, eGet(AtoB, "containment"));
   }
 
   @Test
-  public void addBidirectionalAssociation() throws IOException, InvocationTargetException {
+  public void addBidirectionalAssociation() throws IOException {
     // A NewAssociation from A to B should create an EReference in A with EType B.
 
     Viewpoint v = new Viewpoint(URI
@@ -369,11 +364,9 @@ public class TestEMFViews {
     EObject B = getClassifier(l.get(1), "B").get();
 
     // Check the references exist with the right EType
-    EObject AtoB = getFeature(A, "refToB");
-    assertNotNull(AtoB);
+    EObject AtoB = getFeature(A, "refToB").get();
     assertEquals(B, eGet(AtoB, "eType"));
-    EObject BtoA = getFeature(B, "refToA");
-    assertNotNull(BtoA);
+    EObject BtoA = getFeature(B, "refToA").get();
     assertEquals(A, eGet(BtoA, "eType"));
 
     // Check they are each other's opposite
@@ -382,7 +375,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void addPropertyToNewConcept() throws IOException, InvocationTargetException {
+  public void addPropertyToNewConcept() throws IOException {
     // We can link virtual elements from NewConcept/NewProperties/NewAssociation.
     // E.g., we can add properties to a new concept in the same weaving model.
 
@@ -426,7 +419,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void addAssociationToNewConcept() throws IOException, InvocationTargetException {
+  public void addAssociationToNewConcept() throws IOException {
     // We can add new properties and an association between them.
 
     Viewpoint v = new Viewpoint(URI
@@ -440,8 +433,7 @@ public class TestEMFViews {
     // It holds our new concept
     EObject C = getClassifier(p, "C").get();
     // There is a reference from A to C
-    EObject AtoC = getFeature(A, "refToC");
-    assertNotNull(AtoC);
+    EObject AtoC = getFeature(A, "refToC").get();
     assertEquals(C, eGet(AtoC, "eType"));
 
     // The original model is *not* modified
@@ -450,7 +442,7 @@ public class TestEMFViews {
   }
 
   @Test
-  public void filterBlacklist() throws IOException, InvocationTargetException {
+  public void filterBlacklist() throws IOException {
     // Filtered elements should not exist on the viewpoint.
 
     Viewpoint v =
@@ -471,11 +463,11 @@ public class TestEMFViews {
 
     // B has its feature, since it was not filtered
     EObject B = getClassifier(l.get(1), "B").get();
-    assertNotNull(getFeature(B, "b"));
+    assertTrue(getFeature(B, "b").isPresent());
   }
 
   @Test
-  public void filterWhitelist() throws IOException, InvocationTargetException {
+  public void filterWhitelist() throws IOException {
     // In a weaving model in whitelist mode, filtered elements should be
     // the only remaining elements in the view.
 
@@ -494,7 +486,7 @@ public class TestEMFViews {
 
     // Only 1 feature is left
     assertEquals(1, getFeatures(C).size());
-    assertNotNull(getFeature(C, "ID"));
+    assertTrue(getFeature(C, "ID").isPresent());
 
     // The original model is *not* modified
     p = v.getContributingEPackages().get(0);
@@ -512,11 +504,6 @@ public class TestEMFViews {
     return o.eGet(f);
   }
 
-  Object eInvoke(EObject o, EOperation operation, Object... args) throws InvocationTargetException {
-    // TODO: remove
-    return o.eInvoke(operation, ECollections.asEList(args));
-  }
-
   Optional<EObject> getClassifier(EObject o, String classifierName) {
     // XXX: we could memoize this like the EPackage one does, but for the tests it's okay
     for (EObject c : getClassifiers(o)) {
@@ -527,11 +514,14 @@ public class TestEMFViews {
     return Optional.empty();
   }
 
-  EObject getFeature(EObject o, String featureName) throws InvocationTargetException {
-    // TODO: use eGet as above
-    return (EStructuralFeature) eInvoke(o,
-                                        EcorePackage.Literals.ECLASS___GET_ESTRUCTURAL_FEATURE__STRING,
-                                        featureName);
+  Optional<EObject> getFeature(EObject o, String featureName) {
+    // XXX: we could memoize this
+    for (EObject c : getFeatures(o)) {
+      if (featureName.equals(eGet(c, "name"))) {
+        return Optional.of(c);
+      }
+    }
+    return Optional.empty();
   }
 
   @SuppressWarnings("unchecked")
