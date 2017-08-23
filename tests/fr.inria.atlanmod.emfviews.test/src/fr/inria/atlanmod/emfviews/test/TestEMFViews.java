@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.emfviews.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -8,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
@@ -54,7 +54,7 @@ public class TestEMFViews {
       EObject c = getClassifier(l.get(0), "BusinessArchitecture").get();
       assertEquals(1, getFeatures(c).size());
       // and make sure the feature we left is in there
-      assertNotNull(getFeature(c, "processes"));
+      assertTrue(getFeature(c, "processes").isPresent());
 
       // The original model is *not* modified
       c = v.getContributingEPackages().get(0).getEClassifier("BusinessArchitecture");
@@ -62,10 +62,10 @@ public class TestEMFViews {
 
       // Ensure our virtual associations are in there
       EObject p = getClassifier(l.get(0), "Process").get();
-      assertNotNull(getFeature(p, "detailedProcess"));
+      assertTrue(getFeature(p, "detailedProcess").isPresent());
 
       EObject r = getClassifier(l.get(0), "Requirement").get();
-      assertNotNull(getFeature(r, "detailedRequirement"));
+      assertTrue(getFeature(r, "detailedRequirement").isPresent());
     }
 
     // Then, do the same for models (EView)
@@ -242,7 +242,7 @@ public class TestEMFViews {
     // The virtual package takes the WeavingModel name
     assertEquals("addconcept", eGet(p, "name"));
     // And it holds our new concept
-    assertNotNull(getClassifier(p, "C"));
+    assertTrue(getClassifier(p, "C").isPresent());
   }
 
   @Test
@@ -260,10 +260,9 @@ public class TestEMFViews {
     // The virtual package takes the WeavingModel name
     assertEquals("subconcept", eGet(p, "name"));
     // It holds our new concept
-    EObject c = getClassifier(p, "C").get();
-    assertNotNull(c);
+    EObject C = getClassifier(p, "C").get();
     // C has A and B as super types
-    EList<EObject> sups = eList(c, "eSuperTypes");
+    EList<EObject> sups = eList(C, "eSuperTypes");
     assertEquals(2, sups.size());
     assertEquals(getClassifier(l.get(0), "A").get(), sups.get(0));
     assertEquals(getClassifier(l.get(1), "B").get(), sups.get(1));
@@ -285,7 +284,6 @@ public class TestEMFViews {
     assertEquals("superconcept", eGet(p, "name"));
     // It holds our new concept
     EObject C = getClassifier(p, "C").get();
-    assertNotNull(C);
     // A and B both have C as super type
     {
       EList<EObject> sups = eList(getClassifier(l.get(0), "A").get(), "eSuperTypes");
@@ -297,6 +295,10 @@ public class TestEMFViews {
       assertEquals(1, sups.size());
       assertEquals(C, sups.get(0));
     }
+
+    // The original metamodels are *not* modified
+    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get(0), "A").get(), "eSuperTypes").size());
+    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get(1), "B").get(), "eSuperTypes").size());
   }
 
   @Test
@@ -349,6 +351,9 @@ public class TestEMFViews {
     assertEquals(B, eGet(AtoB, "eType"));
     // And it's a containment
     assertEquals(true, eGet(AtoB, "containment"));
+
+    // The original metamodel is *not* modified
+    assertFalse(getFeature(getClassifier(v.getContributingEPackages().get(0), "A").get(), "refToB").isPresent());
   }
 
   @Test
@@ -372,6 +377,12 @@ public class TestEMFViews {
     // Check they are each other's opposite
     assertEquals(AtoB, eGet(BtoA, "eOpposite"));
     assertEquals(BtoA, eGet(AtoB, "eOpposite"));
+
+    // The original metamodels are *not* modified
+    A = getClassifier(v.getContributingEPackages().get(0), "A").get();
+    B = getClassifier(v.getContributingEPackages().get(1), "B").get();
+    assertFalse(getFeature(A, "refToB").isPresent());
+    assertFalse(getFeature(B, "refToB").isPresent());
   }
 
   @Test
@@ -389,9 +400,8 @@ public class TestEMFViews {
     EObject p = l.get(1);
     // It holds our new concept
     EObject C = getClassifier(p, "NewConcept").get();
-    assertNotNull(C);
     // And the new concept holds our new property
-    assertNotNull(getFeature(C, "newProperty"));
+    assertTrue(getFeature(C, "newProperty").isPresent());
   }
 
   @Test
@@ -405,17 +415,17 @@ public class TestEMFViews {
 
     EList<EObject> l = v.getContents();
     EObject A = getClassifier(l.get(0), "A").get();
-    assertNotNull(A);
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
     // It holds our new concepts
     EObject C1 = getClassifier(p, "NewConcept").get();
-    assertNotNull(C1);
     EObject C2 = getClassifier(p, "SuperConcept").get();
-    assertNotNull(C2);
-    // And the super concept has one existing and one new concepts has subconcepts
+    // And the super concept has one existing and one new concept as subconcepts
     assertEquals(C2, eList(A, "eSuperTypes").get(0));
     assertEquals(C2, eList(C1, "eSuperTypes").get(0));
+
+    // The original metamodel is *not* modified
+    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get(0), "A").get(), "eSuperTypes").size());
   }
 
   @Test
