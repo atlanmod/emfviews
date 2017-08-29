@@ -466,6 +466,7 @@ public class TestEMFViews {
     // A has no features, since it was filtered
     EObject A = getClassifier(l.get(0), "A").get();
     assertEquals(0, getFeatures(A).size());
+    assertFalse(getFeature(A, "a").isPresent());
 
     // The original model is *not* modified
     A = v.getContributingEPackages().get(0).getEClassifier("A");
