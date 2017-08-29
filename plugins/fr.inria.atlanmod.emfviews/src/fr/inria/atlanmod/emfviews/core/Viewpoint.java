@@ -133,6 +133,8 @@ public class Viewpoint extends ResourceImpl {
 
   @Override
   public ResourceSet getResourceSet() {
+    // XXX: never called. Besides, it's supposed to return the resource set that the Viewpoint is *in*,
+    // but the virtualResourceSet is the the resource set the Viewpoint *holds*.
     return virtualResourceSet;
   }
 
