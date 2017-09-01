@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import fr.inria.atlanmod.emfviews.core.EView;
 import fr.inria.atlanmod.emfviews.core.Viewpoint;
+import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
 
@@ -53,14 +54,16 @@ public class TestEMFViews {
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     a.setEType(EcorePackage.Literals.EINT);
-    VA.addVirtualFeature(b);
+
+    VirtualEAttribute Vb = new VirtualEAttribute(b);
+    VA.addVirtualFeature(Vb);
 
     // Can access both features using the straight and reflective APIs
     assertEquals(a, VA.getEStructuralFeature("a"));
-    assertEquals(b, VA.getEStructuralFeature("b"));
+    assertEquals(Vb, VA.getEStructuralFeature("b"));
 
     assertEquals(a, getFeature(VA, "a").get());
-    assertEquals(b, getFeature(VA, "b").get());
+    assertEquals(Vb, getFeature(VA, "b").get());
 
     // Can link a model object to this virtual class
     EObject o = EcoreUtil.create(A);

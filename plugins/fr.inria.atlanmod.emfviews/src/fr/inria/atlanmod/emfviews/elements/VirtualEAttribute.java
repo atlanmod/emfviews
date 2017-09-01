@@ -1,41 +1,34 @@
 package fr.inria.atlanmod.emfviews.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
-public class VirtualEClass extends DynamicEObjectImpl implements EClass {
+public class VirtualEAttribute  extends DynamicEObjectImpl implements EAttribute, EStructuralFeature.Internal {
 
-  private EClass concreteEClass;
-  private List<EStructuralFeature> virtualFeatures = new ArrayList<>();
+  private EAttribute concreteAttribute;
 
-  public VirtualEClass(EClass concreteEClass) {
-    super(EcorePackage.Literals.ECLASS);
-    this.concreteEClass = concreteEClass;
-  }
-
-  public void addVirtualFeature(EStructuralFeature f) {
-    this.virtualFeatures.add(f);
+  public VirtualEAttribute(EAttribute concreteAttribute) {
+    super(EcorePackage.Literals.EATTRIBUTE);
+    this.concreteAttribute = concreteAttribute;
   }
 
   @Override
   public Object dynamicGet(int dynamicFeatureID) {
     EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
 
-    if (feature == EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES) {
-      return getEStructuralFeatures();
+    System.out.println(feature);
+
+    if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
+      return getName();
     }
 
     throw new UnsupportedOperationException();
@@ -52,25 +45,49 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   }
 
   @Override
-  public String getInstanceClassName() {
+  public boolean isTransient() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setInstanceClassName(String value) {
+  public void setTransient(boolean value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public Class<?> getInstanceClass() {
+  public boolean isVolatile() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setInstanceClass(Class<?> value) {
+  public void setVolatile(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isChangeable() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setChangeable(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getDefaultValueLiteral() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setDefaultValueLiteral(String value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
@@ -82,45 +99,140 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   }
 
   @Override
-  public String getInstanceTypeName() {
+  public void setDefaultValue(Object value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setInstanceTypeName(String value) {
+  public boolean isUnsettable() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EPackage getEPackage() {
+  public void setUnsettable(boolean value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EList<ETypeParameter> getETypeParameters() {
+  public boolean isDerived() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isInstance(Object object) {
+  public void setDerived(boolean value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int getClassifierID() {
+  public EClass getEContainingClass() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getFeatureID() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Class<?> getContainerClass() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isOrdered() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setOrdered(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isUnique() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setUnique(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getLowerBound() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setLowerBound(int value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getUpperBound() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setUpperBound(int value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isMany() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isRequired() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public EClassifier getEType() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setEType(EClassifier value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public EGenericType getEGenericType() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setEGenericType(EGenericType value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public String getName() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteAttribute.getName();
   }
 
   @Override
@@ -142,176 +254,75 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   }
 
   @Override
-  public boolean isAbstract() {
+  public boolean isID() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setAbstract(boolean value) {
+  public void setID(boolean value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isInterface() {
+  public EDataType getEAttributeType() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setInterface(boolean value) {
+  public SettingDelegate getSettingDelegate() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setSettingDelegate(SettingDelegate settingDelegate) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EList<EClass> getESuperTypes() {
+  public boolean isFeatureMap() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EList<EClass> getEAllSuperTypes() {
+  public org.eclipse.emf.ecore.util.FeatureMap.Entry.Internal getFeatureMapEntryPrototype() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EAttribute getEIDAttribute() {
+  public void
+      setFeatureMapEntryPrototype(org.eclipse.emf.ecore.util.FeatureMap.Entry.Internal prototype) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EList<EStructuralFeature> getEStructuralFeatures() {
-    return new VirtualEList<>(concreteEClass.getEStructuralFeatures(), virtualFeatures);
-  }
-
-  @Override
-  public EList<EGenericType> getEGenericSuperTypes() {
+  public boolean isResolveProxies() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EList<EGenericType> getEAllGenericSuperTypes() {
+  public boolean isContainer() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EList<EAttribute> getEAttributes() {
+  public boolean isContainment() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EList<EAttribute> getEAllAttributes() {
+  public EReference getEOpposite() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EList<EReference> getEReferences() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EList<EReference> getEAllReferences() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EList<EReference> getEAllContainments() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EList<EStructuralFeature> getEAllStructuralFeatures() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EList<EOperation> getEOperations() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EList<EOperation> getEAllOperations() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isSuperTypeOf(EClass someClass) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public int getFeatureCount() {
-    return getEStructuralFeatures().size();
-  }
-
-  @Override
-  public EStructuralFeature getEStructuralFeature(int featureID) {
-    EList<EStructuralFeature> features = getEStructuralFeatures();
-    if (featureID < features.size()) {
-      return features.get(featureID);
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  public EStructuralFeature getEStructuralFeature(String featureName) {
-    for (EStructuralFeature f : getEStructuralFeatures()) {
-      if (featureName.equals(f.getName())) {
-        return f;
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public int getOperationCount() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EOperation getEOperation(int operationID) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public int getOperationID(EOperation operation) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EOperation getOverride(EOperation operation) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EGenericType getFeatureType(EStructuralFeature feature) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public int getFeatureID(EStructuralFeature feature) {
-    return getEStructuralFeatures().indexOf(feature);
   }
 
 }
