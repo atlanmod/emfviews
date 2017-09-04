@@ -70,6 +70,7 @@ public class TestEMFViews {
     o.eSet(a, 1);
 
     VirtualEObject VO = new VirtualEObject(o, VA);
+    VO.eSet(Vb, 2);
 
     assertEquals(1, eGet(VO, "a"));
     assertEquals(2, eGet(VO, "b"));

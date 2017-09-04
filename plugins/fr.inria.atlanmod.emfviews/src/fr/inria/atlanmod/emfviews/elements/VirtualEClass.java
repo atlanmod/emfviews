@@ -27,7 +27,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   }
 
   public void addVirtualFeature(EStructuralFeature f) {
-    this.virtualFeatures.add(f);
+    virtualFeatures.add(f);
+  }
+
+  public int getVirtualFeaturesSize() {
+    return virtualFeatures.size();
   }
 
   @Override

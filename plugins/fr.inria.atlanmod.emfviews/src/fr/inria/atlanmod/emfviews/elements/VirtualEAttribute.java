@@ -1,5 +1,6 @@
 package fr.inria.atlanmod.emfviews.elements;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
@@ -10,6 +11,7 @@ import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 public class VirtualEAttribute  extends DynamicEObjectImpl implements EAttribute, EStructuralFeature.Internal {
@@ -24,8 +26,6 @@ public class VirtualEAttribute  extends DynamicEObjectImpl implements EAttribute
   @Override
   public Object dynamicGet(int dynamicFeatureID) {
     EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
-
-    System.out.println(feature);
 
     if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
       return getName();
@@ -70,8 +70,7 @@ public class VirtualEAttribute  extends DynamicEObjectImpl implements EAttribute
 
   @Override
   public boolean isChangeable() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return true;
   }
 
   @Override
@@ -271,9 +270,63 @@ public class VirtualEAttribute  extends DynamicEObjectImpl implements EAttribute
     throw new UnsupportedOperationException();
   }
 
+  static class DumbSettingDelegate implements SettingDelegate {
+    static protected SettingDelegate INSTANCE = new DumbSettingDelegate();
+
+    @Override
+    public Setting dynamicSetting(InternalEObject owner, DynamicValueHolder settings,
+                                  int dynamicFeatureID) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Object dynamicGet(InternalEObject owner, DynamicValueHolder settings,
+                             int dynamicFeatureID, boolean resolve, boolean coreType) {
+      return settings.dynamicGet(dynamicFeatureID);
+    }
+
+    @Override
+    public void dynamicSet(InternalEObject owner, DynamicValueHolder settings,
+                           int dynamicFeatureID, Object newValue) {
+      settings.dynamicSet(dynamicFeatureID, newValue);
+    }
+
+    @Override
+    public boolean dynamicIsSet(InternalEObject owner, DynamicValueHolder settings,
+                                int dynamicFeatureID) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void dynamicUnset(InternalEObject owner, DynamicValueHolder settings,
+                             int dynamicFeatureID) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public NotificationChain dynamicInverseAdd(InternalEObject owner, DynamicValueHolder settings,
+                                               int dynamicFeatureID, InternalEObject otherEnd,
+                                               NotificationChain notifications) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public NotificationChain dynamicInverseRemove(InternalEObject owner,
+                                                  DynamicValueHolder settings,
+                                                  int dynamicFeatureID, InternalEObject otherEnd,
+                                                  NotificationChain notifications) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+  }
+
   @Override
   public SettingDelegate getSettingDelegate() {
-    throw new UnsupportedOperationException();
+    return DumbSettingDelegate.INSTANCE;
   }
 
   @Override
