@@ -13,71 +13,18 @@ import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
 import fr.inria.atlanmod.emfviews.core.EView;
 import fr.inria.atlanmod.emfviews.core.Viewpoint;
-import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
-import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
-import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
 
 public class TestEMFViews {
 
   // TODO: test failures
-
-  @Test
-  public void virtualEClass() {
-    EPackage P = EcoreFactory.eINSTANCE.createEPackage();
-    P.setName("P");
-
-    EClass A = EcoreFactory.eINSTANCE.createEClass();
-    A.setName("A");
-
-    P.getEClassifiers().add(A);
-
-    EAttribute a = EcoreFactory.eINSTANCE.createEAttribute();
-    a.setName("a");
-    a.setEType(EcorePackage.Literals.EINT);
-    A.getEStructuralFeatures().add(a);
-
-    VirtualEClass VA = new VirtualEClass(A);
-
-    EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
-    b.setName("b");
-    a.setEType(EcorePackage.Literals.EINT);
-
-    VirtualEAttribute Vb = new VirtualEAttribute(b);
-    VA.addVirtualFeature(Vb);
-
-    // Can access both features using the straight and reflective APIs
-    assertEquals(a, VA.getEStructuralFeature("a"));
-    assertEquals(Vb, VA.getEStructuralFeature("b"));
-
-    assertEquals(a, getFeature(VA, "a").get());
-    assertEquals(Vb, getFeature(VA, "b").get());
-
-    // Can link a model object to this virtual class
-    EObject o = EcoreUtil.create(A);
-    o.eSet(a, 1);
-
-    VirtualEObject VO = new VirtualEObject(o, VA);
-    VO.eSet(Vb, 2);
-
-    assertEquals(1, eGet(VO, "a"));
-    assertEquals(2, eGet(VO, "b"));
-
-    // and we can access virtual feature as well
-
-  }
 
   @Test
   public void threeModelComposition() throws IOException {

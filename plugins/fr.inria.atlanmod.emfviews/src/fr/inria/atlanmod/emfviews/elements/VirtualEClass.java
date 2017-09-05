@@ -123,8 +123,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public String getName() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getName();
   }
 
   @Override
