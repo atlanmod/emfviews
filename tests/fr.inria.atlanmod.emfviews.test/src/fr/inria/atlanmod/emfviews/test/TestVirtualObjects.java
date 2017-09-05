@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -20,6 +21,7 @@ import org.junit.Test;
 import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
+import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
 
 public class TestVirtualObjects {
 
@@ -27,6 +29,7 @@ public class TestVirtualObjects {
   // since a test might modify it.
   private EPackage P;
   private EClass A;
+  private EClass B;
   private EAttribute a;
 
   @Before
@@ -36,19 +39,23 @@ public class TestVirtualObjects {
 
     A = EcoreFactory.eINSTANCE.createEClass();
     A.setName("A");
-
     P.getEClassifiers().add(A);
 
     a = EcoreFactory.eINSTANCE.createEAttribute();
     a.setName("a");
     a.setEType(EcorePackage.Literals.EINT);
     A.getEStructuralFeatures().add(a);
+
+    B = EcoreFactory.eINSTANCE.createEClass();
+    B.setName("B");
+    P.getEClassifiers().add(B);
   }
 
   @After
   public void destroyConcreteModel() {
     P = null;
     A = null;
+    B = null;
     a = null;
   }
 
@@ -82,8 +89,8 @@ public class TestVirtualObjects {
   }
 
   @Test
-  public void addVirtualFeature() {
-    // Adding a virtual feature to a VirtualEClass
+  public void addVirtualAttribute() {
+    // Adding a virtual attribute to a VirtualEClass
 
     // Create the virtual class
     VirtualEClass VA = new VirtualEClass(A);
@@ -108,6 +115,41 @@ public class TestVirtualObjects {
 
     // And get it back
     assertEquals(2, eGet(VO, "b"));
+  }
+
+  @Test
+  public void addVirtualReference() {
+    // Adding a virtual reference to a VirtualEClass
+
+    // Create the virtual classes
+    VirtualEClass VA = new VirtualEClass(A);
+    VirtualEClass VB = new VirtualEClass(B);
+
+    // Add the new reference
+    EReference r = EcoreFactory.eINSTANCE.createEReference();
+    r.setName("AtoB");
+    r.setEType(VB);
+    r.setLowerBound(0);
+    r.setUpperBound(-1);
+    VirtualEReference Vr = new VirtualEReference(r);
+    VA.addVirtualFeature(Vr);
+
+    // Create one A and two Bs
+    EObject a = EcoreUtil.create(A);
+    EObject b1 = EcoreUtil.create(B);
+    EObject b2 = EcoreUtil.create(B);
+
+    VirtualEObject Va = new VirtualEObject(a, VA);
+    VirtualEObject Vb1 = new VirtualEObject(b1, VA);
+    VirtualEObject Vb2 = new VirtualEObject(b2, VA);
+
+    // Populate the feature with two Bs
+    EList<EObject> listOfB = eList(Va, "AtoB");
+    listOfB.add(Vb1);
+    listOfB.add(Vb2);
+
+    assertEquals(Vb1, eList(Va, "AtoB").get(0));
+    assertEquals(Vb2, eList(Va, "AtoB").get(1));
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

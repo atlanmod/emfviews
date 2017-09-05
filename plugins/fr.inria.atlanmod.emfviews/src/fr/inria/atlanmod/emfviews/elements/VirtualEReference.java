@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -14,13 +13,13 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
-public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute, EStructuralFeature.Internal {
+public class VirtualEReference  extends DynamicEObjectImpl implements EReference, EStructuralFeature.Internal {
 
-  private EAttribute concreteAttribute;
+  private EReference concreteReference;
 
-  public VirtualEAttribute(EAttribute concreteAttribute) {
-    super(EcorePackage.Literals.EATTRIBUTE);
-    this.concreteAttribute = concreteAttribute;
+  public VirtualEReference(EReference concreteReference) {
+    super(EcorePackage.Literals.EREFERENCE);
+    this.concreteReference = concreteReference;
   }
 
   @Override
@@ -70,7 +69,8 @@ public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute,
 
   @Override
   public boolean isChangeable() {
-    return true;
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -195,7 +195,7 @@ public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute,
 
   @Override
   public boolean isMany() {
-    return false;
+    return concreteReference.isMany();
   }
 
   @Override
@@ -230,7 +230,7 @@ public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute,
 
   @Override
   public String getName() {
-    return concreteAttribute.getName();
+    return concreteReference.getName();
   }
 
   @Override
@@ -252,23 +252,60 @@ public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute,
   }
 
   @Override
-  public boolean isID() {
+  public boolean isContainment() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void setID(boolean value) {
+  public void setContainment(boolean value) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public EDataType getEAttributeType() {
+  public boolean isContainer() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public boolean isResolveProxies() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setResolveProxies(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public EReference getEOpposite() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setEOpposite(EReference value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public EClass getEReferenceType() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public EList<EAttribute> getEKeys() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  // FIXME: same as in VirtualEAttribute, maybe factorize?
   static class DumbSettingDelegate implements SettingDelegate {
     static protected SettingDelegate INSTANCE = new DumbSettingDelegate();
 
@@ -354,25 +391,7 @@ public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute,
   }
 
   @Override
-  public boolean isResolveProxies() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isContainer() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isContainment() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EReference getEOpposite() {
+  public boolean isID() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
