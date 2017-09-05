@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.emfviews.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
@@ -150,6 +151,31 @@ public class TestVirtualObjects {
 
     assertEquals(Vb1, eList(Va, "AtoB").get(0));
     assertEquals(Vb2, eList(Va, "AtoB").get(1));
+  }
+
+  @Test
+  public void filterFeature() {
+    // Filter a virtual feature
+
+    // Add a feature on A
+    EAttribute a2 = EcoreFactory.eINSTANCE.createEAttribute();
+    a2.setName("a2");
+    a2.setEType(EcorePackage.Literals.EINT);
+    A.getEStructuralFeatures().add(a2);
+    VirtualEAttribute Va2 = new VirtualEAttribute(a2);
+
+    // Wrap A in a virtual class
+    VirtualEClass VA = new VirtualEClass(A);
+    VA.addVirtualFeature(a2);
+
+    // Ensure both features are here
+    assertTrue(getFeature(VA, "a").isPresent());
+    assertTrue(getFeature(VA, "a2").isPresent());
+
+    // Filter the first one
+    ((VirtualEAttribute) getFeature(VA, "a").get()).filtered = true;
+
+
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
