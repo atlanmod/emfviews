@@ -3,6 +3,7 @@ package fr.inria.atlanmod.emfviews.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Optional;
 
@@ -156,18 +157,16 @@ public class TestVirtualObjects {
 
   @Test
   public void filterFeature() {
-    // Filter a virtual feature
+    // Filter an existing feature
 
     // Add a feature on A
     EAttribute a2 = EcoreFactory.eINSTANCE.createEAttribute();
     a2.setName("a2");
     a2.setEType(EcorePackage.Literals.EINT);
     A.getEStructuralFeatures().add(a2);
-    VirtualEAttribute Va2 = new VirtualEAttribute(a2);
 
     // Wrap A in a virtual class
     VirtualEClass VA = new VirtualEClass(A);
-    VA.addVirtualFeature(Va2);
 
     // Ensure both features are here
     assertTrue(getFeature(VA, "a").isPresent());
@@ -179,6 +178,23 @@ public class TestVirtualObjects {
     // Now you can't see it
     assertEquals(Optional.empty(), getFeature(VA, "a"));
     assertTrue(getFeature(VA, "a2").isPresent());
+
+    // The feature is not available on model objects either
+    EObject o = EcoreUtil.create(A);
+    o.eSet(a, 1);
+    o.eSet(a2, 2);
+    VirtualEObject Vo = new VirtualEObject(o, VA);
+
+    try {
+      assertEquals(1, eGet(Vo, "a"));
+      fail("Expected eGet to fail on hidden feature");
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Feature 'a' does not exist on eClass", ex.getMessage());
+    }
+    assertEquals(2, eGet(Vo, "a2"));
+
+    // FIXME: this should fail, but doesn't
+    assertEquals(1, Vo.eGet(0, false, false));
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -190,7 +206,7 @@ public class TestVirtualObjects {
     EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
     // Throw immediately rather than waiting for other objects to complain
     // about the missing feature
-    if (f == null) throw new NullPointerException();
+    if (f == null) throw new IllegalArgumentException(String.format("Feature '%s' does not exist on eClass", featureName));
     return o.eGet(f);
   }
 

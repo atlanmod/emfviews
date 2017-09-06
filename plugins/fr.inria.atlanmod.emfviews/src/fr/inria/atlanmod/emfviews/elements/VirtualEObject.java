@@ -21,6 +21,9 @@ public class VirtualEObject extends DynamicEObjectImpl {
   @Override
   public Object dynamicGet(int dynamicFeatureID) {
     // If it's a concrete feature, delegate to the concrete object
+
+    // FIXME: this code is oblivious to filtered features
+
     EStructuralFeature feature = concreteEObject.eClass().getEStructuralFeature(dynamicFeatureID);
     if (feature != null) {
       return concreteEObject.eGet(feature);
