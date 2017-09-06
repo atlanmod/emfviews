@@ -1,6 +1,7 @@
 package fr.inria.atlanmod.emfviews.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
@@ -71,8 +72,8 @@ public class TestVirtualObjects {
     assertEquals(VA.getName(), A.getName());
 
     // Can access features using the EClass method and reflective API
-    assertEquals(a, VA.getEStructuralFeature("a"));
-    assertEquals(a, getFeature(VA, "a").get());
+    assertEquals("a", eGet(VA.getEStructuralFeature("a"), "name"));
+    assertEquals("a", eGet(getFeature(VA, "a").get(), "name"));
   }
 
   @Test
@@ -166,16 +167,18 @@ public class TestVirtualObjects {
 
     // Wrap A in a virtual class
     VirtualEClass VA = new VirtualEClass(A);
-    VA.addVirtualFeature(a2);
+    VA.addVirtualFeature(Va2);
 
     // Ensure both features are here
     assertTrue(getFeature(VA, "a").isPresent());
     assertTrue(getFeature(VA, "a2").isPresent());
 
     // Filter the first one
-    ((VirtualEAttribute) getFeature(VA, "a").get()).filtered = true;
+    ((VirtualEAttribute) getFeature(VA, "a").get()).setFiltered(true);
 
-
+    // Now you can't see it
+    assertEquals(Optional.empty(), getFeature(VA, "a"));
+    assertTrue(getFeature(VA, "a2").isPresent());
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

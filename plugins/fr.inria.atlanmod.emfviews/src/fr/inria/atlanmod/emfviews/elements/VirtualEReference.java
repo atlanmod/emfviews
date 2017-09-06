@@ -11,36 +11,14 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
-public class VirtualEReference  extends DynamicEObjectImpl implements EReference, EStructuralFeature.Internal {
+public class VirtualEReference extends VirtualFeature implements EReference, EStructuralFeature.Internal {
 
   private EReference concreteReference;
 
   public VirtualEReference(EReference concreteReference) {
     super(EcorePackage.Literals.EREFERENCE);
     this.concreteReference = concreteReference;
-  }
-
-  @Override
-  public Object dynamicGet(int dynamicFeatureID) {
-    EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
-
-    if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
-      return getName();
-    }
-
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void dynamicSet(int dynamicFeatureID, Object value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void dynamicUnset(int dynamicFeatureID) {
-    throw new UnsupportedOperationException();
   }
 
   @Override

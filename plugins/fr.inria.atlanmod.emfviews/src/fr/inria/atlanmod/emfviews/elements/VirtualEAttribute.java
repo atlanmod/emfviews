@@ -12,101 +12,14 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
-public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute, EStructuralFeature.Internal {
+public class VirtualEAttribute extends VirtualFeature implements EAttribute, EStructuralFeature.Internal {
 
   private EAttribute concreteAttribute;
 
   public VirtualEAttribute(EAttribute concreteAttribute) {
     super(EcorePackage.Literals.EATTRIBUTE);
     this.concreteAttribute = concreteAttribute;
-  }
-
-  @Override
-  public Object dynamicGet(int dynamicFeatureID) {
-    EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
-
-    if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
-      return getName();
-    }
-
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void dynamicSet(int dynamicFeatureID, Object value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void dynamicUnset(int dynamicFeatureID) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isTransient() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void setTransient(boolean value) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isVolatile() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void setVolatile(boolean value) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isChangeable() {
-    return true;
-  }
-
-  @Override
-  public void setChangeable(boolean value) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getDefaultValueLiteral() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void setDefaultValueLiteral(String value) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Object getDefaultValue() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void setDefaultValue(Object value) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean isUnsettable() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -373,6 +286,71 @@ public class VirtualEAttribute extends DynamicEObjectImpl implements EAttribute,
 
   @Override
   public EReference getEOpposite() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isTransient() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setTransient(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isVolatile() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setVolatile(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isChangeable() {
+    return true;
+  }
+
+  @Override
+  public void setChangeable(boolean value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public String getDefaultValueLiteral() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setDefaultValueLiteral(String value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Object getDefaultValue() {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void setDefaultValue(Object value) {
+    // TODO: Auto-generated method stub
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean isUnsettable() {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }

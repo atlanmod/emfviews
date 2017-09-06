@@ -1,7 +1,10 @@
 package fr.inria.atlanmod.emfviews.elements;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -19,14 +22,14 @@ import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   private EClass concreteEClass;
-  private List<EStructuralFeature> virtualFeatures = new ArrayList<>();
+  private List<VirtualFeature> virtualFeatures = new ArrayList<>();
 
   public VirtualEClass(EClass concreteEClass) {
     super(EcorePackage.Literals.ECLASS);
     this.concreteEClass = concreteEClass;
   }
 
-  public void addVirtualFeature(EStructuralFeature f) {
+  public void addVirtualFeature(VirtualFeature f) {
     virtualFeatures.add(f);
   }
 
@@ -186,9 +189,84 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     throw new UnsupportedOperationException();
   }
 
+  private Map<EStructuralFeature, VirtualFeature> concreteToVirtual = new HashMap<>();
+
+  protected VirtualFeature getVirtual(EStructuralFeature f) {
+    return concreteToVirtual.computeIfAbsent(f, (o) -> {
+      if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) o);
+      else if (o instanceof EReference) return new VirtualEReference((EReference) o);
+      else throw new IllegalArgumentException("Cannot virtualize feature " + f);
+    });
+  }
+
+  public class VirtualFeaturesList extends AbstractList<EStructuralFeature> implements EList<EStructuralFeature> {
+
+    private List<EStructuralFeature> concreteList;
+
+    public VirtualFeaturesList(List<EStructuralFeature> concreteList) {
+      this.concreteList = concreteList;
+    }
+
+    @Override
+    public EStructuralFeature get(int index) {
+      return concreteList.get(index);
+    }
+
+    @Override
+    public EStructuralFeature set(int index, EStructuralFeature element) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EStructuralFeature remove(int index) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void move(int newPosition, EStructuralFeature object) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EStructuralFeature move(int newPosition, int oldPosition) {
+      // TODO: Auto-generated method stub
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int size() {
+      return concreteList.size();
+    }
+
+  }
+
+  protected List<EStructuralFeature> getNonFilteredFeatures() {
+    // FIXME: an iterator would be best here
+
+    List<EStructuralFeature> elems = new ArrayList<>();
+
+    for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
+      VirtualFeature vf = getVirtual(f);
+      if (!vf.isFiltered()) {
+        elems.add(vf);
+      }
+    }
+
+    for (VirtualFeature f : virtualFeatures) {
+      if (!f.isFiltered()) {
+        elems.add(f);
+      }
+    }
+
+    return elems;
+  }
+
   @Override
   public EList<EStructuralFeature> getEStructuralFeatures() {
-    return new VirtualEList<>(concreteEClass.getEStructuralFeatures(), virtualFeatures);
+    return new VirtualFeaturesList(getNonFilteredFeatures());
   }
 
   @Override
