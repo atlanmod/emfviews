@@ -243,20 +243,29 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   }
 
-  protected List<EStructuralFeature> getNonFilteredFeatures() {
+  protected List<EStructuralFeature> getAllFeatures() {
     // FIXME: an iterator would be best here
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
-      VirtualFeature vf = getVirtual(f);
-      if (!vf.isFiltered()) {
-        elems.add(vf);
-      }
+      elems.add(getVirtual(f));
     }
 
     for (VirtualFeature f : virtualFeatures) {
-      if (!f.isFiltered()) {
+      elems.add(f);
+    }
+
+    return elems;
+  }
+
+  protected List<EStructuralFeature> getNonFilteredFeatures() {
+    // FIXME: an iterator would be best here
+
+    List<EStructuralFeature> elems = new ArrayList<>();
+
+    for (EStructuralFeature f : getAllFeatures()) {
+      if (!((VirtualFeature) f).isFiltered()) {
         elems.add(f);
       }
     }
@@ -393,6 +402,12 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   @Override
   public int getFeatureID(EStructuralFeature feature) {
     return getEStructuralFeatures().indexOf(feature);
+  }
+
+  // Return the ID of the feature, counting all concrete features and virtual features,
+  // including filtered ones.
+  public int getFeatureAbsoluteID(EStructuralFeature feature) {
+    return getAllFeatures().indexOf(feature);
   }
 
 }

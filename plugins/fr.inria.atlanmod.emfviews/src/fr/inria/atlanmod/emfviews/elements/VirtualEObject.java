@@ -20,23 +20,23 @@ public class VirtualEObject extends DynamicEObjectImpl {
 
   @Override
   public Object dynamicGet(int dynamicFeatureID) {
+    // Get the actual feature from our eClass, since it will take filtered features into account
+    EStructuralFeature feature = eClass().getEStructuralFeature(dynamicFeatureID);
+
+    if (feature == null) {
+      throw new IllegalArgumentException("Invalid feature ID " + dynamicFeatureID);
+    }
+
+    // Now get the absolute ID so we can use that to eGet into the concrete EClass
+    int absoluteFeatureID = ((VirtualEClass) eClass()).getFeatureAbsoluteID(feature);
+
+    EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(absoluteFeatureID);
     // If it's a concrete feature, delegate to the concrete object
-
-    // FIXME: this code is oblivious to filtered features
-
-    EStructuralFeature feature = concreteEObject.eClass().getEStructuralFeature(dynamicFeatureID);
-    if (feature != null) {
-      return concreteEObject.eGet(feature);
+    if (concreteFeature != null) {
+      return concreteEObject.eGet(concreteFeature);
     } else {
-      // If not, maybe it's a virtual feature?
-      feature = eClass().getEStructuralFeature(dynamicFeatureID);
-
-      if (feature == null) {
-        // If not, it's an invalid feature
-        throw new IllegalArgumentException("Invalid feature ID " + dynamicFeatureID);
-      }
-
-      int valueIndex = dynamicFeatureID - concreteEObject.eClass().getFeatureCount();
+      // If not then it's a virtual feature
+      int valueIndex = absoluteFeatureID - concreteEObject.eClass().getFeatureCount();
 
       // If it's a reference, make sure it's a list
       if (feature.isMany() && virtualValues[valueIndex] == null) {

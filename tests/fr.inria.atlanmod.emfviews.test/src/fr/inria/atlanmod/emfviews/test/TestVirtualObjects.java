@@ -193,8 +193,8 @@ public class TestVirtualObjects {
     }
     assertEquals(2, eGet(Vo, "a2"));
 
-    // FIXME: this should fail, but doesn't
-    assertEquals(1, Vo.eGet(0, false, false));
+    // Directly accessing the feature "0" returns "a2"
+    assertEquals(2, Vo.eGet(0, false, false));
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
