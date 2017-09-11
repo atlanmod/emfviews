@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -24,6 +25,7 @@ import org.junit.Test;
 import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
+import fr.inria.atlanmod.emfviews.elements.VirtualEPackage;
 import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
 
 public class TestVirtualObjects {
@@ -63,6 +65,72 @@ public class TestVirtualObjects {
   }
 
   @Test
+  public void virtualEPackage() {
+    // Wrapping an EPackage with VirtualEPackage, we can access its classifiers
+
+    // Create the virtual package
+    VirtualEPackage VP = new VirtualEPackage(P);
+
+    // The have the same name
+    assertEquals(VP.getName(), P.getName());
+
+    // Can access classifiers using the EPackage method and reflective API
+    assertEquals("A", eGet(VP.getEClassifier("A"), "name"));
+    assertEquals("A", eGet(getClassifier(VP, "A").get(), "name"));
+  }
+
+  @Test
+  public void addVirtualClass() {
+    // Adding a virtual class to a VirtualEPackage
+
+    // Create the virtual package
+    VirtualEPackage VP = new VirtualEPackage(P);
+
+    // Create the virtual class
+    EClass c = EcoreFactory.eINSTANCE.createEClass();
+    c.setName("C");
+    VirtualEClass Vc = new VirtualEClass(c);
+    VP.addVirtualClassifier(Vc);
+
+    EAttribute a = EcoreFactory.eINSTANCE.createEAttribute();
+    a.setName("a");
+    a.setEType(EcorePackage.Literals.EINT);
+    c.getEStructuralFeatures().add(a);
+
+    // Can access the classifier using the EPackage method and reflective API
+    assertEquals(Vc, VP.getEClassifier("C"));
+    assertEquals(Vc, getClassifier(VP, "C").get());
+
+    // Can create a virtual object with that new class as metaclass
+    // XXX: looks like we have to have an EPackage for C if we want to create an instance of it.
+    // Even manually creating a DynamicEObjectImpl with C as eClass ends up
+    // with a NPE in eGet if there is no EPackage.
+    EPackage dumbPackage = EcoreFactory.eINSTANCE.createEPackage();
+    dumbPackage.getEClassifiers().add(c);
+    VirtualEObject Vo = new VirtualEObject(EcoreUtil.create(c), Vc);
+
+    // Can access set and get the feature in there
+    Vo.eSet(0, 1);
+    assertEquals(1, Vo.eGet(0, false, false));
+    assertEquals(1, eGet(Vo, "a"));
+  }
+
+  @Test
+  public void filterClass() {
+    // Hide class from a virtual package
+
+    VirtualEPackage VP = new VirtualEPackage(P);
+
+    assertTrue(getClassifier(VP, "A").isPresent());
+    assertTrue(getClassifier(VP, "B").isPresent());
+
+    ((VirtualEClass) getClassifier(VP, "A").get()).setFiltered(true);
+
+    assertFalse(getClassifier(VP, "A").isPresent());
+    assertTrue(getClassifier(VP, "B").isPresent());
+  }
+
+  @Test
   public void virtualEClass() {
     // Wrapping an EClass with VirtualEClass, we can still access its features
 
@@ -78,6 +146,51 @@ public class TestVirtualObjects {
   }
 
   @Test
+  public void dynamicObject() {
+    // We can use a VirtualEClass with a DynamicEObject, but
+    // the dynamic object is oblivious to virtual and filtered features
+
+    VirtualEClass VA = new VirtualEClass(A);
+
+    {
+      DynamicEObjectImpl Do = new DynamicEObjectImpl(VA);
+
+      // Have to get the virtual feature instead of the concrete one for the reflexive calls
+      EStructuralFeature a = (EStructuralFeature) getFeature(VA, "a").get();
+
+      // But the dynamic object can access the feature
+      Do.eSet(a, 1);
+      assertEquals(1, Do.eGet(a));
+      assertEquals(1, eGet(Do, "a"));
+    }
+
+    // Create a virtual feature
+    EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
+    b.setName("b");
+    b.setEType(EcorePackage.Literals.EINT);
+    VirtualEAttribute Vb = new VirtualEAttribute(b);
+    VA.addVirtualFeature(Vb);
+
+    {
+      // Have to recreate the dynamic object because the eSettings object is
+      // fixed to the number of features of the metaclass and does not change dynamically
+      DynamicEObjectImpl Do = new DynamicEObjectImpl(VA);
+
+      // The dynamic object can access the virtual feature as well
+      Do.eSet(Vb, 2);
+      assertEquals(2, Do.eGet(Vb));
+      assertEquals(2, eGet(Do, "b"));
+
+      // But once we filter out a feature, dynamic object is lost
+      ((VirtualEAttribute) getFeature(VA, "a").get()).setFiltered(true);
+
+      // We should get 2, but we get null, because the feature "b" now has index 0
+      // in the eSettings object of dynamic object.
+      assertEquals(null, Do.eGet(Vb));
+    }
+  }
+
+  @Test
   public void virtualEObject() {
     // Wrapping an object with a VirtualEObject, we can still access its features
     VirtualEClass VA = new VirtualEClass(A);
@@ -89,6 +202,37 @@ public class TestVirtualObjects {
 
     // We can still access the value of the feature 'a'
     assertEquals(1, eGet(VO, "a"));
+
+    // Add a virtual feature 'b' to VA
+    EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
+    b.setName("b");
+    b.setEType(EcorePackage.Literals.EINT);
+    VirtualEAttribute Vb = new VirtualEAttribute(b);
+    VA.addVirtualFeature(Vb);
+
+    // The feature can be set and get on the same virtual object
+    VO.eSet(Vb, 2);
+    assertEquals(2, VO.eGet(Vb));
+    assertEquals(1, eGet(VO, "a"));
+
+    // Filter the first feature
+    ((VirtualEAttribute) getFeature(VA, "a").get()).setFiltered(true);
+
+    // We can still access the non-filtered feature 'b', through different means
+    assertEquals(2, VO.eGet(Vb));
+    assertEquals(2, VO.eGet(0, false, false));
+    assertEquals(2, eGet(VO, "b"));
+
+    // Accessing the 'a' feature fails
+    try {
+      assertEquals(1, eGet(VO, "a"));
+      fail("Expected eGet to fail");
+    } catch (IllegalArgumentException ex) {
+      assertEquals("Feature 'a' does not exist on eClass", ex.getMessage());
+    }
+
+    // The feature of index 0 is the feature 'b'
+    assertEquals(2, VO.eGet(0, false, false));
   }
 
   @Test

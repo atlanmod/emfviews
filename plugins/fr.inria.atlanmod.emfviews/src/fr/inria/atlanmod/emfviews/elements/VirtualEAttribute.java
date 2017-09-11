@@ -242,6 +242,12 @@ public class VirtualEAttribute extends VirtualFeature implements EAttribute, ESt
   }
 
   @Override
+  protected DynamicValueHolder eSettings() {
+    // This override avoids the creation of the eSettings object that we do not use
+    return this;
+  }
+
+  @Override
   public void setSettingDelegate(SettingDelegate settingDelegate) {
     // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();

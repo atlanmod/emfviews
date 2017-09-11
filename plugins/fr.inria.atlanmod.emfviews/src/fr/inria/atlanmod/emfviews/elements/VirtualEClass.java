@@ -44,8 +44,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     if (feature == EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES) {
       return getEStructuralFeatures();
     }
+    if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
+      return getName();
+    }
 
-    throw new UnsupportedOperationException();
+    throw new IllegalArgumentException("Unknown feature: " + feature);
   }
 
   @Override
@@ -56,6 +59,16 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   @Override
   public void dynamicUnset(int dynamicFeatureID) {
     throw new UnsupportedOperationException();
+  }
+
+  private boolean filtered;
+
+  public void setFiltered(boolean filtered) {
+    this.filtered = filtered;
+  }
+
+  public boolean isFiltered() {
+    return filtered;
   }
 
   @Override
