@@ -19,6 +19,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
       return getName();
     }
 
+    // @Correctness: reflexive access for other methods of the metaclass
     throw new UnsupportedOperationException();
   }
 

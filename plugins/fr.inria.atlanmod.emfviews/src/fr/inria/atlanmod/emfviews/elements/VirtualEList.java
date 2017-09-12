@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 
+// @Refactor: unused
 public class VirtualEList<E> extends AbstractList<E> implements EList<E> {
 
   private List<E> concreteList;

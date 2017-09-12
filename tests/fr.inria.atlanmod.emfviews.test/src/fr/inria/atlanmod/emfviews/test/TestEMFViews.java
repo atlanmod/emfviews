@@ -516,7 +516,7 @@ public class TestEMFViews {
   }
 
   Optional<EObject> getClassifier(EObject o, String classifierName) {
-    // XXX: we could memoize this like the EPackage one does, but for the tests it's okay
+    // @Optimize: we could memoize this like the EPackage one does, but for the tests it's okay
     for (EObject c : getClassifiers(o)) {
       if (classifierName.equals(eGet(c, "name"))) {
         return Optional.of(c);
@@ -526,7 +526,7 @@ public class TestEMFViews {
   }
 
   Optional<EObject> getFeature(EObject o, String featureName) {
-    // XXX: we could memoize this
+    // @Optimize: we could memoize this
     for (EObject c : getFeatures(o)) {
       if (featureName.equals(eGet(c, "name"))) {
         return Optional.of(c);

@@ -48,6 +48,8 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
       return getName();
     }
 
+    // @Correctness: reflexive access for other methods of the metaclass
+
     throw new IllegalArgumentException("Unknown feature: " + feature);
   }
 
@@ -257,7 +259,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   }
 
   protected List<EStructuralFeature> getAllFeatures() {
-    // FIXME: an iterator would be best here
+    // @Optimize: an iterator would be best here
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
@@ -273,7 +275,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   }
 
   protected List<EStructuralFeature> getNonFilteredFeatures() {
-    // FIXME: an iterator would be best here
+    // @Optimize: an iterator would be best here
 
     List<EStructuralFeature> elems = new ArrayList<>();
 

@@ -13,6 +13,18 @@ import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 public class VirtualEObject extends DynamicEObjectImpl {
 
   private EObject concreteEObject;
+
+  // Using a map here so we don't have to compute the feature ID.
+  // @Optimize: However, an array of feature values (like eSettings on the parent class) would
+  // probably take less memory.
+  //
+  // The main hassle with an array is that if we add a feature, we might need to realloc it.
+  // (Using an ArrayList might be equivalent)
+  //
+  // @Correctness: holding features as keys does not have the semantics as using ID.
+  // e.g., class A with feature 'a', 'b', 'c'.  Delete feature 'b', add feature 'd'.
+  // Now the ID mapping is: 'a': 0, 'c': 1, 'd': 2, so the virtual value associated to 'b' is
+  // now associated to 'c'.  With a map, that does not happen.
   private Map<EStructuralFeature, Object> virtualValues;
 
   public VirtualEObject(EObject concreteEObject, VirtualEClass virtualEClass) {
@@ -22,6 +34,8 @@ public class VirtualEObject extends DynamicEObjectImpl {
 
   protected Map<EStructuralFeature, Object> virtualValues() {
     if (virtualValues == null) {
+      // @Optimize: maybe a weak hashmap since we don't need to hold onto pairs
+      // if the key would be garbage collected?
       virtualValues = new HashMap<>();
     }
     return virtualValues;

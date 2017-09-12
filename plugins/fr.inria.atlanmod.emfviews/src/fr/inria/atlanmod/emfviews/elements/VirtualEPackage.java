@@ -27,7 +27,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   }
 
 
-  // FIXME: should we accept VirtualClassifier (a supertype) as well?
+  // @Correctness: should we accept VirtualClassifier (a supertype) as well?
   public void addVirtualClassifier(VirtualEClass f) {
     virtualClassifiers.add(f);
   }
@@ -43,6 +43,8 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     if (feature == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
       return getEClassifiers();
     }
+
+    // @Correctness: reflexive access for other methods of the metaclass
 
     throw new UnsupportedOperationException();
   }
@@ -117,7 +119,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     throw new UnsupportedOperationException();
   }
 
-  // FIXME: similar to VirtualEClass, factorize?
+  // @Refactor: similar to VirtualEClass
   private Map<EClassifier, VirtualEClass> concreteToVirtual = new HashMap<>();
 
   protected VirtualEClass getVirtual(EClassifier f) {
@@ -128,9 +130,9 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   }
 
 
-  // FIXME: quite close to getAllFeatures in VirtualEClass, factorize?
+  // @Refactor: quite close to getAllFeatures in VirtualEClass
   protected List<EClassifier> getAllClassifiers() {
-    // FIXME: an iterator would be best here
+    // @Optimize: an iterator would be best here
 
     List<EClassifier> elems = new ArrayList<>();
 
@@ -145,9 +147,9 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     return elems;
   }
 
-  // FIXME: quite close to getAllFeatures in VirtualEClass, factorize?
+  // @Refactor: quite close to getAllFeatures in VirtualEClass
   protected List<EClassifier> getNonFilteredClassifiers() {
-    // FIXME: an iterator would be best here
+    // @Optimize: an iterator would be best here
 
     List<EClassifier> elems = new ArrayList<>();
 

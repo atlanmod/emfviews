@@ -344,7 +344,7 @@ public class TestVirtualObjects {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Helpers for reducing the boilerplate of calling the reflective EMF API
 
-  // FIXME: lifted from TestEMFViews
+  // @Refactor: lifted from TestEMFViews
 
   Object eGet(EObject o, String featureName) {
     EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
@@ -355,7 +355,7 @@ public class TestVirtualObjects {
   }
 
   Optional<EObject> getClassifier(EObject o, String classifierName) {
-    // XXX: we could memoize this like the EPackage one does, but for the tests it's okay
+    // @Optimize we could memoize this like the EPackage one does, but for the tests it's okay
     for (EObject c : getClassifiers(o)) {
       if (classifierName.equals(eGet(c, "name"))) {
         return Optional.of(c);
@@ -365,7 +365,7 @@ public class TestVirtualObjects {
   }
 
   Optional<EObject> getFeature(EObject o, String featureName) {
-    // XXX: we could memoize this
+    // @Optimize we could memoize this
     for (EObject c : getFeatures(o)) {
       if (featureName.equals(eGet(c, "name"))) {
         return Optional.of(c);
