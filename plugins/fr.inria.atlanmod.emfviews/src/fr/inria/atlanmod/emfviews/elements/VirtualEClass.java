@@ -2,9 +2,9 @@ package fr.inria.atlanmod.emfviews.elements;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -23,6 +23,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   private EClass concreteEClass;
   private List<VirtualFeature> virtualFeatures = new ArrayList<>();
+  private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
 
   public VirtualEClass(EClass concreteEClass) {
     super(EcorePackage.Literals.ECLASS);
@@ -63,14 +64,16 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     throw new UnsupportedOperationException();
   }
 
-  private boolean filtered;
-
-  public void setFiltered(boolean filtered) {
-    this.filtered = filtered;
+  public void filterFeature(EStructuralFeature f) {
+    filteredFeatures.add(f);
   }
 
-  public boolean isFiltered() {
-    return filtered;
+  public void unfilterFeature(EStructuralFeature f) {
+    filteredFeatures.remove(f);
+  }
+
+  public boolean isFeatureFiltered(EStructuralFeature f) {
+    return filteredFeatures.contains(f);
   }
 
   @Override
@@ -204,16 +207,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     throw new UnsupportedOperationException();
   }
 
-  private Map<EStructuralFeature, VirtualFeature> concreteToVirtual = new HashMap<>();
-
-  protected VirtualFeature getVirtual(EStructuralFeature f) {
-    return concreteToVirtual.computeIfAbsent(f, (o) -> {
-      if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) o);
-      else if (o instanceof EReference) return new VirtualEReference((EReference) o);
-      else throw new IllegalArgumentException("Cannot virtualize feature " + f);
-    });
-  }
-
+  // @Refactor: I think a simple ECollections.unmodifiableEList is enough here
   public class VirtualFeaturesList extends AbstractList<EStructuralFeature> implements EList<EStructuralFeature> {
 
     private List<EStructuralFeature> concreteList;
@@ -264,7 +258,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
-      elems.add(getVirtual(f));
+      elems.add(f);
     }
 
     for (VirtualFeature f : virtualFeatures) {
@@ -280,7 +274,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : getAllFeatures()) {
-      if (!((VirtualFeature) f).isFiltered()) {
+      if (!isFeatureFiltered(f)) {
         elems.add(f);
       }
     }

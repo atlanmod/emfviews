@@ -1,14 +1,13 @@
 package fr.inria.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
@@ -20,12 +19,12 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   private EPackage concreteEPackage;
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
+  private Set<EClassifier> filteredClassifiers = new HashSet<>();
 
   public VirtualEPackage(EPackage concreteEPackage) {
     super(EcorePackage.Literals.EPACKAGE);
     this.concreteEPackage = concreteEPackage;
   }
-
 
   // @Correctness: should we accept VirtualClassifier (a supertype) as well?
   public void addVirtualClassifier(VirtualEClass f) {
@@ -34,6 +33,18 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   public int getVirtualClassifiersSize() {
     return virtualClassifiers.size();
+  }
+
+  public void filterClassifier(EClassifier c) {
+    filteredClassifiers.add(c);
+  }
+
+  public void unfilterClassifier(EClassifier c) {
+    filteredClassifiers.remove(c);
+  }
+
+  public boolean isClassifierFiltered(EClassifier c) {
+    return filteredClassifiers.contains(c);
   }
 
   @Override
@@ -119,17 +130,6 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     throw new UnsupportedOperationException();
   }
 
-  // @Refactor: similar to VirtualEClass
-  private Map<EClassifier, VirtualEClass> concreteToVirtual = new HashMap<>();
-
-  protected VirtualEClass getVirtual(EClassifier f) {
-    return concreteToVirtual.computeIfAbsent(f, (o) -> {
-      if (o instanceof EClass) return new VirtualEClass((EClass) o);
-      else throw new IllegalArgumentException("Cannot virtualize classifier" + f);
-    });
-  }
-
-
   // @Refactor: quite close to getAllFeatures in VirtualEClass
   protected List<EClassifier> getAllClassifiers() {
     // @Optimize: an iterator would be best here
@@ -137,7 +137,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     List<EClassifier> elems = new ArrayList<>();
 
     for (EClassifier f : concreteEPackage.getEClassifiers()) {
-      elems.add(getVirtual(f));
+      elems.add(f);
     }
 
     for (VirtualEClass f : virtualClassifiers) {
@@ -154,7 +154,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     List<EClassifier> elems = new ArrayList<>();
 
     for (EClassifier f : getAllClassifiers()) {
-      if (!((VirtualEClass) f).isFiltered()) {
+      if (!isClassifierFiltered(f)) {
         elems.add(f);
       }
     }

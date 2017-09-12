@@ -33,14 +33,4 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
     throw new UnsupportedOperationException();
   }
 
-  private boolean filtered;
-
-  public void setFiltered(boolean filtered) {
-    this.filtered = filtered;
-  }
-
-  public boolean isFiltered() {
-    return filtered;
-  }
-
 }

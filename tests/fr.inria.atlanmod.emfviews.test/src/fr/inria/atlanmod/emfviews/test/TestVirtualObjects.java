@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -124,7 +125,7 @@ public class TestVirtualObjects {
     assertTrue(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
 
-    ((VirtualEClass) getClassifier(VP, "A").get()).setFiltered(true);
+    VP.filterClassifier((EClassifier) getClassifier(VP, "A").get());
 
     assertFalse(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
@@ -182,7 +183,7 @@ public class TestVirtualObjects {
       assertEquals(2, eGet(Do, "b"));
 
       // But once we filter out a feature, dynamic object is lost
-      ((VirtualEAttribute) getFeature(VA, "a").get()).setFiltered(true);
+      VA.filterFeature((EStructuralFeature) getFeature(VA, "a").get());
 
       // We should get 2, but we get null, because the feature "b" now has index 0
       // in the eSettings object of dynamic object.
@@ -216,7 +217,7 @@ public class TestVirtualObjects {
     assertEquals(1, eGet(VO, "a"));
 
     // Filter the first feature
-    ((VirtualEAttribute) getFeature(VA, "a").get()).setFiltered(true);
+    VA.filterFeature((EStructuralFeature) getFeature(VA, "a").get());
 
     // We can still access the non-filtered feature 'b', through different means
     assertEquals(2, VO.eGet(Vb));
@@ -317,7 +318,7 @@ public class TestVirtualObjects {
     assertTrue(getFeature(VA, "a2").isPresent());
 
     // Filter the first one
-    ((VirtualEAttribute) getFeature(VA, "a").get()).setFiltered(true);
+    VA.filterFeature((EStructuralFeature) getFeature(VA, "a").get());
 
     // Now you can't see it
     assertEquals(Optional.empty(), getFeature(VA, "a"));
