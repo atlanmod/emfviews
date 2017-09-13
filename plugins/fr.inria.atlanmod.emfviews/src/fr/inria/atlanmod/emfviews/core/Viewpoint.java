@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -30,6 +31,7 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -39,6 +41,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
+import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
+import fr.inria.atlanmod.emfviews.elements.VirtualEPackage;
+import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
+import fr.inria.atlanmod.emfviews.elements.VirtualFeature;
 import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinks.Association;
 import fr.inria.atlanmod.emfviews.virtuallinks.Concept;
@@ -97,10 +104,12 @@ public class Viewpoint extends ResourceImpl {
     applyFilters(weavingModel.getFilters(), registry, !weavingModel.isWhitelist());
 
     // Create all New* elements first, and set their EMF attribute after to avoid any circular dependencies
-    syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
+    //syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
 
     // The virtualPackage holds all the new concepts, but is created only if
     // we have some concepts to put in it
+
+    /*
     List<VirtualConcept> concepts = weavingModel.getVirtualConcepts();
     if (!concepts.isEmpty()) {
       virtualPackage = createVirtualPackage(weavingModel.getName());
@@ -110,10 +119,10 @@ public class Viewpoint extends ResourceImpl {
 
     buildNewProperties(weavingModel.getVirtualProperties(), registry);
     buildNewAssociations(weavingModel.getVirtualAssociations(), registry);
-
+  */
     virtualContents = buildVirtualContents();
 
-    validateVirtualResourceSet(virtualResourceSet);
+    //validateVirtualResourceSet(virtualResourceSet);
   }
 
   @Override
@@ -173,11 +182,34 @@ public class Viewpoint extends ResourceImpl {
     return packages;
   }
 
+  // @Refactor: this could go to a subclass that only deals with the mapping of concrete to virtual objects
+  private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
+
+  public EObject getVirtual(EObject o) {
+    return concreteToVirtual.computeIfAbsent(o, obj -> {
+      // Don't virtualize virtual objects!
+      if (o instanceof VirtualEPackage
+          || o instanceof VirtualEClass
+          || o instanceof VirtualFeature)
+        return o;
+
+      // @Refactor: looks like a factory
+      if (o instanceof EPackage) return new VirtualEPackage((EPackage) o, this);
+      if (o instanceof EClass) return new VirtualEClass((EClass) o, this);
+      if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) o, this);
+      if (o instanceof EReference) return new VirtualEReference((EReference) o, this);
+
+      // @Correctness: maybe we should fail here
+      else return o;
+    });
+  }
+
   // Clone the packages into the given package registry
   private void cloneEPackages(List<EPackage> packages, EPackage.Registry registry) {
     for (EPackage p : packages) {
-      EPackage copy = EcoreUtil.copy(p);
-      registry.put(p.getNsURI(), copy);
+      // @Optimize: maybe we can avoid virtualizing everything early.  But delaying
+      // their creation could be tricky to get right.
+      registry.put(p.getNsURI(), getVirtual(p));
     }
   }
 
@@ -195,11 +227,18 @@ public class Viewpoint extends ResourceImpl {
       for (Filter f : filters) {
         ConcreteElement l = f.getTarget();
         EObject filteredElement = findEObject(l, registry);
-        EcoreUtil.delete(filteredElement);
+
+        if (filteredElement instanceof EStructuralFeature) {
+          EStructuralFeature feature = (EStructuralFeature) filteredElement;
+          ((VirtualEClass) feature.getEContainingClass()).filterFeature(feature);
+        } else if (filteredElement instanceof EClassifier) {
+          EClassifier classifier = (EClassifier) filteredElement;
+          ((VirtualEPackage) classifier.getEPackage()).filterClassifier(classifier);
+        }
       }
     } else {
       // Whitelisting: build a list of objects to delete, then delete them
-      // XXX: complexity is O(n*m) where n is the total numbef of EObjects
+      // @Optimize: complexity is O(n*m) where n is the total numbef of EObjects
       // in all packages from the registry, and m is the number of filters.
       List<EObject> filtered = new ArrayList<>();
 
@@ -209,7 +248,7 @@ public class Viewpoint extends ResourceImpl {
         while (it.hasNext()) {
           EObject o = it.next();
 
-          // XXX: Cannot target elements that do not have a name, so we leave them alone
+          // @Correctness: Cannot target elements that do not have a name, so we leave them alone
           // Crucially, EGenericType is not an ENamedElement, but is contained by
           // EStructuralFeature, and we don't want to delete those.
           if ((o instanceof ENamedElement)) {
@@ -223,7 +262,19 @@ public class Viewpoint extends ResourceImpl {
         }
       }
 
-      filtered.forEach(o -> EcoreUtil.delete(o));
+      for (EObject o : filtered) {
+        if (o instanceof EStructuralFeature) {
+          EStructuralFeature feature = (EStructuralFeature) o;
+          ((VirtualEClass) feature.getEContainingClass()).filterFeature(feature);
+        } else if (o instanceof EClassifier) {
+          EClassifier c = (EClassifier) o;
+          // @Correctness: the getVirtual is necessary because EEnum are not virtualized,
+          // and hence their getEPackage result will not be virtualized either.
+          // Maybe we should implement VirtualEClassifier after all?
+          VirtualEPackage p = (VirtualEPackage) getVirtual(c.getEPackage());
+          p.filterClassifier(c);
+        }
+      }
     }
   }
 
@@ -388,25 +439,21 @@ public class Viewpoint extends ResourceImpl {
     }
   }
 
-  private VirtualContents<EObject> buildVirtualContents() {
-    List<List<EObject>> sublists = new ArrayList<>();
+  private EList<EObject> buildVirtualContents() {
+    List<EObject> contents = new ArrayList<>();
 
     // The order of packages in the virtual contents matters. We use the order
     // specified by the contributing models, and the virtual package is last.
     for (EPackage p : contributingEPackages) {
-      List<EObject> oneOftheSublists = new ArrayList<>();
-      oneOftheSublists.add((EObject) virtualResourceSet.getPackageRegistry().get(p.getNsURI()));
-      sublists.add(oneOftheSublists);
+      contents.add((EObject) virtualResourceSet.getPackageRegistry().get(p.getNsURI()));
     }
 
     // The virtual package is not included if there are no new concepts.
     if (virtualPackage != null) {
-      List<EObject> l = new ArrayList<>();
-      l.add(virtualPackage);
-      sublists.add(l);
+      contents.add(virtualPackage);
     }
 
-    return new VirtualContents<>(this, sublists);
+    return ECollections.unmodifiableEList(contents);
   }
 
   private void validateVirtualResourceSet(ResourceSet r) {

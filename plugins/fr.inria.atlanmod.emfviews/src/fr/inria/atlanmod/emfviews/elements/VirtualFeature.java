@@ -12,13 +12,17 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
+import fr.inria.atlanmod.emfviews.core.Viewpoint;
+
 public abstract class VirtualFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal {
 
   private EStructuralFeature concreteFeature;
+  private Viewpoint viewpoint;
 
-  protected VirtualFeature(EClass eClass, EStructuralFeature concreteFeature) {
+  protected VirtualFeature(EClass eClass, EStructuralFeature concreteFeature, Viewpoint viewpoint) {
     super(eClass);
     this.concreteFeature = concreteFeature;
+    this.viewpoint = viewpoint;
   }
 
   @Override
@@ -28,9 +32,15 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
     if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
       return getName();
     }
+    if (feature == EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS) {
+      return getEAnnotations();
+    }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE) {
+      return getEGenericType();
+    }
 
     // @Correctness: reflexive access for other methods of the metaclass
-    throw new UnsupportedOperationException();
+    throw new IllegalArgumentException("Unknown feature: " + feature.getName());
   }
 
   @Override
@@ -134,8 +144,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EClass getEContainingClass() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return (EClass) viewpoint.getVirtual(concreteFeature.getEContainingClass());
   }
 
   @Override
@@ -223,8 +232,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EGenericType getEGenericType() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getEGenericType();
   }
 
   @Override
@@ -246,8 +254,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EList<EAnnotation> getEAnnotations() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getEAnnotations();
   }
 
   @Override

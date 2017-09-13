@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
@@ -18,16 +19,21 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
+
+import fr.inria.atlanmod.emfviews.core.Viewpoint;
 
 public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   private EClass concreteEClass;
   private List<VirtualFeature> virtualFeatures = new ArrayList<>();
   private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
+  private Viewpoint viewpoint;
 
-  public VirtualEClass(EClass concreteEClass) {
+  public VirtualEClass(EClass concreteEClass, Viewpoint viewpoint) {
     super(EcorePackage.Literals.ECLASS);
     this.concreteEClass = concreteEClass;
+    this.viewpoint = viewpoint;
   }
 
   public void addVirtualFeature(VirtualFeature f) {
@@ -48,10 +54,24 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
       return getName();
     }
+    if (feature == EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS) {
+      return getEAnnotations();
+    }
+    if (feature == EcorePackage.Literals.ECLASSIFIER__ETYPE_PARAMETERS) {
+      return getETypeParameters();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EOPERATIONS) {
+      return getEOperations();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EGENERIC_SUPER_TYPES) {
+      return getEGenericSuperTypes();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__ESUPER_TYPES) {
+      return getESuperTypes();
+    }
 
     // @Correctness: reflexive access for other methods of the metaclass
-
-    throw new IllegalArgumentException("Unknown feature: " + feature);
+    throw new IllegalArgumentException("Unknown feature: " + feature.getName());
   }
 
   @Override
@@ -120,14 +140,12 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public EPackage getEPackage() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return (EPackage) viewpoint.getVirtual(concreteEClass.getEPackage());
   }
 
   @Override
   public EList<ETypeParameter> getETypeParameters() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getETypeParameters();
   }
 
   @Override
@@ -155,8 +173,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public EList<EAnnotation> getEAnnotations() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getEAnnotations();
   }
 
   @Override
@@ -191,8 +208,16 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public EList<EClass> getESuperTypes() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    // @Optimize: is there any way to make this less wasteful?
+
+    // This is just a map(getVirtual)
+    List<EClass> types = new ArrayList<>();
+
+    for (EClass c : concreteEClass.getESuperTypes()) {
+      types.add((EClass) viewpoint.getVirtual(c));
+    }
+
+    return ECollections.unmodifiableEList(types);
   }
 
   @Override
@@ -207,58 +232,13 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     throw new UnsupportedOperationException();
   }
 
-  // @Refactor: I think a simple ECollections.unmodifiableEList is enough here
-  public class VirtualFeaturesList extends AbstractList<EStructuralFeature> implements EList<EStructuralFeature> {
-
-    private List<EStructuralFeature> concreteList;
-
-    public VirtualFeaturesList(List<EStructuralFeature> concreteList) {
-      this.concreteList = concreteList;
-    }
-
-    @Override
-    public EStructuralFeature get(int index) {
-      return concreteList.get(index);
-    }
-
-    @Override
-    public EStructuralFeature set(int index, EStructuralFeature element) {
-      // TODO: Auto-generated method stub
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public EStructuralFeature remove(int index) {
-      // TODO: Auto-generated method stub
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void move(int newPosition, EStructuralFeature object) {
-      // TODO: Auto-generated method stub
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public EStructuralFeature move(int newPosition, int oldPosition) {
-      // TODO: Auto-generated method stub
-      throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int size() {
-      return concreteList.size();
-    }
-
-  }
-
   protected List<EStructuralFeature> getAllFeatures() {
     // @Optimize: an iterator would be best here
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
-      elems.add(f);
+      elems.add((EStructuralFeature) viewpoint.getVirtual(f));
     }
 
     for (VirtualFeature f : virtualFeatures) {
@@ -284,13 +264,18 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public EList<EStructuralFeature> getEStructuralFeatures() {
-    return new VirtualFeaturesList(getNonFilteredFeatures());
+    // FIXME: the return value must be castable to EStructuralFeature.Setting
+
+    List<EStructuralFeature> cs = getNonFilteredFeatures();
+    return new EcoreEList.UnmodifiableEList<>(
+        this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
+
+    //return new VirtualFeaturesList(getNonFilteredFeatures());
   }
 
   @Override
   public EList<EGenericType> getEGenericSuperTypes() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getEGenericSuperTypes();
   }
 
   @Override
@@ -337,8 +322,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public EList<EOperation> getEOperations() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getEOperations();
   }
 
   @Override

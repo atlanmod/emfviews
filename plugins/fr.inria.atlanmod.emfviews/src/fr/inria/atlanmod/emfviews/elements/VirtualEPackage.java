@@ -8,22 +8,28 @@ import java.util.Set;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
+
+import fr.inria.atlanmod.emfviews.core.Viewpoint;
 
 public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   private EPackage concreteEPackage;
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
   private Set<EClassifier> filteredClassifiers = new HashSet<>();
+  private Viewpoint viewpoint;
 
-  public VirtualEPackage(EPackage concreteEPackage) {
+  public VirtualEPackage(EPackage concreteEPackage, Viewpoint viewpoint) {
     super(EcorePackage.Literals.EPACKAGE);
     this.concreteEPackage = concreteEPackage;
+    this.viewpoint = viewpoint;
   }
 
   // @Correctness: should we accept VirtualClassifier (a supertype) as well?
@@ -54,10 +60,18 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     if (feature == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
       return getEClassifiers();
     }
+    if (feature == EcorePackage.Literals.EPACKAGE__ESUBPACKAGES) {
+      return getESubpackages();
+    }
+    if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
+      return getName();
+    }
+    if (feature == EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS) {
+      return getEAnnotations();
+    }
 
     // @Correctness: reflexive access for other methods of the metaclass
-
-    throw new UnsupportedOperationException();
+    throw new IllegalArgumentException("Unknown feature: " + feature.getName());
   }
 
   @Override
@@ -84,8 +98,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EList<EAnnotation> getEAnnotations() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEPackage.getEAnnotations();
   }
 
   @Override
@@ -96,8 +109,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public String getNsURI() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEPackage.getNsURI();
   }
 
   @Override
@@ -137,7 +149,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     List<EClassifier> elems = new ArrayList<>();
 
     for (EClassifier f : concreteEPackage.getEClassifiers()) {
-      elems.add(f);
+      elems.add((EClassifier) viewpoint.getVirtual(f));
     }
 
     for (VirtualEClass f : virtualClassifiers) {
@@ -165,13 +177,18 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EList<EClassifier> getEClassifiers() {
-    return ECollections.unmodifiableEList(getNonFilteredClassifiers());
+    // FIXME: the return value must be castable to EStructuralFeature.Setting
+    List<EClassifier> cs = getNonFilteredClassifiers();
+    return new EcoreEList.UnmodifiableEList<>(
+        this, EcorePackage.Literals.EPACKAGE__ECLASSIFIERS, cs.size(), cs.toArray());
+
+    //return ECollections.unmodifiableEList(getNonFilteredClassifiers());
   }
 
   @Override
   public EList<EPackage> getESubpackages() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    // @Correctness: wrap each in VirtualEPackage
+    return concreteEPackage.getESubpackages();
   }
 
   @Override

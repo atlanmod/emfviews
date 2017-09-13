@@ -6,12 +6,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 
+import fr.inria.atlanmod.emfviews.core.Viewpoint;
+
 public class VirtualEReference extends VirtualFeature implements EReference {
 
-  public VirtualEReference(EReference concreteReference) {
-    super(EcorePackage.Literals.EREFERENCE, concreteReference);
+  public VirtualEReference(EReference concreteReference, Viewpoint viewpoint) {
+    super(EcorePackage.Literals.EREFERENCE, concreteReference, viewpoint);
   }
-
 
   @Override
   public void setContainment(boolean value) {
