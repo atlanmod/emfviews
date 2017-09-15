@@ -1,6 +1,5 @@
 package fr.inria.atlanmod.emfviews.elements;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +11,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -94,6 +94,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   public boolean isFeatureFiltered(EStructuralFeature f) {
     return filteredFeatures.contains(f);
+  }
+
+  @Override
+  public EObject eContainer() {
+    return viewpoint.getVirtual(concreteEClass.eContainer());
   }
 
   @Override

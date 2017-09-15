@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -51,6 +52,11 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
   @Override
   public void dynamicUnset(int dynamicFeatureID) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public EObject eContainer() {
+    return viewpoint.getVirtual(concreteFeature.eContainer());
   }
 
   @Override
