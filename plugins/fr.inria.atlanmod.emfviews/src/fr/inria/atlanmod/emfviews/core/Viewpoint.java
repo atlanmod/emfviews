@@ -185,23 +185,30 @@ public class Viewpoint extends ResourceImpl {
   // @Refactor: this could go to a subclass that only deals with the mapping of concrete to virtual objects
   private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
 
-  public EObject getVirtual(EObject o) {
-    return concreteToVirtual.computeIfAbsent(o, obj -> {
-      // Don't virtualize virtual objects!
-      if (o instanceof VirtualEPackage
-          || o instanceof VirtualEClass
-          || o instanceof VirtualFeature)
-        return o;
+  public <E extends EObject> E getVirtual(E o) {
+    // Don't virtualize virtual objects!
+    if (o instanceof VirtualEPackage
+        || o instanceof VirtualEClass
+        || o instanceof VirtualFeature)
+      return o;
 
+    @SuppressWarnings("unchecked") // trust me, we map E to E
+    E virtual = (E) concreteToVirtual.computeIfAbsent(o, obj -> {
       // @Refactor: looks like a factory
-      if (o instanceof EPackage) return new VirtualEPackage((EPackage) o, this);
-      if (o instanceof EClass) return new VirtualEClass((EClass) o, this);
-      if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) o, this);
-      if (o instanceof EReference) return new VirtualEReference((EReference) o, this);
+      if (o instanceof EPackage) return new VirtualEPackage((EPackage) obj, this);
+      if (o instanceof EClass) return new VirtualEClass((EClass) obj, this);
+      if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) obj, this);
+      if (o instanceof EReference) return new VirtualEReference((EReference) obj, this);
 
-      // @Correctness: maybe we should fail here
-      else return o;
+      return null;
     });
+
+    if (virtual != null) {
+      return virtual;
+    } else {
+      // @Correctness: maybe we should fail here
+      return o;
+    }
   }
 
   // Clone the packages into the given package registry
@@ -299,7 +306,7 @@ public class Viewpoint extends ResourceImpl {
     p.setName(name);
     p.setNsURI("http://inria/atlanmod/emfviews/viewpoint/" + name);
     p.setNsPrefix(name);
-    return p;
+    return getVirtual(p);
   }
 
   private void buildNewConcepts(List<VirtualConcept> concepts, EPackage virtualPackage,
