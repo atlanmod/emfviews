@@ -13,17 +13,15 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
-import fr.inria.atlanmod.emfviews.core.Viewpoint;
-
 public abstract class VirtualFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal {
 
   private EStructuralFeature concreteFeature;
-  private Viewpoint viewpoint;
+  private Virtualizer virtualizer;
 
-  protected VirtualFeature(EClass eClass, EStructuralFeature concreteFeature, Viewpoint viewpoint) {
+  protected VirtualFeature(EClass eClass, EStructuralFeature concreteFeature, Virtualizer virtualizer) {
     super(eClass);
     this.concreteFeature = concreteFeature;
-    this.viewpoint = viewpoint;
+    this.virtualizer = virtualizer;
   }
 
   @Override
@@ -38,6 +36,18 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
     }
     if (feature == EcorePackage.Literals.ETYPED_ELEMENT__EGENERIC_TYPE) {
       return getEGenericType();
+    }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__ETYPE) {
+      return getEType();
+    }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__LOWER_BOUND) {
+      return getLowerBound();
+    }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__UPPER_BOUND) {
+      return getUpperBound();
+    }
+    if (feature == EcorePackage.Literals.EREFERENCE__EOPPOSITE) {
+      return getEOpposite();
     }
 
     // @Correctness: reflexive access for other methods of the metaclass
@@ -56,7 +66,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EObject eContainer() {
-    return viewpoint.getVirtual(concreteFeature.eContainer());
+    return virtualizer.getVirtual(concreteFeature.eContainer());
   }
 
   @Override
@@ -150,7 +160,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EClass getEContainingClass() {
-    return (EClass) viewpoint.getVirtual(concreteFeature.getEContainingClass());
+    return virtualizer.getVirtual(concreteFeature.getEContainingClass());
   }
 
   @Override
@@ -191,8 +201,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public int getLowerBound() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getLowerBound();
   }
 
   @Override
@@ -203,8 +212,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public int getUpperBound() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getUpperBound();
   }
 
   @Override
@@ -226,8 +234,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EClassifier getEType() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getEType();
   }
 
   @Override
@@ -379,8 +386,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EReference getEOpposite() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return virtualizer.getVirtual(((EStructuralFeature.Internal) concreteFeature).getEOpposite());
   }
 
 }

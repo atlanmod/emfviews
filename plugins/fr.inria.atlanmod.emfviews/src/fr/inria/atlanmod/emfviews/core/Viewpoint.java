@@ -39,13 +39,13 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEPackage;
 import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
 import fr.inria.atlanmod.emfviews.elements.VirtualFeature;
+import fr.inria.atlanmod.emfviews.elements.Virtualizer;
 import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinks.Association;
 import fr.inria.atlanmod.emfviews.virtuallinks.Concept;
@@ -58,7 +58,7 @@ import fr.inria.atlanmod.emfviews.virtuallinks.VirtualElement;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
-public class Viewpoint extends ResourceImpl {
+public class Viewpoint extends ResourceImpl implements Virtualizer {
 
   private static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
   private static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
@@ -104,12 +104,12 @@ public class Viewpoint extends ResourceImpl {
     applyFilters(weavingModel.getFilters(), registry, !weavingModel.isWhitelist());
 
     // Create all New* elements first, and set their EMF attribute after to avoid any circular dependencies
-    //syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
+    syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
 
     // The virtualPackage holds all the new concepts, but is created only if
     // we have some concepts to put in it
 
-    /*
+
     List<VirtualConcept> concepts = weavingModel.getVirtualConcepts();
     if (!concepts.isEmpty()) {
       virtualPackage = createVirtualPackage(weavingModel.getName());
@@ -119,7 +119,7 @@ public class Viewpoint extends ResourceImpl {
 
     buildNewProperties(weavingModel.getVirtualProperties(), registry);
     buildNewAssociations(weavingModel.getVirtualAssociations(), registry);
-  */
+
     virtualContents = buildVirtualContents();
 
     //validateVirtualResourceSet(virtualResourceSet);
@@ -185,6 +185,7 @@ public class Viewpoint extends ResourceImpl {
   // @Refactor: this could go to a subclass that only deals with the mapping of concrete to virtual objects
   private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
 
+  @Override
   public <E extends EObject> E getVirtual(E o) {
     // Don't virtualize virtual objects!
     if (o instanceof VirtualEPackage
@@ -306,7 +307,7 @@ public class Viewpoint extends ResourceImpl {
     p.setName(name);
     p.setNsURI("http://inria/atlanmod/emfviews/viewpoint/" + name);
     p.setNsPrefix(name);
-    return getVirtual(p);
+    return p;
   }
 
   private void buildNewConcepts(List<VirtualConcept> concepts, EPackage virtualPackage,
@@ -314,7 +315,7 @@ public class Viewpoint extends ResourceImpl {
     for (VirtualConcept c : concepts) {
       EClass klass = (EClass) syntheticElements.get(c);
       klass.setName(c.getName());
-      virtualPackage.getEClassifiers().add(klass);
+      virtualPackage.getEClassifiers().add(getVirtual(klass));
 
       for (Concept e : c.getSuperConcepts()) {
         EObject sup = findEObject(e, registry);
@@ -327,7 +328,7 @@ public class Viewpoint extends ResourceImpl {
         EObject sub = findEObject(e, registry);
         if (!(sub instanceof EClass))
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
-        ((EClass) sub).getESuperTypes().add(klass);
+        ((VirtualEClass) getVirtual(sub)).addVirtualSuperType(klass);
       }
     }
   }
@@ -337,7 +338,7 @@ public class Viewpoint extends ResourceImpl {
       EObject parent = findEObject(p.getParent(), registry);
       if (!(parent instanceof EClass))
         throw EX("Parent of new property '%s' should be an EClass", p.getName());
-      EClass parentClass = (EClass) parent;
+      VirtualEClass parentClass = (VirtualEClass) getVirtual(parent);
 
       String n = p.getName();
       EAttribute attr = (EAttribute) syntheticElements.get(p);
@@ -349,7 +350,7 @@ public class Viewpoint extends ResourceImpl {
         attr.setLowerBound(0);
       else
         attr.setLowerBound(1);
-      parentClass.getEStructuralFeatures().add(attr);
+      parentClass.addVirtualFeature((VirtualEAttribute) getVirtual(attr));
     }
   }
 
@@ -384,7 +385,7 @@ public class Viewpoint extends ResourceImpl {
 
       ref.setContainment(a.isComposition());
 
-      ((EClass) source).getEStructuralFeatures().add(ref);
+      ((VirtualEClass) source).addVirtualFeature((VirtualFeature) getVirtual(ref));
     }
   }
 
@@ -457,7 +458,7 @@ public class Viewpoint extends ResourceImpl {
 
     // The virtual package is not included if there are no new concepts.
     if (virtualPackage != null) {
-      contents.add(virtualPackage);
+      contents.add(getVirtual(virtualPackage));
     }
 
     return ECollections.unmodifiableEList(contents);

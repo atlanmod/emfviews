@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
@@ -28,8 +30,43 @@ import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
 import fr.inria.atlanmod.emfviews.elements.VirtualEPackage;
 import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
+import fr.inria.atlanmod.emfviews.elements.VirtualFeature;
+import fr.inria.atlanmod.emfviews.elements.Virtualizer;
 
 public class TestVirtualObjects {
+
+  static class MockVirtualizer implements Virtualizer {
+
+    private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
+
+    @Override
+    public <E extends EObject> E getVirtual(E o) {
+      // Don't virtualize virtual objects!
+      if (o instanceof VirtualEPackage
+          || o instanceof VirtualEClass
+          || o instanceof VirtualFeature)
+        return o;
+
+      @SuppressWarnings("unchecked") // trust me, we map E to E
+      E virtual = (E) concreteToVirtual.computeIfAbsent(o, obj -> {
+        // @Refactor: looks like a factory
+        if (o instanceof EPackage) return new VirtualEPackage((EPackage) obj, this);
+        if (o instanceof EClass) return new VirtualEClass((EClass) obj, this);
+        if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) obj, this);
+        if (o instanceof EReference) return new VirtualEReference((EReference) obj, this);
+
+        return null;
+      });
+
+      if (virtual != null) {
+        return virtual;
+      } else {
+        // @Correctness: maybe we should fail here
+        return o;
+      }
+    }
+
+  }
 
   // Create a concrete metamodel before each test instead of one per class,
   // since a test might modify it.
@@ -37,6 +74,7 @@ public class TestVirtualObjects {
   private EClass A;
   private EClass B;
   private EAttribute a;
+  private Virtualizer virtualizer;
 
   @Before
   public void createConcreteModel() {
@@ -55,6 +93,8 @@ public class TestVirtualObjects {
     B = EcoreFactory.eINSTANCE.createEClass();
     B.setName("B");
     P.getEClassifiers().add(B);
+
+    virtualizer = new MockVirtualizer();
   }
 
   @After
@@ -63,6 +103,7 @@ public class TestVirtualObjects {
     A = null;
     B = null;
     a = null;
+    virtualizer = null;
   }
 
   @Test
@@ -70,7 +111,7 @@ public class TestVirtualObjects {
     // Wrapping an EPackage with VirtualEPackage, we can access its classifiers
 
     // Create the virtual package
-    VirtualEPackage VP = new VirtualEPackage(P);
+    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
 
     // The have the same name
     assertEquals(VP.getName(), P.getName());
@@ -85,12 +126,12 @@ public class TestVirtualObjects {
     // Adding a virtual class to a VirtualEPackage
 
     // Create the virtual package
-    VirtualEPackage VP = new VirtualEPackage(P);
+    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
 
     // Create the virtual class
     EClass c = EcoreFactory.eINSTANCE.createEClass();
     c.setName("C");
-    VirtualEClass Vc = new VirtualEClass(c);
+    VirtualEClass Vc = new VirtualEClass(c, virtualizer);
     VP.addVirtualClassifier(Vc);
 
     EAttribute a = EcoreFactory.eINSTANCE.createEAttribute();
@@ -120,7 +161,7 @@ public class TestVirtualObjects {
   public void filterClass() {
     // Hide class from a virtual package
 
-    VirtualEPackage VP = new VirtualEPackage(P);
+    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
 
     assertTrue(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
@@ -136,7 +177,7 @@ public class TestVirtualObjects {
     // Wrapping an EClass with VirtualEClass, we can still access its features
 
     // Create the virtual class
-    VirtualEClass VA = new VirtualEClass(A);
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
 
     // They have the same name
     assertEquals(VA.getName(), A.getName());
@@ -151,7 +192,7 @@ public class TestVirtualObjects {
     // We can use a VirtualEClass with a DynamicEObject, but
     // the dynamic object is oblivious to virtual and filtered features
 
-    VirtualEClass VA = new VirtualEClass(A);
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
 
     {
       DynamicEObjectImpl Do = new DynamicEObjectImpl(VA);
@@ -169,7 +210,7 @@ public class TestVirtualObjects {
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = new VirtualEAttribute(b);
+    VirtualEAttribute Vb = new VirtualEAttribute(b, virtualizer);
     VA.addVirtualFeature(Vb);
 
     {
@@ -194,7 +235,7 @@ public class TestVirtualObjects {
   @Test
   public void virtualEObject() {
     // Wrapping an object with a VirtualEObject, we can still access its features
-    VirtualEClass VA = new VirtualEClass(A);
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
 
     // Create the virtual object
     EObject o = EcoreUtil.create(A);
@@ -208,7 +249,7 @@ public class TestVirtualObjects {
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = new VirtualEAttribute(b);
+    VirtualEAttribute Vb = new VirtualEAttribute(b, virtualizer);
     VA.addVirtualFeature(Vb);
 
     // The feature can be set and get on the same virtual object
@@ -241,13 +282,13 @@ public class TestVirtualObjects {
     // Adding a virtual attribute to a VirtualEClass
 
     // Create the virtual class
-    VirtualEClass VA = new VirtualEClass(A);
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
 
     // Add a virtual attribute
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = new VirtualEAttribute(b);
+    VirtualEAttribute Vb = new VirtualEAttribute(b, virtualizer);
     VA.addVirtualFeature(Vb);
 
     // Can access the features using the EClass method and reflective API
@@ -270,8 +311,8 @@ public class TestVirtualObjects {
     // Adding a virtual reference to a VirtualEClass
 
     // Create the virtual classes
-    VirtualEClass VA = new VirtualEClass(A);
-    VirtualEClass VB = new VirtualEClass(B);
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VirtualEClass VB = new VirtualEClass(B, virtualizer);
 
     // Add the new reference
     EReference r = EcoreFactory.eINSTANCE.createEReference();
@@ -279,7 +320,7 @@ public class TestVirtualObjects {
     r.setEType(VB);
     r.setLowerBound(0);
     r.setUpperBound(-1);
-    VirtualEReference Vr = new VirtualEReference(r);
+    VirtualEReference Vr = new VirtualEReference(r, virtualizer);
     VA.addVirtualFeature(Vr);
 
     // Create one A and two Bs
@@ -311,7 +352,7 @@ public class TestVirtualObjects {
     A.getEStructuralFeatures().add(a2);
 
     // Wrap A in a virtual class
-    VirtualEClass VA = new VirtualEClass(A);
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
 
     // Ensure both features are here
     assertTrue(getFeature(VA, "a").isPresent());
@@ -340,6 +381,44 @@ public class TestVirtualObjects {
 
     // Directly accessing the feature "0" returns "a2"
     assertEquals(2, Vo.eGet(0, false, false));
+  }
+
+  @Test
+  public void addSuperclass() {
+    // Create a virtual class that has a virtual class as subclass
+
+    EClass sup = EcoreFactory.eINSTANCE.createEClass();
+    sup.setName("Sup");
+    VirtualEClass VSup = new VirtualEClass(sup, virtualizer);
+
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+
+    assertEquals(0, VA.getESuperTypes().size());
+
+    VA.addVirtualSuperType(VSup);
+    assertEquals(VSup, VA.getESuperTypes().get(0));
+  }
+
+  @Test
+  public void filterSuperclass() {
+    // A filtered superclass should not be visible
+
+    // Create the superclass
+    EClass sup = EcoreFactory.eINSTANCE.createEClass();
+    sup.setName("Sup");
+    VirtualEClass VSup = new VirtualEClass(sup, virtualizer);
+
+    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VA.addVirtualSuperType(VSup);
+
+    assertEquals(1, VA.getESuperTypes().size());
+
+    // Filter it through its package
+    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
+    VP.addVirtualClassifier(VSup);
+    VP.filterClassifier(VSup);
+
+    assertEquals(0, VA.getESuperTypes().size());
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

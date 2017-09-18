@@ -5,10 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EPackage;
@@ -24,12 +22,12 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   private EPackage concreteEPackage;
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
   private Set<EClassifier> filteredClassifiers = new HashSet<>();
-  private Viewpoint viewpoint;
+  private Virtualizer virtualizer;
 
-  public VirtualEPackage(EPackage concreteEPackage, Viewpoint viewpoint) {
+  public VirtualEPackage(EPackage concreteEPackage, Virtualizer virtualizer) {
     super(EcorePackage.Literals.EPACKAGE);
     this.concreteEPackage = concreteEPackage;
-    this.viewpoint = viewpoint;
+    this.virtualizer = virtualizer;
   }
 
   // @Correctness: should we accept VirtualClassifier (a supertype) as well?
@@ -149,7 +147,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     List<EClassifier> elems = new ArrayList<>();
 
     for (EClassifier f : concreteEPackage.getEClassifiers()) {
-      elems.add((EClassifier) viewpoint.getVirtual(f));
+      elems.add(virtualizer.getVirtual(f));
     }
 
     for (VirtualEClass f : virtualClassifiers) {

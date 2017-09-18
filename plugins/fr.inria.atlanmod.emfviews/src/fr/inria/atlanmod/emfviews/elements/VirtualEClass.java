@@ -19,21 +19,21 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.impl.ESuperAdapter;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
-import fr.inria.atlanmod.emfviews.core.Viewpoint;
-
-public class VirtualEClass extends DynamicEObjectImpl implements EClass {
+public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperAdapter.Holder {
 
   private EClass concreteEClass;
   private List<VirtualFeature> virtualFeatures = new ArrayList<>();
   private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
-  private Viewpoint viewpoint;
+  private List<EClass> virtualSuperTypes = new ArrayList<>();
+  private Virtualizer virtualizer;
 
-  public VirtualEClass(EClass concreteEClass, Viewpoint viewpoint) {
+  public VirtualEClass(EClass concreteEClass, Virtualizer virtualizer) {
     super(EcorePackage.Literals.ECLASS);
     this.concreteEClass = concreteEClass;
-    this.viewpoint = viewpoint;
+    this.virtualizer = virtualizer;
   }
 
   public void addVirtualFeature(VirtualFeature f) {
@@ -42,6 +42,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   public int getVirtualFeaturesSize() {
     return virtualFeatures.size();
+  }
+
+  public void addVirtualSuperType(EClass c) {
+    // @Correctness: we shouldn't be able to add the same EClass twice
+    virtualSuperTypes.add(c);
   }
 
   @Override
@@ -98,7 +103,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public EObject eContainer() {
-    return viewpoint.getVirtual(concreteEClass.eContainer());
+    return virtualizer.getVirtual(concreteEClass.eContainer());
   }
 
   @Override
@@ -145,7 +150,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
 
   @Override
   public EPackage getEPackage() {
-    return (EPackage) viewpoint.getVirtual(concreteEClass.getEPackage());
+    return virtualizer.getVirtual(concreteEClass.getEPackage());
   }
 
   @Override
@@ -219,7 +224,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     List<EClass> types = new ArrayList<>();
 
     for (EClass c : concreteEClass.getESuperTypes()) {
-      types.add((EClass) viewpoint.getVirtual(c));
+      types.add(virtualizer.getVirtual(c));
+    }
+
+    for (EClass c : virtualSuperTypes) {
+      types.add(virtualizer.getVirtual(c));
     }
 
     return ECollections.unmodifiableEList(types);
@@ -243,7 +252,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
-      elems.add((EStructuralFeature) viewpoint.getVirtual(f));
+      elems.add(virtualizer.getVirtual(f));
     }
 
     for (VirtualFeature f : virtualFeatures) {
@@ -406,6 +415,17 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass {
   // including filtered ones.
   public int getFeatureAbsoluteID(EStructuralFeature feature) {
     return getAllFeatures().indexOf(feature);
+  }
+
+  @Override
+  public ESuperAdapter getESuperAdapter() {
+    return ((ESuperAdapter.Holder) concreteEClass).getESuperAdapter();
+  }
+
+  @Override
+  public boolean isFrozen() {
+    // @Correctness: not sure whether we should delegate this
+    return ((ESuperAdapter.Holder) concreteEClass).isFrozen();
   }
 
 }
