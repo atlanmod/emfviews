@@ -88,7 +88,7 @@ public class TestEMFViews {
       // Check we only have "Process" instances in there (others are filtered
       // out), and that they each have a detailedProcess feature
       for (EObject e : ba.eContents()) {
-        assertEquals(e.eClass().getName(), "Process");
+        assertEquals("Process", e.eClass().getName());
         assertNotNull(e.eClass().getEStructuralFeature("detailedProcess"));
       }
 
@@ -163,7 +163,7 @@ public class TestEMFViews {
 
     // Make sure filtered features are absent
     for (EObject e : vba.eContents()) {
-      assertEquals(e.eClass().getName(), "Process");
+      assertEquals("Process", e.eClass().getName());
     }
 
     // If we have the original feature from the unfiltered model
