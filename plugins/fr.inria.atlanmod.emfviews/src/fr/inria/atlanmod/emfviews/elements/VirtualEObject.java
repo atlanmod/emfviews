@@ -2,10 +2,13 @@ package fr.inria.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.DynamicValueHolder;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
@@ -27,8 +30,11 @@ public class VirtualEObject extends DynamicEObjectImpl {
   // now associated to 'c'.  With a map, that does not happen.
   private Map<EStructuralFeature, Object> virtualValues;
 
-  public VirtualEObject(EObject concreteEObject, VirtualEClass virtualEClass) {
+  private Virtualizer virtualizer;
+
+  public VirtualEObject(EObject concreteEObject, VirtualEClass virtualEClass, Virtualizer virtualizer) {
     this.concreteEObject = concreteEObject;
+    this.virtualizer = virtualizer;
     eSetClass(virtualEClass);
   }
 
@@ -39,6 +45,26 @@ public class VirtualEObject extends DynamicEObjectImpl {
       virtualValues = new HashMap<>();
     }
     return virtualValues;
+  }
+
+  @Override
+  public EList<EObject> eContents() {
+    // @Optimize: maybe use an iterator?
+
+    List<EObject> contents = new ArrayList<>();
+
+    for (EReference ref : eClass().getEAllContainments()) {
+      if (ref.isMany()) {
+        List<EObject> list = (List<EObject>) eGet(ref);
+        for (EObject o : list) {
+          contents.add(virtualizer.getVirtual(o));
+        }
+      } else {
+        contents.add(virtualizer.getVirtual((EObject) eGet(ref)));
+      }
+    }
+
+    return ECollections.unmodifiableEList(contents);
   }
 
   @Override

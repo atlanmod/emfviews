@@ -35,6 +35,12 @@ import fr.inria.atlanmod.emfviews.elements.Virtualizer;
 
 public class TestVirtualObjects {
 
+  // TODO: add tests for EAllStructuralFeatures
+  // TODO: add a test for the situation where A and B are virtual classes
+  //       A and B both have virtual features, they should all appear
+  //       B.EAllStructuralFeatures
+
+
   static class MockVirtualizer implements Virtualizer {
 
     private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
@@ -149,7 +155,7 @@ public class TestVirtualObjects {
     // with a NPE in eGet if there is no EPackage.
     EPackage dumbPackage = EcoreFactory.eINSTANCE.createEPackage();
     dumbPackage.getEClassifiers().add(c);
-    VirtualEObject Vo = new VirtualEObject(EcoreUtil.create(c), Vc);
+    VirtualEObject Vo = new VirtualEObject(EcoreUtil.create(c), Vc, virtualizer);
 
     // Can access set and get the feature in there
     Vo.eSet(0, 1);
@@ -240,7 +246,7 @@ public class TestVirtualObjects {
     // Create the virtual object
     EObject o = EcoreUtil.create(A);
     o.eSet(a, 1);
-    VirtualEObject VO = new VirtualEObject(o, VA);
+    VirtualEObject VO = new VirtualEObject(o, VA, virtualizer);
 
     // We can still access the value of the feature 'a'
     assertEquals(1, eGet(VO, "a"));
@@ -297,7 +303,7 @@ public class TestVirtualObjects {
 
     // A virtual model object with the virtual class as metaclass can use the feature
     EObject o = EcoreUtil.create(A);
-    VirtualEObject VO = new VirtualEObject(o, VA);
+    VirtualEObject VO = new VirtualEObject(o, VA, virtualizer);
 
     // We can set a value
     VO.eSet(Vb, 2);
@@ -328,9 +334,9 @@ public class TestVirtualObjects {
     EObject b1 = EcoreUtil.create(B);
     EObject b2 = EcoreUtil.create(B);
 
-    VirtualEObject Va = new VirtualEObject(a, VA);
-    VirtualEObject Vb1 = new VirtualEObject(b1, VA);
-    VirtualEObject Vb2 = new VirtualEObject(b2, VA);
+    VirtualEObject Va = new VirtualEObject(a, VA, virtualizer);
+    VirtualEObject Vb1 = new VirtualEObject(b1, VA, virtualizer);
+    VirtualEObject Vb2 = new VirtualEObject(b2, VA, virtualizer);
 
     // Populate the feature with two Bs
     EList<EObject> listOfB = eList(Va, "AtoB");
@@ -369,7 +375,7 @@ public class TestVirtualObjects {
     EObject o = EcoreUtil.create(A);
     o.eSet(a, 1);
     o.eSet(a2, 2);
-    VirtualEObject Vo = new VirtualEObject(o, VA);
+    VirtualEObject Vo = new VirtualEObject(o, VA, virtualizer);
 
     try {
       assertEquals(1, eGet(Vo, "a"));

@@ -251,10 +251,17 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
+    for (EClass sup : getESuperTypes()) {
+      // Add all (filtered and non-filtered) features from supertypes
+      elems.addAll(((VirtualEClass) sup).getAllFeatures());
+    }
+
+    // Add all features from the concrete class
     for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
       elems.add(virtualizer.getVirtual(f));
     }
 
+    // Add virtual feature at the end
     for (VirtualFeature f : virtualFeatures) {
       elems.add(f);
     }
@@ -262,7 +269,25 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     return elems;
   }
 
-  protected List<EStructuralFeature> getNonFilteredFeatures() {
+  protected List<EStructuralFeature> getAllLocalFeatures() {
+    // @Optimize: an iterator would be best here
+
+    List<EStructuralFeature> elems = new ArrayList<>();
+
+    // Add all features from the concrete class
+    for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
+      elems.add(virtualizer.getVirtual(f));
+    }
+
+    // Add virtual feature at the end
+    for (VirtualFeature f : virtualFeatures) {
+      elems.add(f);
+    }
+
+    return elems;
+  }
+
+  protected List<EStructuralFeature> getVisibleFeatures() {
     // @Optimize: an iterator would be best here
 
     List<EStructuralFeature> elems = new ArrayList<>();
@@ -276,11 +301,25 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     return elems;
   }
 
+  protected List<EStructuralFeature> getVisibleLocalFeatures() {
+    // @Optimize: an iterator would be best here
+
+    List<EStructuralFeature> elems = new ArrayList<>();
+
+    for (EStructuralFeature f : getAllLocalFeatures()) {
+      if (!isFeatureFiltered(f)) {
+        elems.add(f);
+      }
+    }
+
+    return elems;
+  }
+
   @Override
   public EList<EStructuralFeature> getEStructuralFeatures() {
     // FIXME: the return value must be castable to EStructuralFeature.Setting
 
-    List<EStructuralFeature> cs = getNonFilteredFeatures();
+    List<EStructuralFeature> cs = getVisibleLocalFeatures();
     return new EcoreEList.UnmodifiableEList<>(
         this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
 
@@ -318,20 +357,37 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEAllReferences() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    List<EReference> references = new ArrayList<>();
+
+    for (EStructuralFeature f : getEAllStructuralFeatures()) {
+      if (f instanceof EReference) {
+        references.add((EReference) f);
+      }
+    }
+
+    return ECollections.unmodifiableEList(references);
   }
 
   @Override
   public EList<EReference> getEAllContainments() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    List<EReference> containments = new ArrayList<>();
+
+    for (EReference ref : getEAllReferences()) {
+      if (ref.isContainment()) {
+        containments.add(ref);
+      }
+    }
+
+    return ECollections.unmodifiableEList(containments);
   }
 
   @Override
   public EList<EStructuralFeature> getEAllStructuralFeatures() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    // FIXME: the return value must be castable to EStructuralFeature.Setting
+
+    List<EStructuralFeature> cs = getVisibleFeatures();
+    return new EcoreEList.UnmodifiableEList<>(
+        this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
   }
 
   @Override
