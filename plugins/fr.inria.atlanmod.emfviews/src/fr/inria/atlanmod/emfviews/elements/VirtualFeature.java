@@ -49,6 +49,9 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
     if (feature == EcorePackage.Literals.EREFERENCE__EOPPOSITE) {
       return getEOpposite();
     }
+    if (feature == EcorePackage.Literals.EREFERENCE__CONTAINMENT) {
+      return isContainment();
+    }
 
     // @Correctness: reflexive access for other methods of the metaclass
     throw new IllegalArgumentException("Unknown feature: " + feature.getName());
@@ -234,7 +237,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public EClassifier getEType() {
-    return concreteFeature.getEType();
+    return virtualizer.getVirtual(concreteFeature.getEType());
   }
 
   @Override
@@ -380,8 +383,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public boolean isContainment() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return ((EStructuralFeature.Internal) concreteFeature).isContainment();
   }
 
   @Override

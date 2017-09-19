@@ -379,8 +379,8 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
         if (!(o instanceof EReference))
           throw EX("Opposite of new association '%s' should be an EReference", a.getName());
         EReference opp = (EReference) o;
-        ref.setEOpposite(opp);
-        opp.setEOpposite(ref);
+        ((VirtualEReference) getVirtual(ref)).setVirtualOpposite(getVirtual(opp));
+        ((VirtualEReference) getVirtual(opp)).setVirtualOpposite(getVirtual(ref));
       }
 
       ref.setContainment(a.isComposition());
