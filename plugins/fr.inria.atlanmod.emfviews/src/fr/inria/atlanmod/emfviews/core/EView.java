@@ -13,7 +13,6 @@ package fr.inria.atlanmod.emfviews.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +20,14 @@ import java.util.Optional;
 import java.util.Properties;
 
 import org.eclipse.emf.common.util.ECollections;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
@@ -37,10 +39,13 @@ import fr.inria.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
-public class EView extends View implements Virtualizer {
+public class EView extends ResourceImpl implements Virtualizer {
 
   private Viewpoint viewpoint;
-  private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
+  private Map<EObject, EObject> concreteToVirtual;
+  private EList<EObject> virtualContents;
+  private Map<String, Resource> modelResources;
+  private List<String> contributingModelURIs;
 
   public EView(URI uri) {
     super(uri);
@@ -48,6 +53,10 @@ public class EView extends View implements Virtualizer {
 
   @Override
   public EObject getVirtual(EObject obj) {
+    if (concreteToVirtual == null) {
+      concreteToVirtual = new HashMap<>();
+    }
+
     return concreteToVirtual.computeIfAbsent(obj, o -> {
       // Don't virtualize virtual objects
       if (o instanceof VirtualEObject)
@@ -60,9 +69,9 @@ public class EView extends View implements Virtualizer {
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
 
-    properties = new Properties();
+    Properties properties = new Properties();
     properties.load(inputStream);
-    virtualResourceSet = new ResourceSetImpl();
+    ResourceSet virtualResourceSet = new ResourceSetImpl();
 
     viewpoint = new Viewpoint(URI.createURI(properties.getProperty("viewpoint")));
     viewpoint.load(null);
@@ -73,15 +82,18 @@ public class EView extends View implements Virtualizer {
       virtualResourceSet.getPackageRegistry().put(p.getNsURI(), p);
     }
 
-    Map<String, Resource> resources = new HashMap<>();
-
     // Load contributing models
+
+    contributingModelURIs = new ArrayList<>();
+    modelResources = new HashMap<>();
+
     for (String modelURI : properties.getProperty("contributingModels").split(",")) {
       Resource r = virtualResourceSet.getResource(URI.createURI(modelURI, true), true);
       if (r != null) {
         // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
         String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
-        resources.put(nsURI, r);
+        contributingModelURIs.add(nsURI);
+        modelResources.put(nsURI, r);
       } else {
         throw new NullPointerException("No such resource: " + modelURI);
       }
@@ -102,9 +114,6 @@ public class EView extends View implements Virtualizer {
     }
     */
 
-    //this.vLinkManager = new VirtualLinkManager(properties.getProperty("weavingModel"), this);
-    //vLinkManager.initialize();
-
     // Populate the model with values for virtual associations
     Resource weavingModelResource = new ResourceSetImpl().getResource(URI.createURI(properties.getProperty("weavingModel")), true);
     WeavingModel weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
@@ -116,13 +125,13 @@ public class EView extends View implements Virtualizer {
       // Get the NsURI of the metamodel
       String nsURI = elem.getModel().getURI();
       // Find the corresponding resource
-      Resource model = resources.get(nsURI);
+      Resource model = modelResources.get(nsURI);
       // Find the referenced element in that resource
       EObject source = model.getEObject(elem.getPath());
 
       // Do the same for the target
       elem = (ConcreteConcept) assoc.getTarget();
-      EObject target = resources.get(elem.getModel().getURI()).getEObject(elem.getPath());
+      EObject target = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
 
       // Find the feature for this virtual association
       EObject vSource = getVirtual(source);
@@ -140,7 +149,7 @@ public class EView extends View implements Virtualizer {
     // Prepare virtual contents
     List<EObject> contents = new ArrayList<>();
 
-    for (Resource r : resources.values()) {
+    for (Resource r : getContributingModels()) {
       for (EObject o : r.getContents()) {
         contents.add(getVirtual(o));
       }
@@ -148,4 +157,20 @@ public class EView extends View implements Virtualizer {
 
     virtualContents = ECollections.unmodifiableEList(contents);
   }
+
+  @Override
+  public EList<EObject> getContents() {
+    return virtualContents;
+  }
+
+  public List<Resource> getContributingModels() {
+    List<Resource> models = new ArrayList<>(contributingModelURIs.size());
+
+    for (String uri : contributingModelURIs) {
+      models.add(modelResources.get(uri));
+    }
+
+    return models;
+  }
+
 }
