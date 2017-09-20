@@ -56,11 +56,16 @@ public class VirtualEObject extends DynamicEObjectImpl {
     for (EReference ref : eClass().getEAllContainments()) {
       if (ref.isMany()) {
         List<EObject> list = (List<EObject>) eGet(ref);
-        for (EObject o : list) {
-          contents.add(virtualizer.getVirtual(o));
+        if (list != null) {
+          for (EObject o : list) {
+            contents.add(virtualizer.getVirtual(o));
+          }
         }
       } else {
-        contents.add(virtualizer.getVirtual((EObject) eGet(ref)));
+        EObject value = (EObject) eGet(ref);
+        if (value != null) {
+          contents.add(virtualizer.getVirtual(value));
+        }
       }
     }
 
@@ -84,10 +89,10 @@ public class VirtualEObject extends DynamicEObjectImpl {
       throw new IllegalArgumentException("Invalid feature ID " + dynamicFeatureID);
     }
 
-    // Now get the absolute ID so we can use that to eGet into the concrete EClass
-    int absoluteFeatureID = ((VirtualEClass) eClass()).getFeatureAbsoluteID(feature);
+    // Lookup the feature by name.  Names are unique, while IDs involve messy
+    // calculations that introduce bugs.
+    EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(feature.getName());
 
-    EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(absoluteFeatureID);
     // If it's a concrete feature, delegate to the concrete object
     if (concreteFeature != null) {
       return concreteEObject.eGet(concreteFeature);
@@ -103,6 +108,8 @@ public class VirtualEObject extends DynamicEObjectImpl {
 
   @Override
   public void dynamicSet(int dynamicFeatureID, Object value) {
+    // @Refactor: mostly the same flow as dynamicGet above
+
     // If it's a concrete feature, delegate to the concrete object
     EStructuralFeature feature = eClass().getEStructuralFeature(dynamicFeatureID);
 
@@ -110,9 +117,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
       throw new IllegalArgumentException("Invalid feature ID " + dynamicFeatureID);
     }
 
-    // Now get the absolute ID so we can use that to eSet into the concrete EClass
-    int absoluteFeatureID = ((VirtualEClass) eClass()).getFeatureAbsoluteID(feature);
-    EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(absoluteFeatureID);
+    EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(feature.getName());
     // If it's a concrete feature, delegate to the concrete object
     if (concreteFeature != null) {
       concreteEObject.eSet(concreteFeature, value);

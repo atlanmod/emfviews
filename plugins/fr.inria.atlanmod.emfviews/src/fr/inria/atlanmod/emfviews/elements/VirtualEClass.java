@@ -414,7 +414,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EStructuralFeature getEStructuralFeature(int featureID) {
-    EList<EStructuralFeature> features = getEStructuralFeatures();
+    EList<EStructuralFeature> features = getEAllStructuralFeatures();
     if (featureID < features.size()) {
       return features.get(featureID);
     } else {
@@ -424,7 +424,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EStructuralFeature getEStructuralFeature(String featureName) {
-    for (EStructuralFeature f : getEStructuralFeatures()) {
+    for (EStructuralFeature f : getEAllStructuralFeatures()) {
       if (featureName.equals(f.getName())) {
         return f;
       }
@@ -464,13 +464,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public int getFeatureID(EStructuralFeature feature) {
-    return getEStructuralFeatures().indexOf(feature);
-  }
-
-  // Return the ID of the feature, counting all concrete features and virtual features,
-  // including filtered ones.
-  public int getFeatureAbsoluteID(EStructuralFeature feature) {
-    return getAllFeatures().indexOf(feature);
+    return getEAllStructuralFeatures().indexOf(feature);
   }
 
   @Override

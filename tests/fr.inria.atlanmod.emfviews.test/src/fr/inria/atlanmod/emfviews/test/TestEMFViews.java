@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -37,6 +38,12 @@ public class TestEMFViews {
       Viewpoint v = new Viewpoint(URI
           .createURI("resources/viewpoints/three-model-composition/viewpoint.eviewpoint", true));
       v.load(null);
+
+      // We have access to all the contents
+      TreeIterator<EObject> it = v.getAllContents();
+      while (it.hasNext()) {
+        it.next();
+      }
 
       // FIXME: after this point, ideally we should just compare the Viewpoint
       // with a serialized "expected" result, or at the very least do an
@@ -73,6 +80,12 @@ public class TestEMFViews {
       EView v =
           new EView(URI.createURI("resources/views/three-model-composition/view.eview", true));
       v.load(null);
+
+      // We have access to all the contents
+      TreeIterator<EObject> it = v.getAllContents();
+      while (it.hasNext()) {
+        it.next();
+      }
 
       EList<EObject> l = v.getContents();
 

@@ -15,8 +15,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
-import fr.inria.atlanmod.emfviews.core.Viewpoint;
-
 public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   private EPackage concreteEPackage;
