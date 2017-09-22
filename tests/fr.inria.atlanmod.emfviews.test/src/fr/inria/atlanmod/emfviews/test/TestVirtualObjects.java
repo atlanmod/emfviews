@@ -39,7 +39,9 @@ public class TestVirtualObjects {
   // TODO: add a test for the situation where A and B are virtual classes
   //       A and B both have virtual features, they should all appear
   //       B.EAllStructuralFeatures
-
+  // TODO: add a test for accessing the contents of a reference through VirtualEObject
+  //       and make sure these are also VirtualEObject instances
+  // TODO: add a test for ensuring the eContents of a VirtualEObject are instances of VirtualEObject
 
   static class MockVirtualizer implements Virtualizer {
 
