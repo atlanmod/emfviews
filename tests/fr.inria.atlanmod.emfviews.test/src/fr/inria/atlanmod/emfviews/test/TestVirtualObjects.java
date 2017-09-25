@@ -5,8 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
@@ -25,55 +23,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.inria.atlanmod.emfviews.core.EView;
+import fr.inria.atlanmod.emfviews.core.Viewpoint;
 import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
 import fr.inria.atlanmod.emfviews.elements.VirtualEPackage;
 import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
-import fr.inria.atlanmod.emfviews.elements.VirtualFeature;
 import fr.inria.atlanmod.emfviews.elements.Virtualizer;
 
 public class TestVirtualObjects {
 
-  // TODO: add tests for EAllStructuralFeatures
-  // TODO: add a test for the situation where A and B are virtual classes
-  //       A and B both have virtual features, they should all appear
-  //       B.EAllStructuralFeatures
-  // TODO: add a test for accessing the contents of a reference through VirtualEObject
-  //       and make sure these are also VirtualEObject instances
-  // TODO: add a test for ensuring the eContents of a VirtualEObject are instances of VirtualEObject
-
   static class MockVirtualizer implements Virtualizer {
-
-    private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
-
     @Override
     public <E extends EObject> E getVirtual(E o) {
-      // Don't virtualize virtual objects!
-      if (o instanceof VirtualEPackage
-          || o instanceof VirtualEClass
-          || o instanceof VirtualFeature)
-        return o;
-
-      @SuppressWarnings("unchecked") // trust me, we map E to E
-      E virtual = (E) concreteToVirtual.computeIfAbsent(o, obj -> {
-        // @Refactor: looks like a factory
-        if (o instanceof EPackage) return new VirtualEPackage((EPackage) obj, this);
-        if (o instanceof EClass) return new VirtualEClass((EClass) obj, this);
-        if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) obj, this);
-        if (o instanceof EReference) return new VirtualEReference((EReference) obj, this);
-
-        return null;
-      });
-
-      if (virtual != null) {
-        return virtual;
-      } else {
-        // @Correctness: maybe we should fail here
-        return o;
-      }
+      return o;
     }
-
   }
 
   // Create a concrete metamodel before each test instead of one per class,
@@ -81,7 +46,9 @@ public class TestVirtualObjects {
   private EPackage P;
   private EClass A;
   private EClass B;
+  private EClass S;
   private EAttribute a;
+  private EAttribute s;
   private Virtualizer virtualizer;
 
   @Before
@@ -101,6 +68,16 @@ public class TestVirtualObjects {
     B = EcoreFactory.eINSTANCE.createEClass();
     B.setName("B");
     P.getEClassifiers().add(B);
+
+    S = EcoreFactory.eINSTANCE.createEClass();
+    S.setName("S");
+    S.getESuperTypes().add(A);
+    P.getEClassifiers().add(S);
+
+    s = EcoreFactory.eINSTANCE.createEAttribute();
+    s.setName("s");
+    s.setEType(EcorePackage.Literals.ESTRING);
+    S.getEStructuralFeatures().add(s);
 
     virtualizer = new MockVirtualizer();
   }
@@ -350,6 +327,40 @@ public class TestVirtualObjects {
   }
 
   @Test
+  public void concreteReference() {
+    // Accessing a concrete reference through a virtual object should return
+    // virtualized objects
+
+    // Add a reference from A to B
+    EReference r = EcoreFactory.eINSTANCE.createEReference();
+    r.setName("AtoB");
+    r.setEType(B);
+    r.setLowerBound(0);
+    r.setUpperBound(-1);
+    A.getEStructuralFeatures().add(r);
+
+    // Create one A and two Bs
+    EObject a = EcoreUtil.create(A);
+    EObject b1 = EcoreUtil.create(B);
+    EObject b2 = EcoreUtil.create(B);
+
+    // Populate the reference AtoB in a
+    EList<EObject> listOfB = eList(a, "AtoB");
+    listOfB.add(b1);
+    listOfB.add(b2);
+
+    // Ensure the b are virtualized when accessing the feature virtually
+    EView view = new EView();
+    view.setViewpoint(new Viewpoint());
+
+    VirtualEObject Va = (VirtualEObject) view.getVirtual(a);
+    listOfB = eList(Va, "AtoB");
+
+    assertEquals(virtualizer.getVirtual(b1), listOfB.get(0));
+    assertEquals(virtualizer.getVirtual(b2), listOfB.get(1));
+  }
+
+  @Test
   public void filterFeature() {
     // Filter an existing feature
 
@@ -411,22 +422,66 @@ public class TestVirtualObjects {
   public void filterSuperclass() {
     // A filtered superclass should not be visible
 
-    // Create the superclass
-    EClass sup = EcoreFactory.eINSTANCE.createEClass();
-    sup.setName("Sup");
-    VirtualEClass VSup = new VirtualEClass(sup, virtualizer);
+    Virtualizer virtualizer = new Viewpoint();
 
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
-    VA.addVirtualSuperType(VSup);
+    EClass VS = virtualizer.getVirtual(S);
 
-    assertEquals(1, VA.getESuperTypes().size());
+    // The superclass is visible at first
+    assertEquals(1, VS.getESuperTypes().size());
 
-    // Filter it through its package
-    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
-    VP.addVirtualClassifier(VSup);
-    VP.filterClassifier(VSup);
+    // Filter the superclass it through its package
+    VirtualEPackage VP = (VirtualEPackage) virtualizer.getVirtual(P);
+    VP.filterClassifier(virtualizer.getVirtual(A));
 
-    assertEquals(0, VA.getESuperTypes().size());
+    assertEquals(0, VS.getESuperTypes().size());
+  }
+
+  @Test
+  public void eAllFeatures() {
+    // Getting all features on a virtual class should get us the inherited features as well
+
+    Virtualizer virtualizer = new Viewpoint();
+
+    EClass VS = virtualizer.getVirtual(S);
+
+    EList<EStructuralFeature> fs = VS.getEAllStructuralFeatures();
+    assertEquals(2, fs.size());
+    assertEquals(virtualizer.getVirtual(a), fs.get(0));
+    assertEquals(virtualizer.getVirtual(s), fs.get(1));
+  }
+
+  @Test
+  public void inheritVirtualFeatures() {
+    // If a superclass has a virtual feature, it should appear in the eAllFeature feature
+    // of the subclass
+
+    Virtualizer virtualizer = new Viewpoint();
+
+    VirtualEClass VA = (VirtualEClass) virtualizer.getVirtual(A);
+    VirtualEClass VS = (VirtualEClass) virtualizer.getVirtual(S);
+
+    // Add the virtual feature on parent A
+    EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
+    b.setName("b");
+    b.setEType(EcorePackage.Literals.EINT);
+    VirtualEAttribute Vb = (VirtualEAttribute) virtualizer.getVirtual(b);
+    VA.addVirtualFeature(Vb);
+
+    // Add also a virtual feature on S
+    EAttribute c = EcoreFactory.eINSTANCE.createEAttribute();
+    c.setName("c");
+    c.setEType(EcorePackage.Literals.EINT);
+    VirtualEAttribute Vc = (VirtualEAttribute) virtualizer.getVirtual(c);
+    VS.addVirtualFeature(Vc);
+
+    // Check the feature is present
+    EList<EStructuralFeature> fs = VS.getEAllStructuralFeatures();
+
+    assertEquals(4, fs.size());
+    assertEquals(virtualizer.getVirtual(a), fs.get(0));
+    assertEquals(Vb, fs.get(1));
+    assertEquals(virtualizer.getVirtual(s), fs.get(2));
+    assertEquals(Vc, fs.get(3));
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

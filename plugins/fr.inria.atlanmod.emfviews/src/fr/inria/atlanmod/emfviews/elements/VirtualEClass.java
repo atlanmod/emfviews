@@ -220,7 +220,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   public EList<EClass> getESuperTypes() {
     // @Optimize: is there any way to make this less wasteful?
 
-    // This is just a map(getVirtual)
+    // This is just a map(getVirtual).filter(!filtered)
     List<EClass> types = new ArrayList<>();
 
     for (EClass c : concreteEClass.getESuperTypes()) {

@@ -47,8 +47,16 @@ public class EView extends ResourceImpl implements Virtualizer {
   private Map<String, Resource> modelResources;
   private List<String> contributingModelURIs;
 
+  public EView() {
+    super();
+  }
+
   public EView(URI uri) {
     super(uri);
+  }
+
+  public void setViewpoint(Viewpoint viewpoint) {
+    this.viewpoint = viewpoint;
   }
 
   @Override

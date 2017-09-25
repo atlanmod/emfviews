@@ -80,6 +80,10 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
   // in order to be able to use VirtualElement as LinkedElements in findEObject
   private Map<VirtualElement, EObject> syntheticElements;
 
+  public Viewpoint() {
+    super();
+  }
+
   public Viewpoint(URI uri) {
     super(uri);
   }
