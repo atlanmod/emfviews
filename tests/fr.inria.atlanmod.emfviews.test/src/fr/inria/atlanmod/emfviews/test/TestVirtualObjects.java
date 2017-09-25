@@ -34,13 +34,6 @@ import fr.inria.atlanmod.emfviews.elements.Virtualizer;
 
 public class TestVirtualObjects {
 
-  static class MockVirtualizer implements Virtualizer {
-    @Override
-    public <E extends EObject> E getVirtual(E o) {
-      return o;
-    }
-  }
-
   // Create a concrete metamodel before each test instead of one per class,
   // since a test might modify it.
   private EPackage P;
@@ -49,7 +42,8 @@ public class TestVirtualObjects {
   private EClass S;
   private EAttribute a;
   private EAttribute s;
-  private Virtualizer virtualizer;
+  private Viewpoint viewpoint;
+  private View view;
 
   @Before
   public void createConcreteModel() {
@@ -79,7 +73,9 @@ public class TestVirtualObjects {
     s.setEType(EcorePackage.Literals.ESTRING);
     S.getEStructuralFeatures().add(s);
 
-    virtualizer = new MockVirtualizer();
+    viewpoint = new Viewpoint();
+    view = new View();
+    view.setViewpoint(viewpoint);
   }
 
   @After
@@ -88,7 +84,8 @@ public class TestVirtualObjects {
     A = null;
     B = null;
     a = null;
-    virtualizer = null;
+    view = null;
+    viewpoint = null;
   }
 
   @Test
@@ -96,7 +93,7 @@ public class TestVirtualObjects {
     // Wrapping an EPackage with VirtualEPackage, we can access its classifiers
 
     // Create the virtual package
-    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
+    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
 
     // The have the same name
     assertEquals(VP.getName(), P.getName());
@@ -111,12 +108,12 @@ public class TestVirtualObjects {
     // Adding a virtual class to a VirtualEPackage
 
     // Create the virtual package
-    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
+    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
 
     // Create the virtual class
     EClass c = EcoreFactory.eINSTANCE.createEClass();
     c.setName("C");
-    VirtualEClass Vc = new VirtualEClass(c, virtualizer);
+    VirtualEClass Vc = (VirtualEClass) viewpoint.getVirtual(c);
     VP.addVirtualClassifier(Vc);
 
     EAttribute a = EcoreFactory.eINSTANCE.createEAttribute();
@@ -134,7 +131,7 @@ public class TestVirtualObjects {
     // with a NPE in eGet if there is no EPackage.
     EPackage dumbPackage = EcoreFactory.eINSTANCE.createEPackage();
     dumbPackage.getEClassifiers().add(c);
-    VirtualEObject Vo = new VirtualEObject(EcoreUtil.create(c), Vc, virtualizer);
+    VirtualEObject Vo = (VirtualEObject) view.getVirtual(EcoreUtil.create(c));
 
     // Can access set and get the feature in there
     Vo.eSet(0, 1);
@@ -146,7 +143,7 @@ public class TestVirtualObjects {
   public void filterClass() {
     // Hide class from a virtual package
 
-    VirtualEPackage VP = new VirtualEPackage(P, virtualizer);
+    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
 
     assertTrue(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
@@ -162,7 +159,7 @@ public class TestVirtualObjects {
     // Wrapping an EClass with VirtualEClass, we can still access its features
 
     // Create the virtual class
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
 
     // They have the same name
     assertEquals(VA.getName(), A.getName());
@@ -177,7 +174,7 @@ public class TestVirtualObjects {
     // We can use a VirtualEClass with a DynamicEObject, but
     // the dynamic object is oblivious to virtual and filtered features
 
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
 
     {
       DynamicEObjectImpl Do = new DynamicEObjectImpl(VA);
@@ -195,7 +192,7 @@ public class TestVirtualObjects {
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = new VirtualEAttribute(b, virtualizer);
+    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     {
@@ -220,12 +217,12 @@ public class TestVirtualObjects {
   @Test
   public void virtualEObject() {
     // Wrapping an object with a VirtualEObject, we can still access its features
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
 
     // Create the virtual object
     EObject o = EcoreUtil.create(A);
     o.eSet(a, 1);
-    VirtualEObject VO = new VirtualEObject(o, VA, virtualizer);
+    VirtualEObject VO = (VirtualEObject) view.getVirtual(o);
 
     // We can still access the value of the feature 'a'
     assertEquals(1, eGet(VO, "a"));
@@ -234,7 +231,7 @@ public class TestVirtualObjects {
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = new VirtualEAttribute(b, virtualizer);
+    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     // The feature can be set and get on the same virtual object
@@ -267,13 +264,13 @@ public class TestVirtualObjects {
     // Adding a virtual attribute to a VirtualEClass
 
     // Create the virtual class
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
 
     // Add a virtual attribute
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = new VirtualEAttribute(b, virtualizer);
+    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     // Can access the features using the EClass method and reflective API
@@ -282,7 +279,7 @@ public class TestVirtualObjects {
 
     // A virtual model object with the virtual class as metaclass can use the feature
     EObject o = EcoreUtil.create(A);
-    VirtualEObject VO = new VirtualEObject(o, VA, virtualizer);
+    VirtualEObject VO = (VirtualEObject) view.getVirtual(o);
 
     // We can set a value
     VO.eSet(Vb, 2);
@@ -296,8 +293,8 @@ public class TestVirtualObjects {
     // Adding a virtual reference to a VirtualEClass
 
     // Create the virtual classes
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
-    VirtualEClass VB = new VirtualEClass(B, virtualizer);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VB = (VirtualEClass) viewpoint.getVirtual(B);
 
     // Add the new reference
     EReference r = EcoreFactory.eINSTANCE.createEReference();
@@ -305,7 +302,7 @@ public class TestVirtualObjects {
     r.setEType(VB);
     r.setLowerBound(0);
     r.setUpperBound(-1);
-    VirtualEReference Vr = new VirtualEReference(r, virtualizer);
+    VirtualEReference Vr = (VirtualEReference) viewpoint.getVirtual(r);
     VA.addVirtualFeature(Vr);
 
     // Create one A and two Bs
@@ -313,9 +310,9 @@ public class TestVirtualObjects {
     EObject b1 = EcoreUtil.create(B);
     EObject b2 = EcoreUtil.create(B);
 
-    VirtualEObject Va = new VirtualEObject(a, VA, virtualizer);
-    VirtualEObject Vb1 = new VirtualEObject(b1, VA, virtualizer);
-    VirtualEObject Vb2 = new VirtualEObject(b2, VA, virtualizer);
+    VirtualEObject Va = (VirtualEObject) view.getVirtual(a);
+    VirtualEObject Vb1 = (VirtualEObject) view.getVirtual(b1);
+    VirtualEObject Vb2 = (VirtualEObject) view.getVirtual(b2);
 
     // Populate the feature with two Bs
     EList<EObject> listOfB = eList(Va, "AtoB");
@@ -350,14 +347,11 @@ public class TestVirtualObjects {
     listOfB.add(b2);
 
     // Ensure the b are virtualized when accessing the feature virtually
-    View view = new View();
-    view.setViewpoint(new Viewpoint());
-
     VirtualEObject Va = (VirtualEObject) view.getVirtual(a);
     listOfB = eList(Va, "AtoB");
 
-    assertEquals(virtualizer.getVirtual(b1), listOfB.get(0));
-    assertEquals(virtualizer.getVirtual(b2), listOfB.get(1));
+    assertEquals(view.getVirtual(b1), listOfB.get(0));
+    assertEquals(view.getVirtual(b2), listOfB.get(1));
   }
 
   @Test
@@ -371,7 +365,7 @@ public class TestVirtualObjects {
     A.getEStructuralFeatures().add(a2);
 
     // Wrap A in a virtual class
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
 
     // Ensure both features are here
     assertTrue(getFeature(VA, "a").isPresent());
@@ -388,7 +382,7 @@ public class TestVirtualObjects {
     EObject o = EcoreUtil.create(A);
     o.eSet(a, 1);
     o.eSet(a2, 2);
-    VirtualEObject Vo = new VirtualEObject(o, VA, virtualizer);
+    VirtualEObject Vo = (VirtualEObject) view.getVirtual(o);
 
     try {
       assertEquals(1, eGet(Vo, "a"));
@@ -408,9 +402,9 @@ public class TestVirtualObjects {
 
     EClass sup = EcoreFactory.eINSTANCE.createEClass();
     sup.setName("Sup");
-    VirtualEClass VSup = new VirtualEClass(sup, virtualizer);
+    VirtualEClass VSup = (VirtualEClass) viewpoint.getVirtual(sup);
 
-    VirtualEClass VA = new VirtualEClass(A, virtualizer);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
 
     assertEquals(0, VA.getESuperTypes().size());
 
@@ -422,16 +416,14 @@ public class TestVirtualObjects {
   public void filterSuperclass() {
     // A filtered superclass should not be visible
 
-    Virtualizer virtualizer = new Viewpoint();
-
-    EClass VS = virtualizer.getVirtual(S);
+    EClass VS = viewpoint.getVirtual(S);
 
     // The superclass is visible at first
     assertEquals(1, VS.getESuperTypes().size());
 
     // Filter the superclass it through its package
-    VirtualEPackage VP = (VirtualEPackage) virtualizer.getVirtual(P);
-    VP.filterClassifier(virtualizer.getVirtual(A));
+    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
+    VP.filterClassifier(viewpoint.getVirtual(A));
 
     assertEquals(0, VS.getESuperTypes().size());
   }
@@ -440,14 +432,12 @@ public class TestVirtualObjects {
   public void eAllFeatures() {
     // Getting all features on a virtual class should get us the inherited features as well
 
-    Virtualizer virtualizer = new Viewpoint();
-
-    EClass VS = virtualizer.getVirtual(S);
+    EClass VS = viewpoint.getVirtual(S);
 
     EList<EStructuralFeature> fs = VS.getEAllStructuralFeatures();
     assertEquals(2, fs.size());
-    assertEquals(virtualizer.getVirtual(a), fs.get(0));
-    assertEquals(virtualizer.getVirtual(s), fs.get(1));
+    assertEquals(viewpoint.getVirtual(a), fs.get(0));
+    assertEquals(viewpoint.getVirtual(s), fs.get(1));
   }
 
   @Test
@@ -455,32 +445,30 @@ public class TestVirtualObjects {
     // If a superclass has a virtual feature, it should appear in the eAllFeature feature
     // of the subclass
 
-    Virtualizer virtualizer = new Viewpoint();
-
-    VirtualEClass VA = (VirtualEClass) virtualizer.getVirtual(A);
-    VirtualEClass VS = (VirtualEClass) virtualizer.getVirtual(S);
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VS = (VirtualEClass) viewpoint.getVirtual(S);
 
     // Add the virtual feature on parent A
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = (VirtualEAttribute) virtualizer.getVirtual(b);
+    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     // Add also a virtual feature on S
     EAttribute c = EcoreFactory.eINSTANCE.createEAttribute();
     c.setName("c");
     c.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vc = (VirtualEAttribute) virtualizer.getVirtual(c);
+    VirtualEAttribute Vc = (VirtualEAttribute) viewpoint.getVirtual(c);
     VS.addVirtualFeature(Vc);
 
     // Check the feature is present
     EList<EStructuralFeature> fs = VS.getEAllStructuralFeatures();
 
     assertEquals(4, fs.size());
-    assertEquals(virtualizer.getVirtual(a), fs.get(0));
+    assertEquals(viewpoint.getVirtual(a), fs.get(0));
     assertEquals(Vb, fs.get(1));
-    assertEquals(virtualizer.getVirtual(s), fs.get(2));
+    assertEquals(viewpoint.getVirtual(s), fs.get(2));
     assertEquals(Vc, fs.get(3));
   }
 

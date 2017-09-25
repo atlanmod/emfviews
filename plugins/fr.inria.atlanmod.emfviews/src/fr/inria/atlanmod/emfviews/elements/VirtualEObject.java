@@ -95,7 +95,17 @@ public class VirtualEObject extends DynamicEObjectImpl {
 
     // If it's a concrete feature, delegate to the concrete object
     if (concreteFeature != null) {
-      return concreteEObject.eGet(concreteFeature);
+      // Make sure to virtualize whatever this returns
+      // @Refactor: this could be the job of the virtualizer, or at least it could expose
+      // a virtualizeList object.
+      Object value = concreteEObject.eGet(concreteFeature);
+      if (feature.isMany()) {
+        return new VirtualEList((EList<EObject>) value, virtualizer);
+      } else if (value instanceof EObject) {
+        return virtualizer.getVirtual((EObject) value);
+      } else {
+        return value;
+      }
     } else {
       // If it's a reference, make sure it's a list
       if (feature.isMany() && virtualValues().get(feature) == null) {

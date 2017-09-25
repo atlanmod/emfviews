@@ -38,7 +38,11 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   }
 
   public void filterClassifier(EClassifier c) {
-    filteredClassifiers.add(c);
+    if (getEClassifiers().contains(c)) {
+      filteredClassifiers.add(c);
+    } else {
+      throw new IllegalArgumentException("Classifier already filtered");
+    }
   }
 
   public void unfilterClassifier(EClassifier c) {

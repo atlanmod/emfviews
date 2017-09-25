@@ -112,8 +112,6 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
     // The virtualPackage holds all the new concepts, but is created only if
     // we have some concepts to put in it
-
-
     List<VirtualConcept> concepts = weavingModel.getVirtualConcepts();
     if (!concepts.isEmpty()) {
       virtualPackage = createVirtualPackage(weavingModel.getName());
@@ -319,7 +317,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     for (VirtualConcept c : concepts) {
       EClass klass = (EClass) syntheticElements.get(c);
       klass.setName(c.getName());
-      virtualPackage.getEClassifiers().add(getVirtual(klass));
+      virtualPackage.getEClassifiers().add(klass);
 
       for (Concept e : c.getSuperConcepts()) {
         EObject sup = findEObject(e, registry);

@@ -223,12 +223,22 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     // This is just a map(getVirtual).filter(!filtered)
     List<EClass> types = new ArrayList<>();
 
+    // @Assumption: this class and its super typs are part of the same package,
+    // so we can query it only once.
+    VirtualEPackage vpackage = (VirtualEPackage) getEPackage();
+
     for (EClass c : concreteEClass.getESuperTypes()) {
-      types.add(virtualizer.getVirtual(c));
+      EClass vc = virtualizer.getVirtual(c);
+      if (!vpackage.isClassifierFiltered(vc)) {
+        types.add(vc);
+      }
     }
 
     for (EClass c : virtualSuperTypes) {
-      types.add(virtualizer.getVirtual(c));
+      EClass vc = virtualizer.getVirtual(c);
+      if (!vpackage.isClassifierFiltered(vc)) {
+        types.add(vc);
+      }
     }
 
     return ECollections.unmodifiableEList(types);
