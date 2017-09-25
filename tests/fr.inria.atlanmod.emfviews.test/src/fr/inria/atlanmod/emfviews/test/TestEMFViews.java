@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
 
-import fr.inria.atlanmod.emfviews.core.EView;
+import fr.inria.atlanmod.emfviews.core.View;
 import fr.inria.atlanmod.emfviews.core.Viewpoint;
 
 public class TestEMFViews {
@@ -77,8 +77,8 @@ public class TestEMFViews {
 
     // Then, do the same for models (EView)
     {
-      EView v =
-          new EView(URI.createURI("resources/views/three-model-composition/view.eview", true));
+      View v =
+          new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
       v.load(null);
 
       // We have access to all the contents
@@ -119,7 +119,7 @@ public class TestEMFViews {
     // virtual model
 
     // Get the virtual model
-    EView v = new EView(URI.createURI("resources/views/three-model-composition/view.eview", true));
+    View v = new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
     v.load(null);
 
     // Get the concrete model loaded by the virtual model. We could also load
@@ -166,7 +166,7 @@ public class TestEMFViews {
     // We should not be able to access a filtered feature in any way.
 
     // Get the view
-    EView v = new EView(URI.createURI("resources/views/three-model-composition/view.eview", true));
+    View v = new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -199,7 +199,7 @@ public class TestEMFViews {
     // exists, but its EOpposite link should be null.
 
     // Create the view
-    EView v = new EView(URI.createURI("resources/views/minimal/view.eview", true));
+    View v = new View(URI.createURI("resources/views/minimal/view.eview", true));
     v.load(null);
 
     // The model has a many ref from A to B, and a single ref from B to A, but
@@ -225,7 +225,7 @@ public class TestEMFViews {
     // Creating a virtual association between two minimal models.
 
     // Create the view
-    EView v = new EView(URI.createURI("resources/views/minimal-assoc/view.eview", true));
+    View v = new View(URI.createURI("resources/views/minimal-assoc/view.eview", true));
     v.load(null);
 
     // Get the virtual model

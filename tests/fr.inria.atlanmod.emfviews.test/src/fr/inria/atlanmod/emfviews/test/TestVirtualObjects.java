@@ -23,7 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.inria.atlanmod.emfviews.core.EView;
+import fr.inria.atlanmod.emfviews.core.View;
 import fr.inria.atlanmod.emfviews.core.Viewpoint;
 import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
@@ -350,7 +350,7 @@ public class TestVirtualObjects {
     listOfB.add(b2);
 
     // Ensure the b are virtualized when accessing the feature virtually
-    EView view = new EView();
+    View view = new View();
     view.setViewpoint(new Viewpoint());
 
     VirtualEObject Va = (VirtualEObject) view.getVirtual(a);

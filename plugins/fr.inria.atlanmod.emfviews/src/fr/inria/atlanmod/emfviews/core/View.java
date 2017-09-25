@@ -39,7 +39,7 @@ import fr.inria.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
-public class EView extends ResourceImpl implements Virtualizer {
+public class View extends ResourceImpl implements Virtualizer {
 
   private Viewpoint viewpoint;
   private Map<EObject, EObject> concreteToVirtual;
@@ -47,11 +47,11 @@ public class EView extends ResourceImpl implements Virtualizer {
   private Map<String, Resource> modelResources;
   private List<String> contributingModelURIs;
 
-  public EView() {
+  public View() {
     super();
   }
 
-  public EView(URI uri) {
+  public View(URI uri) {
     super(uri);
   }
 
