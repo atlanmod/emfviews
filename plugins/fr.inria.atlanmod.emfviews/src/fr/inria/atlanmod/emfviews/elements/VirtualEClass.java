@@ -108,43 +108,36 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public String getInstanceClassName() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getInstanceClassName();
   }
 
   @Override
   public void setInstanceClassName(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public Class<?> getInstanceClass() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getInstanceClass();
   }
 
   @Override
   public void setInstanceClass(Class<?> value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public Object getDefaultValue() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getDefaultValue();
   }
 
   @Override
   public String getInstanceTypeName() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getInstanceTypeName();
   }
 
   @Override
   public void setInstanceTypeName(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -166,8 +159,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public int getClassifierID() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.getClassifierID();
   }
 
   @Override
@@ -177,7 +169,6 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public void setName(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -194,25 +185,21 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public boolean isAbstract() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.isAbstract();
   }
 
   @Override
   public void setAbstract(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isInterface() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEClass.isInterface();
   }
 
   @Override
   public void setInterface(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -246,14 +233,20 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EClass> getEAllSuperTypes() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    List<EClass> sups = new ArrayList<>();
+
+    for (EClass sup : getESuperTypes()) {
+      sups.addAll(sup.getEAllSuperTypes());
+    }
+
+    sups.addAll(getESuperTypes());
+
+    return ECollections.unmodifiableEList(sups);
   }
 
   @Override
   public EAttribute getEIDAttribute() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return virtualizer.getVirtual(concreteEClass.getEIDAttribute());
   }
 
   protected List<EStructuralFeature> getAllFeatures() {
@@ -349,24 +342,49 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EAttribute> getEAttributes() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    // @Optimize: use an iterator
+    List<EAttribute> attrs = new ArrayList<>();
+
+    for (EStructuralFeature f : getEStructuralFeatures()) {
+      if (f instanceof EAttribute) {
+        attrs.add((EAttribute) f);
+      }
+    }
+
+    return ECollections.unmodifiableEList(attrs);
   }
 
   @Override
   public EList<EAttribute> getEAllAttributes() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    // @Optimize: use an iterator
+    List<EAttribute> attrs = new ArrayList<>();
+
+    for (EStructuralFeature f : getEAllStructuralFeatures()) {
+      if (f instanceof EAttribute) {
+        attrs.add((EAttribute) f);
+      }
+    }
+
+    return ECollections.unmodifiableEList(attrs);
   }
 
   @Override
   public EList<EReference> getEReferences() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    // @Optimize: use an iterator
+    List<EReference> refs = new ArrayList<>();
+
+    for (EStructuralFeature f : getEStructuralFeatures()) {
+      if (f instanceof EReference) {
+        refs.add((EReference) f);
+      }
+    }
+
+    return ECollections.unmodifiableEList(refs);
   }
 
   @Override
   public EList<EReference> getEAllReferences() {
+    // @Optimize: use an iterator
     List<EReference> references = new ArrayList<>();
 
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
@@ -380,6 +398,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEAllContainments() {
+    // @Optimize: use an iterator
     List<EReference> containments = new ArrayList<>();
 
     for (EReference ref : getEAllReferences()) {

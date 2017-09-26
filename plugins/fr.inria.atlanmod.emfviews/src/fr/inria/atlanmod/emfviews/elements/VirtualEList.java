@@ -42,5 +42,4 @@ public class VirtualEList<E> extends AbstractList<E> implements EList<E> {
   public int size() {
     return concreteList.size();
   }
-
 }

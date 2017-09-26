@@ -120,8 +120,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public String getNsPrefix() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteEPackage.getNsPrefix();
   }
 
   @Override
@@ -187,14 +186,18 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EList<EPackage> getESubpackages() {
-    // @Correctness: wrap each in VirtualEPackage
-    return concreteEPackage.getESubpackages();
+    return new VirtualESettingList<>(concreteEPackage.getESubpackages(), virtualizer,
+        this, EcorePackage.Literals.EPACKAGE__ESUBPACKAGES);
   }
 
   @Override
   public EPackage getESuperPackage() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    EPackage sup = concreteEPackage.getESuperPackage();
+    if (sup != null) {
+      return virtualizer.getVirtual(sup);
+    } else {
+      return sup;
+    }
   }
 
   @Override

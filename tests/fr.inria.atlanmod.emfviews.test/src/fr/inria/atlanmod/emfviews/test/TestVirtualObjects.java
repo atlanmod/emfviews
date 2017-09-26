@@ -30,7 +30,6 @@ import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
 import fr.inria.atlanmod.emfviews.elements.VirtualEPackage;
 import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
-import fr.inria.atlanmod.emfviews.elements.Virtualizer;
 
 public class TestVirtualObjects {
 
@@ -90,18 +89,126 @@ public class TestVirtualObjects {
 
   @Test
   public void virtualEPackage() {
-    // Wrapping an EPackage with VirtualEPackage, we can access its classifiers
+    // Wrapping an EPackage with VirtualEPackage, we can still access its features
 
     // Create the virtual package
-    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
+    EPackage VP = viewpoint.getVirtual(P);
 
-    // The have the same name
-    assertEquals(VP.getName(), P.getName());
+    // Simple features
+    assertEquals(P.getName(), VP.getName());
+    assertEquals(P.getNsPrefix(), VP.getNsPrefix());
+    assertEquals(P.getNsURI(), VP.getNsURI());
+
+    // Create a super package to check sub/superpackage features consistency
+    EPackage SP = EcoreFactory.eINSTANCE.createEPackage();
+    SP.setName("SP");
+    SP.getESubpackages().add(P);
+    EPackage VSP = viewpoint.getVirtual(SP);
+
+    assertEquals(viewpoint.getVirtual(P.getESuperPackage()), VP.getESuperPackage());
+    assertEquals(1, VSP.getESubpackages().size());
+    assertEquals(VP, VSP.getESubpackages().get(0));
+
+    // eClassifiers feature
+    assertEquals(3, VP.getEClassifiers().size());
+    assertEquals(viewpoint.getVirtual(A), VP.getEClassifiers().get(0));
+    assertEquals(viewpoint.getVirtual(B), VP.getEClassifiers().get(1));
+    assertEquals(viewpoint.getVirtual(S), VP.getEClassifiers().get(2));
 
     // Can access classifiers using the EPackage method and reflective API
-    assertEquals("A", eGet(VP.getEClassifier("A"), "name"));
-    assertEquals("A", eGet(getClassifier(VP, "A").get(), "name"));
+    assertEquals(viewpoint.getVirtual(A), VP.getEClassifier("A"));
+    assertEquals(viewpoint.getVirtual(A), getClassifier(VP, "A").get());
+
+    // eContents should return all containment references, so classifiers
+    assertEquals(3, VP.eContents().size());
+    assertEquals(viewpoint.getVirtual(A), VP.eContents().get(0));
+    assertEquals(viewpoint.getVirtual(B), VP.eContents().get(1));
+    assertEquals(viewpoint.getVirtual(S), VP.eContents().get(2));
+
+    // For the super package, we only have the subpackage P as contents
+    assertEquals(1, VSP.eContents().size());
+    assertEquals(VP, VSP.eContents().get(0));
   }
+
+  @Test
+  public void virtualEClass() {
+    // Wrapping an EClass with VirtualEClass, we can still access its features
+
+    // Create the virtual class
+    EClass VA = viewpoint.getVirtual(A);
+
+    // Simple features
+    assertEquals(A.getName(), VA.getName());
+    assertEquals(VA.getInstanceClassName(), A.getInstanceClassName());
+    assertEquals(VA.getInstanceClass(), A.getInstanceClass());
+    assertEquals(VA.getInstanceTypeName(), A.getInstanceTypeName());
+    assertEquals(VA.getDefaultValue(), A.getDefaultValue());
+    assertEquals(VA.getClassifierID(), A.getClassifierID());
+    assertEquals(VA.isAbstract(), A.isAbstract());
+    assertEquals(VA.isInterface(), A.isInterface());
+
+    // eStructuralFeatures
+    assertEquals(1, VA.getEStructuralFeatures().size());
+    assertEquals(viewpoint.getVirtual(a), VA.getEStructuralFeatures().get(0));
+
+    // Can access features using the EClass method and reflective API
+    assertEquals("a", eGet(VA.getEStructuralFeature("a"), "name"));
+    assertEquals("a", eGet(getFeature(VA, "a").get(), "name"));
+
+    // eAllStructuralFeatures
+    EClass VS = viewpoint.getVirtual(S);
+    assertEquals(2, VS.getEAllStructuralFeatures().size());
+    assertEquals(viewpoint.getVirtual(a), VS.getEAllStructuralFeatures().get(0));
+    assertEquals(viewpoint.getVirtual(s), VS.getEAllStructuralFeatures().get(1));
+
+    // eSuperTypes
+    assertEquals(1, VS.getESuperTypes().size());
+    assertEquals(VA, VS.getESuperTypes().get(0));
+
+    // eAllSuperTypes
+    assertEquals(1, VS.getEAllSuperTypes().size());
+    A.getESuperTypes().add(B);
+    assertEquals(2, VS.getEAllSuperTypes().size());
+    assertEquals(viewpoint.getVirtual(B), VS.getEAllSuperTypes().get(0));
+    assertEquals(viewpoint.getVirtual(A), VS.getEAllSuperTypes().get(1));
+
+    // eReferences
+    assertEquals(0, VA.getEReferences().size());
+    EReference r = EcoreFactory.eINSTANCE.createEReference();
+    A.getEStructuralFeatures().add(r);
+    assertEquals(1, VA.getEReferences().size());
+    assertEquals(viewpoint.getVirtual(r), VA.getEReferences().get(0));
+
+    // eAllReferences
+    EReference r2 = EcoreFactory.eINSTANCE.createEReference();
+    S.getEStructuralFeatures().add(r2);
+    assertEquals(2, VS.getEAllReferences().size());
+    assertEquals(viewpoint.getVirtual(r), VS.getEAllReferences().get(0));
+    assertEquals(viewpoint.getVirtual(r2), VS.getEAllReferences().get(1));
+
+    // eAllContainments
+    r.setContainment(true);
+    assertEquals(1, VS.getEAllContainments().size());
+    assertEquals(viewpoint.getVirtual(r), VS.getEAllContainments().get(0));
+
+    // eAttributes
+    assertEquals(1, VA.getEAttributes().size());
+    assertEquals(viewpoint.getVirtual(a), VA.getEAttributes().get(0));
+
+    // eAllAttributes
+    assertEquals(2, VS.getEAllAttributes().size());
+    assertEquals(viewpoint.getVirtual(a), VS.getEAllAttributes().get(0));
+    assertEquals(viewpoint.getVirtual(s), VS.getEAllAttributes().get(1));
+
+    // eIDAttribute
+    assertEquals(A.getEIDAttribute(), VA.getEIDAttribute());
+
+    // ePackage
+    assertEquals(viewpoint.getVirtual(A.getEPackage()), VA.getEPackage());
+
+    assertEquals(A.getFeatureCount(), VA.getFeatureCount());
+  }
+
 
   @Test
   public void addVirtualClass() {
@@ -152,21 +259,6 @@ public class TestVirtualObjects {
 
     assertFalse(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
-  }
-
-  @Test
-  public void virtualEClass() {
-    // Wrapping an EClass with VirtualEClass, we can still access its features
-
-    // Create the virtual class
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
-
-    // They have the same name
-    assertEquals(VA.getName(), A.getName());
-
-    // Can access features using the EClass method and reflective API
-    assertEquals("a", eGet(VA.getEStructuralFeature("a"), "name"));
-    assertEquals("a", eGet(getFeature(VA, "a").get(), "name"));
   }
 
   @Test
@@ -426,18 +518,6 @@ public class TestVirtualObjects {
     VP.filterClassifier(viewpoint.getVirtual(A));
 
     assertEquals(0, VS.getESuperTypes().size());
-  }
-
-  @Test
-  public void eAllFeatures() {
-    // Getting all features on a virtual class should get us the inherited features as well
-
-    EClass VS = viewpoint.getVirtual(S);
-
-    EList<EStructuralFeature> fs = VS.getEAllStructuralFeatures();
-    assertEquals(2, fs.size());
-    assertEquals(viewpoint.getVirtual(a), fs.get(0));
-    assertEquals(viewpoint.getVirtual(s), fs.get(1));
   }
 
   @Test
