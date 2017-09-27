@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 public abstract class VirtualFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal {
 
-  private EStructuralFeature concreteFeature;
-  private Virtualizer virtualizer;
+  protected EStructuralFeature concreteFeature;
+  protected Virtualizer virtualizer;
 
   protected VirtualFeature(EClass eClass, EStructuralFeature concreteFeature, Virtualizer virtualizer) {
     super(eClass);
@@ -80,25 +80,21 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public boolean isTransient() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.isTransient();
   }
 
   @Override
   public void setTransient(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isVolatile() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.isVolatile();
   }
 
   @Override
   public void setVolatile(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -109,55 +105,46 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public void setChangeable(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public String getDefaultValueLiteral() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getDefaultValueLiteral();
   }
 
   @Override
   public void setDefaultValueLiteral(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public Object getDefaultValue() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getDefaultValue();
   }
 
   @Override
   public void setDefaultValue(Object value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isUnsettable() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.isUnsettable();
   }
 
   @Override
   public void setUnsettable(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isDerived() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.isDerived();
   }
 
   @Override
   public void setDerived(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -168,37 +155,35 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public int getFeatureID() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    // @Correctness: Should we return the featureID of the underlying class,
+    // or a feature ID that makes sense for this virtual feature?
+
+    // Currently, implement the former
+    return concreteFeature.getFeatureID();
   }
 
   @Override
   public Class<?> getContainerClass() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.getContainerClass();
   }
 
   @Override
   public boolean isOrdered() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.isOrdered();
   }
 
   @Override
   public void setOrdered(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isUnique() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.isUnique();
   }
 
   @Override
   public void setUnique(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -209,7 +194,6 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public void setLowerBound(int value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -220,7 +204,6 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public void setUpperBound(int value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -231,8 +214,7 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public boolean isRequired() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return concreteFeature.isRequired();
   }
 
   @Override
@@ -242,7 +224,6 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public void setEType(EClassifier value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -253,7 +234,6 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public void setEGenericType(EGenericType value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -264,7 +244,6 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public void setName(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -365,19 +344,16 @@ public abstract class VirtualFeature extends DynamicEObjectImpl implements EStru
 
   @Override
   public boolean isID() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isResolveProxies() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isContainer() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 

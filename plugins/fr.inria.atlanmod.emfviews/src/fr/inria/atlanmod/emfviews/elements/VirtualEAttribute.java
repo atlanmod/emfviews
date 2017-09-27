@@ -11,15 +11,18 @@ public class VirtualEAttribute extends VirtualFeature implements EAttribute {
   }
 
   @Override
+  public boolean isID() {
+    return ((EAttribute) concreteFeature).isID();
+  }
+
+  @Override
   public void setID(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EDataType getEAttributeType() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return ((EAttribute) concreteFeature).getEAttributeType();
   }
 
 }

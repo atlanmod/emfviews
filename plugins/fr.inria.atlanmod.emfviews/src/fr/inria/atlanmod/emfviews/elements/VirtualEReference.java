@@ -15,14 +15,22 @@ public class VirtualEReference extends VirtualFeature implements EReference {
   }
 
   @Override
+  public boolean isResolveProxies() {
+    return ((EReference) concreteFeature).isResolveProxies();
+  }
+
+  @Override
+  public boolean isContainer() {
+    return ((EReference) concreteFeature).isContainer();
+  }
+
+  @Override
   public void setContainment(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void setResolveProxies(boolean value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -37,13 +45,27 @@ public class VirtualEReference extends VirtualFeature implements EReference {
 
   @Override
   public EReference getEOpposite() {
-    return virtualOpposite;
+    EReference opposite;
+
+    if (virtualOpposite != null) {
+      opposite = virtualOpposite;
+    } else {
+      opposite = virtualizer.getVirtual(((EReference) concreteFeature).getEOpposite());
+    }
+
+    if (opposite != null) {
+      VirtualEClass owner = (VirtualEClass) opposite.getEContainingClass();
+      if (!owner.isFeatureFiltered(opposite)) {
+        return opposite;
+      }
+    }
+
+    return null;
   }
 
   @Override
   public EClass getEReferenceType() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return virtualizer.getVirtual(((EReference) concreteFeature).getEReferenceType());
   }
 
   @Override

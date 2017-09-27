@@ -209,6 +209,71 @@ public class TestVirtualObjects {
     assertEquals(A.getFeatureCount(), VA.getFeatureCount());
   }
 
+  @Test
+  public void virtualEFeature() {
+    EStructuralFeature va = viewpoint.getVirtual(a);
+
+    assertEquals(a.getName(), va.getName());
+
+    // ETypedElement features
+    assertEquals(a.isOrdered(), va.isOrdered());
+    assertEquals(a.isUnique(), va.isUnique());
+    assertEquals(a.getLowerBound(), va.getLowerBound());
+    assertEquals(a.getUpperBound(), va.getUpperBound());
+    assertEquals(a.isMany(), va.isMany());
+    assertEquals(a.isRequired(), va.isRequired());
+    assertEquals(viewpoint.getVirtual(a.getEType()), va.getEType());
+
+    // Test eType with an EClass instead of an EDataType
+    a.setEType(A);
+    assertEquals(viewpoint.getVirtual(a.getEType()), va.getEType());
+
+    // EStructuralFeature features
+    assertEquals(a.isChangeable(), va.isChangeable());
+    assertEquals(a.isVolatile(), va.isVolatile());
+    assertEquals(a.isTransient(), va.isTransient());
+    assertEquals(a.getDefaultValueLiteral(), va.getDefaultValueLiteral());
+    assertEquals(a.getDefaultValue(), va.getDefaultValue());
+    assertEquals(a.isUnsettable(), va.isUnsettable());
+    assertEquals(a.isDerived(), va.isDerived());
+    assertEquals(a.getFeatureID(), va.getFeatureID());
+    assertEquals(a.getContainerClass(), va.getContainerClass());
+    assertEquals(viewpoint.getVirtual(a.getEContainingClass()), va.getEContainingClass());
+  }
+
+  @Test
+  public void virtualEAttribute() {
+    EAttribute va = viewpoint.getVirtual(a);
+
+    // EAttribute features
+    assertEquals(a.isID(), va.isID());
+    assertEquals(a.getEAttributeType(), va.getEAttributeType());
+  }
+
+  @Test
+  public void virtualEReference() {
+    // Create the references
+    EReference r = EcoreFactory.eINSTANCE.createEReference();
+    r.setName("r");
+    r.setEType(A);
+    A.getEStructuralFeatures().add(r);
+
+    EReference r2 = EcoreFactory.eINSTANCE.createEReference();
+    r2.setName("r2");
+    r2.setEType(B);
+    A.getEStructuralFeatures().add(r2);
+
+    r.setEOpposite(r2);
+
+    EReference vr = viewpoint.getVirtual(r);
+
+    // EReference features
+    assertEquals(r.isContainment(), vr.isContainment());
+    assertEquals(r.isContainer(), vr.isContainer());
+    assertEquals(r.isResolveProxies(), vr.isResolveProxies());
+    assertEquals(viewpoint.getVirtual(r.getEReferenceType()), vr.getEReferenceType());
+    assertEquals(viewpoint.getVirtual(r.getEOpposite()), vr.getEOpposite());
+  }
 
   @Test
   public void addVirtualClass() {
@@ -314,7 +379,7 @@ public class TestVirtualObjects {
     // Create the virtual object
     EObject o = EcoreUtil.create(A);
     o.eSet(a, 1);
-    VirtualEObject VO = (VirtualEObject) view.getVirtual(o);
+    EObject VO = view.getVirtual(o);
 
     // We can still access the value of the feature 'a'
     assertEquals(1, eGet(VO, "a"));
@@ -336,7 +401,7 @@ public class TestVirtualObjects {
 
     // We can still access the non-filtered feature 'b', through different means
     assertEquals(2, VO.eGet(Vb));
-    assertEquals(2, VO.eGet(0, false, false));
+    assertEquals(2, ((VirtualEObject) VO).eGet(0, false, false));
     assertEquals(2, eGet(VO, "b"));
 
     // Accessing the 'a' feature fails
@@ -348,7 +413,7 @@ public class TestVirtualObjects {
     }
 
     // The feature of index 0 is the feature 'b'
-    assertEquals(2, VO.eGet(0, false, false));
+    assertEquals(2, ((VirtualEObject) VO).eGet(0, false, false));
   }
 
   @Test
