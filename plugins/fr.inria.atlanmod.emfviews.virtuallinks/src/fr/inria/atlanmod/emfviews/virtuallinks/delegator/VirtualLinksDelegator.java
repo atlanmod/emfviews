@@ -24,7 +24,7 @@ public class VirtualLinksDelegator {
   IVirtualLinksDelegate virtualLinksDelegate;
   String linksDslFile;
 
-  public VirtualLinksDelegator(String linksDslFile) throws CoreException {
+  public VirtualLinksDelegator(String linksDslFile) {
 
     this.linksDslFile = linksDslFile;
     String dslExtension = linksDslFile.substring(linksDslFile.lastIndexOf('.') + 1);
@@ -46,13 +46,17 @@ public class VirtualLinksDelegator {
     }
     // FIXME: what if there is no matching extension?
     IConfigurationElement[] matchingConfigElements = matchingExtension.getConfigurationElements();
-    virtualLinksDelegate =
-        (IVirtualLinksDelegate) matchingConfigElements[0].createExecutableExtension("class");
+    try {
+      virtualLinksDelegate =
+          (IVirtualLinksDelegate) matchingConfigElements[0].createExecutableExtension("class");
+    } catch (CoreException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public void createVirtualModelLinks(URI linksModelURI,
                                       List<Resource> contributingModels) throws Exception {
-
     virtualLinksDelegate.createVirtualModelLinks(linksDslFile, linksModelURI, contributingModels);
   }
 

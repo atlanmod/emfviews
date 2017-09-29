@@ -114,20 +114,17 @@ public class View extends ResourceImpl implements Virtualizer {
       }
     }
 
-    /*
     Optional<String> matchingModelPath = viewpoint.getMatchingModelPath();
     if (matchingModelPath.isPresent() && !matchingModelPath.get().isEmpty()) {
-      // XXX: we could mark the weaving model file as derived
-      try {
-        VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelPath.get());
+      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelPath.get());
 
+      try {
         vld.createVirtualModelLinks(URI.createURI(properties.getProperty("weavingModel"), true),
                                     getContributingModels());
       } catch (Exception e) {
-        e.printStackTrace();
+        throw new RuntimeException("Exception while creating weaving model from matching model", e);
       }
     }
-    */
 
     // Populate the model with values for virtual associations
     Resource weavingModelResource = new ResourceSetImpl().getResource(URI.createURI(properties.getProperty("weavingModel")), true);

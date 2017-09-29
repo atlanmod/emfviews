@@ -193,13 +193,11 @@ public class EclDelegate implements IVirtualLinksDelegate {
     weavingModelResource.setURI(linksModel);
     weavingModelResource.getContents().add(weavingModel);
     weavingModelResource.save(null);
-
   }
 
   protected EmfModel createEmfModelByURI(String name, String model, String metamodel,
                                          boolean readOnLoad,
-                                         boolean storeOnDisposal) throws EolModelLoadingException,
-                                                                  URISyntaxException {
+                                         boolean storeOnDisposal) throws EolModelLoadingException {
     if (metamodel.contains("UML")) {
       UMLResourcesUtil.init(null);
     }

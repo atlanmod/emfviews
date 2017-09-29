@@ -8,7 +8,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
@@ -111,6 +114,25 @@ public class TestEMFViews {
       EObject dp = (EObject) eGet(p, "detailedProcess");
       assertEquals("bpmn2", eGet(dp.eClass().eContainer(), "name"));
     }
+  }
+
+  @Test
+  public void matchingModel() throws IOException {
+    // Ensure a weaving model is created from a matching model when one exists
+
+    // First delete the file if it as already been created by a test
+    File weavingFile = new File("resources/views/three-model-composition/weaving.xmi");
+    if (weavingFile.exists()) {
+      weavingFile.delete();
+    }
+
+    // Load a view
+    View v =
+        new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
+    v.load(null);
+
+    // The file should be created
+    assertTrue(weavingFile.exists());
   }
 
   @Test

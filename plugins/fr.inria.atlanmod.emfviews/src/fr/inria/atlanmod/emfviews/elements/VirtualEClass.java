@@ -212,7 +212,8 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public int getClassifierID() {
-    return concreteEClass.getClassifierID();
+    // @Correctness: not sure what this should return in the presence of filters
+    throw new UnsupportedOperationException();
   }
 
   @Override

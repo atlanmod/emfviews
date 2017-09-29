@@ -186,9 +186,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
   public int getFeatureID() {
     // @Correctness: Should we return the featureID of the underlying class,
     // or a feature ID that makes sense for this virtual feature?
-
-    // Currently, implement the former
-    return concreteFeature.getFeatureID();
+    throw new UnsupportedOperationException();
   }
 
   @Override
