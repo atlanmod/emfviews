@@ -81,6 +81,9 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
   // in order to be able to use VirtualElement as LinkedElements in findEObject
   private Map<VirtualElement, EObject> syntheticElements;
 
+  // Used by the Virtualizer implementation
+  private Map<EObject, EObject> concreteToVirtual;
+
   public Viewpoint() {
     super();
   }
@@ -143,13 +146,6 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     return virtualContents;
   }
 
-  @Override
-  public ResourceSet getResourceSet() {
-    // XXX: never called. Besides, it's supposed to return the resource set that the Viewpoint is *in*,
-    // but the virtualResourceSet is the the resource set the Viewpoint *holds*.
-    return virtualResourceSet;
-  }
-
   private void parseProperties(Properties p) {
     // Parse contributingMetamodels line
     contributingMetamodelsPaths = new ArrayList<>();
@@ -185,11 +181,20 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     return packages;
   }
 
-  // @Refactor: this could go to a subclass that only deals with the mapping of concrete to virtual objects
-  private Map<EObject, EObject> concreteToVirtual = new HashMap<>();
+  // Lazy constructor
+  protected Map<EObject, EObject> concreteToVirtual() {
+    if (concreteToVirtual == null) {
+      concreteToVirtual = new HashMap<>();
+    }
+    return concreteToVirtual;
+  }
 
   @Override
   public <E extends EObject> E getVirtual(E o) {
+    if (o == null) {
+      return o;
+    }
+
     // Don't virtualize virtual objects!
     if (o instanceof VirtualEPackage
         || o instanceof VirtualEClass
@@ -197,20 +202,22 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
       return o;
 
     @SuppressWarnings("unchecked") // trust me, we map E to E
-    E virtual = (E) concreteToVirtual.computeIfAbsent(o, obj -> {
+    E virtual = (E) concreteToVirtual().computeIfAbsent(o, obj -> {
       // @Refactor: looks like a factory
       if (o instanceof EPackage) return new VirtualEPackage((EPackage) obj, this);
       if (o instanceof EClass) return new VirtualEClass((EClass) obj, this);
       if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) obj, this);
       if (o instanceof EReference) return new VirtualEReference((EReference) obj, this);
 
+      // Abort the mapping if it's an object we cannot virtualize
       return null;
     });
 
     if (virtual != null) {
       return virtual;
     } else {
-      // @Correctness: maybe we should fail here
+      // @Correctness: maybe we should fail here.  Currently, this lets EDataType and EEnum
+      // pass unvirtualized
       return o;
     }
   }

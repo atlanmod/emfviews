@@ -4,7 +4,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-public class VirtualESettingList<E> extends VirtualEList<E> implements EStructuralFeature.Setting {
+public class VirtualESettingList<E extends EObject> extends VirtualEList<E> implements EStructuralFeature.Setting {
 
   private EObject owner;
   private EStructuralFeature feature;

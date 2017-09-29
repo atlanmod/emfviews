@@ -60,18 +60,25 @@ public class View extends ResourceImpl implements Virtualizer {
   }
 
   @Override
-  public EObject getVirtual(EObject obj) {
+  public <E extends EObject> E getVirtual(E obj) {
     if (concreteToVirtual == null) {
       concreteToVirtual = new HashMap<>();
     }
 
-    return concreteToVirtual.computeIfAbsent(obj, o -> {
+    @SuppressWarnings("unchecked") // we map anything to a VirtualEObject, so it works
+    E virtual = (E) concreteToVirtual.computeIfAbsent(obj, o -> {
+      if (o == null) {
+        return o;
+      }
+
       // Don't virtualize virtual objects
       if (o instanceof VirtualEObject)
         return o;
 
       return new VirtualEObject(o, (VirtualEClass) viewpoint.getVirtual(o.eClass()), this);
     });
+
+    return virtual;
   }
 
   @Override
@@ -147,6 +154,7 @@ public class View extends ResourceImpl implements Virtualizer {
 
       // If it's a many feature, add to the list
       if (feature.isMany()) {
+        @SuppressWarnings("unchecked")
         List<EObject> list = (List<EObject>) vSource.eGet(feature);
         list.add(getVirtual(target));
       } else {

@@ -298,7 +298,8 @@ public class TestVirtualObjects {
     assertEquals(Vc, getClassifier(VP, "C").get());
 
     // Can create a virtual object with that new class as metaclass
-    // XXX: looks like we have to have an EPackage for C if we want to create an instance of it.
+    //
+    // Looks like we have to have an EPackage for C if we want to create an instance of it.
     // Even manually creating a DynamicEObjectImpl with C as eClass ends up
     // with a NPE in eGet if there is no EPackage.
     EPackage dumbPackage = EcoreFactory.eINSTANCE.createEPackage();

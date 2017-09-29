@@ -45,17 +45,15 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   public void addVirtualSuperType(EClass c) {
-    // @Correctness: we shouldn't be able to add the same EClass twice
-    virtualSuperTypes.add(c);
+    if (!virtualSuperTypes.contains(c)) {
+      virtualSuperTypes.add(c);
+    }
   }
 
   @Override
   public Object dynamicGet(int dynamicFeatureID) {
     EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
 
-    if (feature == EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES) {
-      return getEStructuralFeatures();
-    }
     if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
       return getName();
     }
@@ -65,17 +63,73 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     if (feature == EcorePackage.Literals.ECLASSIFIER__ETYPE_PARAMETERS) {
       return getETypeParameters();
     }
-    if (feature == EcorePackage.Literals.ECLASS__EOPERATIONS) {
-      return getEOperations();
+    if (feature == EcorePackage.Literals.ECLASSIFIER__DEFAULT_VALUE) {
+      return getETypeParameters();
+    }
+    if (feature == EcorePackage.Literals.ECLASSIFIER__EPACKAGE) {
+      return getETypeParameters();
+    }
+    if (feature == EcorePackage.Literals.ECLASSIFIER__ETYPE_PARAMETERS) {
+      return getETypeParameters();
+    }
+    if (feature == EcorePackage.Literals.ECLASSIFIER__INSTANCE_CLASS) {
+      return getInstanceClass();
+    }
+    if (feature == EcorePackage.Literals.ECLASSIFIER__INSTANCE_CLASS_NAME) {
+      return getInstanceClassName();
+    }
+    if (feature == EcorePackage.Literals.ECLASSIFIER__INSTANCE_TYPE_NAME) {
+      return getInstanceTypeName();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__ABSTRACT) {
+      return isAbstract();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EALL_ATTRIBUTES) {
+      return getEAllAttributes();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EALL_CONTAINMENTS) {
+      return getEAllContainments();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EALL_GENERIC_SUPER_TYPES) {
+      return getEAllGenericSuperTypes();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EALL_OPERATIONS) {
+      return getEAllOperations();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EALL_REFERENCES) {
+      return getEAllReferences();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EALL_STRUCTURAL_FEATURES) {
+      return getEAllStructuralFeatures();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EALL_SUPER_TYPES) {
+      return getEAllSuperTypes();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EATTRIBUTES) {
+      return getEAttributes();
     }
     if (feature == EcorePackage.Literals.ECLASS__EGENERIC_SUPER_TYPES) {
       return getEGenericSuperTypes();
     }
+    if (feature == EcorePackage.Literals.ECLASS__EID_ATTRIBUTE) {
+      return getEIDAttribute();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EOPERATIONS) {
+      return getEOperations();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__EREFERENCES) {
+      return getEReferences();
+    }
+    if (feature == EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES) {
+      return getEStructuralFeatures();
+    }
     if (feature == EcorePackage.Literals.ECLASS__ESUPER_TYPES) {
       return getESuperTypes();
     }
+    if (feature == EcorePackage.Literals.ECLASS__INTERFACE) {
+      return isInterface();
+    }
 
-    // @Correctness: reflexive access for other methods of the metaclass
     throw new IllegalArgumentException("Unknown feature: " + feature.getName());
   }
 
@@ -153,7 +207,6 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public boolean isInstance(Object object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -179,7 +232,6 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -205,12 +257,12 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EClass> getESuperTypes() {
-    // @Optimize: is there any way to make this less wasteful?
+    // @Optimize: could use an iterator
 
     // This is just a map(getVirtual).filter(!filtered)
     List<EClass> types = new ArrayList<>();
 
-    // @Assumption: this class and its super typs are part of the same package,
+    // @Assumption: this class and its super types are part of the same package,
     // so we can query it only once.
     VirtualEPackage vpackage = (VirtualEPackage) getEPackage();
 
@@ -250,7 +302,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getAllFeatures() {
-    // @Optimize: an iterator would be best here
+    // @Optimize: could use a lazy iterator
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
@@ -273,7 +325,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getAllLocalFeatures() {
-    // @Optimize: an iterator would be best here
+    // @Optimize: could use a lazy iterator
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
@@ -291,7 +343,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getVisibleFeatures() {
-    // @Optimize: an iterator would be best here
+    // @Optimize: could use a lazy iterator
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
@@ -305,7 +357,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getVisibleLocalFeatures() {
-    // @Optimize: an iterator would be best here
+    // @Optimize: could use a lazy iterator
 
     List<EStructuralFeature> elems = new ArrayList<>();
 
@@ -320,13 +372,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EStructuralFeature> getEStructuralFeatures() {
-    // FIXME: the return value must be castable to EStructuralFeature.Setting
-
+    // The return value must be castable to EStructuralFeature.Setting,
+    // hence why we use an EcoreList.UnmodifiableElist
     List<EStructuralFeature> cs = getVisibleLocalFeatures();
     return new EcoreEList.UnmodifiableEList<>(
         this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
-
-    //return new VirtualFeaturesList(getNonFilteredFeatures());
   }
 
   @Override
@@ -336,13 +386,12 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EGenericType> getEAllGenericSuperTypes() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EList<EAttribute> getEAttributes() {
-    // @Optimize: use an iterator
+    // @Optimize: could use a lazy iterator
     List<EAttribute> attrs = new ArrayList<>();
 
     for (EStructuralFeature f : getEStructuralFeatures()) {
@@ -356,7 +405,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EAttribute> getEAllAttributes() {
-    // @Optimize: use an iterator
+    // @Optimize: could use a lazy iterator
     List<EAttribute> attrs = new ArrayList<>();
 
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
@@ -370,7 +419,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEReferences() {
-    // @Optimize: use an iterator
+    // @Optimize: could use a layz iterator
     List<EReference> refs = new ArrayList<>();
 
     for (EStructuralFeature f : getEStructuralFeatures()) {
@@ -384,7 +433,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEAllReferences() {
-    // @Optimize: use an iterator
+    // @Optimize: could use a lazy iterator
     List<EReference> references = new ArrayList<>();
 
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
@@ -398,7 +447,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEAllContainments() {
-    // @Optimize: use an iterator
+    // @Optimize: could use a lazy iterator
     List<EReference> containments = new ArrayList<>();
 
     for (EReference ref : getEAllReferences()) {
@@ -412,8 +461,8 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EStructuralFeature> getEAllStructuralFeatures() {
-    // FIXME: the return value must be castable to EStructuralFeature.Setting
-
+    // The return value must be castable to EStructuralFeature.Setting,
+    // hence why we use an EcoreList.UnmodifiableElist
     List<EStructuralFeature> cs = getVisibleFeatures();
     return new EcoreEList.UnmodifiableEList<>(
         this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
@@ -426,13 +475,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EOperation> getEAllOperations() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isSuperTypeOf(EClass someClass) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -463,31 +510,26 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public int getOperationCount() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EOperation getEOperation(int operationID) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public int getOperationID(EOperation operation) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EOperation getOverride(EOperation operation) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EGenericType getFeatureType(EStructuralFeature feature) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -503,7 +545,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public boolean isFrozen() {
-    // @Correctness: not sure whether we should delegate this
+    // @Correctness: not sure whether we should delegate this, or just return false
     return ((ESuperAdapter.Holder) concreteEClass).isFrozen();
   }
 

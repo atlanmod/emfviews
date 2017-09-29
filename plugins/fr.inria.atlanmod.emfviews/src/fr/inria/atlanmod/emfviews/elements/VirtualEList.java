@@ -5,7 +5,7 @@ import java.util.AbstractList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-public class VirtualEList<E> extends AbstractList<E> implements EList<E> {
+public class VirtualEList<E extends EObject> extends AbstractList<E> implements EList<E> {
 
   private EList<E> concreteList;
   private Virtualizer virtualizer;
@@ -16,30 +16,24 @@ public class VirtualEList<E> extends AbstractList<E> implements EList<E> {
   }
 
   @Override
-  public void move(int newPosition, Object object) {
-    // TODO: Auto-generated method stub
+  public void move(int newPosition, E object) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public E move(int newPosition, int oldPosition) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public E get(int index) {
     E o = concreteList.get(index);
-
-    if (o instanceof EObject) {
-      return (E) virtualizer.getVirtual((EObject) o);
-    } else {
-      return o;
-    }
+    return virtualizer.getVirtual(o);
   }
 
   @Override
   public int size() {
     return concreteList.size();
   }
+
 }

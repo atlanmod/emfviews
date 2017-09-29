@@ -29,20 +29,16 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   }
 
   // @Correctness: should we accept VirtualClassifier (a supertype) as well?
+  // I guess since only Viewpoint calls this method, and only with VirtualEClass,
+  // there is need for the moment.
   public void addVirtualClassifier(VirtualEClass f) {
-    virtualClassifiers.add(f);
-  }
-
-  public int getVirtualClassifiersSize() {
-    return virtualClassifiers.size();
+    if (!virtualClassifiers.contains(f)) {
+      virtualClassifiers.add(f);
+    }
   }
 
   public void filterClassifier(EClassifier c) {
-    if (getEClassifiers().contains(c)) {
-      filteredClassifiers.add(c);
-    } else {
-      throw new IllegalArgumentException("Classifier already filtered");
-    }
+    filteredClassifiers.add(c);
   }
 
   public void unfilterClassifier(EClassifier c) {
@@ -57,20 +53,31 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   public Object dynamicGet(int dynamicFeatureID) {
     EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
 
-    if (feature == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
-      return getEClassifiers();
-    }
-    if (feature == EcorePackage.Literals.EPACKAGE__ESUBPACKAGES) {
-      return getESubpackages();
-    }
     if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
       return getName();
     }
     if (feature == EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS) {
       return getEAnnotations();
     }
+    if (feature == EcorePackage.Literals.EPACKAGE__ECLASSIFIERS) {
+      return getEClassifiers();
+    }
+    if (feature == EcorePackage.Literals.EPACKAGE__EFACTORY_INSTANCE) {
+      return getEFactoryInstance();
+    }
+    if (feature == EcorePackage.Literals.EPACKAGE__ESUBPACKAGES) {
+      return getESubpackages();
+    }
+    if (feature == EcorePackage.Literals.EPACKAGE__ESUPER_PACKAGE) {
+      return getESuperPackage();
+    }
+    if (feature == EcorePackage.Literals.EPACKAGE__NS_PREFIX) {
+      return getNsPrefix();
+    }
+    if (feature == EcorePackage.Literals.EPACKAGE__NS_URI) {
+      return getNsURI();
+    }
 
-    // @Correctness: reflexive access for other methods of the metaclass
     throw new IllegalArgumentException("Unknown feature: " + feature.getName());
   }
 
@@ -92,7 +99,6 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public void setName(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -103,7 +109,6 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -114,7 +119,6 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public void setNsURI(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -125,19 +129,16 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public void setNsPrefix(String value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EFactory getEFactoryInstance() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void setEFactoryInstance(EFactory value) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -176,12 +177,11 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EList<EClassifier> getEClassifiers() {
-    // FIXME: the return value must be castable to EStructuralFeature.Setting
+    // The return value must be castable to EStructuralFeature.Setting,
+    // hence why we use an EcoreList.UnmodifiableElist
     List<EClassifier> cs = getNonFilteredClassifiers();
     return new EcoreEList.UnmodifiableEList<>(
         this, EcorePackage.Literals.EPACKAGE__ECLASSIFIERS, cs.size(), cs.toArray());
-
-    //return ECollections.unmodifiableEList(getNonFilteredClassifiers());
   }
 
   @Override

@@ -4,6 +4,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
 public class VirtualEReference extends VirtualEStructuralFeature implements EReference {
@@ -12,6 +13,32 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
 
   public VirtualEReference(EReference concreteReference, Virtualizer virtualizer) {
     super(EcorePackage.Literals.EREFERENCE, concreteReference, virtualizer);
+  }
+
+  @Override
+  public Object dynamicGet(int dynamicFeatureID) {
+    EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
+
+    if (feature == EcorePackage.Literals.EREFERENCE__CONTAINER) {
+      return isContainer();
+    }
+    if (feature == EcorePackage.Literals.EREFERENCE__CONTAINMENT) {
+      return isContainment();
+    }
+    if (feature == EcorePackage.Literals.EREFERENCE__EKEYS) {
+      return getEKeys();
+    }
+    if (feature == EcorePackage.Literals.EREFERENCE__EOPPOSITE) {
+      return getEOpposite();
+    }
+    if (feature == EcorePackage.Literals.EREFERENCE__EREFERENCE_TYPE) {
+      return getEReferenceType();
+    }
+    if (feature == EcorePackage.Literals.EREFERENCE__RESOLVE_PROXIES) {
+      return isResolveProxies();
+    }
+
+    return super.dynamicGet(dynamicFeatureID);
   }
 
   @Override
@@ -70,7 +97,6 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
 
   @Override
   public EList<EAttribute> getEKeys() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 

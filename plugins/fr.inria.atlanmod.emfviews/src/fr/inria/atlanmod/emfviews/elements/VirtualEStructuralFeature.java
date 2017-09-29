@@ -43,17 +43,46 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
     if (feature == EcorePackage.Literals.ETYPED_ELEMENT__LOWER_BOUND) {
       return getLowerBound();
     }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__MANY) {
+      return isMany();
+    }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__ORDERED) {
+      return isOrdered();
+    }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__REQUIRED) {
+      return isRequired();
+    }
+    if (feature == EcorePackage.Literals.ETYPED_ELEMENT__UNIQUE) {
+      return isUnique();
+    }
     if (feature == EcorePackage.Literals.ETYPED_ELEMENT__UPPER_BOUND) {
       return getUpperBound();
     }
-    if (feature == EcorePackage.Literals.EREFERENCE__EOPPOSITE) {
-      return getEOpposite();
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__CHANGEABLE) {
+      return isChangeable();
     }
-    if (feature == EcorePackage.Literals.EREFERENCE__CONTAINMENT) {
-      return isContainment();
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__DEFAULT_VALUE) {
+      return getDefaultValue();
+    }
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__DEFAULT_VALUE_LITERAL) {
+      return getDefaultValueLiteral();
+    }
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__DERIVED) {
+      return isDerived();
+    }
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS) {
+      return getEContainingClass();
+    }
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__TRANSIENT) {
+      return isTransient();
+    }
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__UNSETTABLE) {
+      return isUnsettable();
+    }
+    if (feature == EcorePackage.Literals.ESTRUCTURAL_FEATURE__VOLATILE) {
+      return isVolatile();
     }
 
-    // @Correctness: reflexive access for other methods of the metaclass
     throw new IllegalArgumentException("Unknown feature: " + feature.getName());
   }
 
@@ -254,7 +283,6 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -264,7 +292,6 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
     @Override
     public Setting dynamicSetting(InternalEObject owner, DynamicValueHolder settings,
                                   int dynamicFeatureID) {
-      // TODO: Auto-generated method stub
       throw new UnsupportedOperationException();
     }
 
@@ -283,14 +310,12 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
     @Override
     public boolean dynamicIsSet(InternalEObject owner, DynamicValueHolder settings,
                                 int dynamicFeatureID) {
-      // TODO: Auto-generated method stub
       throw new UnsupportedOperationException();
     }
 
     @Override
     public void dynamicUnset(InternalEObject owner, DynamicValueHolder settings,
                              int dynamicFeatureID) {
-      // TODO: Auto-generated method stub
       throw new UnsupportedOperationException();
     }
 
@@ -298,7 +323,6 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
     public NotificationChain dynamicInverseAdd(InternalEObject owner, DynamicValueHolder settings,
                                                int dynamicFeatureID, InternalEObject otherEnd,
                                                NotificationChain notifications) {
-      // TODO: Auto-generated method stub
       throw new UnsupportedOperationException();
     }
 
@@ -307,7 +331,6 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
                                                   DynamicValueHolder settings,
                                                   int dynamicFeatureID, InternalEObject otherEnd,
                                                   NotificationChain notifications) {
-      // TODO: Auto-generated method stub
       throw new UnsupportedOperationException();
     }
   }
@@ -319,26 +342,22 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public void setSettingDelegate(SettingDelegate settingDelegate) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean isFeatureMap() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public org.eclipse.emf.ecore.util.FeatureMap.Entry.Internal getFeatureMapEntryPrototype() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void
       setFeatureMapEntryPrototype(org.eclipse.emf.ecore.util.FeatureMap.Entry.Internal prototype) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 

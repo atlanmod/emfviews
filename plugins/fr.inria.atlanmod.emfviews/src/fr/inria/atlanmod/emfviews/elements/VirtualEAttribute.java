@@ -2,12 +2,24 @@ package fr.inria.atlanmod.emfviews.elements;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
 public class VirtualEAttribute extends VirtualEStructuralFeature implements EAttribute {
 
   public VirtualEAttribute(EAttribute concreteAttribute, Virtualizer virtualizer) {
     super(EcorePackage.Literals.EATTRIBUTE, concreteAttribute, virtualizer);
+  }
+
+  @Override
+  public Object dynamicGet(int dynamicFeatureID) {
+    EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
+
+    if (feature == EcorePackage.Literals.EATTRIBUTE__EATTRIBUTE_TYPE) {
+      return getEAttributeType();
+    }
+
+    return super.dynamicGet(dynamicFeatureID);
   }
 
   @Override
