@@ -13,12 +13,12 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
-public abstract class VirtualFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal {
+public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal {
 
   protected EStructuralFeature concreteFeature;
   protected Virtualizer virtualizer;
 
-  protected VirtualFeature(EClass eClass, EStructuralFeature concreteFeature, Virtualizer virtualizer) {
+  protected VirtualEStructuralFeature(EClass eClass, EStructuralFeature concreteFeature, Virtualizer virtualizer) {
     super(eClass);
     this.concreteFeature = concreteFeature;
     this.virtualizer = virtualizer;

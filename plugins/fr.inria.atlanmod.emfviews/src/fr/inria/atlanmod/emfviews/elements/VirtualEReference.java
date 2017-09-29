@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 
-public class VirtualEReference extends VirtualFeature implements EReference {
+public class VirtualEReference extends VirtualEStructuralFeature implements EReference {
 
   private EReference virtualOpposite;
 

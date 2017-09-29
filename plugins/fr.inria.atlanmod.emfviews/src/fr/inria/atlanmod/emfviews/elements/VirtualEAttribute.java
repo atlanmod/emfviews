@@ -4,7 +4,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EcorePackage;
 
-public class VirtualEAttribute extends VirtualFeature implements EAttribute {
+public class VirtualEAttribute extends VirtualEStructuralFeature implements EAttribute {
 
   public VirtualEAttribute(EAttribute concreteAttribute, Virtualizer virtualizer) {
     super(EcorePackage.Literals.EATTRIBUTE, concreteAttribute, virtualizer);

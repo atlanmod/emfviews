@@ -45,7 +45,7 @@ import fr.inria.atlanmod.emfviews.elements.VirtualEAttribute;
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEPackage;
 import fr.inria.atlanmod.emfviews.elements.VirtualEReference;
-import fr.inria.atlanmod.emfviews.elements.VirtualFeature;
+import fr.inria.atlanmod.emfviews.elements.VirtualEStructuralFeature;
 import fr.inria.atlanmod.emfviews.elements.Virtualizer;
 import fr.inria.atlanmod.emfviews.util.EMFViewsUtil;
 import fr.inria.atlanmod.emfviews.virtuallinks.Association;
@@ -193,7 +193,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     // Don't virtualize virtual objects!
     if (o instanceof VirtualEPackage
         || o instanceof VirtualEClass
-        || o instanceof VirtualFeature)
+        || o instanceof VirtualEStructuralFeature)
       return o;
 
     @SuppressWarnings("unchecked") // trust me, we map E to E
@@ -388,7 +388,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
       ref.setContainment(a.isComposition());
 
-      ((VirtualEClass) source).addVirtualFeature((VirtualFeature) getVirtual(ref));
+      ((VirtualEClass) source).addVirtualFeature((VirtualEStructuralFeature) getVirtual(ref));
 
       // We have to set the eContainingClass feature of the reference manually, since the feature is virtual.
       // We don't want this to be done automatically in addVirtualFeature, because we don't want to alter

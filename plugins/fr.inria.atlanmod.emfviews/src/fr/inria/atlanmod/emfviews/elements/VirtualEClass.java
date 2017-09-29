@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperAdapter.Holder {
 
   private EClass concreteEClass;
-  private List<VirtualFeature> virtualFeatures = new ArrayList<>();
+  private List<VirtualEStructuralFeature> virtualFeatures = new ArrayList<>();
   private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
   private List<EClass> virtualSuperTypes = new ArrayList<>();
   private Virtualizer virtualizer;
@@ -36,7 +36,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     this.virtualizer = virtualizer;
   }
 
-  public void addVirtualFeature(VirtualFeature f) {
+  public void addVirtualFeature(VirtualEStructuralFeature f) {
     virtualFeatures.add(f);
   }
 
@@ -265,7 +265,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     }
 
     // Add virtual feature at the end
-    for (VirtualFeature f : virtualFeatures) {
+    for (VirtualEStructuralFeature f : virtualFeatures) {
       elems.add(f);
     }
 
@@ -283,7 +283,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     }
 
     // Add virtual feature at the end
-    for (VirtualFeature f : virtualFeatures) {
+    for (VirtualEStructuralFeature f : virtualFeatures) {
       elems.add(f);
     }
 
