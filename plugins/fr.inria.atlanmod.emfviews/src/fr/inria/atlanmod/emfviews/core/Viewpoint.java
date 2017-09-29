@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -388,6 +389,14 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
       ref.setContainment(a.isComposition());
 
       ((VirtualEClass) source).addVirtualFeature((VirtualFeature) getVirtual(ref));
+
+      // We have to set the eContainingClass feature of the reference manually, since the feature is virtual.
+      // We don't want this to be done automatically in addVirtualFeature, because we don't want to alter
+      // a contributing metamodel accidentally.  Here, we know `ref` is synthetic, and not part of an existing
+      // metamodel, so we can modify it.
+      ((InternalEObject) ref).eInverseAdd((InternalEObject) source, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
+                                          EStructuralFeature.class, null);
+
     }
   }
 
