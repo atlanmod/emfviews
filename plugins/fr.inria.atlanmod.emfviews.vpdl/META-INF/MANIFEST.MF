@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: fr.inria.atlanmod.emfviews.vpdl
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: fr.inria.atlanmod.emfviews.vpdl; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: emfviews.dsl.parser.antlr,
+ emfviews.dsl.sqlview.util,
+ emfviews.dsl.parser.antlr.internal,
+ emfviews.dsl.sqlview.impl,
+ emfviews.dsl.serializer,
+ emfviews.dsl.generator,
+ emfviews.dsl.sqlview,
+ emfviews.dsl,
+ emfviews.dsl.services,
+ emfviews.dsl.validation,
+ emfviews.dsl.scoping
+Import-Package: org.apache.log4j
