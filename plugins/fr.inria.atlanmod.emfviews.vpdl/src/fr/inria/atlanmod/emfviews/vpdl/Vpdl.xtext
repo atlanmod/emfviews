@@ -14,7 +14,11 @@ Select: features+=SelectFeature ("," features+=SelectFeature)*;
 
 SelectFeature: SelectAttribute | SelectRelation;
   
-SelectAttribute: metamodel=[Metamodel|ID] '.' class=ID '.' feature=ID;
+SelectAttribute: metamodel=[Metamodel|ID] '.' class=ID '.' feature=ID
+  | metamodel=[Metamodel|ID] '.' class=ID '[' features+=Feature (',' features+=Feature)* ']';
+  
+Feature: name=ID
+  | 'join' metamodelRight=[Metamodel|ID] '.' classRight=ID 'as' name=ID;
 
 SelectRelation: metamodelLeft=[Metamodel|ID] '.' classLeft=ID 'join' 
   metamodelRight=[Metamodel|ID] '.' classRight=ID 'as'
