@@ -28,17 +28,9 @@ class VpdlGenerator extends AbstractGenerator {
   }
   
   def compileEviewpoint(Resource r) '''
-    contributingMetamodels=
-    «FOR e: r.getListMetamodels»
-      «IF e.URL.toString.compareTo(r.allContents.toIterable.filter(Metamodel).<Metamodel>head.URL.toString)==0»
-        «e.URL.toString.substring(2, e.URL.toString.length-2)»
-      «ELSE»
-        «e.URL.toString.substring(2, e.URL.toString.length-2)»,
-      «ENDIF»
-    «ENDFOR»
-    
-    correspondenceModel=EAview_Test/1_viewtype/«r.allContents.toIterable().filter(View).<View>head.name».xmi
-    correspondenceModelBase=EAview_Test/1_viewtype/«r.allContents.toIterable().filter(View).<View>head.name».ecl
+    contributingMetamodels=«r.getListMetamodels.map([m | m.URL]).join(',')»
+    weavingModel=«r.allContents.toIterable().filter(View).<View>head.name».xmi
+    matchingModel=«r.allContents.toIterable().filter(View).<View>head.name».ecl
   ''' 
   
   def compileEcl(Resource r) '''

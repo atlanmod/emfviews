@@ -1,27 +1,20 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fr.inria.atlanmod.emfviews.vpdl
-Bundle-Vendor: Atlanmod
+Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.vpdl; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.equinox.common;bundle-version="3.5.0",
- org.eclipse.xtext,
+Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtext.xtext.generator;bundle-version="2.12.0",
- org.eclipse.xtend.lib,
- org.eclipse.xtext.util,
- org.antlr.runtime,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
  org.eclipse.emf.ecore,
- org.eclipse.emf.common,
- org.eclipse.emf.mwe2.launch;bundle-version="2.9.1",
- org.eclipse.emf.mwe2.lib;bundle-version="2.9.1",
- org.apache.commons.logging;bundle-version="1.1.1",
- org.objectweb.asm;bundle-version="5.2.0",
- com.ibm.icu;bundle-version="58.2.0"
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: org.apache.log4j
 Export-Package: fr.inria.atlanmod.emfviews.vpdl.services,
  fr.inria.atlanmod.emfviews.vpdl.scoping,
  fr.inria.atlanmod.emfviews.vpdl.parser.antlr.internal,
@@ -33,3 +26,4 @@ Export-Package: fr.inria.atlanmod.emfviews.vpdl.services,
  fr.inria.atlanmod.emfviews.vpdl.vpdl,
  fr.inria.atlanmod.emfviews.vpdl.parser.antlr,
  fr.inria.atlanmod.emfviews.vpdl.serializer
+Import-Package: org.apache.log4j
