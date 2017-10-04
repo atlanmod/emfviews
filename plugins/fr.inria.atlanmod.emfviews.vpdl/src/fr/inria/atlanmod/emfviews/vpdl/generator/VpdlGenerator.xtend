@@ -8,7 +8,7 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.Metamodel
-import fr.inria.atlanmod.emfviews.vpdl.vpdl.Model
+import fr.inria.atlanmod.emfviews.vpdl.vpdl.View
 
 /*
  * Generates code from your model files on save.
@@ -18,7 +18,7 @@ import fr.inria.atlanmod.emfviews.vpdl.vpdl.Model
 class VpdlGenerator extends AbstractGenerator {
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-    fsa.generateFile('myEAviewpoint.eviewtype', resource.compileEviewtype)
+    fsa.generateFile('myEAviewpoint.eviewpoint', resource.compileEviewpoint)
     fsa.generateFile('myEAviewpoint.ecl', resource.compileEcl)
     fsa.generateFile('myEAviewpoint.xmi', resource.compileXmi)
   }
@@ -27,19 +27,18 @@ class VpdlGenerator extends AbstractGenerator {
     return r.allContents.toIterable().filter(Metamodel);
   }
   
-  def compileEviewtype(Resource r) '''
+  def compileEviewpoint(Resource r) '''
     contributingMetamodels=
     «FOR e: r.getListMetamodels»
-      «IF e.metamodelURL.toString.compareTo(r.allContents.toIterable.filter(Metamodel).<Metamodel>head.metamodelURL.toString)==0»
-        «e.metamodelURL.toString.substring(2, e.metamodelURL.toString.length-2)»
+      «IF e.URL.toString.compareTo(r.allContents.toIterable.filter(Metamodel).<Metamodel>head.URL.toString)==0»
+        «e.URL.toString.substring(2, e.URL.toString.length-2)»
       «ELSE»
-        «e.metamodelURL.toString.substring(2, e.metamodelURL.toString.length-2)»,
+        «e.URL.toString.substring(2, e.URL.toString.length-2)»,
       «ENDIF»
     «ENDFOR»
     
-    correspondenceModel=EAview_Test/1_viewtype/«r.allContents.toIterable().filter(Model).<Model>head.viewName».xmi
-    correspondenceModelBase=EAview_Test/1_viewtype/«r.allContents.toIterable().filter(Model).<Model>head.viewName».ecl
-    filtersMetamodel=/EAview_Test/1_viewtype/«r.allContents.toIterable().filter(Model).<Model>head.viewName».ecore
+    correspondenceModel=EAview_Test/1_viewtype/«r.allContents.toIterable().filter(View).<View>head.name».xmi
+    correspondenceModelBase=EAview_Test/1_viewtype/«r.allContents.toIterable().filter(View).<View>head.name».ecl
   ''' 
   
   def compileEcl(Resource r) '''

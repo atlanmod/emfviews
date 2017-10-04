@@ -3,8 +3,8 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package 
-			uri = "http://www.dsl.emfviews/Sqlview"
-			class = "emfviews.dsl.sqlview.SqlviewPackage"
+			uri = "http://www.inria.fr/atlanmod/emfviews/vpdl"
+			class = "fr.inria.atlanmod.emfviews.vpdl.vpdl.VpdlPackage"
 			genModel = "model/generated/Vpdl.genmodel" />
 	</extension>
 </plugin>

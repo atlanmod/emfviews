@@ -3,40 +3,28 @@ generate vpdl "http://www.inria.fr/atlanmod/emfviews/vpdl"
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-//Grammar to create model views
+// Grammar for an SQL-like language to create model viewpoints
+// to use with EMFViews
 
-Model:
-  'create' 'view' viewName=ID 'on'  metamodel+=Metamodel 
-  ("," metamodel+=Metamodel)* expression+=Expression;
+View: 'create' 'view' name=ID 'as'
+  'select' select=Select
+  'from' from=From
+  ('where' (condition+=Condition)+);
   
-Metamodel: metamodelURL+=EString 'as' metamodelName+=MetamodelName;
+// FIXME: allow wildcard '*'
+Select: features+=SelectFeature ("," features+=SelectFeature)*;
 
-Expression:
-  'select' select+=Select
-  'from' from+=From
-  'where' (condition+=Condition)+;
+SelectFeature: SelectAttribute | SelectRelation;
   
-Select: select+='*' | selectAttribute+=SelectAttribute 
-  ("," selectAttribute+=SelectAttribute)*;
-  
-SelectAttribute:metamodel+=[MetamodelName] '.' class+=Class '.'
-   attribute+=Attribute;
+SelectAttribute: metamodel=[Metamodel|ID] '.' class=ID '.' feature=ID;
+
+SelectRelation: metamodelLeft=[Metamodel|ID] '.' classLeft=ID 'join' 
+  metamodelRight=[Metamodel|ID] '.' classRight=ID 'as'
+  name=ID;
    
-From: join+=Join (',' join+=Join)* ;
+From: metamodels+=Metamodel ("," metamodels+=Metamodel)*;
 
-Join:  joinLeft+=JoinLeft "join" joinRight+=JoinRight
-    'as' relation+=Relation;
-    
-JoinLeft:metamodelLeft+=[MetamodelName] '.' classLeft+=Class;
-JoinRight:metamodelRight+=[MetamodelName] '.' classRight+=Class;
-
-Attribute: name=ID;
-
-Class: name=ID;
-
-MetamodelName:name=ID;
-
-Relation:name=ID;
+Metamodel: URL=EString 'as' name=ID;
 
 Condition:(value+=Comparison | value+=EclExpression) (('and' | 'or') 
   (value+=Comparison | value+=EclExpression))*;
@@ -46,12 +34,10 @@ EclExpression: value=EString;
 Comparison:
   left+=Left ('=' | '<=' | '>=' | '<' | '>' | '<>') right+=Right;
   
-Left: metamodel+=[MetamodelName] '.' class+=[Class] '.'
-   attributeWhereLeft=Attribute;
+Left: metamodel+=[Metamodel|ID] '.' class+=ID '.'
+   attributeWhereLeft=ID;
    
-Right: (metamodel+=[MetamodelName] '.'class+=[Class] '.'
-  attributeWhereRight=Attribute | value=EString);
+Right: (metamodel+=[Metamodel|ID] '.'class+=ID '.'
+  attributeWhereRight=ID | value=EString);
   
-EString returns ecore::EString:
-  STRING | ID
-;
+EString returns ecore::EString: STRING | ID;
