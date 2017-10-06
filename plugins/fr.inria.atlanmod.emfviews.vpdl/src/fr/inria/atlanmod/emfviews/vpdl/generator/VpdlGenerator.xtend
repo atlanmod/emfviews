@@ -9,6 +9,14 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.Metamodel
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.View
+import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher
+import org.eclipse.m2m.atl.core.emf.EMFModelFactory
+import org.eclipse.m2m.atl.core.emf.EMFInjector
+import org.eclipse.m2m.atl.core.emf.EMFExtractor
+import org.eclipse.m2m.atl.core.launch.ILauncher
+import org.eclipse.core.runtime.NullProgressMonitor
+import java.net.URL
+import java.util.HashMap
 
 /*
  * Generates code from your model files on save.
@@ -18,19 +26,27 @@ import fr.inria.atlanmod.emfviews.vpdl.vpdl.View
 class VpdlGenerator extends AbstractGenerator {
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-    fsa.generateFile('myEAviewpoint.eviewpoint', resource.compileEviewpoint)
-    fsa.generateFile('myEAviewpoint.ecl', resource.compileEcl)
-    fsa.generateFile('myEAviewpoint.xmi', resource.compileXmi)
+    var name = viewpointName(resource)
+	  
+    fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint)
+    fsa.generateFile(name + '.ecl', resource.compileEcl)
+    //fsa.generateFile('weaving.xmi', resource.compileXmi)
+    resource.compileXmi
+  }
+  
+  def String viewpointName(Resource r) {
+    return r.allContents.toIterable().filter(View).<View>head.name
   }
   
   def Iterable<Metamodel> getListMetamodels(Resource r){
     return r.allContents.toIterable().filter(Metamodel);
   }
-  
+
+  // FIXME: is there a way to use relative paths here instead?
   def compileEviewpoint(Resource r) '''
     contributingMetamodels=«r.getListMetamodels.map([m | m.URL]).join(',')»
-    weavingModel=«r.allContents.toIterable().filter(View).<View>head.name».xmi
-    matchingModel=«r.allContents.toIterable().filter(View).<View>head.name».ecl
+    weavingModel=platform:/resource/test-vpdl/src-gen/«viewpointName(r)».xmi
+    matchingModel=platform:/resource/test-vpdl/src-gen/«viewpointName(r)».ecl
   ''' 
   
   def compileEcl(Resource r) '''
@@ -59,10 +75,31 @@ class VpdlGenerator extends AbstractGenerator {
     }
   '''
    
-  def compileXmi(Resource r) '''
-  '''
-   
-  def compileEcore(Resource r) '''
-  '''
+  def compileXmi(Resource r) {
+    var injector = new EMFInjector()
+    var factory = new EMFModelFactory()
+    
+    var sourceMM = factory.newReferenceModel()
+    injector.inject(sourceMM, "http://www.inria.fr/atlanmod/emfviews/vpdl")
+    
+    var targetMM = factory.newReferenceModel()
+    injector.inject(targetMM, "http://inria.fr/virtualLinks")
+    
+    var sourceModel = factory.newModel(sourceMM)
+    injector.inject(sourceModel, r)
+    
+    var targetModel = factory.newModel(targetMM)
+    
+    var launcher = new EMFVMLauncher();
+    launcher.initialize(null)
+    launcher.addInModel(sourceModel, "IN", "VPDL")
+    launcher.addOutModel(targetModel, "OUT", "VL")
+    launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), new HashMap(),
+      new URL("platform:/plugin/fr.inria.atlanmod.emfviews.vpdl/transformation/SQL2VirtualLinks.asm").openStream)      
+    
+    var extractor = new EMFExtractor()
+    // FIXME: return an outputstream or a string instead of hardcoding the path here 
+    extractor.extract(targetModel, "platform:/resource/test-vpdl/src-gen/" + viewpointName(r) + ".xmi")
+  }
    
 }

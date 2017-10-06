@@ -1,0 +1,68 @@
+-- @nsURI VL=http://www.inria.fr/virtuallinks
+-- @nsURI VPDL=http://www.inria.fr/atlanmod/emfviews/vpdl
+
+module SQL2VirtualLinks;
+create OUT : VL from IN : VPDL;
+
+helper def : getURLFromMetamodel(param : String) : String=
+	SQL!Model.allInstances()->first().metamodel->select(e|e.metamodelName->first().name=param)->first().metamodelURL
+;
+
+rule Model2VirtualLinks {
+  from
+  	s : VPDL!View
+  to
+  	t : VL!WeavingModel (
+		--virtualLinks <- s.expression.first()."from"->first().join, --Join2Association
+		--linkedElements <- s.expression.first()."from"->first().join->collect(e|e.joinLeft->first().classLeft)
+		--->append(s.expression.first()."from"->first().join->collect(e|e.joinRight->first().classRight))
+		name <- s.name
+    )
+	do{
+
+	}
+}
+
+--rule Join2Association {
+--  from
+--  	s : VPDL!Join
+--  to
+--  	t : VL!Association (
+--   		name <- s.relation->first().name,
+--		associationTypeName <- s.relation->first().name,
+--		upperBound <- 1,
+--		sourceElement <- s.joinLeft->first().classLeft,
+--		targetElements <- s.joinRight->first().classRight
+--    )
+--	do{
+--
+--	}
+--}
+--
+--rule ClassLeft2LinkedElement {
+--  from
+--  	s : VPDL!Class(s.refImmediateComposite().oclIsTypeOf(SQL!JoinLeft))
+--  to
+--  	t : VL!LinkedElement (
+--   		elementRef <- '//'.concat(s.name),
+--		modelRef <- thisModule.getURLFromMetamodel(s.refImmediateComposite().metamodelLeft->first().name),
+--		name <- s.name
+--    )
+--	do{
+--
+--	}
+--}
+--
+--rule ClassRight2LinkedElement {
+--  from
+--  	s : VPDL!Class(s.refImmediateComposite().oclIsTypeOf(SQL!JoinRight))
+--  to
+--  	t : VL!LinkedElement (
+--   		elementRef <- '//'.concat(s.name),
+--		modelRef <- thisModule.getURLFromMetamodel(s.refImmediateComposite().metamodelRight->first().name),
+--		name <- s.name
+--    )
+--	do{
+--
+--	}
+--}
