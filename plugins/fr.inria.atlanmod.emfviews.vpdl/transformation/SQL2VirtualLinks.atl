@@ -1,5 +1,6 @@
--- @nsURI VL=http://www.inria.fr/virtuallinks
+-- @atlcompiler emftvm
 -- @nsURI VPDL=http://www.inria.fr/atlanmod/emfviews/vpdl
+-- @nsURI VL=http://www.inria.fr/virtualLinks
 
 module SQL2VirtualLinks;
 create OUT : VL from IN : VPDL;
