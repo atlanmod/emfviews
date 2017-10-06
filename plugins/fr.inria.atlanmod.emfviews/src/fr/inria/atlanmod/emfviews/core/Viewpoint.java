@@ -145,7 +145,11 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
   @Override
   public EList<EObject> getContents() {
-    return virtualContents;
+    if (virtualContents == null) {
+      throw EX("Viewpoint failed to load");
+    } else {
+      return virtualContents;
+    }
   }
 
   private void parseProperties(Properties p) {
