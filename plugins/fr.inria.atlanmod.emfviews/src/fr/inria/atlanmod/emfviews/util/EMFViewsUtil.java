@@ -96,7 +96,7 @@ public final class EMFViewsUtil {
     // FIXME: this distinction between http and ecore seems arbitrary; can't we
     // use URI with different protocols in the argument, and let EMF resolve it?
     if (modelPath.startsWith("http://")) {
-      return Optional.of(EPackage.Registry.INSTANCE.getEPackage(modelPath));
+      return Optional.ofNullable(EPackage.Registry.INSTANCE.getEPackage(modelPath));
     } else if (modelPath.endsWith(".ecore")) {
       // XXX: can we get the resource without creating the ResourceSet?
       Resource r = new ResourceSetImpl().getResource(URI.createURI(modelPath, true), true);
