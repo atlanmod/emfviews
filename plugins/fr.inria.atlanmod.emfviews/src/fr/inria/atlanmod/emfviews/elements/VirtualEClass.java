@@ -171,6 +171,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   @Override
+  public EReference eContainmentFeature() {
+    return virtualizer.getVirtual(concreteEClass.eContainmentFeature());
+  }
+
+  @Override
   public String getInstanceClassName() {
     return concreteEClass.getInstanceClassName();
   }

@@ -112,6 +112,11 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
   }
 
   @Override
+  public EReference eContainmentFeature() {
+    return virtualizer.getVirtual(concreteFeature.eContainmentFeature());
+  }
+
+  @Override
   protected DynamicValueHolder eSettings() {
     // This override avoids the creation of the eSettings object that we do not use
     return this;
