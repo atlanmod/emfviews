@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
 import org.eclipse.m2m.atl.emftvm.util.TimingData
+import java.io.ByteArrayOutputStream
 
 /*
  * Generates code from your model files on save.
@@ -27,8 +28,7 @@ class VpdlGenerator extends AbstractGenerator {
 	  
     fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint)
     fsa.generateFile(name + '.ecl', resource.compileEcl)
-    //fsa.generateFile('weaving.xmi', resource.compileXmi)
-    resource.compileXmi
+    fsa.generateFile(name + '.xmi', resource.compileXmi)
   }
   
   def String viewpointName(Resource r) {
@@ -93,7 +93,7 @@ class VpdlGenerator extends AbstractGenerator {
     env.registerInputModel("IN", sourceModel)
     
     var targetModel = factory.createModel()
-    //targetModel.resource = rs.createResource(URI.createFileURI("platform:/resource/test-vpdl/src-gen/" + viewpointName(r) + ".xmi"))
+    // The URI does not actually matter here, as we save the resource to a String
     targetModel.resource = rs.createResource(URI.createFileURI(viewpointName(r) + ".xmi"))    
     env.registerOutputModel("OUT", targetModel)
     
@@ -107,8 +107,11 @@ class VpdlGenerator extends AbstractGenerator {
     env.run(timing)
     timing.finish
     
-    targetModel.resource.save(null)
-    //targetModel.resource.save(new FileOutputStream(viewpointName(r) + ".xmi"), null)
+    // Write to a String and return
+    var out = new ByteArrayOutputStream()
+    targetModel.resource.save(out, null)
+    
+    return new String(out.toByteArray())
   }
    
 }
