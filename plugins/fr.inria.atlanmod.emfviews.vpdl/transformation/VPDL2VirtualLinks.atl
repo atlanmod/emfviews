@@ -10,13 +10,10 @@ rule Model2VirtualLinks {
   	s : VPDL!View
   to
   	t : VirtualLinks!WeavingModel (
-		--virtualLinks <- s.expression.first()."from"->first().join, --Join2Association
-		--linkedElements <- s.expression.first()."from"->first().join->collect(e|e.joinLeft->first().classLeft)
-		--->append(s.expression.first()."from"->first().join->collect(e|e.joinRight->first().classRight))
 		name <- s.name,
 		whitelist <- true,
 		contributingModels <- s."from".metamodels,
-		virtualLinks <- VPDL!Attribute.allInstances()
+		virtualLinks <- VPDL!Feature.allInstances()
     )
 }
 
@@ -41,46 +38,23 @@ rule Filters {
       )
 }
 
---rule Join2Association {
---  from
---  	s : VPDL!Join
---  to
---  	t : VL!Association (
---   		name <- s.relation->first().name,
---		associationTypeName <- s.relation->first().name,
---		upperBound <- 1,
---		sourceElement <- s.joinLeft->first().classLeft,
---		targetElements <- s.joinRight->first().classRight
---    )
---	do{
---
---	}
---}
---
---rule ClassLeft2LinkedElement {
---  from
---  	s : VPDL!Class(s.refImmediateComposite().oclIsTypeOf(SQL!JoinLeft))
---  to
---  	t : VL!LinkedElement (
---   		elementRef <- '//'.concat(s.name),
---		modelRef <- thisModule.getURLFromMetamodel(s.refImmediateComposite().metamodelLeft->first().name),
---		name <- s.name
---    )
---	do{
---
---	}
---}
---
---rule ClassRight2LinkedElement {
---  from
---  	s : VPDL!Class(s.refImmediateComposite().oclIsTypeOf(SQL!JoinRight))
---  to
---  	t : VL!LinkedElement (
---   		elementRef <- '//'.concat(s.name),
---		modelRef <- thisModule.getURLFromMetamodel(s.refImmediateComposite().metamodelRight->first().name),
---		name <- s.name
---    )
---	do{
---
---	}
---}
+rule Relations {
+	from s : VPDL!Relation
+	to
+	  a : VirtualLinks!VirtualAssociation (
+	      name <- s.name,
+	      source <- source,
+	      target <- target,
+	      upperBound <- 1
+	  ),
+	  
+	  source: VirtualLinks!ConcreteConcept (
+	      model <- s.refImmediateComposite().metamodel,
+          path <- s.refImmediateComposite().class
+	  ),
+
+	  target: VirtualLinks!ConcreteConcept (
+	      model <- s.metamodelRight,
+          path <- s.classRight
+	  )
+}
