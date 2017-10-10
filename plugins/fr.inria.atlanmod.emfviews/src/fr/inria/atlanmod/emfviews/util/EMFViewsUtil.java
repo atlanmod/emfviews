@@ -31,9 +31,9 @@ public final class EMFViewsUtil {
 
   /**
    * Find and return the element that matches the path. Path is a dot-separated list of names describing the full
-   * hierarchy of the target element from the root object. E.g.,
+   * hierarchy of the target element from the root object, not including the root object itself. E.g.,
    *
-   * "packageName.className.attributeName"
+   * "className.attributeName"
    *
    * @param root the root object to begin the search with
    * @param path dot-separated list of names to match
@@ -42,7 +42,7 @@ public final class EMFViewsUtil {
   public static Optional<EObject> findElement(EObject root, String path) {
     String[] components = path.split("\\.");
     Queue<EObject> objs = new ArrayDeque<>();
-    objs.add(root);
+    objs.addAll(root.eContents());
 
     // Try to match each component with each object in the queue
     EObject o = null;
@@ -81,7 +81,8 @@ public final class EMFViewsUtil {
   public static String getEObjectPath(EObject o) {
     List<String> comps = new ArrayList<>();
 
-    while (o != null) {
+    // Don't include package in the path
+    while (o != null && !(o instanceof EPackage)) {
       comps.add(((ENamedElement) o).getName());
       o = o.eContainer();
     }

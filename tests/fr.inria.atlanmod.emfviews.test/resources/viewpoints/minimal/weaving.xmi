@@ -7,6 +7,6 @@
                 name="manyB"
                 target="//@contributingModels.0/@concreteElements.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalref">
-    <concreteElements path="minimalref.A.manyB"/>
+    <concreteElements path="A.manyB"/>
   </contributingModels>
 </virtualLinks:WeavingModel>
