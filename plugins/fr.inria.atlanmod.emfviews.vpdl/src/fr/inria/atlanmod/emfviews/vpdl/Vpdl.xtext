@@ -14,7 +14,8 @@ View: 'create' 'view' name=ID 'as'
 // TODO: allow wildcard '*'
 Select: 'select' features+=SelectFeature (',' features+=SelectFeature)* ','?;
 
-SelectFeature: metamodel=[Metamodel|ID] '.' class=ID '.' features+=Feature
+SelectFeature: metamodel=[Metamodel|ID] '.' class=ID '.' features+=Attribute
+  | metamodel=[Metamodel|ID] '.' class=ID features+=Relation
   | metamodel=[Metamodel|ID] '.' class=ID '[' features+=Feature (',' features+=Feature)* ','? ']';
 
 Feature: Attribute | Relation;
@@ -22,12 +23,8 @@ Feature: Attribute | Relation;
 Attribute: name=ID;
 
 Relation: 'join' metamodelRight=[Metamodel|ID] '.' classRight=ID 'as' name=ID;
-/* 
-SelectRelation: metamodelLeft=[Metamodel|ID] '.' classLeft=ID 'join' 
-  metamodelRight=[Metamodel|ID] '.' classRight=ID 'as'
-  name=ID;
-   */
-From: 'from' metamodels+=Metamodel ("," metamodels+=Metamodel)*;
+
+From: 'from' metamodels+=Metamodel (','metamodels+=Metamodel)* ','?;
 
 Metamodel: nsURI=STRING 'as' name=ID;
 
@@ -45,9 +42,7 @@ EclExpression: value=STRING;
 Comparison:
   left+=Left ('=' | '<=' | '>=' | '<' | '>' | '<>') right+=Right;
   
-Left: metamodel+=[Metamodel|ID] '.' class+=ID '.'
-   attributeWhereLeft=ID;
+Left: metamodel+=[Metamodel|ID] '.' class+=ID '.' attributeWhereLeft=ID;
    
-Right: (metamodel+=[Metamodel|ID] '.'class+=ID '.'
-  attributeWhereRight=ID | value=STRING);
+Right: (metamodel+=[Metamodel|ID] '.'class+=ID '.' attributeWhereRight=ID | value=STRING);
   
