@@ -128,9 +128,12 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     buildNewProperties(weavingModel.getVirtualProperties(), registry);
     buildNewAssociations(weavingModel.getVirtualAssociations(), registry);
 
-    virtualContents = buildVirtualContents();
-
     //validateVirtualResourceSet(virtualResourceSet);
+  }
+
+  @Override
+  protected void doUnload() {
+    virtualContents = null;
   }
 
   @Override
@@ -146,10 +149,9 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
   @Override
   public EList<EObject> getContents() {
     if (virtualContents == null) {
-      throw EX("Viewpoint failed to load");
-    } else {
-      return virtualContents;
+      virtualContents = buildVirtualContents();
     }
+    return virtualContents;
   }
 
   private void parseProperties(Properties p) {
