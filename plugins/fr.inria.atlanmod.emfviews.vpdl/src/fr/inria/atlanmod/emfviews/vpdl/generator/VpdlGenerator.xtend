@@ -41,7 +41,7 @@ class VpdlGenerator extends AbstractGenerator {
 
   // FIXME: is there a way to use relative paths here instead?
   def compileEviewpoint(Resource r) '''
-    contributingMetamodels=«r.getListMetamodels.map([m | m.URL]).join(',')»
+    contributingMetamodels=«r.getListMetamodels.map([m | m.nsURI]).join(',')»
     weavingModel=platform:/resource/test-vpdl/src-gen/«viewpointName(r)».xmi
     matchingModel=platform:/resource/test-vpdl/src-gen/«viewpointName(r)».ecl
   ''' 
@@ -85,7 +85,7 @@ class VpdlGenerator extends AbstractGenerator {
     
     var targetMM = factory.createMetamodel()
     targetMM.resource = rs.getResource(URI.createURI("http://inria.fr/virtualLinks"), true)
-    env.registerMetaModel("VL", targetMM)
+    env.registerMetaModel("VirtualLinks", targetMM)
     
     // Load models
     var sourceModel = factory.createModel()
@@ -102,7 +102,7 @@ class VpdlGenerator extends AbstractGenerator {
       new ResourceSetImpl())
     
     var timing = new TimingData()
-    env.loadModule(mr, "SQL2VirtualLinks")
+    env.loadModule(mr, "VPDL2VirtualLinks")
     timing.finishLoading    
     env.run(timing)
     timing.finish

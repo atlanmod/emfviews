@@ -2,26 +2,43 @@
 -- @nsURI VPDL=http://www.inria.fr/atlanmod/emfviews/vpdl
 -- @nsURI VL=http://www.inria.fr/virtualLinks
 
-module SQL2VirtualLinks;
-create OUT : VL from IN : VPDL;
-
-helper def : getURLFromMetamodel(param : String) : String=
-	SQL!Model.allInstances()->first().metamodel->select(e|e.metamodelName->first().name=param)->first().metamodelURL
-;
+module VPDL2VirtualLinks;
+create OUT : VirtualLinks from IN : VPDL;
 
 rule Model2VirtualLinks {
   from
   	s : VPDL!View
   to
-  	t : VL!WeavingModel (
+  	t : VirtualLinks!WeavingModel (
 		--virtualLinks <- s.expression.first()."from"->first().join, --Join2Association
 		--linkedElements <- s.expression.first()."from"->first().join->collect(e|e.joinLeft->first().classLeft)
 		--->append(s.expression.first()."from"->first().join->collect(e|e.joinRight->first().classRight))
-		name <- s.name
+		name <- s.name,
+		whitelist <- true,
+		contributingModels <- s."from".metamodels,
+		virtualLinks <- VPDL!Attribute.allInstances()
     )
-	do{
+}
 
-	}
+rule ContributingModels {
+    from s : VPDL!Metamodel
+    to t : VirtualLinks!ContributingModel (
+         URI <- s.nsURI
+       )
+}
+
+rule Filters {
+    from s : VPDL!Attribute
+    to
+      f : VirtualLinks!Filter (
+        name <- s.name,
+        target <- c
+      ),
+      
+      c : VirtualLinks!ConcreteElement (
+          model <- s.refImmediateComposite().metamodel,
+          path <- s.refImmediateComposite().class + '.' + s.name 
+      )
 }
 
 --rule Join2Association {

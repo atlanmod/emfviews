@@ -4,29 +4,38 @@ generate vpdl "http://www.inria.fr/atlanmod/emfviews/vpdl"
 // Grammar for an SQL-like language to create model viewpoints
 // to use with EMFViews
 
+// TODO: allow uppercase keywords 
+
 View: 'create' 'view' name=ID 'as'
-  'select' select=Select
-  'from' from=From
-  ('where' (condition+=Condition)+);
+  select=Select
+  from=From
+  where=Where?;
   
-// FIXME: allow wildcard '*'
-Select: features+=SelectFeature ("," features+=SelectFeature)*;
+// TODO: allow wildcard '*'
+Select: 'select' features+=SelectFeature (',' features+=SelectFeature)* ','?;
 
-SelectFeature: SelectAttribute | SelectRelation;
-  
-SelectAttribute: metamodel=[Metamodel|ID] '.' class=ID '.' feature=ID
-  | metamodel=[Metamodel|ID] '.' class=ID '[' features+=Feature (',' features+=Feature)* ']';
-  
-Feature: name=ID
-  | 'join' metamodelRight=[Metamodel|ID] '.' classRight=ID 'as' name=ID;
+SelectFeature: metamodel=[Metamodel|ID] '.' class=ID '.' features+=Feature
+  | metamodel=[Metamodel|ID] '.' class=ID '[' features+=Feature (',' features+=Feature)* ','? ']';
 
+Feature: Attribute | Relation;
+
+Attribute: name=ID;
+
+Relation: 'join' metamodelRight=[Metamodel|ID] '.' classRight=ID 'as' name=ID;
+/* 
 SelectRelation: metamodelLeft=[Metamodel|ID] '.' classLeft=ID 'join' 
   metamodelRight=[Metamodel|ID] '.' classRight=ID 'as'
   name=ID;
-   
-From: metamodels+=Metamodel ("," metamodels+=Metamodel)*;
+   */
+From: 'from' metamodels+=Metamodel ("," metamodels+=Metamodel)*;
 
-Metamodel: URL=STRING 'as' name=ID;
+Metamodel: nsURI=STRING 'as' name=ID;
+
+
+
+// TODO: allow aliases in WHERE, and arbitrary ECL expressions (or OCL?) 
+
+Where: 'where' condition+=Condition+;
 
 Condition:(value+=Comparison | value+=EclExpression) (('and' | 'or') 
   (value+=Comparison | value+=EclExpression))*;
