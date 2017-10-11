@@ -1,6 +1,8 @@
 grammar fr.inria.atlanmod.emfviews.vpdl.Vpdl with org.eclipse.xtext.common.Terminals
 generate vpdl "http://www.inria.fr/atlanmod/emfviews/vpdl"
 
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
 // Grammar for an SQL-like language to create model viewpoints
 // to use with EMFViews
 
@@ -14,15 +16,17 @@ View: 'create' 'view' name=ID 'as'
 // TODO: allow wildcard '*'
 Select: 'select' features+=SelectFeature (',' features+=SelectFeature)* ','?;
 
-SelectFeature: metamodel=[Metamodel|ID] '.' class=ID '.' features+=Attribute
-  | metamodel=[Metamodel|ID] '.' class=ID features+=Relation
-  | metamodel=[Metamodel|ID] '.' class=ID '[' features+=Feature (',' features+=Feature)* ','? ']';
+SelectFeature: metamodel=[Metamodel] '.' class=[ecore::EClass] rest=SelectFeatureRest;
+
+SelectFeatureRest: '.' features+=Attribute
+  | features+=Relation
+  | '[' features+=Feature (',' features+=Feature)* ','? ']';
 
 Feature: Attribute | Relation;
 
-Attribute: name=ID;
+Attribute: attribute=[ecore::EStructuralFeature];
 
-Relation: 'join' metamodelRight=[Metamodel|ID] '.' classRight=ID 'as' name=ID;
+Relation: 'join' metamodelRight=[Metamodel] '.' classRight=[ecore::EClass] 'as' name=ID;
 
 From: 'from' metamodels+=Metamodel (','metamodels+=Metamodel)* ','?;
 

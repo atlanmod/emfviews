@@ -1,9 +1,16 @@
 -- @atlcompiler emftvm
 -- @nsURI VPDL=http://www.inria.fr/atlanmod/emfviews/vpdl
 -- @nsURI VL=http://www.inria.fr/virtualLinks
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
 
 module VPDL2VirtualLinks;
 create OUT : VirtualLinks from IN : VPDL;
+
+helper context VPDL!Feature def : metamodel : VPDL!Metamodel =
+    self.refImmediateComposite().refImmediateComposite().metamodel;
+
+helper context VPDL!Feature def : class : ECORE!EClass =
+    self.refImmediateComposite().refImmediateComposite().class;
 
 rule Model2VirtualLinks {
   from
@@ -28,13 +35,13 @@ rule Filters {
     from s : VPDL!Attribute
     to
       f : VirtualLinks!Filter (
-        name <- s.name,
+        name <- s.attribute.name,
         target <- c
       ),
       
       c : VirtualLinks!ConcreteElement (
-          model <- s.refImmediateComposite().metamodel,
-          path <- s.refImmediateComposite().class + '.' + s.name 
+          model <- s.metamodel,
+          path <- s.class.name + '.' + s.attribute.name
       )
 }
 
@@ -49,12 +56,12 @@ rule Relations {
 	  ),
 	  
 	  source: VirtualLinks!ConcreteConcept (
-	      model <- s.refImmediateComposite().metamodel,
-          path <- s.refImmediateComposite().class
+	      model <- s.metamodel,
+          path <- s.class.name
 	  ),
 
 	  target: VirtualLinks!ConcreteConcept (
 	      model <- s.metamodelRight,
-          path <- s.classRight
+          path <- s.classRight.name
 	  )
 }
