@@ -160,21 +160,21 @@ public class View extends ResourceImpl implements Virtualizer {
         vSource.eSet(feature, getVirtual(target));
       }
     }
-
-    // Prepare virtual contents
-    List<EObject> contents = new ArrayList<>();
-
-    for (Resource r : getContributingModels()) {
-      for (EObject o : r.getContents()) {
-        contents.add(getVirtual(o));
-      }
-    }
-
-    virtualContents = ECollections.unmodifiableEList(contents);
   }
 
   @Override
   public EList<EObject> getContents() {
+    if (virtualContents == null) {
+      List<EObject> contents = new ArrayList<>();
+
+      for (Resource r : getContributingModels()) {
+        for (EObject o : r.getContents()) {
+          contents.add(getVirtual(o));
+        }
+      }
+
+      virtualContents = ECollections.unmodifiableEList(contents);
+    }
     return virtualContents;
   }
 
