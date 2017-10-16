@@ -24,9 +24,9 @@ import java.io.ByteArrayOutputStream
 class VpdlGenerator extends AbstractGenerator {
 	
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-    var name = viewpointName(resource)
+    val name = viewpointName(resource)
 	  
-    fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint)
+    fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint(fsa))
     fsa.generateFile(name + '.ecl', resource.compileEcl)
     fsa.generateFile(name + '.xmi', resource.compileXmi)
   }
@@ -39,11 +39,12 @@ class VpdlGenerator extends AbstractGenerator {
     return r.allContents.toIterable().filter(Metamodel);
   }
 
-  // FIXME: is there a way to use relative paths here instead?
-  def compileEviewpoint(Resource r) '''
+  // FIXME: is there a way to use relative paths to the weaving and 
+  // matching models instead?
+  def compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
     contributingMetamodels=«r.getListMetamodels.map([m | m.nsURI]).join(',')»
-    weavingModel=platform:/resource/test-vpdl/src-gen/«viewpointName(r)».xmi
-    matchingModel=platform:/resource/test-vpdl/src-gen/«viewpointName(r)».ecl
+    weavingModel=«fsa.getURI(viewpointName(r))».xmi
+    matchingModel=«fsa.getURI(viewpointName(r))».ecl
   ''' 
   
   def compileEcl(Resource r) '''
