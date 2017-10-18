@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Properties;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -29,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.Test;
 
 import fr.inria.atlanmod.emfviews.core.View;
@@ -37,7 +39,6 @@ import fr.inria.atlanmod.emfviews.core.Viewpoint;
 public class TestEMFViews {
 
   // TODO: test failures
-  // TODO: test relative/absolute platform URI/absolute URI in eviewpoint and eview files
 
   @Test
   public void threeModelComposition() throws IOException {
@@ -532,6 +533,70 @@ public class TestEMFViews {
     // The original model is *not* modified
     p = v.getContributingEPackages().get(0);
     assertEquals(53, getClassifiers(p).size());
+  }
+
+  @Test
+  public void relativePaths() throws IOException {
+    // An eviewpoint file should accept relative paths
+
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/paths/relative.eviewpoint"));
+    v.load(null);
+  }
+
+  @Test
+  public void absoluteFilePaths() throws IOException {
+    // An eviewpoint file should accept absolute paths with the `file:` scheme
+
+    Properties p = new Properties();
+    p.setProperty(Viewpoint.EVIEWPOINT_CONTRIBUTING_METAMODELS,
+                  URI.createFileURI(here + "/resources/metamodels/minimalref.ecore").toString());
+    p.setProperty(Viewpoint.EVIEWPOINT_WEAVING_MODEL,
+                  URI.createFileURI(here + "/resources/viewpoints/minimal/weaving.xmi").toString());
+    p.store(URIConverter.INSTANCE.createOutputStream(resourceURI("viewpoints/paths/absolute-file-scheme.eviewpoint")), null);
+
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/paths/absolute-file-scheme.eviewpoint"));
+    v.load(null);
+
+    // Delete the temporary eviewpoint file
+    new File(here + "/resources/viewpoints/paths/absolute-file-scheme.eviewpoint").delete();
+  }
+
+  @Test
+  public void absolutePathsWithoutScheme() throws IOException {
+    // An eviewpoint file should accept absolute paths without any URI scheme
+
+    Properties p = new Properties();
+    p.setProperty(Viewpoint.EVIEWPOINT_CONTRIBUTING_METAMODELS,
+                  URI.createFileURI(here + "/resources/metamodels/minimalref.ecore").path());
+    p.setProperty(Viewpoint.EVIEWPOINT_WEAVING_MODEL,
+                  URI.createFileURI(here + "/resources/viewpoints/minimal/weaving.xmi").path());
+    p.store(URIConverter.INSTANCE.createOutputStream(resourceURI("viewpoints/paths/absolute-no-scheme.eviewpoint")), null);
+
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/paths/absolute-no-scheme.eviewpoint"));
+    v.load(null);
+
+    // Delete the temporary eviewpoint file
+    new File(here + "/resources/viewpoints/paths/absolute-no-scheme.eviewpoint").delete();
+  }
+
+  @Test
+  public void absolutePlatformPaths() throws IOException {
+    // An eviewpoint file should accept absolute paths with the `platform:` scheme
+
+    String plugin = "fr.inria.atlanmod.emfviews.test";
+
+    Properties p = new Properties();
+    p.setProperty(Viewpoint.EVIEWPOINT_CONTRIBUTING_METAMODELS,
+                  URI.createPlatformPluginURI(plugin + "/resources/metamodels/minimalref.ecore", true).toString());
+    p.setProperty(Viewpoint.EVIEWPOINT_WEAVING_MODEL,
+                  URI.createPlatformPluginURI(plugin + "/resources/viewpoints/minimal/weaving.xmi", true).toString());
+    p.store(URIConverter.INSTANCE.createOutputStream(resourceURI("viewpoints/paths/absolute-platform-scheme.eviewpoint")), null);
+
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/paths/absolute-platform-scheme.eviewpoint"));
+    v.load(null);
+
+    // Delete the temporary eviewpoint file
+    new File(here + "/resources/viewpoints/paths/absolute-platform-scheme.eviewpoint").delete();
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

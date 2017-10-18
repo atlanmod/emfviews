@@ -63,9 +63,9 @@ import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl implements Virtualizer {
 
-  private static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
-  private static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
-  private static String EVIEWPOINT_MATCHING_MODEL = "matchingModel";
+  public static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
+  public static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
+  public static String EVIEWPOINT_MATCHING_MODEL = "matchingModel";
 
   // Paths and URIs serialized in the EViewpoint file
   private List<String> contributingMetamodelsPaths;
