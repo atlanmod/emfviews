@@ -22,12 +22,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 public class VirtualLinksDelegator {
 
   IVirtualLinksDelegate virtualLinksDelegate;
-  String linksDslFile;
+  URI linksDslFile;
 
-  public VirtualLinksDelegator(String linksDslFile) {
+  public VirtualLinksDelegator(URI linksDslFile) {
 
     this.linksDslFile = linksDslFile;
-    String dslExtension = linksDslFile.substring(linksDslFile.lastIndexOf('.') + 1);
+    String dslExtension = linksDslFile.fileExtension();
     // FIXME: hardcoding the extension point ID seems brittle
     IExtension[] extensions = Platform.getExtensionRegistry()
         .getExtensionPoint("fr.inria.atlanmod.emfviews.virtuallinks.delegator").getExtensions();

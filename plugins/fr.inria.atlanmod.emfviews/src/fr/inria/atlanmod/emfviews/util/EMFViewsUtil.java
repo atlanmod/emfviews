@@ -17,13 +17,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 public final class EMFViewsUtil {
   // Prevent instances
@@ -91,20 +88,4 @@ public final class EMFViewsUtil {
     return String.join(".", comps);
   }
 
-  // Return an EPackage from a modelURI, which can start with http or point to a
-  // workspace Ecore file. If the package cannot be found, return null.
-  public static Optional<EPackage> getEPackageFromPath(String modelPath) {
-    // FIXME: this distinction between http and ecore seems arbitrary; can't we
-    // use URI with different protocols in the argument, and let EMF resolve it?
-    if (modelPath.startsWith("http://")) {
-      return Optional.ofNullable(EPackage.Registry.INSTANCE.getEPackage(modelPath));
-    } else if (modelPath.endsWith(".ecore")) {
-      // XXX: can we get the resource without creating the ResourceSet?
-      Resource r = new ResourceSetImpl().getResource(URI.createURI(modelPath, true), true);
-      // @Assumption: the Ecore contains only one EPackage we care about
-      return Optional.of((EPackage) r.getContents().get(0));
-    } else {
-      return Optional.empty();
-    }
-  }
 }

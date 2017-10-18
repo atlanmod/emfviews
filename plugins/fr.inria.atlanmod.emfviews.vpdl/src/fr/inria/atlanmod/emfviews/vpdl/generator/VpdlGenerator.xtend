@@ -43,8 +43,8 @@ class VpdlGenerator extends AbstractGenerator {
   // matching models instead?
   def compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
     contributingMetamodels=«r.getListMetamodels.map([m | m.nsURI]).join(',')»
-    weavingModel=«fsa.getURI(viewpointName(r))».xmi
-    matchingModel=«fsa.getURI(viewpointName(r))».ecl
+    weavingModel=«viewpointName(r)».xmi
+    matchingModel=«viewpointName(r)».ecl
   ''' 
   
   def compileEcl(Resource r) '''

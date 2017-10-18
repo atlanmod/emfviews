@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public interface IVirtualLinksDelegate {
 
-  public void createVirtualModelLinks(String linksDslFile, URI linksModelURI,
+  public void createVirtualModelLinks(URI linksDslFile, URI linksModelURI,
                                       List<Resource> inputModels) throws Exception;
 
 }

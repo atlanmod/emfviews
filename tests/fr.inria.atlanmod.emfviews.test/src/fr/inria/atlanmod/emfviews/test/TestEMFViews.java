@@ -37,6 +37,7 @@ import fr.inria.atlanmod.emfviews.core.Viewpoint;
 public class TestEMFViews {
 
   // TODO: test failures
+  // TODO: test relative/absolute platform URI/absolute URI in eviewpoint and eview files
 
   @Test
   public void threeModelComposition() throws IOException {
@@ -46,8 +47,7 @@ public class TestEMFViews {
 
     // First check the metamodels (Viewpoint)
     {
-      Viewpoint v = new Viewpoint(URI
-          .createURI("resources/viewpoints/three-model-composition/viewpoint.eviewpoint", true));
+      Viewpoint v = new Viewpoint(resourceURI("viewpoints/three-model-composition/viewpoint.eviewpoint"));
       v.load(null);
 
       // We have access to all the contents
@@ -88,8 +88,7 @@ public class TestEMFViews {
 
     // Then, do the same for models (EView)
     {
-      View v =
-          new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
+      View v = new View(resourceURI("views/three-model-composition/view.eview"));
       v.load(null);
 
       // We have access to all the contents
@@ -135,8 +134,7 @@ public class TestEMFViews {
     }
 
     // Load a view
-    View v =
-        new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
+    View v = new View(resourceURI("views/three-model-composition/view.eview"));
     v.load(null);
 
     // The file should be created
@@ -149,7 +147,7 @@ public class TestEMFViews {
     // virtual model
 
     // Get the virtual model
-    View v = new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
+    View v = new View(resourceURI("views/three-model-composition/view.eview"));
     v.load(null);
 
     // Get the concrete model loaded by the virtual model. We could also load
@@ -196,7 +194,7 @@ public class TestEMFViews {
     // We should not be able to access a filtered feature in any way.
 
     // Get the view
-    View v = new View(URI.createURI("resources/views/three-model-composition/view.eview", true));
+    View v = new View(resourceURI("views/three-model-composition/view.eview"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -229,7 +227,7 @@ public class TestEMFViews {
     // exists, but its EOpposite link should be null.
 
     // Create the view
-    View v = new View(URI.createURI("resources/views/minimal/view.eview", true));
+    View v = new View(resourceURI("views/minimal/view.eview"));
     v.load(null);
 
     // The model has a many ref from A to B, and a single ref from B to A, but
@@ -255,7 +253,7 @@ public class TestEMFViews {
     // Creating a virtual association between two minimal models.
 
     // Create the view
-    View v = new View(URI.createURI("resources/views/minimal-assoc/view.eview", true));
+    View v = new View(resourceURI("views/minimal-assoc/view.eview"));
     v.load(null);
 
     // Get the virtual model
@@ -275,8 +273,7 @@ public class TestEMFViews {
   public void addConcept() throws IOException {
     // A new concept in the weaving model should be added to the virtual package
 
-    Viewpoint v =
-        new Viewpoint(URI.createURI("resources/viewpoints/addconcept/viewpoint.eviewpoint", true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/addconcept/viewpoint.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -293,8 +290,7 @@ public class TestEMFViews {
     // A new subconcept in the weaving model should be added to the virtual
     // package, and should reference its superconcept.
 
-    Viewpoint v =
-        new Viewpoint(URI.createURI("resources/viewpoints/addconcept/subconcept.eviewpoint", true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/addconcept/subconcept.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -316,8 +312,7 @@ public class TestEMFViews {
     // A new subconcept in the weaving model should be added to the virtual
     // package, and should reference its superconcept.
 
-    Viewpoint v = new Viewpoint(URI
-        .createURI("resources/viewpoints/addconcept/superconcept.eviewpoint", true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/addconcept/superconcept.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -349,7 +344,7 @@ public class TestEMFViews {
     // A new property should be added to its target concept.
 
     Viewpoint v =
-        new Viewpoint(URI.createURI("resources/viewpoints/addproperty/viewpoint.eviewpoint", true));
+        new Viewpoint(resourceURI("viewpoints/addproperty/viewpoint.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -382,7 +377,7 @@ public class TestEMFViews {
   @Test
   public void addCompositionAssociation() throws IOException {
     Viewpoint v =
-        new Viewpoint(URI.createURI("resources/viewpoints/addassoc/composition.eviewpoint", true));
+        new Viewpoint(resourceURI("viewpoints/addassoc/composition.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -403,8 +398,7 @@ public class TestEMFViews {
   public void addBidirectionalAssociation() throws IOException {
     // A NewAssociation from A to B should create an EReference in A with EType B.
 
-    Viewpoint v = new Viewpoint(URI
-        .createURI("resources/viewpoints/addassoc/bidirectional.eviewpoint", true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/addassoc/bidirectional.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -433,9 +427,7 @@ public class TestEMFViews {
     // We can link virtual elements from NewConcept/NewProperties/NewAssociation.
     // E.g., we can add properties to a new concept in the same weaving model.
 
-    Viewpoint v = new Viewpoint(URI
-        .createURI("resources/viewpoints/synthetic-elements/property-to-newconcept.eviewpoint",
-                   true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/synthetic-elements/property-to-newconcept.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -451,9 +443,7 @@ public class TestEMFViews {
   public void addSuperconceptToNewConcept() throws IOException {
     // We can add concepts and a concept that generalizes those.
 
-    Viewpoint v = new Viewpoint(URI
-        .createURI("resources/viewpoints/synthetic-elements/concept-to-newconcept.eviewpoint",
-                   true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/synthetic-elements/concept-to-newconcept.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -475,8 +465,7 @@ public class TestEMFViews {
   public void addAssociationToNewConcept() throws IOException {
     // We can add new properties and an association between them.
 
-    Viewpoint v = new Viewpoint(URI
-        .createURI("resources/viewpoints/synthetic-elements/assoc-to-newconcept.eviewpoint", true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/synthetic-elements/assoc-to-newconcept.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -498,8 +487,7 @@ public class TestEMFViews {
   public void filterBlacklist() throws IOException {
     // Filtered elements should not exist on the viewpoint.
 
-    Viewpoint v =
-        new Viewpoint(URI.createURI("resources/viewpoints/filter/blacklist.eviewpoint", true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/filter/blacklist.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -525,8 +513,7 @@ public class TestEMFViews {
     // In a weaving model in whitelist mode, filtered elements should be
     // the only remaining elements in the view.
 
-    Viewpoint v =
-        new Viewpoint(URI.createURI("resources/viewpoints/filter/whitelist.eviewpoint", true));
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/filter/whitelist.eviewpoint"));
     v.load(null);
 
     EList<EObject> l = v.getContents();
@@ -590,5 +577,16 @@ public class TestEMFViews {
   EList<EObject> getFeatures(EObject o) {
     return eList(o, "eStructuralFeatures");
   }
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Helpers for handling paths
+
+  // @Correctness: not sure if this is platform-agnostic
+  static String here = new File(".").getAbsolutePath();
+
+  URI resourceURI(String relativePath) {
+    return URI.createFileURI(here + "/resources/" + relativePath);
+  }
+
 
 }
