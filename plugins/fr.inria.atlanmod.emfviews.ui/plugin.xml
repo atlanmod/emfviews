@@ -74,5 +74,25 @@
             name="EMF Viewpoint">
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="fr.inria.atlanmod.emfviews.ui.editors.EViewEditor"
+            default="true"
+            extensions="eview"
+            id="fr.inria.atlanmod.emfviews.ui.editors.eview"
+            name="EView Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.emf.ecore.EObject"
+            class="fr.inria.atlanmod.emfviews.ui.editors.EObjectAdapterFactory">
+         <adapter
+               type="org.eclipse.ui.views.properties.IPropertySource">
+         </adapter>
+      </factory>
+   </extension>
 
 </plugin>
