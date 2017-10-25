@@ -80,7 +80,10 @@ public final class EMFViewsUtil {
 
     // Don't include package in the path
     while (o != null && !(o instanceof EPackage)) {
-      comps.add(((ENamedElement) o).getName());
+      EStructuralFeature nameFeature = o.eClass().getEStructuralFeature("name");
+      if (nameFeature != null) {
+        comps.add((String) o.eGet(nameFeature));
+      }
       o = o.eContainer();
     }
 
