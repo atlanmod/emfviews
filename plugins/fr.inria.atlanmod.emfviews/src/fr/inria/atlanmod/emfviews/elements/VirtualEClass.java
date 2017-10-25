@@ -403,7 +403,8 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EGenericType> getEAllGenericSuperTypes() {
-    throw new UnsupportedOperationException();
+    // @Correctness: get them from the supertypes?
+    return ECollections.emptyEList();
   }
 
   @Override
@@ -492,7 +493,8 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EOperation> getEAllOperations() {
-    throw new UnsupportedOperationException();
+    // @Correctness: get them from the supertypes?
+    return ECollections.emptyEList();
   }
 
   @Override

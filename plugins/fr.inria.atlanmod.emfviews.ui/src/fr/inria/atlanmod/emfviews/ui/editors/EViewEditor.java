@@ -21,7 +21,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import fr.inria.atlanmod.emfviews.core.View;
+import fr.inria.atlanmod.emfviews.core.EmfViewsFactory;
 
 public class EViewEditor extends EditorPart {
   private TreeViewer treeViewer;
@@ -33,7 +33,8 @@ public class EViewEditor extends EditorPart {
     IFile file = ((IFileEditorInput) getEditorInput()).getFile();
     URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 
-    View v = new View(uri);
+    // @Refactor: maybe there's a way to use a global resource factory registry instead?
+    Resource v = new EmfViewsFactory().createResource(uri);
 
     try {
       v.load(null);
@@ -56,8 +57,7 @@ public class EViewEditor extends EditorPart {
       public Object[] getChildren(Object parentElement) {
         if (parentElement instanceof Resource) {
           return ((Resource) parentElement).getContents().toArray();
-        }
-        else if (parentElement instanceof EObject) {
+        } else if (parentElement instanceof EObject) {
           return ((EObject) parentElement).eContents().toArray();
         } else {
           return new Object[0];
@@ -74,8 +74,7 @@ public class EViewEditor extends EditorPart {
       public boolean hasChildren(Object element) {
         if (element instanceof Resource) {
           return !((Resource) element).getContents().isEmpty();
-        }
-        else if (element instanceof EObject) {
+        } else if (element instanceof EObject) {
           return !((EObject) element).eContents().isEmpty();
         } else {
           return false;
@@ -88,8 +87,7 @@ public class EViewEditor extends EditorPart {
       public String getText(Object element) {
         if (element instanceof Resource) {
           return ((Resource) element).getURI().toString();
-        }
-        else if (element instanceof EObject) {
+        } else if (element instanceof EObject) {
           EObject o = ((EObject) element);
 
           String className = o.eClass().getName();
@@ -110,9 +108,8 @@ public class EViewEditor extends EditorPart {
           if (shortName != null) {
             Optional<String> stringValue = o.eClass().getEAllStructuralFeatures().stream()
                 .filter(feature -> (feature.getEType() == EcorePackage.Literals.ESTRING)
-                                   && o.eIsSet(feature))
-                .map(feature -> (String) o.eGet(feature))
-                .filter(value -> !value.isEmpty())
+                    && o.eIsSet(feature))
+                .map(feature -> (String) o.eGet(feature)).filter(value -> !value.isEmpty())
                 .findFirst();
 
             if (stringValue.isPresent()) {
@@ -131,9 +128,7 @@ public class EViewEditor extends EditorPart {
       }
     });
 
-
-
-    treeViewer.setInput(new Object[] {v});
+    treeViewer.setInput(new Object[] { v });
     getEditorSite().setSelectionProvider(treeViewer);
 
     //System.out.println("Adapter is " + Platform.getAdapterManager().getAdapter(v.getContents().get(0), IPropertySource.class));
@@ -145,8 +140,6 @@ public class EViewEditor extends EditorPart {
   public <T> T getAdapter(Class<T> adapter) {
     return super.getAdapter(adapter);
   }
-
-
 
   @Override
   public void setFocus() {
@@ -184,6 +177,5 @@ public class EViewEditor extends EditorPart {
   public boolean isSaveAsAllowed() {
     return false;
   }
-
 
 }
