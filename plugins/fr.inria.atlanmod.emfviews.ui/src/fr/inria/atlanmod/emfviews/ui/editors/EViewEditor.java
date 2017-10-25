@@ -14,6 +14,8 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -66,8 +68,13 @@ public class EViewEditor extends EditorPart {
 
       @Override
       public Object getParent(Object element) {
-        // TODO: Auto-generated method stub
-        throw new UnsupportedOperationException();
+        if (element instanceof Resource) {
+          return null;
+        } else if (element instanceof EObject) {
+          return ((EObject) element).eContainer();
+        } else {
+          return null;
+        }
       }
 
       @Override
@@ -131,10 +138,24 @@ public class EViewEditor extends EditorPart {
     treeViewer.setInput(new Object[] { v });
     getEditorSite().setSelectionProvider(treeViewer);
 
-    //System.out.println("Adapter is " + Platform.getAdapterManager().getAdapter(v.getContents().get(0), IPropertySource.class));
+    // Refresh on right-click
+    // @Refactor: we should probably use a command for that
+    treeViewer.getControl().addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseUp(MouseEvent event) {
+        // TODO: expand the tree to the state it was before reloading the resource
+        if (event.button == 3) {
+          Resource r = new EmfViewsFactory().createResource(uri);
+          try {
+            r.load(null);
+          } catch (IOException ex) {
+            ex.printStackTrace();
+          }
+          treeViewer.setInput(new Object[] { r });
+        }
+      }
+    });
   }
-
-
 
   @Override
   public <T> T getAdapter(Class<T> adapter) {
