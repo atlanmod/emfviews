@@ -1,0 +1,19 @@
+-- @atlcompiler emftvm
+-- @nsURI MEL=http://www.inria.fr/atlanmod/emfviews/mel
+-- @nsURI VL=http://www.inria.fr/virtualLinks
+-- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
+
+module MEL2VirtualLinks;
+create OUT : VirtualLinks from IN : MEL;
+
+rule Model2VirtualLinks {
+  from
+  	s : MEL!Model
+  to
+  	t : VirtualLinks!WeavingModel (
+		--name <- "foo",
+		--whitelist <- false
+		--contributingModels <- s."from".metamodels,
+		--virtualLinks <- VPDL!Feature.allInstances()
+    )
+} 

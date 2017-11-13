@@ -5,3 +5,4 @@ xtend-gen/
 model/generated
 *.asm
 *.emftvm
+*_gen
