@@ -1,0 +1,7 @@
+bin/
+*.jar
+src-gen/
+xtend-gen/
+model/generated
+*.asm
+*.emftvm

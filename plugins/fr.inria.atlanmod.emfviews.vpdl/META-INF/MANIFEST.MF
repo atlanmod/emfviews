@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fr.inria.atlanmod.emfviews.vpdl
-Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.vpdl; singleton:=true
 Bundle-ActivationPolicy: lazy
