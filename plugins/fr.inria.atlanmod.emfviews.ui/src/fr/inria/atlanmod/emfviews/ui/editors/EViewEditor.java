@@ -1,7 +1,9 @@
 package fr.inria.atlanmod.emfviews.ui.editors;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.core.resources.IFile;
