@@ -6,14 +6,68 @@
 module MEL2VirtualLinks;
 create OUT : VirtualLinks from IN : MEL;
 
+helper context MEL!Prefix def : metamodel : MEL!Metamodel =
+    -- @Correctness: properly tie a prefix to its corresponding metamodel    
+    MEL!Metamodel.allInstances()->first();
+    --self.refImmediateComposite().metamodel->at(0);
+
 rule Model2VirtualLinks {
-  from
-  	s : MEL!Model
-  to
-  	t : VirtualLinks!WeavingModel (
-		--name <- "foo",
-		--whitelist <- false
-		--contributingModels <- s."from".metamodels,
-		--virtualLinks <- VPDL!Feature.allInstances()
+  from s : MEL!Model
+  to   t : VirtualLinks!WeavingModel (
+      name <- s.extensionName,
+      whitelist <- false,      
+      contributingModels <- s.metamodel,
+      virtualLinks <- Bag{MEL!Create.allInstances(),
+                          MEL!Refine.allInstances(),
+                          MEL!Generalize.allInstances()
+                          }->flatten()
+	)
+}
+
+rule ContributingModels {
+    from s : MEL!Metamodel
+    to   t : VirtualLinks!ContributingModel (
+        URI <- s.name
     )
-} 
+}
+
+rule Create {
+    from s : MEL!Create
+    to   t : VirtualLinks!VirtualConcept (
+		name <- s.class
+		)
+}
+
+rule Refine {
+    from s : MEL!Refine
+    to
+    t : VirtualLinks!VirtualConcept (
+        name <- s.classNew,
+        superConcepts <- Sequence{parent}
+    ),
+        
+    parent : VirtualLinks!ConcreteConcept (
+        model <- s.prefix.metamodel,
+        path <- s.classOriginal
+	)
+}
+
+rule Generalize {
+    from s : MEL!Generalize
+    to  
+    t : VirtualLinks!VirtualConcept (
+        name <- s.classNew,
+        subConcepts <- s.prefix->iterate(p; tu : OclAny = Tuple{idx=0, concept=Sequence{}} | 
+            Tuple{idx = tu.idx + 1, 
+                  concept = tu.concept->append(thisModule.LazyRule(p, s.class.get(tu.idx)))
+             }).concept
+    )
+}
+
+lazy rule LazyRule {
+  from s: MEL!Prefix, c : ECORE!EString
+  to t : VirtualLinks!ConcreteConcept (
+      model <- s.metamodel,
+      path <- c
+      )
+}
