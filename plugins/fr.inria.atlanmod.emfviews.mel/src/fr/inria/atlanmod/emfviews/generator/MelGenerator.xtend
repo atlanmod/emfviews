@@ -14,6 +14,7 @@ import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
 import org.eclipse.emf.common.util.URI
 import org.eclipse.m2m.atl.emftvm.util.TimingData
 import java.io.ByteArrayOutputStream
+import fr.inria.atlanmod.emfviews.mel.Metamodel
 
 /*
  * Generates code from your model files on save.
@@ -21,12 +22,27 @@ import java.io.ByteArrayOutputStream
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 class MelGenerator extends AbstractGenerator {
+  
+  def String extensionName(Resource r) {
+    r.allContents.toIterable().filter(Model).<Model>head.extensionName
+  }
+  
+  def Iterable<Metamodel> getAllMetamodels(Resource r) {
+    r.allContents.toIterable().filter(Metamodel)
+  }
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-	  val name = resource.allContents.toIterable().filter(Model).<Model>head.extensionName
+	  val name = extensionName(resource)
 	  
+    fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint(fsa))	  
 	  fsa.generateFile(name + '.xmi', resource.compileXMI)
 	}
+	
+	// @Correctness: this should contain the metamodel URI instead 
+  def compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
+    contributingMetamodels=«r.getAllMetamodels.map([m | m.name]).join(',')»
+    weavingModel=«extensionName(r)».xmi
+  ''' 	
 	
 	def compileXMI(Resource r) {
 	  // @Refactor: lifted from VpdlGenerator.xtend 

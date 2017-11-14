@@ -39,8 +39,6 @@ class VpdlGenerator extends AbstractGenerator {
     return r.allContents.toIterable().filter(Metamodel);
   }
 
-  // FIXME: is there a way to use relative paths to the weaving and 
-  // matching models instead?
   def compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
     contributingMetamodels=«r.getListMetamodels.map([m | m.nsURI]).join(',')»
     weavingModel=«viewpointName(r)».xmi
