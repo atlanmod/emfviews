@@ -8,8 +8,9 @@ create OUT : VirtualLinks from IN : MEL;
 
 helper context MEL!Prefix def : metamodel : MEL!Metamodel =
     -- @Correctness: properly tie a prefix to its corresponding metamodel    
-    MEL!Metamodel.allInstances()->first();
-    --self.refImmediateComposite().metamodel->at(0);
+    --MEL!Metamodel.allInstances()->first();
+    self.refImmediateComposite().metamodel.get(self.refImmediateComposite().prefix->indexOf(self)-1);
+       
 
 rule Model2VirtualLinks {
   from s : MEL!Model
@@ -19,7 +20,10 @@ rule Model2VirtualLinks {
       contributingModels <- s.metamodel,
       virtualLinks <- Bag{MEL!Create.allInstances(),
                           MEL!Refine.allInstances(),
-                          MEL!Generalize.allInstances()
+                          MEL!Generalize.allInstances(),
+                          MEL!AddProperty.allInstances(),
+                          MEL!FilterClass.allInstances(),
+                          MEL!FilterProperty.allInstances()
                           }->flatten()
 	)
 }
@@ -57,17 +61,56 @@ rule Generalize {
     to  
     t : VirtualLinks!VirtualConcept (
         name <- s.classNew,
+        -- @Refactor: modify the grammar to clean up this mess
         subConcepts <- s.prefix->iterate(p; tu : OclAny = Tuple{idx=0, concept=Sequence{}} | 
             Tuple{idx = tu.idx + 1, 
-                  concept = tu.concept->append(thisModule.LazyRule(p, s.class.get(tu.idx)))
+                  concept = tu.concept->append(thisModule.Prefix(p, s.class.get(tu.idx)))
              }).concept
     )
 }
 
-lazy rule LazyRule {
-  from s: MEL!Prefix, c : ECORE!EString
-  to t : VirtualLinks!ConcreteConcept (
-      model <- s.metamodel,
+rule FilterClass {
+    from s : MEL!FilterClass
+    to   t : VirtualLinks!Filter (
+        name <- s.prefix.name + '.' + s.class,
+        target <- thisModule.Prefix(s.prefix, s.class)
+    )
+}
+
+unique lazy rule Prefix {
+  from p : MEL!Prefix, c : ECORE!EString
+  to   t : VirtualLinks!ConcreteConcept (
+      model <- p.metamodel,
       path <- c
       )
+}
+
+rule AddProperty {
+    from s : MEL!AddProperty
+    to  
+    t : VirtualLinks!VirtualProperty (
+        name <- s.property,
+        parent <- thisModule.Prefix(s.refImmediateComposite().prefix, s.refImmediateComposite().class),
+        type <- s.type.get(0).type.get(0)
+    )
+}
+
+rule FilterProperty {
+    from s : MEL!FilterProperty
+    to   t : VirtualLinks!Filter (
+        name <- s.property,
+        target <- thisModule.ConcreteProperty(s)
+    )
+}
+
+helper context MEL!FilterProperty 
+def : path : ECORE!EString =
+    self.refImmediateComposite().class + '.' + self.property;
+
+unique lazy rule ConcreteProperty {
+    from s : MEL!FilterProperty
+    to   t : VirtualLinks!ConcreteElement(
+    	model <- s.refImmediateComposite().prefix.metamodel,
+    	path <- s.path
+    )
 }
