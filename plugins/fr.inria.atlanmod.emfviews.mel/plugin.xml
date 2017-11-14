@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package 
-			uri = "http://www.inria.fr/atlanmod/emfviews/Mel"
+			uri = "http://www.inria.fr/atlanmod/emfviews/mel"
 			class = "fr.inria.atlanmod.emfviews.mel.MelPackage"
 			genModel = "model/generated/Mel.genmodel" />
 	</extension>
