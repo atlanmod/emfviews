@@ -18,8 +18,8 @@ world.
 Screencasts
 -----------
 These screencasts provide a smattering of the capabilities of this project:
-* [ER 2015 - SQL_EMFViews user perspective] (https://youtu.be/TabEjn4Jr4Q)
-* [SQL-like DSL to EMF Views internals] (http://youtu.be/cds_DU_VJcM)
+* [ER 2015 - SQL_EMFViews user perspective](https://youtu.be/TabEjn4Jr4Q)
+* [SQL-like DSL to EMF Views internals](http://youtu.be/cds_DU_VJcM)
 * [EMF Views](https://www.youtube.com/watch?v=KoCiV8fvNj8)
 * [Virtual Views](https://www.youtube.com/watch?v=JRjCqyTM2x8)
 * [Demo EMFViews](https://www.youtube.com/watch?v=Lo4kz6Hx3Kg)
@@ -75,7 +75,9 @@ research team of Inria, IMT Atlantique, and LS2N.
 
 The following people have made significant contributions to the project:
 
+* [fmdkdd](https://github.com/fmdkdd "fmdkdd") (primary contact)
 * [Hugo Bruneliere](https://github.com/Hugo-Bruneliere "Hugo Bruneliere")
 * [Jokin Garcia Perez](https://github.com/jokingarcia "Jokin Garcia Perez")
-* [Juan David Villa Calle](https://github.com/juandavidvillacalle "Juan David Villa Calle")
-* [fmdkdd](https://github.com/fmdkdd "fmdkdd")
+  (former contributor)
+* [Juan David Villa Calle](https://github.com/juandavidvillacalle "Juan David
+  Villa Calle") (former contributor)
