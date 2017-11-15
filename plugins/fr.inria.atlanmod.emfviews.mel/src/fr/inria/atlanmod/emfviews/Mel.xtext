@@ -6,32 +6,38 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 //Specific grammar to define MM extensions
 
 Model:
-  'define' extensionName=ID 'extending' metamodel+=Metamodel ':' prefix+=Prefix ("," metamodel+=Metamodel ':'  prefix+=Prefix)* '{' extensions += Extension* '}'
+  (imports+=Import)+ 
+  'define' extensionName=ID 'extending' metamodels+=[Metamodel] ("," metamodels+=[Metamodel])* 
+  '{' extensions += Extension* '}'
 ;
+
+Import: 'import' metamodel=Metamodel;
+
+Metamodel: name=ID 'from' nsURI=STRING;
+
 Extension:
   Create | Refine | Generalize | ModifyClass | FilterClass 
 ;
-Metamodel:
-  name=ID
-;
-Prefix:
-  name=ID
-;
+
 //1- Create from scratch: Create Class classA
 Create:
   'add' 'class' class=ID
 ;
 //2- Refining: Create Class classB extending classX
 Refine:
-  'add' 'class' classNew=ID 'specializing' prefix=[Prefix] '.' classOriginal=ID
+  'add' 'class' classNew=ID 'specializing' parent=TargetClass
+;
+
+TargetClass: 
+  (metamodel=[Metamodel] '.')? class=ID
 ;
 //3- Generalize: Create Class Z supertyping A, B
 Generalize:
-  'add' 'class' classNew=ID 'supertyping' prefix+=[Prefix] '.' class+=ID ("," prefix+=[Prefix] '.' class+=ID)*
+  'add' 'class' classNew=ID 'supertyping' children+=TargetClass ("," children+=TargetClass)*
 ;
 //Covers AddProperty, ModifyProperty, FilterProperty AddConstraint and FilterConstraint
 ModifyClass:
-  'modify' 'class' prefix=[Prefix] '.' class=ID '{'
+  'modify' 'class' class=TargetClass '{'
     modifyOperators += ModifyOperator*
   '}'
 ;
@@ -42,8 +48,10 @@ ModifyOperator:
 AddProperty:
   'add' 'property' property=ID 'type' type+=Type (cardinality+=Cardinality)? (relationType+=RelationType)?
 ;
+
+// TODO: handle classes as type
 Type:
-  type+=ID | prefix+=[Prefix] '.' class+=ID
+  type+=ID
 ;
 //5- Modify property: Alter Class classA Modify propertyB [attribute1=value1, ...]
 ModifyProperty:
@@ -58,7 +66,7 @@ FilterProperty:
 ;
 //7- Filter class: Drop Class classA
 FilterClass:
-  'filter' 'class' prefix=[Prefix] '.' class=ID
+  'filter' 'class' class=TargetClass
 ;
 //8- Add constraint: Alter Class classG Add Constraint constraintA value
 AddConstraint:

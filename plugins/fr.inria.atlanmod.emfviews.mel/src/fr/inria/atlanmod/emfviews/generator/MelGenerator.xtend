@@ -37,10 +37,9 @@ class MelGenerator extends AbstractGenerator {
     fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint(fsa))	  
 	  fsa.generateFile(name + '.xmi', resource.compileXMI)
 	}
-	
-	// @Correctness: this should contain the metamodel URI instead 
+
   def compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
-    contributingMetamodels=«r.getAllMetamodels.map([m | m.name]).join(',')»
+    contributingMetamodels=«r.getAllMetamodels.map([m | m.nsURI]).join(',')»
     weavingModel=«extensionName(r)».xmi
   ''' 	
 	
