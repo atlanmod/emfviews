@@ -1,6 +1,6 @@
 -- @atlcompiler emftvm
--- @nsURI MEL=http://www.inria.fr/atlanmod/emfviews/mel
--- @nsURI VL=http://www.inria.fr/virtualLinks
+-- @path MEL=/fr.inria.atlanmod.emfviews.mel/model/generated/Mel.ecore
+-- @path VirtualLinks=/fr.inria.atlanmod.emfviews.virtuallinks/resource/VirtualLinks.ecore
 -- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
 
 module MEL2VirtualLinks;
