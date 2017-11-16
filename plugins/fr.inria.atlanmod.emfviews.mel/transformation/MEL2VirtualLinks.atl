@@ -10,11 +10,11 @@ rule Model2VirtualLinks {
   from s : MEL!Model
   to   t : VirtualLinks!WeavingModel (
       name <- s.extensionName,
-      whitelist <- false,      
-      contributingModels <- s.metamodels,
-      virtualLinks <- Bag{MEL!Create.allInstances(),
-                          MEL!Refine.allInstances(),
-                          MEL!Generalize.allInstances(),
+      whitelist <- false,
+      contributingModels <- s.imports,
+      virtualLinks <- Bag{MEL!AddClass.allInstances(),
+                          MEL!RefineClass.allInstances(),
+                          MEL!GeneralizeClass.allInstances(),
                           MEL!AddProperty.allInstances(),
                           MEL!FilterClass.allInstances(),
                           MEL!FilterProperty.allInstances()
@@ -22,60 +22,54 @@ rule Model2VirtualLinks {
 	)
 }
 
-rule ContributingModels {
+rule Metamodel {
     from s : MEL!Metamodel
     to   t : VirtualLinks!ContributingModel (
         URI <- s.nsURI
     )
 }
 
-rule Create {
-    from s : MEL!Create
+rule AddClass {
+    from s : MEL!AddClass
     to   t : VirtualLinks!VirtualConcept (
-		name <- s.class
-		)
+		name <- s.name
+	)
 }
 
-rule Refine {
-    from s : MEL!Refine
+rule RefineClass {
+    from s : MEL!RefineClass
     to
     t : VirtualLinks!VirtualConcept (
-        name <- s.classNew,
-        superConcepts <- Sequence{thisModule.TargetClass(s.parent)}
+        name <- s.name,
+        superConcepts <- Sequence{s.parent.toLink}
     )
 }
 
-rule Generalize {
-    from s : MEL!Generalize
+rule GeneralizeClass {
+    from s : MEL!GeneralizeClass
     to  
     t : VirtualLinks!VirtualConcept (
-        name <- s.classNew,
-        subConcepts <- s.children->collect(e | thisModule.TargetClass(e))
+        name <- s.name,
+        subConcepts <- s.children->collect(e | e.toLink)
     )
 }
 
 rule FilterClass {
     from s : MEL!FilterClass
     to   t : VirtualLinks!Filter (
-        name <- s.class.class,
-        target <- thisModule.TargetClass(s.class)
+        name <- s.class.name,
+        target <- s.class.toLink
     )
 }
 
-unique lazy rule TargetClass {
-  from s : MEL!TargetClass
-  to   t : VirtualLinks!ConcreteConcept (
-      model <- s.metamodel,
-      path <- s.class 
-  )
-}
+
 
 rule AddProperty {
     from s : MEL!AddProperty
     to  
     t : VirtualLinks!VirtualProperty (
         name <- s.property,
-        parent <- thisModule.TargetClass(s.refImmediateComposite().class),
+        parent <- s.refImmediateComposite().class.toLink,
         type <- s.type.get(0).type.get(0)
     )
 }
@@ -84,6 +78,18 @@ rule FilterProperty {
     from s : MEL!FilterProperty
     to   t : VirtualLinks!Filter (
         name <- s.property,
-        target <- thisModule.TargetClass(s.refImmediateComposite().class)
+        target <- s.refImmediateComposite().class.toLink
     )
+}
+
+helper context MEL!TargetClass def : toLink : VirtualLinks!ConcreteConcept =
+	thisModule.ConcreteConcept(self.metamodel, self.name)    
+;
+
+unique lazy rule ConcreteConcept {
+  from m : MEL!Metamodel, name: ECORE!EString
+  to   t : VirtualLinks!ConcreteConcept (
+      model <- m,
+      path <- name 
+  )
 }

@@ -6,45 +6,45 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 //Specific grammar to define MM extensions
 
 Model:
-  (imports+=Import)+ 
+  ('import' imports+=Metamodel)*
   'define' extensionName=ID 'extending' metamodels+=[Metamodel] ("," metamodels+=[Metamodel])* 
-  '{' extensions += Extension* '}'
+  '{' extensions+=Extension* '}'
 ;
 
-Import: 'import' metamodel=Metamodel;
-
-Metamodel: name=ID 'from' nsURI=STRING;
+Metamodel:
+  name=ID 'from' nsURI=STRING
+;
 
 Extension:
-  Create | Refine | Generalize | ModifyClass | FilterClass 
+  AddClass | RefineClass | GeneralizeClass | ModifyClass | FilterClass
 ;
 
-//1- Create from scratch: Create Class classA
-Create:
-  'add' 'class' class=ID
+AddClass:
+  'add' 'class' name=ID
 ;
-//2- Refining: Create Class classB extending classX
-Refine:
-  'add' 'class' classNew=ID 'specializing' parent=TargetClass
+
+RefineClass:
+  'add' 'class' name=ID 'specializing' parent=TargetClass
 ;
 
 TargetClass: 
-  (metamodel=[Metamodel] '.')? class=ID
+  (metamodel=[Metamodel] '.')? name=ID
 ;
-//3- Generalize: Create Class Z supertyping A, B
-Generalize:
-  'add' 'class' classNew=ID 'supertyping' children+=TargetClass ("," children+=TargetClass)*
+
+GeneralizeClass:
+  'add' 'class' name=ID 'supertyping' children+=TargetClass ("," children+=TargetClass)*
 ;
-//Covers AddProperty, ModifyProperty, FilterProperty AddConstraint and FilterConstraint
+
 ModifyClass:
   'modify' 'class' class=TargetClass '{'
     modifyOperators += ModifyOperator*
   '}'
 ;
+
 ModifyOperator:
   AddProperty | ModifyProperty | FilterProperty | AddConstraint | FilterConstraint
 ;
-//4- Add property: Alter Class classC Add propertyA [optional attributes]
+
 AddProperty:
   'add' 'property' property=ID 'type' type+=Type (cardinality+=Cardinality)? (relationType+=RelationType)?
 ;
@@ -53,32 +53,34 @@ AddProperty:
 Type:
   type+=ID
 ;
-//5- Modify property: Alter Class classA Modify propertyB [attribute1=value1, ...]
+
 ModifyProperty:
   'modify' 'property' property=ID value+=ValueAssignment ("," value+=ValueAssignment)*
 ;
 ValueAssignment:
   attribute=ID '=' value=EString
 ;
-//6- Filter property: Alter Class classE Drop propertyC
+
 FilterProperty:
   'filter' 'property' property=ID
 ;
-//7- Filter class: Drop Class classA
+
 FilterClass:
   'filter' 'class' class=TargetClass
 ;
-//8- Add constraint: Alter Class classG Add Constraint constraintA value
+
 AddConstraint:
   'add' 'constraint' constraint=ID value=EString
 ;
-//9- Filter constraint: Alter Class classH Drop Constraint constraintB 
+
 FilterConstraint:
   'filter' 'constraint' constraint=EString
 ;
+
 Cardinality:
   '*..1' | '0..1' | '1..1' | '1..*' | '*..*' | '*' | '0..*'
 ;
+
 RelationType:
   'composition' | 'association'
 ;
