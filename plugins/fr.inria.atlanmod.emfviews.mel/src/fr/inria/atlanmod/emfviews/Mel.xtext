@@ -16,23 +16,15 @@ Metamodel:
 ;
 
 Extension:
-  AddClass | RefineClass | GeneralizeClass | ModifyClass | FilterClass
-;
-
-AddClass:
-  'add' 'class' name=ID
-;
-
-RefineClass:
-  'add' 'class' name=ID 'specializing' parent=TargetClass
+  AddClass | ModifyClass | FilterClass
 ;
 
 TargetClass: 
   (metamodel=[Metamodel] '.')? name=ID
 ;
 
-GeneralizeClass:
-  'add' 'class' name=ID 'supertyping' children+=TargetClass ("," children+=TargetClass)*
+AddClass:
+  'add' 'class' name=ID ('specializing' parent=TargetClass)? ('supertyping' children+=TargetClass ("," children+=TargetClass)*)?  
 ;
 
 ModifyClass:
@@ -42,16 +34,19 @@ ModifyClass:
 ;
 
 ModifyOperator:
-  AddProperty | ModifyProperty | FilterProperty | AddConstraint | FilterConstraint
+  AddAttribute | AddReference | ModifyProperty | FilterProperty | AddConstraint | FilterConstraint
 ;
 
-AddProperty:
-  'add' 'property' property=ID 'type' type+=Type (cardinality+=Cardinality)? (relationType+=RelationType)?
+AddAttribute:
+  'add' 'property' name=ID ':' type=Type (cardinality=Cardinality)?
 ;
 
-// TODO: handle classes as type
+AddReference:
+  'add' relationType=RelationType name=ID ':' type=TargetClass (cardinality=Cardinality)?
+;
+
 Type:
-  type+=ID
+  name=ID
 ;
 
 ModifyProperty:
@@ -81,8 +76,8 @@ Cardinality:
   '*..1' | '0..1' | '1..1' | '1..*' | '*..*' | '*' | '0..*'
 ;
 
-RelationType:
-  'composition' | 'association'
+enum RelationType:
+  COMPOSITION = 'composition' | ASSOCIATION = 'association'
 ;
 
 EString returns ecore::EString:

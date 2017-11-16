@@ -13,9 +13,8 @@ rule Model2VirtualLinks {
       whitelist <- false,
       contributingModels <- s.imports,
       virtualLinks <- Bag{MEL!AddClass.allInstances(),
-                          MEL!RefineClass.allInstances(),
-                          MEL!GeneralizeClass.allInstances(),
-                          MEL!AddProperty.allInstances(),
+                          MEL!AddAttribute.allInstances(),
+                          MEL!AddReference.allInstances(),
                           MEL!FilterClass.allInstances(),
                           MEL!FilterProperty.allInstances()
                           }->flatten()
@@ -32,25 +31,12 @@ rule Metamodel {
 rule AddClass {
     from s : MEL!AddClass
     to   t : VirtualLinks!VirtualConcept (
-		name <- s.name
-	)
-}
-
-rule RefineClass {
-    from s : MEL!RefineClass
-    to
-    t : VirtualLinks!VirtualConcept (
         name <- s.name,
-        superConcepts <- Sequence{s.parent.toLink}
-    )
-}
-
-rule GeneralizeClass {
-    from s : MEL!GeneralizeClass
-    to  
-    t : VirtualLinks!VirtualConcept (
-        name <- s.name,
-        subConcepts <- s.children->collect(e | e.toLink)
+        superConcepts <- if s.parent.oclIsUndefined()
+                         then Sequence{}
+        				 else Sequence{s.parent.toLink()}
+						 endif,
+        subConcepts <- s.children->collect(e | e.toLink())
     )
 }
 
@@ -58,19 +44,30 @@ rule FilterClass {
     from s : MEL!FilterClass
     to   t : VirtualLinks!Filter (
         name <- s.class.name,
-        target <- s.class.toLink
+        target <- s.class.toLink()
     )
 }
 
-
-
-rule AddProperty {
-    from s : MEL!AddProperty
+rule AddAttribute {
+    from s : MEL!AddAttribute
     to  
     t : VirtualLinks!VirtualProperty (
-        name <- s.property,
-        parent <- s.refImmediateComposite().class.toLink,
-        type <- s.type.get(0).type.get(0)
+        name <- s.name,
+        type <- s.type.name,
+        parent <- s.refImmediateComposite().class.toLink()
+    )
+}
+
+rule AddReference {
+    from s : MEL!AddReference
+    to  
+    t : VirtualLinks!VirtualAssociation (
+        name <- s.name,
+        source <- s.refImmediateComposite().class.toLink(),
+        target <- s.type.toLink(),
+        --lowerBound <- s.cardinality
+        --upperBound <- s.cardinality
+        composition <- s.relationType = #composition
     )
 }
 
@@ -78,18 +75,21 @@ rule FilterProperty {
     from s : MEL!FilterProperty
     to   t : VirtualLinks!Filter (
         name <- s.property,
-        target <- s.refImmediateComposite().class.toLink
+        target <- s.refImmediateComposite().class.toLink()
     )
 }
 
-helper context MEL!TargetClass def : toLink : VirtualLinks!ConcreteConcept =
-	thisModule.ConcreteConcept(self.metamodel, self.name)    
+helper context MEL!TargetClass def : toLink() : VirtualLinks!Concept =
+    if self.metamodel.oclIsUndefined()
+    then MEL!AddClass.allInstances()->select(e | e.name = self.name)->first()
+	else thisModule.ConcreteConcept(self.metamodel, self.name)
+	endif
 ;
 
 unique lazy rule ConcreteConcept {
-  from m : MEL!Metamodel, name: ECORE!EString
-  to   t : VirtualLinks!ConcreteConcept (
+	from m : MEL!Metamodel, name: ECORE!EString
+	to   t : VirtualLinks!ConcreteConcept (
       model <- m,
       path <- name 
-  )
+  	)
 }
