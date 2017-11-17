@@ -72,8 +72,13 @@ FilterConstraint:
   'filter' 'constraint' constraint=EString
 ;
 
-Cardinality:
-  '*..1' | '0..1' | '1..1' | '1..*' | '*..*' | '*' | '0..*'
+// Disable spaces inside a cardinality
+Cardinality hidden(ML_COMMENT):
+  lowerBound=CardinalityBound '..' upperBound=CardinalityBound
+;
+
+enum CardinalityBound:
+  ZERO = '0' | ONE = '1' | STAR = '*'
 ;
 
 enum RelationType:

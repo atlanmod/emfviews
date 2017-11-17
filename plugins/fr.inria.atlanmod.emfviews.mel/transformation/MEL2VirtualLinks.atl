@@ -54,7 +54,8 @@ rule AddAttribute {
     t : VirtualLinks!VirtualProperty (
         name <- s.name,
         type <- s.type.name,
-        parent <- s.refImmediateComposite().class.toLink()
+        parent <- s.refImmediateComposite().class.toLink(),
+        optional <- s.isOptional()
     )
 }
 
@@ -65,8 +66,8 @@ rule AddReference {
         name <- s.name,
         source <- s.refImmediateComposite().class.toLink(),
         target <- s.type.toLink(),
-        --lowerBound <- s.cardinality
-        --upperBound <- s.cardinality
+        lowerBound <- s.cardinality.lowerBound.toInt(),
+        upperBound <- s.cardinality.upperBound.toInt(),
         composition <- s.relationType = #composition
     )
 }
@@ -93,3 +94,18 @@ unique lazy rule ConcreteConcept {
       path <- name 
   	)
 }
+
+helper context MEL!CardinalityBound def : toInt() : ECORE!EInt =
+    if      self = #"0" then  0
+    else if self = #"1" then  1
+         else                -1  -- '*' case
+         endif
+    endif
+;
+
+-- Attributes are non-optional by default
+helper context MEL!AddAttribute def : isOptional() : ECORE!EBoolean =
+    if self.cardinality.oclIsUndefined() then false
+    else self.cardinality.lowerBound = #"0"
+    endif
+;
