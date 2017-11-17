@@ -19,12 +19,20 @@ Extension:
   AddClass | ModifyClass | FilterClass
 ;
 
-TargetClass: 
-  (metamodel=[Metamodel] '.')? name=ID
+AddClass:
+  'add' 'class' name=ID ('specializing' parent=TargetClass)? ('supertyping' children+=TargetClass ("," children+=TargetClass)*)? 
 ;
 
-AddClass:
-  'add' 'class' name=ID ('specializing' parent=TargetClass)? ('supertyping' children+=TargetClass ("," children+=TargetClass)*)?  
+TargetClass:
+  ConcreteClass | VirtualClass
+;
+
+ConcreteClass:
+  metamodel=[Metamodel] '.' class=[ecore::EClass]
+;
+
+VirtualClass:
+  class=[AddClass]
 ;
 
 ModifyClass:
@@ -61,7 +69,7 @@ FilterProperty:
 ;
 
 FilterClass:
-  'filter' 'class' class=TargetClass
+  'filter' 'class' class=ConcreteClass
 ;
 
 AddConstraint:

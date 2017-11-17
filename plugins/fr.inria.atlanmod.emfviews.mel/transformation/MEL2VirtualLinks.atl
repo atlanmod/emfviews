@@ -12,12 +12,13 @@ rule Model2VirtualLinks {
       name <- s.extensionName,
       whitelist <- false,
       contributingModels <- s.imports,
-      virtualLinks <- Bag{MEL!AddClass.allInstances(),
-                          MEL!AddAttribute.allInstances(),
-                          MEL!AddReference.allInstances(),
-                          MEL!FilterClass.allInstances(),
-                          MEL!FilterProperty.allInstances()
-                          }->flatten()
+      virtualLinks <- Bag{
+          MEL!AddClass.allInstances(),
+          MEL!AddAttribute.allInstances(),
+          MEL!AddReference.allInstances(),
+          MEL!FilterClass.allInstances(),
+	      MEL!FilterProperty.allInstances()
+      }->flatten()
 	)
 }
 
@@ -43,7 +44,7 @@ rule AddClass {
 rule FilterClass {
     from s : MEL!FilterClass
     to   t : VirtualLinks!Filter (
-        name <- s.class.name,
+        name <- s.class.metamodel.name + '.' + s.class.class.name,
         target <- s.class.toLink()
     )
 }
@@ -80,18 +81,19 @@ rule FilterProperty {
     )
 }
 
-helper context MEL!TargetClass def : toLink() : VirtualLinks!Concept =
-    if self.metamodel.oclIsUndefined()
-    then MEL!AddClass.allInstances()->select(e | e.name = self.name)->first()
-	else thisModule.ConcreteConcept(self.metamodel, self.name)
-	endif
+helper context MEL!VirtualClass def : toLink() : VirtualLinks!Concept =
+    self.class
+;
+
+helper context MEL!ConcreteClass def : toLink() : VirtualLinks!Concept =
+	thisModule.ConcreteConcept(self.metamodel, self.class)
 ;
 
 unique lazy rule ConcreteConcept {
-	from m : MEL!Metamodel, name: ECORE!EString
+	from m : MEL!Metamodel, c: ECORE!EClass
 	to   t : VirtualLinks!ConcreteConcept (
-      model <- m,
-      path <- name 
+    	model <- m,
+    	path <- c.name
   	)
 }
 
