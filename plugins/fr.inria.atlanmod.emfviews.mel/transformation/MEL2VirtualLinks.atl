@@ -72,14 +72,13 @@ rule AddReference {
 
 rule FilterProperty {
     from s : MEL!FilterProperty
+    using {
+        target : MEL!ConcreteClass = s.refImmediateComposite().class;
+    }
     to   t : VirtualLinks!Filter (
-        name <- s.property,
-        -- @Correctness: what if the target is a VirtualClass?
-        target <- thisModule.ConcreteElement(
-            s.refImmediateComposite().class.metamodel,
-            s.refImmediateComposite().class.class,
-            s.property
-        )
+        name <- target.metamodel.name + '.' + target.class.name + '.' + s.property,
+        -- We assume we can't filter properties of virtual classes
+        target <- thisModule.ConcreteElement(target.metamodel, target.class, s.property)
     )
 }
 
