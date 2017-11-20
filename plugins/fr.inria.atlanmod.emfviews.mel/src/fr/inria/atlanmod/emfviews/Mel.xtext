@@ -60,7 +60,7 @@ Type:
 ;
 
 ModifyProperty:
-  'modify' 'property' property=ID '{'
+  'modify' 'property' property=[ecore::EStructuralFeature] '{'
     modifyPropertyOperators+=ModifyPropertyOperator*
   '}'
 ;
