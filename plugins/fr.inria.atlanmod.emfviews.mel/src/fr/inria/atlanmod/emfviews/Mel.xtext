@@ -60,10 +60,28 @@ Type:
 ;
 
 ModifyProperty:
-  'modify' 'property' property=ID value+=ValueAssignment ("," value+=ValueAssignment)*
+  'modify' 'property' property=ID '{'
+    modifyPropertyOperators+=ModifyPropertyOperator*
+  '}'
 ;
-ValueAssignment:
-  attribute=ID '=' value=EString
+ModifyPropertyOperator:
+  ChangeName | ChangeType | ChangeCardinality | ChangeRelationType
+;
+
+ChangeName:
+  'name' newName=ID
+;
+
+ChangeType:
+  'type' type=Type
+;
+
+ChangeCardinality:
+  'cardinality' cardinality=Cardinality
+;
+
+ChangeRelationType:
+  'relation' 'type' relationType=RelationType
 ;
 
 FilterProperty:
