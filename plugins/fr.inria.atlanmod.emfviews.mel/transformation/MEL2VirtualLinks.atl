@@ -77,7 +77,20 @@ rule FilterProperty {
     from s : MEL!FilterProperty
     to   t : VirtualLinks!Filter (
         name <- s.property,
-        target <- s.refImmediateComposite().class.toLink()
+        -- @Correctness: what if the target is a VirtualClass?
+        target <- thisModule.ConcreteElement(
+            s.refImmediateComposite().class.metamodel,
+            s.refImmediateComposite().class.class,
+            s.property
+        )
+    )
+}
+
+unique lazy rule ConcreteElement {
+    from m: MEL!Metamodel, class: ECORE!EClass, feature: ECORE!EString
+    to   t : VirtualLinks!ConcreteElement (
+        model <- m,
+        path <- class.name + '.' + feature
     )
 }
 
