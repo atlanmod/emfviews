@@ -85,7 +85,7 @@ ChangeRelationType:
 ;
 
 FilterProperty:
-  'filter' 'property' property=ID
+  'filter' 'property' property=[ecore::EStructuralFeature]
 ;
 
 FilterClass:

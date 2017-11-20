@@ -29,7 +29,8 @@ class MelScopeProvider extends AbstractMelScopeProvider {
       }
     }
     
-    else if (reference == MelPackage.Literals.MODIFY_PROPERTY__PROPERTY) {
+    else if (reference == MelPackage.Literals.MODIFY_PROPERTY__PROPERTY
+          || reference == MelPackage.Literals.FILTER_PROPERTY__PROPERTY) {
       val mc = context.eContainer as ModifyClass
       val cc = mc.class_ as ConcreteClass
       return Scopes.scopeFor(cc.class_.EStructuralFeatures) 

@@ -76,17 +76,17 @@ rule FilterProperty {
         target : MEL!ConcreteClass = s.refImmediateComposite().class;
     }
     to   t : VirtualLinks!Filter (
-        name <- target.metamodel.name + '.' + target.class.name + '.' + s.property,
+        name <- target.metamodel.name + '.' + target.class.name + '.' + s.property.name,
         -- We assume we can't filter properties of virtual classes
         target <- thisModule.ConcreteElement(target.metamodel, target.class, s.property)
     )
 }
 
 unique lazy rule ConcreteElement {
-    from m: MEL!Metamodel, class: ECORE!EClass, feature: ECORE!EString
+    from m: MEL!Metamodel, class: ECORE!EClass, feature: ECORE!EStructuralFeature
     to   t : VirtualLinks!ConcreteElement (
         model <- m,
-        path <- class.name + '.' + feature
+        path <- class.name + '.' + feature.name
     )
 }
 
