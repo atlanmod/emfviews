@@ -33,10 +33,7 @@ rule AddClass {
     from s : MEL!AddClass
     to   t : VirtualLinks!VirtualConcept (
         name <- s.name,
-        superConcepts <- if s.parent.oclIsUndefined()
-                         then Sequence{}
-        				 else Sequence{s.parent.toLink()}
-						 endif,
+        superConcepts <- s.parents->collect(e | e.toLink()),
         subConcepts <- s.children->collect(e | e.toLink())
     )
 }

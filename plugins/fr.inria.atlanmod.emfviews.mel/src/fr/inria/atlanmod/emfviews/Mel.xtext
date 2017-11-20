@@ -20,7 +20,9 @@ Extension:
 ;
 
 AddClass:
-  'add' 'class' name=ID ('specializing' parent=TargetClass)? ('supertyping' children+=TargetClass ("," children+=TargetClass)*)? 
+  'add' 'class' name=ID
+  ('specializing' parents+=TargetClass ("," parents+=TargetClass)*)?
+  ('supertyping' children+=TargetClass ("," children+=TargetClass)*)?
 ;
 
 TargetClass:
