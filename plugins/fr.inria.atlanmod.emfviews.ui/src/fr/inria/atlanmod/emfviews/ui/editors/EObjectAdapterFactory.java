@@ -1,9 +1,13 @@
 package fr.inria.atlanmod.emfviews.ui.editors;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
@@ -43,7 +47,32 @@ public class EObjectAdapterFactory implements IAdapterFactory {
           EStructuralFeature feature = obj.eClass().getEStructuralFeature((String) id);
 
           if (feature != null) {
-            return obj.eGet(feature);
+            Object value = obj.eGet(feature);
+            if (feature.isMany()) {
+              List<EObject> refs = (List<EObject>) value;
+              return refs.stream()
+                  .map(o -> {
+                    String className = o.eClass().getName();
+
+                    // Use the "name" feature, if it exists and is not empty
+                    EStructuralFeature nameFeature = o.eClass().getEStructuralFeature("name");
+                    String shortName = null;
+                    if (nameFeature != null && nameFeature.getEType() == EcorePackage.Literals.ESTRING) {
+                      String s = (String) o.eGet(nameFeature);
+                      if (s != null && !s.isEmpty()) {
+                        shortName = s;
+                      }
+                    }
+
+                    if (shortName == null) {
+                      shortName = "";
+                    }
+
+                    return String.format("%s %s", className, shortName);
+                  }).collect(Collectors.toList());
+            } else {
+              return value;
+            }
           } else {
             return null;
           }
