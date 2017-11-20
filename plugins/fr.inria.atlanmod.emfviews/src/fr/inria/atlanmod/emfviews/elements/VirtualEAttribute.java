@@ -28,6 +28,9 @@ public class VirtualEAttribute extends VirtualEStructuralFeature implements EAtt
     if (feature == EcorePackage.Literals.EATTRIBUTE__EATTRIBUTE_TYPE) {
       return getEAttributeType();
     }
+    if (feature == EcorePackage.Literals.EATTRIBUTE__ID) {
+      return isID();
+    }
 
     return super.dynamicGet(dynamicFeatureID);
   }
