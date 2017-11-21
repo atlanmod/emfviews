@@ -16,7 +16,7 @@ Metamodel:
 ;
 
 Extension:
-  AddClass | ModifyClass | FilterClass
+  AddClass | ModifyVirtualClass | ModifyClass | FilterClass
 ;
 
 AddClass:
@@ -37,13 +37,23 @@ VirtualClass:
   class=[AddClass]
 ;
 
-ModifyClass:
-  'modify' 'class' class=TargetClass '{'
-    modifyOperators += ModifyOperator*
+ModifyVirtualClass:
+  'modify' 'class' class=VirtualClass '{'
+    operators+=ModifyVirtualClassOperator*
   '}'
 ;
 
-ModifyOperator:
+ModifyClass:
+  'modify' 'class' class=ConcreteClass '{'
+    operators+=ModifyConcreteClassOperator*
+  '}'
+;
+
+ModifyVirtualClassOperator:
+  AddAttribute | AddReference | AddConstraint
+;
+
+ModifyConcreteClassOperator:
   AddAttribute | AddReference | ModifyProperty | FilterProperty | AddConstraint | FilterConstraint
 ;
 
