@@ -18,6 +18,20 @@ rule Model2VirtualLinks {
           MEL!AddReference.allInstances(),
           MEL!FilterClass.allInstances(),
 	      MEL!FilterProperty.allInstances()
+	      		->collect(e | thisModule.FilterProperty(e.property,
+	      		                                        e.refImmediateComposite().class)),
+
+    	  -- Desugaring modify property into filter + add
+	      MEL!ModifyAttribute.allInstances()
+	            ->collect(e | Bag{thisModule.ModifyAttribute(e),
+	      		                  thisModule.FilterProperty(e.property,
+	      		                                            e.refImmediateComposite().class)})
+	      		->flatten(),
+		  MEL!ModifyReference.allInstances()
+	            ->collect(e | Bag{thisModule.ModifyReference(e),
+	      		                  thisModule.FilterProperty(e.property,
+	      		                                            e.refImmediateComposite().class)})
+                ->flatten()
       }->flatten()
 	)
 }
@@ -51,9 +65,25 @@ rule AddAttribute {
     to  
     t : VirtualLinks!VirtualProperty (
         name <- s.name,
-        type <- s.type.name,
+        type <- s.type,
         parent <- s.refImmediateComposite().class.toLink(),
         optional <- s.isOptional()
+    )
+}
+
+unique lazy rule ModifyAttribute {
+    from s : MEL!ModifyAttribute
+    to   t : VirtualLinks!VirtualProperty (
+        name <- if s.newName.oclIsUndefined()
+        		then s.property.name
+        		else s.newName
+        		endif,
+        type <- if s.type.oclIsUndefined()
+        		then s.property.eType.name
+        		else s.type
+        		endif,
+        parent <- s.refImmediateComposite().class.toLink(),
+        optional <- false -- TODO
     )
 }
 
@@ -70,15 +100,34 @@ rule AddReference {
     )
 }
 
-rule FilterProperty {
-    from s : MEL!FilterProperty
+unique lazy rule ModifyReference {
+    from s : MEL!ModifyReference
     using {
         target : MEL!ConcreteClass = s.refImmediateComposite().class;
     }
+    to   t : VirtualLinks!VirtualAssociation (
+        name <- if s.newName.oclIsUndefined()
+        		then s.property.name
+        		else s.newName
+        		endif,
+        source <- s.refImmediateComposite().class.toLink(),
+        target <- if s.type.oclIsUndefined()
+				  then s.property.eType.toLink()
+				  -- s.type must be a TargetClass for a reference
+        		  else s.type.toLink()
+        		  endif,
+		lowerBound <- 0, -- TODO
+		upperBound <- 1, -- TODO
+		composition <- false -- TODO
+    )
+}
+
+unique lazy rule FilterProperty {
+    from property : ECORE!EStructuralFeature, target: MEL!ConcreteClass
     to   t : VirtualLinks!Filter (
-        name <- target.metamodel.name + '.' + target.class.name + '.' + s.property.name,
+        name <- target.metamodel.name + '.' + target.class.name + '.' + property.name,
         -- We assume we can't filter properties of virtual classes
-        target <- thisModule.ConcreteElement(target.metamodel, target.class, s.property)
+        target <- thisModule.ConcreteElement(target.metamodel, target.class, property)
     )
 }
 
@@ -96,6 +145,11 @@ helper context MEL!VirtualClass def : toLink() : VirtualLinks!Concept =
 
 helper context MEL!ConcreteClass def : toLink() : VirtualLinks!Concept =
 	thisModule.ConcreteConcept(self.metamodel, self.class)
+;
+
+helper context ECORE!EClass def : toLink() : VirtualLinks!Concept =
+    thisModule.ConcreteConcept(MEL!Metamodel.allInstances()->select(e | e.nsURI = self.ePackage.nsURI).first(),
+                               self)
 ;
 
 unique lazy rule ConcreteConcept {
