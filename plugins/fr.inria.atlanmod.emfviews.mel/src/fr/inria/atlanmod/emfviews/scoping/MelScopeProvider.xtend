@@ -29,11 +29,19 @@ class MelScopeProvider extends AbstractMelScopeProvider {
       }
     }
     
-    else if (reference == MelPackage.Literals.MODIFY_PROPERTY__PROPERTY
-          || reference == MelPackage.Literals.FILTER_PROPERTY__PROPERTY) {
+    else if (reference == MelPackage.Literals.MODIFY_ATTRIBUTE__PROPERTY) {
       val mc = context.eContainer as ModifyClass
-      val cc = mc.class_ as ConcreteClass
-      return Scopes.scopeFor(cc.class_.EStructuralFeatures) 
+      return Scopes.scopeFor(mc.class_.class_.EAttributes)
+    }
+    
+    else if (reference == MelPackage.Literals.MODIFY_REFERENCE__PROPERTY) {
+      val mc = context.eContainer as ModifyClass
+      return Scopes.scopeFor(mc.class_.class_.EReferences)
+    }
+    
+    else if (reference == MelPackage.Literals.FILTER_PROPERTY__PROPERTY) {
+      val mc = context.eContainer as ModifyClass
+      return Scopes.scopeFor(mc.class_.class_.EStructuralFeatures) 
     }
     
     return super.getScope(context, reference)

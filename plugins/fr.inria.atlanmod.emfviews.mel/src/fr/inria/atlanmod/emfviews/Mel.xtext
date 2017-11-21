@@ -54,44 +54,37 @@ ModifyVirtualClassOperator:
 ;
 
 ModifyConcreteClassOperator:
-  AddAttribute | AddReference | ModifyProperty | FilterProperty | AddConstraint | FilterConstraint
+  AddAttribute | AddReference | ModifyAttribute | ModifyReference | FilterProperty | AddConstraint | FilterConstraint
 ;
 
 AddAttribute:
-  'add' 'property' name=ID ':' type=Type (cardinality=Cardinality)?
+  'add' 'property' name=ID ':' type=PrimitiveType (cardinality=Cardinality)?
 ;
 
 AddReference:
   'add' relationType=RelationType name=ID ':' type=TargetClass (cardinality=Cardinality)?
 ;
 
-Type:
-  name=ID
+// @Correctness: what types do we want here? 
+PrimitiveType:
+  'String' | 'Integer'  
 ;
 
-ModifyProperty:
-  'modify' 'property' property=[ecore::EStructuralFeature] '{'
-    modifyPropertyOperators+=ModifyPropertyOperator*
+ModifyAttribute:
+  'modify' 'property' property=[ecore::EAttribute] '{'
+    (('name' newName=ID)? 
+     & ('type' type=PrimitiveType)?
+     & ('cardinality' cardinality=Cardinality)?) 
   '}'
 ;
-ModifyPropertyOperator:
-  ChangeName | ChangeType | ChangeCardinality | ChangeRelationType
-;
 
-ChangeName:
-  'name' newName=ID
-;
-
-ChangeType:
-  'type' type=Type
-;
-
-ChangeCardinality:
-  'cardinality' cardinality=Cardinality
-;
-
-ChangeRelationType:
-  'relation' 'type' relationType=RelationType
+ModifyReference:
+  'modify' 'association' property=[ecore::EReference] '{'
+    (('name' newName=ID)? 
+     & ('type' type=TargetClass)?
+     & ('cardinality' cardinality=Cardinality)? 
+     & ('relation' 'type' relationType=RelationType)?)
+  '}'
 ;
 
 FilterProperty:
@@ -120,7 +113,7 @@ enum CardinalityBound:
 ;
 
 enum RelationType:
-  COMPOSITION = 'composition' | ASSOCIATION = 'association'
+  composition | association
 ;
 
 EString returns ecore::EString:
