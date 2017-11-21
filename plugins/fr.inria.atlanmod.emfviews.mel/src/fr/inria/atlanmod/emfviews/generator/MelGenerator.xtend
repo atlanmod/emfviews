@@ -38,51 +38,51 @@ class MelGenerator extends AbstractGenerator {
 	  fsa.generateFile(name + '.xmi', resource.compileXMI)
 	}
 
-  def compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
+  def CharSequence compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
     contributingMetamodels=«r.getAllMetamodels.map([m | m.nsURI]).join(',')»
     weavingModel=«extensionName(r)».xmi
   ''' 	
-	
-	def compileXMI(Resource r) {
+
+	def String compileXMI(Resource r) {
 	  // @Refactor: lifted from VpdlGenerator.xtend 
-	  var factory = EmftvmFactory.eINSTANCE
-    var rs = new ResourceSetImpl()
+	  val factory = EmftvmFactory.eINSTANCE
+    val rs = new ResourceSetImpl()
     
-    var env = factory.createExecEnv();
+    val env = factory.createExecEnv()
     
     // Load metamodels
-    var sourceMM = factory.createMetamodel()
+    val sourceMM = factory.createMetamodel()
     sourceMM.resource = rs.getResource(URI.createURI("http://www.inria.fr/atlanmod/emfviews/mel"), true)
     env.registerMetaModel("MEL", sourceMM)
     
-    var targetMM = factory.createMetamodel()
+    val targetMM = factory.createMetamodel()
     targetMM.resource = rs.getResource(URI.createURI("http://inria.fr/virtualLinks"), true)
     env.registerMetaModel("VirtualLinks", targetMM)
     
     // Load models
-    var sourceModel = factory.createModel()
+    val sourceModel = factory.createModel()
     sourceModel.resource = r
     env.registerInputModel("IN", sourceModel)
     
-    var targetModel = factory.createModel()
+    val targetModel = factory.createModel()
     // The URI does not actually matter here, as we save the resource to a String
     targetModel.resource = rs.createResource(URI.createFileURI("foo.xmi"))
     env.registerOutputModel("OUT", targetModel)
     
     // Run the transformation
-    var mr = new DefaultModuleResolver("platform:/plugin/fr.inria.atlanmod.emfviews.mel/transformation/",
+    val mr = new DefaultModuleResolver("platform:/plugin/fr.inria.atlanmod.emfviews.mel/transformation/",
       new ResourceSetImpl())
     
-    var timing = new TimingData()
+    val timing = new TimingData()
     env.loadModule(mr, "MEL2VirtualLinks")
     timing.finishLoading    
     env.run(timing)
     timing.finish
     
     // Write to a String and return
-    var out = new ByteArrayOutputStream()
+    val out = new ByteArrayOutputStream()
     targetModel.resource.save(out, null)
     
-    return new String(out.toByteArray())
-	}
+    new String(out.toByteArray())
+  }
 }
