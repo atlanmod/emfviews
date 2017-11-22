@@ -58,23 +58,18 @@ ModifyConcreteClassOperator:
 ;
 
 AddAttribute:
-  'add' 'property' name=ID ':' type=PrimitiveType (cardinality=Cardinality)?
+  'add' 'property' name=ID ':' type=[ecore::EDataType] (cardinality=AttributeCardinality)?
 ;
 
 AddReference:
-  'add' relationType=RelationType name=ID ':' type=TargetClass (cardinality=Cardinality)?
-;
-
-// @Correctness: what types do we want here? 
-PrimitiveType:
-  'String' | 'Integer'  
+  'add' relationType=RelationType name=ID ':' type=TargetClass (cardinality=ReferenceCardinality)?
 ;
 
 ModifyAttribute:
   'modify' 'property' property=[ecore::EAttribute] '{'
     (('name' newName=ID)? 
-     & ('type' type=PrimitiveType)?
-     & ('cardinality' cardinality=Cardinality)?) 
+     & ('type' type=[ecore::EDataType])?
+     & ('cardinality' cardinality=AttributeCardinality)?) 
   '}'
 ;
 
@@ -82,7 +77,7 @@ ModifyReference:
   'modify' 'association' property=[ecore::EReference] '{'
     (('name' newName=ID)? 
      & ('type' type=TargetClass)?
-     & ('cardinality' cardinality=Cardinality)? 
+     & ('cardinality' cardinality=ReferenceCardinality)? 
      & ('relation' 'type' relationType=RelationType)?)
   '}'
 ;
@@ -103,8 +98,13 @@ FilterConstraint:
   'filter' 'constraint' constraint=EString
 ;
 
+// The first value is the default.  Attributes are non-optional unless specified.
+enum AttributeCardinality:
+  MANDATORY = '1' | OPTIONAL = '0'
+;
+
 // Disable spaces inside a cardinality
-Cardinality hidden(ML_COMMENT):
+ReferenceCardinality hidden(ML_COMMENT):
   lowerBound=CardinalityBound '..' upperBound=CardinalityBound
 ;
 

@@ -10,6 +10,8 @@ import fr.inria.atlanmod.emfviews.mel.ConcreteClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.xtext.scoping.Scopes
 import fr.inria.atlanmod.emfviews.mel.ModifyClass
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.EDataType
 
 /*
  * This class contains custom scoping description.
@@ -42,6 +44,11 @@ class MelScopeProvider extends AbstractMelScopeProvider {
     else if (reference == MelPackage.Literals.FILTER_PROPERTY__PROPERTY) {
       val mc = context.eContainer as ModifyClass
       return Scopes.scopeFor(mc.class_.class_.EStructuralFeatures) 
+    }
+    
+    else if (reference == MelPackage.Literals.ADD_ATTRIBUTE__TYPE
+          || reference == MelPackage.Literals.MODIFY_ATTRIBUTE__TYPE) {
+      return Scopes.scopeFor(EcorePackage.eINSTANCE.EClassifiers.filter(EDataType))
     }
     
     return super.getScope(context, reference)

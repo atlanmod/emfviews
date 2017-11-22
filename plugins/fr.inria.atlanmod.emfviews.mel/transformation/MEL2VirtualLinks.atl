@@ -65,9 +65,9 @@ rule AddAttribute {
     to  
     t : VirtualLinks!VirtualProperty (
         name <- s.name,
-        type <- s.type,
+        type <- s.type.toWeavingModelType(),
         parent <- s.refImmediateComposite().class.toLink(),
-        optional <- s.isOptional()
+        optional <- s.cardinality = #"0"
     )
 }
 
@@ -80,10 +80,13 @@ unique lazy rule ModifyAttribute {
         		endif,
         type <- if s.type.oclIsUndefined()
         		then s.property.eType.name
-        		else s.type
+        		else s.type.toWeavingModelType()
         		endif,
         parent <- s.refImmediateComposite().class.toLink(),
-        optional <- false -- TODO
+        optional <- if s.cardinality.oclIsUndefined()
+        			then s.property.lowerBound = 0
+        			else s.cardinality = #"0"
+        			endif
     )
 }
 
@@ -116,9 +119,18 @@ unique lazy rule ModifyReference {
 				  -- s.type must be a TargetClass for a reference
         		  else s.type.toLink()
         		  endif,
-		lowerBound <- 0, -- TODO
-		upperBound <- 1, -- TODO
-		composition <- false -- TODO
+		lowerBound <- if s.cardinality.oclIsUndefined()
+					  then s.property.lowerBound
+					  else s.cardinality.lowerBound.toInt()
+					  endif,
+		upperBound <- if s.cardinality.oclIsUndefined()
+					  then s.property.upperBound
+					  else s.cardinality.upperBound.toInt()
+					  endif,
+		composition <- if s.relationType.oclIsUndefined()
+					   then s.property.containment
+					   else s.relationType = #composition
+					   endif
     )
 }
 
@@ -168,9 +180,11 @@ helper context MEL!CardinalityBound def : toInt() : ECORE!EInt =
     endif
 ;
 
--- Attributes are non-optional by default
-helper context MEL!AddAttribute def : isOptional() : ECORE!EBoolean =
-    if self.cardinality.oclIsUndefined() then false
-    else self.cardinality.lowerBound = #"0"
-    endif
+helper context ECORE!EDataType def : toWeavingModelType() : ECORE!EString =
+	Map{
+    (ECORE!EString,  'String'),
+    (ECORE!EInt,     'int'),
+    (ECORE!EBoolean, 'boolean')
+    -- @Correctness: etc
+    }.get(self)    
 ;
