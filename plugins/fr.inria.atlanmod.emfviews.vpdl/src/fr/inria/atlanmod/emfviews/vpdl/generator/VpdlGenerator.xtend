@@ -9,12 +9,16 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.Metamodel
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.View
+import fr.inria.atlanmod.emfviews.vpdl.vpdl.SelectFeature
 import org.eclipse.m2m.atl.emftvm.EmftvmFactory
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
 import org.eclipse.m2m.atl.emftvm.util.TimingData
 import java.io.ByteArrayOutputStream
+import fr.inria.atlanmod.emfviews.vpdl.vpdl.Rule
+import fr.inria.atlanmod.emfviews.vpdl.vpdl.Relation
+import org.eclipse.emf.ecore.EClass
 
 /*
  * Generates code from your model files on save.
@@ -38,40 +42,44 @@ class VpdlGenerator extends AbstractGenerator {
   def Iterable<Metamodel> getListMetamodels(Resource r){
     return r.allContents.toIterable().filter(Metamodel);
   }
+  
+  def Iterable<Rule> getAllRules(Resource r) {
+    return r.allContents.toIterable().filter(Rule)
+  }
+  
+  def Metamodel metamodel(Relation r) {
+    return (r.eContainer.eContainer as SelectFeature).metamodel
+  }
+  
+  def EClass class_(Relation r) {
+    return (r.eContainer.eContainer as SelectFeature).class_
+  }
 
-  def compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
+  def CharSequence compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
     contributingMetamodels=«r.getListMetamodels.map([m | m.nsURI]).join(',')»
     weavingModel=«viewpointName(r)».xmi
     matchingModel=«viewpointName(r)».ecl
   ''' 
   
-  def compileEcl(Resource r) '''
-    //alias_togaf=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
-    //alias_bpmn=http://www.omg.org/spec/BPMN/20100524/MODEL-XMI
-    //alias_reqif=http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
-
-    rule detailedProcess
-    match s : togaf!Process
-    with  t : bpmn!Process
+  def CharSequence compileEcl(Resource resource) '''
+    «FOR m : resource.listMetamodels»
+    //alias_«m.name»=«m.nsURI»
+    «ENDFOR»
+    
+    «FOR r : resource.allRules»
+    rule «r.relation.name»
+    match s : «r.relation.metamodel.name»!«r.relation.class_.name»
+    with  t : «r.relation.metamodelRight.name»!«r.relation.classRight.name»
     {
       compare
       {
-        return s.name = t.name;
+        return «r.condition»;
       }
     }
-
-    rule detailedRequirement
-    match s : togaf!Requirement
-    with  t : reqif!SpecObject
-    {
-      compare
-      {
-        return t.values.exists(v | v.theValue=s.name);
-      }
-    }
+    «ENDFOR»
   '''
    
-  def compileXmi(Resource r) {
+  def String compileXmi(Resource r) {
     var factory = EmftvmFactory.eINSTANCE
     var rs = new ResourceSetImpl()
     

@@ -1,6 +1,6 @@
 -- @atlcompiler emftvm
--- @nsURI VPDL=http://www.inria.fr/atlanmod/emfviews/vpdl
--- @nsURI VL=http://www.inria.fr/virtualLinks
+-- @path VPDL=/fr.inria.atlanmod.emfviews.vpdl/model/generated/Vpdl.ecore
+-- @path VirtualLinks=/fr.inria.atlanmod.emfviews.virtuallinks/resource/VirtualLinks.ecore
 -- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
 
 module VPDL2VirtualLinks;

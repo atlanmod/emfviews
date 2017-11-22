@@ -69,6 +69,8 @@ public class EclDelegate implements IVirtualLinksDelegate {
     }
 
     // Collect the contributing metamodels from the header of the ECL file
+    // @Refactor: I'm not sure why this is even needed.
+    // We could pass the metamodels directly as arguments to the ECL delegate.
     FileReader fr = new FileReader(f);
     BufferedReader br = new BufferedReader(fr);
     String sCurrentLine = "";

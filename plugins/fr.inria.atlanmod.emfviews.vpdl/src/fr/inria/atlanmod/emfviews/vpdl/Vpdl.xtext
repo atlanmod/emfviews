@@ -32,19 +32,22 @@ From: 'from' metamodels+=Metamodel (','metamodels+=Metamodel)* ','?;
 
 Metamodel: nsURI=STRING 'as' name=ID;
 
+Where:
+  'where' rules+=Rule+
+;
 
+Rule:
+  condition=STRING
+  'for'
+  relation=[Relation]
+;
 
-// TODO: allow aliases in WHERE, and arbitrary ECL expressions (or OCL?) 
-
-Where: 'where' condition+=Condition+;
-
-Condition:(value+=Comparison | value+=EclExpression) (('and' | 'or') 
-  (value+=Comparison | value+=EclExpression))*;
-  
-EclExpression: value=STRING;
+// These are for integrating a bit of the ECL syntax into VPDL
+// Currently unused
 
 Comparison:
-  left+=Left ('=' | '<=' | '>=' | '<' | '>' | '<>') right+=Right;
+  left+=Left ('=' | '<=' | '>=' | '<' | '>' | '<>') right+=Right
+;
   
 Left: metamodel+=[Metamodel|ID] '.' class+=ID '.' attributeWhereLeft=ID;
    
