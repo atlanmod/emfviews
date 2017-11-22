@@ -68,6 +68,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       f = new File(linksDslURI.toFileString());
     }
 
+    // Collect the contributing metamodels from the header of the ECL file
     FileReader fr = new FileReader(f);
     BufferedReader br = new BufferedReader(fr);
     String sCurrentLine = "";
@@ -100,6 +101,9 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     }
     br.close();
+
+    // Prepare the ECL Module
+
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     WeavingModel weavingModel = vLinksFactory.createWeavingModel();
@@ -116,7 +120,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       for (ParseProblem problem : module.getParseProblems()) {
         System.err.println(problem.toString());
       }
-      System.exit(-1);
+      throw new Exception("Error in parsing ECL file.  See stderr for details");
     }
     EclOperationFactory operationFactory = new EclOperationFactory();
     module.getContext().setOperationFactory(operationFactory);
