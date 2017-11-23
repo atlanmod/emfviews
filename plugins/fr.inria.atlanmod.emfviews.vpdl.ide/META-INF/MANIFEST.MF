@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: fr.inria.atlanmod.emfviews.vpdl.ide
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: fr.inria.atlanmod.emfviews.vpdl.ide; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: fr.inria.atlanmod.emfviews.vpdl,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: fr.inria.atlanmod.emfviews.vpdl.ide.contentassist.antlr.internal,
+ fr.inria.atlanmod.emfviews.vpdl.ide.contentassist.antlr
+
