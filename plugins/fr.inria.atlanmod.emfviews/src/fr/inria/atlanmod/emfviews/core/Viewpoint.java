@@ -63,9 +63,9 @@ import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl implements Virtualizer {
 
-  private static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
-  private static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
-  private static String EVIEWPOINT_MATCHING_MODEL = "matchingModel";
+  public static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
+  public static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
+  public static String EVIEWPOINT_MATCHING_MODEL = "matchingModel";
 
   // Paths and URIs serialized in the EViewpoint file
   private List<String> contributingMetamodelsPaths;
@@ -128,9 +128,12 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     buildNewProperties(weavingModel.getVirtualProperties(), registry);
     buildNewAssociations(weavingModel.getVirtualAssociations(), registry);
 
-    virtualContents = buildVirtualContents();
-
     //validateVirtualResourceSet(virtualResourceSet);
+  }
+
+  @Override
+  protected void doUnload() {
+    virtualContents = null;
   }
 
   @Override
@@ -145,6 +148,9 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
   @Override
   public EList<EObject> getContents() {
+    if (virtualContents == null) {
+      virtualContents = buildVirtualContents();
+    }
     return virtualContents;
   }
 
@@ -166,6 +172,10 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     // Parse matchingModel line
     try {
       matchingModelPath = Optional.ofNullable(p.getProperty(EVIEWPOINT_MATCHING_MODEL));
+      // Whitespace is the same as an absent field
+      if (matchingModelPath.isPresent() && matchingModelPath.get().trim().isEmpty()) {
+        matchingModelPath = Optional.empty();
+      }
     } catch (IllegalArgumentException ex) {
       matchingModelPath = Optional.empty();
     }
@@ -176,9 +186,22 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     List<EPackage> packages = new ArrayList<>();
     for (String path : metamodelsPaths) {
       // Get the EPackage from each metamodel URI
-      EPackage p = EMFViewsUtil.getEPackageFromPath(path)
-          .orElseThrow(() -> EX("Could not load EPackage from contributing metamodel '%s'", path));
-      packages.add(p);
+      URI uri = URI.createURI(path).resolve(getURI());
+
+      Optional<EPackage> p = Optional.empty();
+
+      // If it's a namespace URI, fetch from the package registry
+      if ("http".equals(uri.scheme())) {
+        p = Optional.ofNullable(EPackage.Registry.INSTANCE.getEPackage(uri.toString()));
+      }
+      // If it's an Ecore file, then get the EPackage from the resource
+      else if (uri.fileExtension().equals("ecore")) {
+        Resource r = new ResourceSetImpl().getResource(uri, true);
+        // @Assumption: the Ecore contains only one EPackage we care about
+        p = Optional.of((EPackage) r.getContents().get(0));
+      }
+
+      packages.add(p.orElseThrow(() -> EX("Could not load EPackage from contributing metamodel '%s'", path)));
     }
     return packages;
   }
@@ -235,7 +258,8 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
   // Load and return the weaving model from URI
   private WeavingModel loadWeavingModel(URI weavingModelURI) {
-    Resource r = new ResourceSetImpl().getResource(weavingModelURI, true);
+    URI uri = weavingModelURI.resolve(getURI());
+    Resource r = new ResourceSetImpl().getResource(uri, true);
     EObject wm = r.getContents().get(0);
     if (!(wm instanceof WeavingModel)) throw EX("Resource at '%s' is not a WeavingModel", r);
     return (WeavingModel) wm;
@@ -499,8 +523,8 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     return new ViewpointException(msg, args);
   }
 
-  public Optional<String> getMatchingModelPath() {
-    return matchingModelPath;
+  public Optional<URI> getMatchingModelURI() {
+    return matchingModelPath.map(path -> URI.createURI(path).resolve(getURI()));
   }
 
   public List<String> getContributingMetamodelsPaths() {

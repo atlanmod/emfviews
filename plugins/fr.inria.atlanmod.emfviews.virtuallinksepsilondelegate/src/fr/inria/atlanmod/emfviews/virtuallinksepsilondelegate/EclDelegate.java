@@ -13,7 +13,6 @@ package fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,10 +20,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
@@ -44,22 +47,33 @@ import fr.inria.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
-import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
-  public void createVirtualModelLinks(String linksDslFile, URI linksModel,
+  public void createVirtualModelLinks(URI linksDslURI, URI linksModel,
                                       List<Resource> inputModelsResourcesList) throws Exception {
 
-    java.net.URI linksDslUri = VirtualLinksUtil.toURI(linksDslFile);
+    File f;
 
-    File f = new File(linksDslUri.getSchemeSpecificPart());
+    // Need to turn an EMF URI into an actual File location. We cannot use the URIConverter.INSTANCE since it only
+    // provides InputStream, and EclModule needs an actual file.
+    if (linksDslURI.isPlatform()) {
+      // Find the system path for the file from the workspace URI
+      IContainer wsroot = EcorePlugin.getWorkspaceRoot();
+      IFile ifile = wsroot.getFile(new Path(linksDslURI.toPlatformString(true)));
+      f = new File(ifile.getLocationURI());
+    } else {
+      // Assume a regular file path. Will throw if it cannot be found anyway.
+      f = new File(linksDslURI.toFileString());
+    }
+
+    // Collect the contributing metamodels from the header of the ECL file
+    // @Refactor: I'm not sure why this is even needed.
+    // We could pass the metamodels directly as arguments to the ECL delegate.
     FileReader fr = new FileReader(f);
-    BufferedReader br = null;
+    BufferedReader br = new BufferedReader(fr);
     String sCurrentLine = "";
-
-    br = new BufferedReader(fr);
 
     Map<String, Resource> inputModelsAliasMapToResource = new HashMap<>();
     Map<String, String> inputmodelsAliasMapMetamodelUri = new HashMap<>();
@@ -89,6 +103,9 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     }
     br.close();
+
+    // Prepare the ECL Module
+
     // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
     VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
     WeavingModel weavingModel = vLinksFactory.createWeavingModel();
@@ -105,7 +122,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       for (ParseProblem problem : module.getParseProblems()) {
         System.err.println(problem.toString());
       }
-      System.exit(-1);
+      throw new Exception("Error in parsing ECL file.  See stderr for details");
     }
     EclOperationFactory operationFactory = new EclOperationFactory();
     module.getContext().setOperationFactory(operationFactory);

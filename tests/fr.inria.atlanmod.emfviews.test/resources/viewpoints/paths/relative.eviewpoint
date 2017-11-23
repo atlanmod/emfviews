@@ -1,0 +1,3 @@
+contributingMetamodels=../../metamodels/minimalref.ecore
+weavingModel=../minimal/weaving.xmi
+matchingModel=

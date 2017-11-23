@@ -43,30 +43,30 @@
                 target="//@contributingModels.0/@concreteElements.16"/>
 
   <contributingModels URI="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0">
-    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="contentfwk.Process"/>
-    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="contentfwk.Requirement"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.drivers"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.goals"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.objectives"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.units"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.actors"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.roles"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.functions"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.services"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.controls"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.events"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.locations"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.products"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.contracts"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.measures"/>
-    <concreteElements path="contentfwk.BusinessArchitecture.servicesQuality"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Process"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Requirement"/>
+    <concreteElements path="BusinessArchitecture.drivers"/>
+    <concreteElements path="BusinessArchitecture.goals"/>
+    <concreteElements path="BusinessArchitecture.objectives"/>
+    <concreteElements path="BusinessArchitecture.units"/>
+    <concreteElements path="BusinessArchitecture.actors"/>
+    <concreteElements path="BusinessArchitecture.roles"/>
+    <concreteElements path="BusinessArchitecture.functions"/>
+    <concreteElements path="BusinessArchitecture.services"/>
+    <concreteElements path="BusinessArchitecture.controls"/>
+    <concreteElements path="BusinessArchitecture.events"/>
+    <concreteElements path="BusinessArchitecture.locations"/>
+    <concreteElements path="BusinessArchitecture.products"/>
+    <concreteElements path="BusinessArchitecture.contracts"/>
+    <concreteElements path="BusinessArchitecture.measures"/>
+    <concreteElements path="BusinessArchitecture.servicesQuality"/>
   </contributingModels>
 
   <contributingModels URI="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI">
-    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="bpmn2.Process"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Process"/>
   </contributingModels>
 
   <contributingModels URI="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd">
-    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="reqif10.SpecObject"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="SpecObject"/>
   </contributingModels>
 </virtualLinks:WeavingModel>

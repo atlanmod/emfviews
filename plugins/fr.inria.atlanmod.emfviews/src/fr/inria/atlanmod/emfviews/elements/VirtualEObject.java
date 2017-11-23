@@ -144,6 +144,26 @@ public class VirtualEObject extends DynamicEObjectImpl {
   }
 
   @Override
+  protected boolean eDynamicIsSet(int featureID, EStructuralFeature eFeature) {
+    // If it's a concrete feature, delegate to the concrete object
+    EStructuralFeature feature = eClass().getEStructuralFeature(featureID);
+
+    if (feature == null) {
+      throw new IllegalArgumentException("Invalid feature ID " + featureID);
+    }
+
+    EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(feature.getName());
+    // If it's a concrete feature, delegate to the concrete object
+    if (concreteFeature != null) {
+      return concreteEObject.eIsSet(concreteFeature);
+    } else {
+      // If not, then it's a virtual feature.
+      // @Correctness: No idea what to return
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  @Override
   public void dynamicUnset(int dynamicFeatureID) {
     throw new UnsupportedOperationException();
   }

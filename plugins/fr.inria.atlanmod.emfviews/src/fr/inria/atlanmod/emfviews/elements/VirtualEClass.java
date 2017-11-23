@@ -30,9 +30,10 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.impl.ESuperAdapter;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
-public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperAdapter.Holder {
+public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperAdapter.Holder, EClassifierExtendedMetaData.Holder {
 
   private EClass concreteEClass;
   private List<VirtualEStructuralFeature> virtualFeatures = new ArrayList<>();
@@ -171,6 +172,11 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   @Override
+  public EReference eContainmentFeature() {
+    return virtualizer.getVirtual(concreteEClass.eContainmentFeature());
+  }
+
+  @Override
   public String getInstanceClassName() {
     return concreteEClass.getInstanceClassName();
   }
@@ -217,7 +223,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public boolean isInstance(Object object) {
-    throw new UnsupportedOperationException();
+    return concreteEClass.isInstance(object);
   }
 
   @Override
@@ -243,7 +249,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    throw new UnsupportedOperationException();
+    return concreteEClass.getEAnnotation(source);
   }
 
   @Override
@@ -397,7 +403,8 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EGenericType> getEAllGenericSuperTypes() {
-    throw new UnsupportedOperationException();
+    // @Correctness: get them from the supertypes?
+    return ECollections.emptyEList();
   }
 
   @Override
@@ -486,12 +493,18 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EOperation> getEAllOperations() {
-    throw new UnsupportedOperationException();
+    // @Correctness: get them from the supertypes?
+    return ECollections.emptyEList();
   }
 
   @Override
   public boolean isSuperTypeOf(EClass someClass) {
-    throw new UnsupportedOperationException();
+    boolean concreteSuper = concreteEClass.isSuperTypeOf(someClass);
+
+    boolean virtualSuper = someClass instanceof VirtualEClass
+        && ((VirtualEClass) someClass).virtualSuperTypes.contains(this);
+
+    return concreteSuper || virtualSuper;
   }
 
   @Override
@@ -541,7 +554,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EGenericType getFeatureType(EStructuralFeature feature) {
-    throw new UnsupportedOperationException();
+    return concreteEClass.getFeatureType(feature);
   }
 
   @Override
@@ -558,6 +571,19 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   public boolean isFrozen() {
     // @Correctness: not sure whether we should delegate this, or just return false
     return ((ESuperAdapter.Holder) concreteEClass).isFrozen();
+  }
+
+  // Not sure what this is useful for, but the Sample ECore editor seems to use it
+  protected EClassifierExtendedMetaData eClassifierExtendedMetaData;
+
+  @Override
+  public EClassifierExtendedMetaData getExtendedMetaData() {
+    return eClassifierExtendedMetaData;
+  }
+
+  @Override
+  public void setExtendedMetaData(EClassifierExtendedMetaData eClassifierExtendedMetaData) {
+    this.eClassifierExtendedMetaData = eClassifierExtendedMetaData;
   }
 
 }

@@ -17,10 +17,10 @@
                 opposite="//@virtualLinks.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">
     <concreteElements xsi:type="virtualLinks:ConcreteConcept"
-                      path="minimalA.A"/>
+                      path="A"/>
   </contributingModels>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalB">
     <concreteElements xsi:type="virtualLinks:ConcreteConcept"
-                      path="minimalB.B"/>
+                      path="B"/>
   </contributingModels>
 </virtualLinks:WeavingModel>

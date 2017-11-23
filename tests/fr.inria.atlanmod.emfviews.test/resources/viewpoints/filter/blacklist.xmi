@@ -8,6 +8,6 @@
                 name=""
                 target="//@contributingModels.0/@concreteElements.0"/>
   <contributingModels URI="http://inria.fr/atlanmod/emfviews/tests/minimalA">
-    <concreteElements path="minimalA.A.a"/>
+    <concreteElements path="A.a"/>
   </contributingModels>
 </virtualLinks:WeavingModel>

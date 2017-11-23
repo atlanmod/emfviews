@@ -22,8 +22,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EStructuralFeatureExtendedMetaData;
 
-public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal {
+public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal, EStructuralFeatureExtendedMetaData.Holder {
 
   protected EStructuralFeature concreteFeature;
   protected Virtualizer virtualizer;
@@ -112,6 +113,11 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
   }
 
   @Override
+  public EReference eContainmentFeature() {
+    return virtualizer.getVirtual(concreteFeature.eContainmentFeature());
+  }
+
+  @Override
   protected DynamicValueHolder eSettings() {
     // This override avoids the creation of the eSettings object that we do not use
     return this;
@@ -196,7 +202,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
   public int getFeatureID() {
     // @Correctness: Should we return the featureID of the underlying class,
     // or a feature ID that makes sense for this virtual feature?
-    throw new UnsupportedOperationException();
+    return ((VirtualEClass) eContainer()).getAllLocalFeatures().indexOf(this);
   }
 
   @Override
@@ -291,7 +297,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    throw new UnsupportedOperationException();
+    return concreteFeature.getEAnnotation(source);
   }
 
   static class DumbSettingDelegate implements SettingDelegate {
@@ -355,7 +361,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isFeatureMap() {
-    throw new UnsupportedOperationException();
+    return ((EStructuralFeature.Internal) concreteFeature).isFeatureMap();
   }
 
   @Override
@@ -392,6 +398,20 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
   @Override
   public EReference getEOpposite() {
     return virtualizer.getVirtual(((EStructuralFeature.Internal) concreteFeature).getEOpposite());
+  }
+
+  // Not sure what this is useful for, but the Sample ECore editor seems to use it
+  protected EStructuralFeatureExtendedMetaData eStructuralFeatureExtendedMetaData;
+
+  @Override
+  public EStructuralFeatureExtendedMetaData getExtendedMetaData() {
+    return eStructuralFeatureExtendedMetaData;
+  }
+
+  @Override
+  public void
+      setExtendedMetaData(EStructuralFeatureExtendedMetaData eStructuralFeatureExtendedMetaData) {
+    this.eStructuralFeatureExtendedMetaData = eStructuralFeatureExtendedMetaData;
   }
 
 }

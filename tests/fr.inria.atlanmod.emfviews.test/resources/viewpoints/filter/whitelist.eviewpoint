@@ -1,3 +1,3 @@
-contributingMetamodels=resources/metamodels/contentfwk.ecore
-weavingModel=resources/viewpoints/filter/whitelist.xmi
+contributingMetamodels=../../metamodels/contentfwk.ecore
+weavingModel=whitelist.xmi
 matchingModel=

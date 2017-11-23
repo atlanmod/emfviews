@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
 import fr.inria.atlanmod.emfviews.elements.VirtualEClass;
 import fr.inria.atlanmod.emfviews.elements.VirtualEObject;
 import fr.inria.atlanmod.emfviews.elements.Virtualizer;
@@ -90,7 +89,8 @@ public class View extends ResourceImpl implements Virtualizer {
     properties.load(inputStream);
     ResourceSet virtualResourceSet = new ResourceSetImpl();
 
-    viewpoint = new Viewpoint(URI.createURI(properties.getProperty("viewpoint")));
+    URI viewpointURI = URI.createURI(properties.getProperty("viewpoint")).resolve(getURI());
+    viewpoint = new Viewpoint(viewpointURI);
     viewpoint.load(null);
 
     // Load contributing metamodels into the virtual resource set,
@@ -105,7 +105,8 @@ public class View extends ResourceImpl implements Virtualizer {
     modelResources = new HashMap<>();
 
     for (String modelURI : properties.getProperty("contributingModels").split(",")) {
-      Resource r = virtualResourceSet.getResource(URI.createURI(modelURI, true), true);
+      URI uri = URI.createURI(modelURI).resolve(getURI());
+      Resource r = virtualResourceSet.getResource(uri, true);
       if (r != null) {
         // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
         String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
@@ -116,20 +117,21 @@ public class View extends ResourceImpl implements Virtualizer {
       }
     }
 
-    Optional<String> matchingModelPath = viewpoint.getMatchingModelPath();
-    if (matchingModelPath.isPresent() && !matchingModelPath.get().isEmpty()) {
-      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelPath.get());
+    URI weavingModelURI = URI.createURI(properties.getProperty("weavingModel")).resolve(getURI());
+
+    Optional<URI> matchingModelURI = viewpoint.getMatchingModelURI();
+    if (matchingModelURI.isPresent()) {
+      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI.get());
 
       try {
-        vld.createVirtualModelLinks(URI.createURI(properties.getProperty("weavingModel"), true),
-                                    getContributingModels());
+        vld.createVirtualModelLinks(weavingModelURI, getContributingModels());
       } catch (Exception e) {
         throw new RuntimeException("Exception while creating weaving model from matching model", e);
       }
     }
 
     // Populate the model with values for virtual associations
-    Resource weavingModelResource = new ResourceSetImpl().getResource(URI.createURI(properties.getProperty("weavingModel")), true);
+    Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
     WeavingModel weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
 
     for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {
@@ -160,21 +162,21 @@ public class View extends ResourceImpl implements Virtualizer {
         vSource.eSet(feature, getVirtual(target));
       }
     }
-
-    // Prepare virtual contents
-    List<EObject> contents = new ArrayList<>();
-
-    for (Resource r : getContributingModels()) {
-      for (EObject o : r.getContents()) {
-        contents.add(getVirtual(o));
-      }
-    }
-
-    virtualContents = ECollections.unmodifiableEList(contents);
   }
 
   @Override
   public EList<EObject> getContents() {
+    if (virtualContents == null) {
+      List<EObject> contents = new ArrayList<>();
+
+      for (Resource r : getContributingModels()) {
+        for (EObject o : r.getContents()) {
+          contents.add(getVirtual(o));
+        }
+      }
+
+      virtualContents = ECollections.unmodifiableEList(contents);
+    }
     return virtualContents;
   }
 

@@ -1,3 +1,3 @@
-contributingMetamodels=resources/metamodels/minimalA.ecore,resources/metamodels/minimalB.ecore
-weavingModel=resources/viewpoints/addconcept/subconcept-weaving.xmi
+contributingMetamodels=../../metamodels/minimalA.ecore,../../metamodels/minimalB.ecore
+weavingModel=subconcept-weaving.xmi
 matchingModel=

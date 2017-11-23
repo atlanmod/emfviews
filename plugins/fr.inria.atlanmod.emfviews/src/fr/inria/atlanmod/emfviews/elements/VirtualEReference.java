@@ -10,6 +10,7 @@
  *******************************************************************************/
 package fr.inria.atlanmod.emfviews.elements;
 
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -107,7 +108,11 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
 
   @Override
   public EList<EAttribute> getEKeys() {
-    throw new UnsupportedOperationException();
+    // @Correctness: should we return the actual EAttribute from concreteFeature.getEKeys?
+    // If, so, should they be filtered?
+
+    // We need this to not throw for the Sample Ecore Editor to work
+    return (EList<EAttribute>) ECollections.EMPTY_ELIST;
   }
 
 }
