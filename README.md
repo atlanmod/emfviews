@@ -42,6 +42,15 @@ So far, these are the projects:
 * fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate. This project allows to
   generate links from the Epsilon Comparison Language (ECL).
 
+We have also defined two DSLs, VPDL and MEL, which have accompanying Eclipse
+plugins for edition:
+
+* fr.inria.atlanmod.emfviews.vpdl.  ViewPoint Description Language; useful for
+  creating a viewpoint by filtering multiple metamodels, with a syntax inspired
+  by the `SELECT` query in SQL.
+* fr.inria.atlanmod.emfviews.mel.  Metamodel Extension Language; can extend
+  metamodel with new classes, attributes, relations.
+
 The `examples` folder can help give an idea of how to use EMF Views:
 
 * myFirstViewTutorial. Create your first Viewpoint and View.
