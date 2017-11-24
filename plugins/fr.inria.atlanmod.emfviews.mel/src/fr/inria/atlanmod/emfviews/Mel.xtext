@@ -78,7 +78,7 @@ ModifyReference:
     (('name' newName=ID)? 
      & ('type' type=TargetClass)?
      & ('cardinality' cardinality=ReferenceCardinality)? 
-     & ('relation' 'type' relationType=RelationType)?)
+     & ('relation-type' relationType=RelationType)?)
   '}'
 ;
 
