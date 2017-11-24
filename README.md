@@ -17,7 +17,9 @@ world.
 
 Screencasts
 -----------
-These screencasts provide a smattering of the capabilities of this project:
+These screencasts provide a smattering of the capabilities of this project.
+Note that these videos have been recorded with an older version of EMFViews, but
+they still show the overall principles and capabilities of the approach.
 * [ER 2015 - SQL_EMFViews user perspective](https://youtu.be/TabEjn4Jr4Q)
 * [SQL-like DSL to EMF Views internals](http://youtu.be/cds_DU_VJcM)
 * [EMF Views](https://www.youtube.com/watch?v=KoCiV8fvNj8)
