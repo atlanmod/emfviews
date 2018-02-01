@@ -1,0 +1,7 @@
+create view min as 
+
+select
+  togaf.BusinessArchitecture.products,  
+  
+from 
+  'http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0' as togaf,
