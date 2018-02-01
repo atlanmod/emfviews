@@ -31,7 +31,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import fr.inria.atlanmod.emfviews.core.EmfViewsFactory;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 import fr.inria.atlanmod.emfviews.ui.Messages;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+//import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class CreateViewWizard extends Wizard implements INewWizard, IExecutableExtension {
@@ -131,12 +131,12 @@ public class CreateViewWizard extends Wizard implements INewWizard, IExecutableE
       IPath filePath = new Path(viewFileWorkspaceRelativePath).removeFileExtension();
       IPath linksModelPath = filePath.addFileExtension("xmi");
 
-      VirtualLinks viewLinks = VirtualLinksUtil.createLinksModel();
-      VirtualLinksUtil.persistLinksModel(viewLinks, org.eclipse.emf.common.util.URI
-          .createURI(VirtualLinksUtil.toURI(linksModelPath.toString()).toString()));
+//      VirtualLinks viewLinks = VirtualLinksUtil.createLinksModel();
+//      VirtualLinksUtil.persistLinksModel(viewLinks, org.eclipse.emf.common.util.URI
+//          .createURI(VirtualLinksUtil.toURI(linksModelPath.toString()).toString()));
 
       // FIXME: unused?
-      vm.createEView(relativeInputmodelsUris, viewpointPath, linksModelPath.toString());
+//      vm.createEView(relativeInputmodelsUris, viewpointPath, linksModelPath.toString());
 
       IFile newViewFile = viewContainerFolderSelectionPage.createNewFile();
       StringBuffer fileContent = new StringBuffer();

@@ -23,13 +23,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.eclipse.emf.ecore.presentation.EcoreEditorPlugin;
-import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
+//import org.eclipse.emf.ecore.presentation.EcoreEditorPlugin;
+//import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
+//import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -52,15 +52,16 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
     super(parent, new LabelProvider() {
       @Override
       public Image getImage(Object element) {
-        return ExtendedImageRegistry.getInstance()
-            .getImage(EcoreEditPlugin.INSTANCE.getImage("full/obj16/EPackage")); //$NON-NLS-1$
+        return null;
+//        return ExtendedImageRegistry.getInstance()
+//            .getImage(EcoreEditPlugin.INSTANCE.getImage("full/obj16/EPackage")); //$NON-NLS-1$
       }
     });
 
     setMultipleSelection(false);
-    setMessage(EcoreEditorPlugin.INSTANCE.getString("_UI_SelectRegisteredPackageURI")); //$NON-NLS-1$
+//    setMessage(EcoreEditorPlugin.INSTANCE.getString("_UI_SelectRegisteredPackageURI")); //$NON-NLS-1$
     setFilter("*"); //$NON-NLS-1$
-    setTitle(EcoreEditorPlugin.INSTANCE.getString("_UI_PackageSelection_label")); //$NON-NLS-1$
+//    setTitle(EcoreEditorPlugin.INSTANCE.getString("_UI_PackageSelection_label")); //$NON-NLS-1$
   }
 
   /**
@@ -158,11 +159,11 @@ public class RegisteredPackageDialog extends ElementListSelectionDialog {
         updateElements();
       }
     });
-    developmentTimeVersionButton
-        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_DevelopmentTimeVersion_label")); //$NON-NLS-1$
+//    developmentTimeVersionButton
+//        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_DevelopmentTimeVersion_label")); //$NON-NLS-1$
     Button runtimeTimeVersionButton = new Button(buttonGroup, SWT.RADIO);
-    runtimeTimeVersionButton
-        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_RuntimeVersion_label")); //$NON-NLS-1$
+//    runtimeTimeVersionButton
+//        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_RuntimeVersion_label")); //$NON-NLS-1$
     runtimeTimeVersionButton.setSelection(true);
 
     updateElements();

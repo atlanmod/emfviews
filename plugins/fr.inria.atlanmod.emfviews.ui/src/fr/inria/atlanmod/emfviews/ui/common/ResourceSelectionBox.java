@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
-import org.eclipse.emf.ecore.presentation.EcoreEditorPlugin;
+//import org.eclipse.emf.ecore.presentation.EcoreEditorPlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -88,8 +88,8 @@ public class ResourceSelectionBox extends LoadResourceDialog {
     Composite composite = (Composite) super.createDialogArea(parent);
     Composite buttonComposite = (Composite) composite.getChildren()[0];
     Button browseRegisteredPackagesButton = new Button(buttonComposite, SWT.PUSH);
-    browseRegisteredPackagesButton
-        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_BrowseRegisteredPackages_label")); //$NON-NLS-1$
+//    browseRegisteredPackagesButton
+//        .setText(EcoreEditorPlugin.INSTANCE.getString("_UI_BrowseRegisteredPackages_label")); //$NON-NLS-1$
     prepareBrowseRegisteredPackagesButton(browseRegisteredPackagesButton);
 
     FormData data = new FormData();

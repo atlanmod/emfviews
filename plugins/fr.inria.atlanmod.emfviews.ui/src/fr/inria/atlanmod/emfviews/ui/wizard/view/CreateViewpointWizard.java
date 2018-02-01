@@ -40,8 +40,8 @@ import org.eclipse.ui.ide.IDE;
 import fr.inria.atlanmod.emfviews.ui.EmfViewsUIPlugin;
 import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
-import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
-import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
+//import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
+//import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
 import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class CreateViewpointWizard extends Wizard implements INewWizard, IExecutableExtension {
@@ -109,7 +109,7 @@ public class CreateViewpointWizard extends Wizard implements INewWizard, IExecut
 
     IFile viewpointFile = simplePage.createNewFile();
     IPath viewpointFolderFullPath = viewpointFile.getFullPath().removeFileExtension();
-    VirtualLinks filterLinks = VirtualLinksUtil.createLinksModel();
+//    VirtualLinks filterLinks = VirtualLinksUtil.createLinksModel();
     Object[] treeElementsSelected = attSelectionPage.getCheckedElements();
 
     if (treeElementsSelected != null && treeElementsSelected.length > 0) {
@@ -119,37 +119,37 @@ public class CreateViewpointWizard extends Wizard implements INewWizard, IExecut
           EStructuralFeature estFeature = (EStructuralFeature) treeItem;
           Filter filter = VirtualLinksUtil
               .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
-          LinkedElement filterLinkedElement = VirtualLinksUtil
-              .createLinkedElement(estFeature.getEContainingClass().getName(),
-                                   estFeature.getEContainingClass().getEPackage().getNsURI(),
-                                   "//" + estFeature.getEContainingClass().getName(),
-                                   estFeature.getName());
-          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
+//          LinkedElement filterLinkedElement = VirtualLinksUtil
+//              .createLinkedElement(estFeature.getEContainingClass().getName(),
+//                                   estFeature.getEContainingClass().getEPackage().getNsURI(),
+//                                   "//" + estFeature.getEContainingClass().getName(),
+//                                   estFeature.getName());
+//          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (treeItem instanceof EClass) {
           EClass tempEclass = (EClass) treeItem;
           Filter filter =
               VirtualLinksUtil.createFilter("filter" + tempEclass.getName(),
                                             tempEclass.getName() + ".allInstances()", false);
-          LinkedElement filterLinkedElement = VirtualLinksUtil
-              .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
-                                   "//" + tempEclass.getName(), null);
-          filter.setFilteredElement(filterLinkedElement);
-          filterLinks.getVirtualLinks().add(filter);
-          filterLinks.getLinkedElements().add(filterLinkedElement);
-          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
+//          LinkedElement filterLinkedElement = VirtualLinksUtil
+//              .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
+//                                   "//" + tempEclass.getName(), null);
+//          filter.setFilteredElement(filterLinkedElement);
+//          filterLinks.getVirtualLinks().add(filter);
+//          filterLinks.getLinkedElements().add(filterLinkedElement);
+//          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         }
 
       }
 
     }
 
-    try {
-      VirtualLinksUtil.persistLinksModel(filterLinks, org.eclipse.emf.common.util.URI
-          .createURI(viewpointFolderFullPath.addFileExtension("xmi").toString()));
-    } catch (IOException e) {
+//    try {
+//      VirtualLinksUtil.persistLinksModel(filterLinks, org.eclipse.emf.common.util.URI
+//          .createURI(viewpointFolderFullPath.addFileExtension("xmi").toString()));
+//    } catch (IOException e) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+//      e.printStackTrace();
+//    }
 
     try {
       ArrayList<String> inputMetaModels = advancedPage.getInputMetaModelPaths();
