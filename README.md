@@ -1,6 +1,8 @@
 EMF Views
 =========
 
+[![Build Status](https://travis-ci.org/atlanmod/emfviews.svg?branch=master)](https://travis-ci.org/atlanmod/emfviews)
+
 *Note (November 2017)*: As we are in the process of rewriting most of EMF Views,
 some plugins (mainly editors and UI) are outdated and are currently not working
 with the new core.
