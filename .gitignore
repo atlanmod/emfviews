@@ -1,5 +1,25 @@
+# Java
 *.class
-*._trace
-*.xtendbin
+*.jar
+
+# Eclipse
 .metadata/
 .settings/
+.project
+.classpath
+bin/
+
+# Xtext
+src-gen/
+xtend-gen/
+**/model/generated/
+*_gen
+*.xtendbin
+*._trace
+
+# ATL
+*.asm
+*.emftvm
+
+# Maven
+target/
