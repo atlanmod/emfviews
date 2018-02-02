@@ -27,10 +27,18 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
+import org.eclipse.emf.ecore.util.ExtendedMetaData;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.junit.Before;
 import org.junit.Test;
 
 import fr.inria.atlanmod.emfviews.core.View;
@@ -39,6 +47,35 @@ import fr.inria.atlanmod.emfviews.core.Viewpoint;
 public class TestEMFViews {
 
   // TODO: test failures
+
+  @Before
+  public void setup() {
+    // We need the TOGAF model for some of the tests, but the plugin has no update site.
+    // Instead, we use the Ecore file in resources/metamodels.  However, while EMFViews works
+    // with the Ecore file, the code in EclDelegate assumes that metamodels are registered in
+    // the EMF package registry.
+    //
+    // To work around this issue, we load the EPackage from the Ecore file into the package registry.
+    //
+    // See: https://stackoverflow.com/a/9389901
+
+    Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+        .put("ecore", new EcoreResourceFactoryImpl());
+
+    ResourceSet rs = new ResourceSetImpl();
+    // enable extended metadata
+    final ExtendedMetaData extendedMetaData = new BasicExtendedMetaData(rs.getPackageRegistry());
+    rs.getLoadOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, extendedMetaData);
+
+    Resource r = rs.getResource(resourceURI("metamodels/contentfwk.ecore"), true);
+    EObject eObject = r.getContents().get(0);
+    if (eObject instanceof EPackage) {
+      EPackage p = (EPackage) eObject;
+      EPackage.Registry.INSTANCE.put(p.getNsURI(), p);
+    } else {
+      throw new IllegalStateException("Error loading TOGAF metamodel for testing");
+    }
+  }
 
   @Test
   public void threeModelComposition() throws IOException {
@@ -652,6 +689,5 @@ public class TestEMFViews {
   URI resourceURI(String relativePath) {
     return URI.createFileURI(here + "/resources/" + relativePath);
   }
-
 
 }

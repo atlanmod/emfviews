@@ -215,9 +215,16 @@ public class EclDelegate implements IVirtualLinksDelegate {
   protected EmfModel createEmfModelByURI(String name, String model, String metamodel,
                                          boolean readOnLoad,
                                          boolean storeOnDisposal) throws EolModelLoadingException {
+    // @Correctness this assumes the metamodels are in the EPackage.Registry.
+    // This does not hold for using Ecore files directly, unless we load them into
+    // the registry first.
+    // See if we can tell Epsilon to fallback on the Ecore file.
+
+    // @Correctness this condition seems fishy
     if (metamodel.contains("UML")) {
       UMLResourcesUtil.init(null);
     }
+
     EmfModel emfModel = new EmfModel();
     StringProperties properties = new StringProperties();
     properties.put(Model.PROPERTY_NAME, name);
