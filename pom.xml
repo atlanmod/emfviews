@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>fr.inria.atlanmod.emfviews</groupId>
+  <artifactId>emfviews</artifactId>
+  <version>0.3.0-SNAPSHOT</version>
+
+  <packaging>pom</packaging>
+
+  <properties>
+    <tycho-version>1.0.0</tycho-version>
+    <eclipse-oxygen>http://download.eclipse.org/releases/oxygen</eclipse-oxygen>
+    <eclipse-epsilon>http://download.eclipse.org/epsilon/updates/</eclipse-epsilon>
+  </properties>
+
+  <modules>
+    <module>plugins</module>
+    <module>features</module>
+    <module>update</module>
+    <module>tests</module>
+  </modules>
+
+  <repositories>
+    <repository>
+      <id>eclipse-oxygen</id>
+      <layout>p2</layout>
+      <url>${eclipse-oxygen}</url>
+    </repository>
+
+    <repository>
+      <id>eclipse-epsilon</id>
+      <layout>p2</layout>
+      <url>${eclipse-epsilon}</url>
+    </repository>
+  </repositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+
+      <!--   <plugin> -->
+      <!--     <groupId>org.eclipse.tycho</groupId> -->
+      <!--     <artifactId>target-platform-configuration</artifactId> -->
+      <!--     <version>1.0.0</version> -->
+      <!--     <configuration> -->
+      <!--       <pomDependencies>consider</pomDependencies> -->
+      <!--       <environments> -->
+      <!--         <environment> -->
+      <!--           <os>win32</os> -->
+      <!--           <ws>win32</ws> -->
+      <!--           <arch>x86_64</arch> -->
+      <!--         </environment> -->
+      <!--         <environment> -->
+      <!--           <os>linux</os> -->
+      <!--           <ws>gtk</ws> -->
+      <!--           <arch>x86_64</arch> -->
+      <!--         </environment> -->
+      <!--         <environment> -->
+      <!--           <os>macosx</os> -->
+      <!--           <ws>cocoa</ws> -->
+      <!--           <arch>x86_64</arch> -->
+      <!--         </environment> -->
+      <!--       </environments> -->
+      <!--     </configuration> -->
+      <!--   </plugin> -->
+    </plugins>
+  </build>
+
+</project>
