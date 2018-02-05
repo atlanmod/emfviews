@@ -17,6 +17,9 @@
     <module>fr.inria.atlanmod.emfviews</module>
     <module>fr.inria.atlanmod.emfviews.virtuallinks</module>
     <module>fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate</module>
+    <module>fr.inria.atlanmod.emfviews.mel</module>
+    <module>fr.inria.atlanmod.emfviews.mel.ide</module>
+    <module>fr.inria.atlanmod.emfviews.mel.ui</module>
   </modules>
 
 </project>

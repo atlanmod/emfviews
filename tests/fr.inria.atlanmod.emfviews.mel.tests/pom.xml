@@ -5,17 +5,12 @@
 
   <parent>
     <groupId>fr.inria.atlanmod.emfviews</groupId>
-      <artifactId>emfviews</artifactId>
+      <artifactId>tests</artifactId>
       <version>0.3.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>tests</artifactId>
+  <artifactId>fr.inria.atlanmod.emfviews.mel.tests</artifactId>
 
-  <packaging>pom</packaging>
-
-  <modules>
-    <module>fr.inria.atlanmod.emfviews.test</module>
-    <module>fr.inria.atlanmod.emfviews.mel.tests</module>
-  </modules>
+  <packaging>eclipse-test-plugin</packaging>
 
 </project>
