@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>fr.inria.atlanmod.emfviews.test</module>
+    <module>fr.inria.atlanmod.emfviews.tests</module>
     <module>fr.inria.atlanmod.emfviews.mel.tests</module>
     <module>fr.inria.atlanmod.emfviews.vpdl.tests</module>
   </modules>

@@ -14,7 +14,7 @@
  *   fmdkdd - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.atlanmod.emfviews.test;
+package fr.inria.atlanmod.emfviews.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

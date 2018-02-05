@@ -14,7 +14,7 @@
  *   fmdkdd - initial API and implementation
  *******************************************************************************/
 
-package fr.inria.atlanmod.emfviews.test;
+package fr.inria.atlanmod.emfviews.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -626,7 +626,7 @@ public class TestEMFViews {
   public void absolutePlatformPaths() throws IOException {
     // An eviewpoint file should accept absolute paths with the `platform:` scheme
 
-    String plugin = "fr.inria.atlanmod.emfviews.test";
+    String plugin = "fr.inria.atlanmod.emfviews.tests";
 
     Properties p = new Properties();
     p.setProperty(Viewpoint.EVIEWPOINT_CONTRIBUTING_METAMODELS,
