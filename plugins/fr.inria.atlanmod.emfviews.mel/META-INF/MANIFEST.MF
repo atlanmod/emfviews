@@ -1,19 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: fr.inria.atlanmod.emfviews.mel
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: MEL Metamodel Extension Language
+Bundle-Version: 0.3.0.qualifier
 Bundle-SymbolicName: fr.inria.atlanmod.emfviews.mel; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.xtext,
- org.eclipse.xtext.xbase,
- org.eclipse.equinox.common;bundle-version="3.5.0",
- org.eclipse.emf.ecore,
- org.eclipse.xtext.xbase.lib,
- org.antlr.runtime,
- org.eclipse.xtext.util,
- org.eclipse.xtend.lib,
- org.eclipse.emf.common,
- org.eclipse.m2m.atl.emftvm
+Require-Bundle: org.eclipse.xtext;bundle-version="[2.12.0,3.0.0)",
+ org.eclipse.xtext.xbase;bundle-version="[2.12.0,3.0.0)",
+ org.eclipse.m2m.atl.emftvm;bundle-version="[3.0.0,5.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: fr.inria.atlanmod.emfviews.scoping,
  fr.inria.atlanmod.emfviews.generator,
@@ -26,4 +19,4 @@ Export-Package: fr.inria.atlanmod.emfviews.scoping,
  fr.inria.atlanmod.emfviews.mel,
  fr.inria.atlanmod.emfviews.parser.antlr.internal,
  fr.inria.atlanmod.emfviews.mel.util
-Import-Package: org.apache.log4j
+Bundle-Vendor: Atlanmod
