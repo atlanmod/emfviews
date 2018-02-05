@@ -42,7 +42,7 @@ import fr.inria.atlanmod.emfviews.ui.Messages;
 import fr.inria.atlanmod.emfviews.virtuallinks.Filter;
 //import fr.inria.atlanmod.emfviews.virtuallinks.LinkedElement;
 //import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinks;
-import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
+//import fr.inria.atlanmod.emfviews.virtuallinks.util.VirtualLinksUtil;
 
 public class CreateViewpointWizard extends Wizard implements INewWizard, IExecutableExtension {
 
@@ -117,8 +117,8 @@ public class CreateViewpointWizard extends Wizard implements INewWizard, IExecut
 
         if (treeItem instanceof EStructuralFeature) {
           EStructuralFeature estFeature = (EStructuralFeature) treeItem;
-          Filter filter = VirtualLinksUtil
-              .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
+//          Filter filter = VirtualLinksUtil
+//              .createFilter("filter" + estFeature.getEContainingClass().getName(), "", true);
 //          LinkedElement filterLinkedElement = VirtualLinksUtil
 //              .createLinkedElement(estFeature.getEContainingClass().getName(),
 //                                   estFeature.getEContainingClass().getEPackage().getNsURI(),
@@ -127,9 +127,9 @@ public class CreateViewpointWizard extends Wizard implements INewWizard, IExecut
 //          VirtualLinksUtil.associateFilters(filterLinks, filter, filterLinkedElement);
         } else if (treeItem instanceof EClass) {
           EClass tempEclass = (EClass) treeItem;
-          Filter filter =
-              VirtualLinksUtil.createFilter("filter" + tempEclass.getName(),
-                                            tempEclass.getName() + ".allInstances()", false);
+//          Filter filter =
+//              VirtualLinksUtil.createFilter("filter" + tempEclass.getName(),
+//                                            tempEclass.getName() + ".allInstances()", false);
 //          LinkedElement filterLinkedElement = VirtualLinksUtil
 //              .createLinkedElement(tempEclass.getName(), tempEclass.getEPackage().getNsURI(),
 //                                   "//" + tempEclass.getName(), null);

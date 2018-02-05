@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/fr.inria.atlanmod.emfviews.virtuallinks/src" modelPluginID="fr.inria.atlanmod.emfviews.virtuallinks"
     modelName="VirtualLinks" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" commentFormatting="true" testsDirectory="/fr.inria.atlanmod.emfviews.virtuallinks.tests/src"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     testsPluginID="fr.inria.atlanmod.emfviews.virtuallinks.tests" operationReflection="true"
     importOrganizing="true" cleanup="true">
   <foreignModel>VirtualLinks.ecore</foreignModel>
