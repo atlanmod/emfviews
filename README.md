@@ -69,8 +69,6 @@ The `examples` folder can help give an idea of how to use EMF Views:
 Installation
 ------------
 * Import the projects of the "plugins" folder into the workspace
-* Copy the plugins of the "dropins" folder into the "dropins" folder of your
-  Eclipse
 * Run a "Runtime Eclipse" with the workspace to try the plugins. In the
   "examples" folder there are several example projects to test the project
 
@@ -94,3 +92,15 @@ The following people have made significant contributions to the project:
   (former contributor)
 * [Juan David Villa Calle](https://github.com/juandavidvillacalle "Juan David
   Villa Calle") (former contributor)
+
+Copyright information
+---------------------
+
+This program and the accompanying materials are made available under the terms
+of the Eclipse Public License 2.0 which is available at
+https://www.eclipse.org/legal/epl-2.0/
+
+This Source Code may also be made available under the following Secondary
+Licenses when the conditions for such availability set forth in the Eclipse
+Public License, v. 2.0 are satisfied: GNU General Public License, version 3
+which is available at https://www.gnu.org/licenses/gpl-3.0.txt
