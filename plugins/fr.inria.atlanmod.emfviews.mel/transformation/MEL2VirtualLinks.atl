@@ -11,7 +11,7 @@
 -- which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 -- 
 -- Contributors:
---   fmdkdd - initial API and implementation
+--   fmdkdd - initial implementation
 --------------------------------------------------------------------------------
 
 -- @atlcompiler emftvm
