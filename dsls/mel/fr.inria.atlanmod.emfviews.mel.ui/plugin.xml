@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension
+		point="org.eclipse.ui.editors">
+		<editor
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+			default="true"
+			extensions="mel"
+			id="fr.inria.atlanmod.emfviews.mel.Mel"
+			name="Mel Editor">
+		</editor>
+	</extension>
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclarationHandler"
+			commandId="org.eclipse.xtext.ui.editor.hyperlinking.OpenDeclaration">
+			<activeWhen>
+				<reference
+					definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+		<handler
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.handler.ValidateActionHandler"
+			commandId="fr.inria.atlanmod.emfviews.mel.Mel.validate">
+		<activeWhen>
+			<reference
+					definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+			</reference>
+		</activeWhen>
+		</handler>
+		<!-- copy qualified name -->
+		<handler
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedNameHandler"
+			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName">
+			<activeWhen>
+				<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened" />
+			</activeWhen>
+		</handler>
+		<handler
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedNameHandler"
+			commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName">
+			<activeWhen>
+				<and>
+					<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.XtextEditor.opened" />
+					<iterate>
+						<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+					</iterate>
+				</and>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.core.expressions.definitions">
+		<definition id="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+			<and>
+				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
+				<with variable="activeEditor">
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
+						value="fr.inria.atlanmod.emfviews.mel.Mel"
+						forcePluginActivation="true"/>
+				</with>
+			</and>
+		</definition>
+		<definition id="fr.inria.atlanmod.emfviews.mel.Mel.XtextEditor.opened">
+			<and>
+				<reference definitionId="isXtextEditorActive"/>
+				<with variable="activeEditor">
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
+						value="fr.inria.atlanmod.emfviews.mel.Mel"
+						forcePluginActivation="true"/>
+				</with>
+			</and>
+		</definition>
+	</extension>
+	<extension
+			point="org.eclipse.ui.preferencePages">
+		<page
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="fr.inria.atlanmod.emfviews.mel.Mel"
+			name="Mel">
+			<keywordReference id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"/>
+		</page>
+		<page
+			category="fr.inria.atlanmod.emfviews.mel.Mel"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+			id="fr.inria.atlanmod.emfviews.mel.Mel.coloring"
+			name="Syntax Coloring">
+			<keywordReference id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"/>
+		</page>
+		<page
+			category="fr.inria.atlanmod.emfviews.mel.Mel"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
+			id="fr.inria.atlanmod.emfviews.mel.Mel.templates"
+			name="Templates">
+			<keywordReference id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"/>
+		</page>
+	</extension>
+	<extension
+			point="org.eclipse.ui.propertyPages">
+		<page
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.preferences.LanguageRootPreferencePage"
+			id="fr.inria.atlanmod.emfviews.mel.Mel"
+			name="Mel">
+			<keywordReference id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"/>
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+			<filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+		</page>
+	</extension>
+	<extension
+		point="org.eclipse.ui.keywords">
+		<keyword
+			id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"
+			label="Mel"/>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+	<command
+			description="Trigger expensive validation"
+			id="fr.inria.atlanmod.emfviews.mel.Mel.validate"
+			name="Validate">
+	</command>
+	<!-- copy qualified name -->
+	<command
+			id="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+			categoryId="org.eclipse.ui.category.edit"
+			description="Copy the qualified name for the selected element"
+			name="Copy Qualified Name">
+	</command>
+	<command
+			id="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
+			categoryId="org.eclipse.ui.category.edit"
+			description="Copy the qualified name for the selected element"
+			name="Copy Qualified Name">
+	</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.edit">
+			 <command
+				 commandId="fr.inria.atlanmod.emfviews.mel.Mel.validate"
+				 style="push"
+				 tooltip="Trigger expensive validation">
+			<visibleWhen checkEnabled="false">
+				<reference
+					definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+				</reference>
+			</visibleWhen>
+		</command>
+		</menuContribution>
+		<!-- copy qualified name -->
+		<menuContribution locationURI="popup:#TextEditorContext?after=copy">
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+				style="push" tooltip="Copy Qualified Name">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened" />
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution locationURI="menu:edit?after=copy">
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.EditorCopyQualifiedName"
+				style="push" tooltip="Copy Qualified Name">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened" />
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution locationURI="popup:org.eclipse.xtext.ui.outline?after=additions">
+			<command commandId="org.eclipse.xtext.ui.editor.copyqualifiedname.OutlineCopyQualifiedName"
+				style="push" tooltip="Copy Qualified Name">
+				<visibleWhen checkEnabled="false">
+					<and>
+						<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.XtextEditor.opened" />
+						<iterate>
+							<adapt type="org.eclipse.xtext.ui.editor.outline.IOutlineNode" />
+						</iterate>
+					</and>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
+			<command commandId="org.eclipse.xtext.ui.editor.FindReferences">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.findrefs.FindReferencesHandler"
+			commandId="org.eclipse.xtext.ui.editor.FindReferences">
+			<activeWhen>
+				<reference
+					definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type
+			base-type="org.eclipse.core.runtime.text"
+			file-extensions="mel"
+			id="fr.inria.atlanmod.emfviews.mel.Mel.contenttype"
+			name="Mel File"
+			priority="normal">
+		</content-type>
+	</extension>
+	<!-- adding resource factories -->
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="mel">
+		</parser>
+	</extension>
+	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+		<resourceServiceProvider
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+			uriExtension="mel">
+		</resourceServiceProvider>
+	</extension>
+	<!-- marker definitions for fr.inria.atlanmod.emfviews.mel.Mel -->
+	<extension
+			id="mel.check.fast"
+			name="Mel Problem"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.xtext.ui.check.fast"/>
+		<persistent value="true"/>
+	</extension>
+	<extension
+			id="mel.check.normal"
+			name="Mel Problem"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.xtext.ui.check.normal"/>
+		<persistent value="true"/>
+	</extension>
+	<extension
+			id="mel.check.expensive"
+			name="Mel Problem"
+			point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.xtext.ui.check.expensive"/>
+		<persistent value="true"/>
+	</extension>
+	<extension point="org.eclipse.xtext.builder.participant">
+		<participant
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.builder.IXtextBuilderParticipant"
+			fileExtensions="mel"/>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="fr.inria.atlanmod.emfviews.mel.Mel"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="fr.inria.atlanmod.emfviews.mel.Mel.compiler.preferencePage"
+			name="Compiler">
+			<keywordReference id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"/>
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="fr.inria.atlanmod.emfviews.mel.Mel"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
+			id="fr.inria.atlanmod.emfviews.mel.Mel.compiler.propertyPage"
+			name="Compiler">
+			<keywordReference id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"/>
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject"/>
+			</enabledWhen>
+			<filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
+			<command
+				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
+				id="fr.inria.atlanmod.emfviews.mel.Mel.OpenGeneratedCode"
+				style="push">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened" />
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
+			<activeWhen>
+				<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened" />
+			</activeWhen>
+		</handler>
+	</extension>
+	<!-- Quick Outline -->
+	<extension
+		point="org.eclipse.ui.handlers">
+		<handler 
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.outline.quickoutline.ShowQuickOutlineActionHandler"
+			commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline">
+			<activeWhen>
+				<reference
+					definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension
+		point="org.eclipse.ui.commands">
+		<command
+			description="Open the quick outline."
+			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+			name="Quick Outline">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.open">
+			<command commandId="org.eclipse.xtext.ui.editor.outline.QuickOutline"
+				style="push"
+				tooltip="Open Quick Outline">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened"/>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<!-- quickfix marker resolution generator for fr.inria.atlanmod.emfviews.mel.Mel -->
+	<extension
+			point="org.eclipse.ui.ide.markerResolution">
+		<markerResolutionGenerator
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="fr.inria.atlanmod.emfviews.mel.ui.mel.check.fast">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+		<markerResolutionGenerator
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="fr.inria.atlanmod.emfviews.mel.ui.mel.check.normal">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+		<markerResolutionGenerator
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
+			markerType="fr.inria.atlanmod.emfviews.mel.ui.mel.check.expensive">
+			<attribute
+				name="FIXABLE_KEY"
+				value="true">
+			</attribute>
+		</markerResolutionGenerator>
+	</extension>
+	<!-- Rename Refactoring -->
+	<extension point="org.eclipse.ui.handlers">
+		<handler 
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
+			<activeWhen>
+				<reference
+					definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			locationURI="popup:#TextEditorContext?after=group.edit">
+			<command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+				style="push">
+				<visibleWhen checkEnabled="false">
+					<reference
+						definitionId="fr.inria.atlanmod.emfviews.mel.Mel.Editor.opened">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="fr.inria.atlanmod.emfviews.mel.Mel"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.RefactoringPreferencePage"
+			id="fr.inria.atlanmod.emfviews.mel.Mel.refactoring"
+			name="Refactoring">
+			<keywordReference id="fr.inria.atlanmod.emfviews.mel.ui.keyword_Mel"/>
+		</page>
+	</extension>
+	<extension point="org.eclipse.compare.contentViewers">
+		<viewer id="fr.inria.atlanmod.emfviews.mel.Mel.compare.contentViewers"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="mel">
+		</viewer>
+	</extension>
+	<extension point="org.eclipse.compare.contentMergeViewers">
+		<viewer id="fr.inria.atlanmod.emfviews.mel.Mel.compare.contentMergeViewers"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
+			extensions="mel" label="Mel Compare">
+		</viewer>
+	</extension>
+	<extension point="org.eclipse.ui.editors.documentProviders">
+		<provider id="fr.inria.atlanmod.emfviews.mel.Mel.editors.documentProviders"
+			class="fr.inria.atlanmod.emfviews.mel.ui.MelExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
+			extensions="mel">
+		</provider>
+	</extension>
+	<extension point="org.eclipse.team.core.fileTypes">
+		<fileTypes
+			extension="mel"
+			type="text">
+		</fileTypes>
+	</extension>
+</plugin>
