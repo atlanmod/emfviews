@@ -20,6 +20,7 @@
 
   <properties>
     <xtext-version>2.13.0</xtext-version>
+    <mwe2-skip-generate>false</mwe2-skip-generate>
   </properties>
 
   <repositories>
@@ -28,19 +29,13 @@
       <layout>p2</layout>
       <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext-version}/</url>
     </repository>
-
-    <!-- <repositories> -->
-    <!--   <repository> -->
-    <!--     <id>ATL</id> -->
-    <!--     <layout>p2</layout> -->
-    <!--     <url>http://download.eclipse.org/mmt/atl/updates/releases/3.8</url> -->
-    <!--   </repository> -->
-    <!-- </repositories> -->
   </repositories>
 
   <build>
     <pluginManagement>
       <plugins>
+
+        <!-- Compile .xtend source files into xtend-gen directory -->
         <plugin>
           <groupId>org.eclipse.xtend</groupId>
           <artifactId>xtend-maven-plugin</artifactId>
@@ -60,29 +55,135 @@
           </configuration>
         </plugin>
 
+        <!-- (Re)-generate plugins projects from Xtext grammar -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.6.0</version>
+          <executions>
+            <execution>
+              <id>mwe2Launcher</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>java</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <skip>${mwe2-skip-generate}</skip>
+            <mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
+            <arguments>
+              <argument>${mwe2-path}</argument>
+              <argument>-p</argument>
+              <argument>rootPath=/${project.basedir}/..</argument>
+            </arguments>
+            <classpathScope>compile</classpathScope>
+            <includePluginDependencies>true</includePluginDependencies>
+            <cleanupDaemonThreads>false</cleanupDaemonThreads><!-- see https://bugs.eclipse.org/bugs/show_bug.cgi?id=475098#c3 -->
+          </configuration>
+          <dependencies>
+	    <dependency>
+	      <groupId>org.eclipse.emf</groupId>
+	      <artifactId>org.eclipse.emf.mwe2.launch</artifactId>
+	      <version>2.9.1.201705291010</version>
+            </dependency>
+            <dependency>
+	      <groupId>org.eclipse.xtext</groupId>
+	      <artifactId>org.eclipse.xtext.common.types</artifactId>
+	      <version>${xtext-version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.eclipse.xtext</groupId>
+	      <artifactId>org.eclipse.xtext.xtext.generator</artifactId>
+	      <version>${xtext-version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.eclipse.xtext</groupId>
+	      <artifactId>org.eclipse.xtext.xbase</artifactId>
+	      <version>${xtext-version}</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.eclipse.xtext</groupId>
+	      <artifactId>xtext-antlr-generator</artifactId>
+	      <version>[2.1.1, 3)</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <!-- Clean up these files -->
         <plugin>
 	  <groupId>org.apache.maven.plugins</groupId>
 	  <artifactId>maven-clean-plugin</artifactId>
 	  <version>3.0.0</version>
 	  <executions>
 	    <execution>
+              <!-- Cleanup xtend-gen -->
 	      <id>gen-clean</id>
 	      <goals>
 		<goal>clean</goal>
 	      </goals>
+              <phase>clean</phase>
 	      <configuration>
 		<filesets>
 		  <fileset>
 		    <directory>${basedir}/xtend-gen</directory>
+                    <!-- This empties the xtend-gen directory but does not
+                         remove it. (The Xtext builder in Eclipse complains if
+                         it's absent).  -->
                     <includes>
 	              <include>**/*</include>
 	            </includes>
 		  </fileset>
+                </filesets>
+              </configuration>
+            </execution>
+            <execution>
+              <!-- Cleanup files created by mwe2Launch -->
+              <id>mwe2-clean</id>
+              <goals>
+		<goal>clean</goal>
+	      </goals>
+	      <configuration>
+		<filesets>
+                  <fileset>
+                    <directory>${basedir}/../${language-fqn}/src-gen/</directory>
+                    <includes>
+                      <include>**/*</include>
+                    </includes>
+                  </fileset>
+                  <fileset>
+                    <directory>${basedir}/../${language-fqn}.tests/src-gen/</directory>
+                    <includes>
+                      <include>**/*</include>
+                    </includes>
+                  </fileset>
+                  <fileset>
+                    <directory>${basedir}/../${language-fqn}.ide/src-gen/</directory>
+                    <includes>
+                      <include>**/*</include>
+                    </includes>
+                  </fileset>
+                  <fileset>
+                    <directory>${basedir}/../${language-fqn}.ui/src-gen/</directory>
+                    <includes>
+                      <include>**/*</include>
+                    </includes>
+                  </fileset>
+                  <fileset>
+                    <directory>${basedir}/../${language-fqn}.ui.tests/src-gen/</directory>
+                    <includes>
+                      <include>**/*</include>
+                    </includes>
+                  </fileset>
+                  <fileset>
+                    <directory>${basedir}/model/generated/</directory>
+                  </fileset>
 		</filesets>
 	      </configuration>
 	    </execution>
 	  </executions>
 	</plugin>
+
       </plugins>
     </pluginManagement>
   </build>
