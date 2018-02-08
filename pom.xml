@@ -11,7 +11,7 @@
 
   <properties>
     <tycho-version>1.1.0</tycho-version>
-    <eclipse-oxygen>http://download.eclipse.org/releases/oxygen</eclipse-oxygen>
+    <eclipse-oxygen>http://download.eclipse.org/releases/oxygen/201712201001</eclipse-oxygen>
     <eclipse-epsilon>http://download.eclipse.org/epsilon/updates/</eclipse-epsilon>
   </properties>
 
@@ -46,31 +46,31 @@
         <extensions>true</extensions>
       </plugin>
 
-      <!--   <plugin> -->
-      <!--     <groupId>org.eclipse.tycho</groupId> -->
-      <!--     <artifactId>target-platform-configuration</artifactId> -->
-      <!--     <version>1.0.0</version> -->
-      <!--     <configuration> -->
-      <!--       <pomDependencies>consider</pomDependencies> -->
-      <!--       <environments> -->
-      <!--         <environment> -->
-      <!--           <os>win32</os> -->
-      <!--           <ws>win32</ws> -->
-      <!--           <arch>x86_64</arch> -->
-      <!--         </environment> -->
-      <!--         <environment> -->
-      <!--           <os>linux</os> -->
-      <!--           <ws>gtk</ws> -->
-      <!--           <arch>x86_64</arch> -->
-      <!--         </environment> -->
-      <!--         <environment> -->
-      <!--           <os>macosx</os> -->
-      <!--           <ws>cocoa</ws> -->
-      <!--           <arch>x86_64</arch> -->
-      <!--         </environment> -->
-      <!--       </environments> -->
-      <!--     </configuration> -->
-      <!--   </plugin> -->
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <pomDependencies>consider</pomDependencies>
+          <environments>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
