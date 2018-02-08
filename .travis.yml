@@ -5,4 +5,4 @@ jdk: openjdk8
 install: true                   # Skip install so we avoid running phases twice
 
 script:
-  - mvn --show-version --batch-mode -DskipTests=true -Dmaven.javadoc.skip=true integration-test
+  - mvn --show-version --batch-mode -Dmaven.javadoc.skip=true integration-test
