@@ -82,7 +82,6 @@ class MelParsingTest {
 
 			  filter class uml.DataType
 			}
-
 		''')
 		Assert.assertNotNull(result)
 		Assert.assertTrue(result.eResource.errors.isEmpty)
