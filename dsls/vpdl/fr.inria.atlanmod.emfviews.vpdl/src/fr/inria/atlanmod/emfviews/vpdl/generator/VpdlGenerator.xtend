@@ -23,15 +23,20 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.Metamodel
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.View
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.SelectFeature
-import org.eclipse.m2m.atl.emftvm.EmftvmFactory
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.common.util.URI
-import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
-import org.eclipse.m2m.atl.emftvm.util.TimingData
+import org.eclipse.m2m.atl.core.emf.EMFInjector
+import org.eclipse.m2m.atl.core.emf.EMFModelFactory
+import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher
+import org.eclipse.core.runtime.NullProgressMonitor
+import org.eclipse.m2m.atl.core.launch.ILauncher
 import java.io.ByteArrayOutputStream
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.Rule
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.Relation
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.m2m.atl.core.emf.EMFExtractor
+import java.net.URL
+import java.util.HashMap
+import org.eclipse.emf.ecore.xmi.XMLResource
+import java.util.Collections
 
 /*
  * Generates code from your model files on save.
@@ -93,45 +98,38 @@ class VpdlGenerator extends AbstractGenerator {
   '''
    
   def String compileXmi(Resource r) {
-    var factory = EmftvmFactory.eINSTANCE
-    var rs = new ResourceSetImpl()
+    var injector = new EMFInjector()
+    var factory = new EMFModelFactory()
     
-    var env = factory.createExecEnv();
-    
-    // Load metamodels
-    var sourceMM = factory.createMetamodel()
-    sourceMM.resource = rs.getResource(URI.createURI("http://www.inria.fr/atlanmod/emfviews/vpdl"), true)
-    env.registerMetaModel("VPDL", sourceMM)
-    
-    var targetMM = factory.createMetamodel()
-    targetMM.resource = rs.getResource(URI.createURI("http://inria.fr/virtualLinks"), true)
-    env.registerMetaModel("VirtualLinks", targetMM)
-    
-    // Load models
-    var sourceModel = factory.createModel()
-    sourceModel.resource = r
-    env.registerInputModel("IN", sourceModel)
-    
-    var targetModel = factory.createModel()
-    // The URI does not actually matter here, as we save the resource to a String
-    targetModel.resource = rs.createResource(URI.createFileURI(viewpointName(r) + ".xmi"))    
-    env.registerOutputModel("OUT", targetModel)
-    
-    // Run the transformation
-    var mr = new DefaultModuleResolver("platform:/plugin/fr.inria.atlanmod.emfviews.vpdl/transformation/",
-      new ResourceSetImpl())
-    
-    var timing = new TimingData()
-    env.loadModule(mr, "VPDL2VirtualLinks")
-    timing.finishLoading    
-    env.run(timing)
-    timing.finish
-    
-    // Write to a String and return
+    var ecoreMM = factory.newReferenceModel()
+    injector.inject(ecoreMM, "http://www.eclipse.org/emf/2002/Ecore")
+
+    var sourceMM = factory.newReferenceModel()
+    injector.inject(sourceMM, "http://www.inria.fr/atlanmod/emfviews/vpdl")
+
+    var targetMM = factory.newReferenceModel()
+    injector.inject(targetMM, "http://inria.fr/virtualLinks")
+
+    var sourceModel = factory.newModel(sourceMM)
+    injector.inject(sourceModel, r)
+
+    var targetModel = factory.newModel(targetMM)
+
+    var launcher = new EMFVMLauncher();
+    launcher.initialize(null)
+    launcher.addInModel(ecoreMM, "ECORE", "ECORE")
+    launcher.addInModel(sourceModel, "IN", "VPDL")
+    launcher.addOutModel(targetModel, "OUT", "VirtualLinks")
+    launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), Collections.EMPTY_MAP,
+      new URL("platform:/plugin/fr.inria.atlanmod.emfviews.vpdl/transformation/VPDL2VirtualLinks.asm").openStream)
+
+    var extractor = new EMFExtractor()
     var out = new ByteArrayOutputStream()
-    targetModel.resource.save(out, null)
+    var options = new HashMap()
+    options.put(XMLResource.OPTION_ENCODING, "ASCII")
+    extractor.extract(targetModel, out, options)
     
-    return new String(out.toByteArray())
+    new String(out.toByteArray()) 
   }
    
 }

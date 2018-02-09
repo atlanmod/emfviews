@@ -110,6 +110,21 @@
           </dependencies>
         </plugin>
 
+        <!-- Compile ATL files to ASM -->
+        <plugin>
+          <groupId>org.atlanmod</groupId>
+          <artifactId>atl-maven-plugin</artifactId>
+          <version>0.1.0-SNAPSHOT</version>
+          <executions>
+            <execution>
+              <phase>compile</phase>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
         <!-- Clean up these files -->
         <plugin>
 	  <groupId>org.apache.maven.plugins</groupId>
@@ -132,6 +147,24 @@
                          it's absent).  -->
                     <includes>
 	              <include>**/*</include>
+	            </includes>
+		  </fileset>
+                </filesets>
+              </configuration>
+            </execution>
+            <execution>
+              <!-- Cleanup ASM files -->
+	      <id>atl-clean</id>
+	      <goals>
+		<goal>clean</goal>
+	      </goals>
+              <phase>clean</phase>
+	      <configuration>
+		<filesets>
+		  <fileset>
+		    <directory>${basedir}/</directory>
+                    <includes>
+	              <include>**/*.asm</include>
 	            </includes>
 		  </fileset>
                 </filesets>

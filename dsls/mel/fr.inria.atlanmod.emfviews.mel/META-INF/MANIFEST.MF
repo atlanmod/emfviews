@@ -6,8 +6,9 @@ Bundle-SymbolicName: fr.inria.atlanmod.emfviews.mel; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;bundle-version="[2.13.0,3.0.0)",
  org.eclipse.xtext.xbase;bundle-version="[2.13.0,3.0.0)",
- org.eclipse.m2m.atl.emftvm;bundle-version="[3.8.0,4.0.0)",
- fr.inria.atlanmod.emfviews.virtuallinks;bundle-version="0.3.0"
+ fr.inria.atlanmod.emfviews.virtuallinks;bundle-version="0.3.0",
+ org.eclipse.m2m.atl.core.emf;bundle-version="[3.8.0,4.0.0)",
+ org.eclipse.m2m.atl.engine.emfvm;bundle-version="[3.8.0,4.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Atlanmod
 Export-Package: fr.inria.atlanmod.emfviews.mel.serializer,

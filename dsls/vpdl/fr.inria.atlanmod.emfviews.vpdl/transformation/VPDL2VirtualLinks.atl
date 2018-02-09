@@ -9,12 +9,11 @@
 -- Licenses when the conditions for such availability set forth in the Eclipse
 -- Public License, v. 2.0 are satisfied: GNU General Public License, version 3
 -- which is available at https://www.gnu.org/licenses/gpl-3.0.txt
--- 
+--
 -- Contributors:
 --   fmdkdd - initial implementation
 --------------------------------------------------------------------------------
 
--- @atlcompiler emftvm
 -- @path VPDL=/fr.inria.atlanmod.emfviews.vpdl/model/generated/Vpdl.ecore
 -- @path VirtualLinks=/fr.inria.atlanmod.emfviews.virtuallinks/resource/VirtualLinks.ecore
 -- @nsURI ECORE=http://www.eclipse.org/emf/2002/Ecore
@@ -54,7 +53,7 @@ rule Filters {
         name <- s.attribute.name,
         target <- c
       ),
-      
+
       c : VirtualLinks!ConcreteElement (
           model <- s.metamodel,
           path <- s.class.name + '.' + s.attribute.name
@@ -70,7 +69,7 @@ rule Relations {
 	      target <- target,
 	      upperBound <- 1
 	  ),
-	  
+
 	  source: VirtualLinks!ConcreteConcept (
 	      model <- s.metamodel,
           path <- s.class.name

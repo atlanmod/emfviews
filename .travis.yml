@@ -2,7 +2,8 @@ sudo: false
 language: java
 jdk: openjdk8
 
-install: true                   # Skip install so we avoid running phases twice
+install:
+  - mvn --batch-mode -Dmaven.javadoc.skip=true --file atl-maven-plugin/pom.xml install
 
 script:
   - mvn --show-version --batch-mode -Dmaven.javadoc.skip=true integration-test

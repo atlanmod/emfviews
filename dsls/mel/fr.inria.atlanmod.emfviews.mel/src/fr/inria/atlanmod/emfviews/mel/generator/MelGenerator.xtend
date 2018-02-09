@@ -21,13 +21,18 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import fr.inria.atlanmod.emfviews.mel.mel.Model
-import org.eclipse.m2m.atl.emftvm.EmftvmFactory
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
-import org.eclipse.emf.common.util.URI
-import org.eclipse.m2m.atl.emftvm.util.TimingData
 import java.io.ByteArrayOutputStream
 import fr.inria.atlanmod.emfviews.mel.mel.Metamodel
+import org.eclipse.m2m.atl.core.emf.EMFInjector
+import org.eclipse.m2m.atl.core.emf.EMFModelFactory
+import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher
+import org.eclipse.core.runtime.NullProgressMonitor
+import org.eclipse.m2m.atl.core.launch.ILauncher
+import java.util.Collections
+import java.net.URL
+import org.eclipse.m2m.atl.core.emf.EMFExtractor
+import java.util.HashMap
+import org.eclipse.emf.ecore.xmi.XMLResource
 
 /*
  * Generates code from your model files on save.
@@ -44,57 +49,51 @@ class MelGenerator extends AbstractGenerator {
     r.allContents.toIterable().filter(Metamodel)
   }
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-	  val name = extensionName(resource)
+  override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+    val name = extensionName(resource)
 
     fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint(fsa))
-	  fsa.generateFile(name + '.xmi', resource.compileXMI)
-	}
+    fsa.generateFile(name + '.xmi', resource.compileXMI)
+  }
 
   def CharSequence compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
     contributingMetamodels=«r.getAllMetamodels.map([m | m.nsURI]).join(',')»
     weavingModel=«extensionName(r)».xmi
   '''
 
-	def String compileXMI(Resource r) {
-	  // @Refactor: lifted from VpdlGenerator.xtend
-	  val factory = EmftvmFactory.eINSTANCE
-    val rs = new ResourceSetImpl()
+  def String compileXMI(Resource r) {
+    // @Refactor: lifted from VpdlGenerator
 
-    val env = factory.createExecEnv()
+    var injector = new EMFInjector()
+    var factory = new EMFModelFactory()
 
-    // Load metamodels
-    val sourceMM = factory.createMetamodel()
-    sourceMM.resource = rs.getResource(URI.createURI("http://www.inria.fr/atlanmod/emfviews/mel"), true)
-    env.registerMetaModel("MEL", sourceMM)
+    var ecoreMM = factory.newReferenceModel()
+    injector.inject(ecoreMM, "http://www.eclipse.org/emf/2002/Ecore")
 
-    val targetMM = factory.createMetamodel()
-    targetMM.resource = rs.getResource(URI.createURI("http://inria.fr/virtualLinks"), true)
-    env.registerMetaModel("VirtualLinks", targetMM)
+    var sourceMM = factory.newReferenceModel()
+    injector.inject(sourceMM, "http://www.inria.fr/atlanmod/emfviews/mel")
 
-    // Load models
-    val sourceModel = factory.createModel()
-    sourceModel.resource = r
-    env.registerInputModel("IN", sourceModel)
+    var targetMM = factory.newReferenceModel()
+    injector.inject(targetMM, "http://inria.fr/virtualLinks")
 
-    val targetModel = factory.createModel()
-    // The URI does not actually matter here, as we save the resource to a String
-    targetModel.resource = rs.createResource(URI.createFileURI("foo.xmi"))
-    env.registerOutputModel("OUT", targetModel)
+    var sourceModel = factory.newModel(sourceMM)
+    injector.inject(sourceModel, r)
 
-    // Run the transformation
-    val mr = new DefaultModuleResolver("platform:/plugin/fr.inria.atlanmod.emfviews.mel/transformation/",
-      new ResourceSetImpl())
+    var targetModel = factory.newModel(targetMM)
 
-    val timing = new TimingData()
-    env.loadModule(mr, "MEL2VirtualLinks")
-    timing.finishLoading
-    env.run(timing)
-    timing.finish
+    var launcher = new EMFVMLauncher();
+    launcher.initialize(null)
+    launcher.addInModel(ecoreMM, "ECORE", "ECORE")
+    launcher.addInModel(sourceModel, "IN", "MEL")
+    launcher.addOutModel(targetModel, "OUT", "VirtualLinks")
+    launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), Collections.EMPTY_MAP,
+      new URL("platform:/plugin/fr.inria.atlanmod.emfviews.mel/transformation/MEL2VirtualLinks.asm").openStream)
 
-    // Write to a String and return
-    val out = new ByteArrayOutputStream()
-    targetModel.resource.save(out, null)
+    var extractor = new EMFExtractor()
+    var out = new ByteArrayOutputStream()
+    var options = new HashMap()
+    options.put(XMLResource.OPTION_ENCODING, "ASCII")
+    extractor.extract(targetModel, out, options)
 
     new String(out.toByteArray())
   }
