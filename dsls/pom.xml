@@ -19,17 +19,8 @@
   </modules>
 
   <properties>
-    <xtext-version>2.13.0</xtext-version>
     <mwe2-skip-generate>false</mwe2-skip-generate>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>Xtext Update Site</id>
-      <layout>p2</layout>
-      <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext-version}/</url>
-    </repository>
-  </repositories>
 
   <build>
     <pluginManagement>

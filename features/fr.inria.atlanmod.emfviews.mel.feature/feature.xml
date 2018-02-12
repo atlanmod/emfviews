@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="fr.inria.atlanmod.emfviews.feature"
-      label="EMF Views"
+      id="fr.inria.atlanmod.emfviews.mel.feature"
+      label="MEL Metamodel Extension Language"
       version="0.3.0.qualifier"
       provider-name="Atlanmod">
 
    <description url="https://github.com/atlanmod/emfviews">
-      Some users only need to see some parts of a model, others have to get the full model extended with data from another model, and others simply access to a combination of information coming from different models. Based on the unquestionable success/usefulness of database views to solve similar problems in databases, EMF Views aims to bring the same concept to the modeling world.
+      A DSL for extending and combining existing metamodels using EMF Views.
    </description>
 
    <copyright>
       Copyright (c) 2017, 2018 Armines
-Copyright (c) 2013 INRIA Rennes Bretagne-Atlantique
 This program and the accompanying materials are made available
 under the terms of the Eclipse Public License 2.0 which is available
 at https://www.eclipse.org/legal/epl-2.0/
 This Source Code may also be made available under the following
-Secondary Licenses when the conditions for such availability set forth
-in the Eclipse Public License, v. 2.0 are satisfied: GNU General Public License,
+Secondary Licenses when the conditions for such availability
+set forth
+in the Eclipse Public License, v. 2.0 are satisfied: GNU General
+Public License,
 version 3 which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 Contributors:
-Armines - refactoring and extension
-INRIA Rennes Bretagne-Atlantique - initial API and implementation
+Armines - initial design and implementation
    </copyright>
 
    <license url="https://www.eclipse.org/legal/epl-v20.html">
@@ -305,33 +305,39 @@ version(s), and exceptions or additional permissions here}.&quot;
    </license>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime" version="3.13.0" match="compatible"/>
-      <import plugin="org.eclipse.core.resources" version="3.12.0" match="compatible"/>
-      <import plugin="org.eclipse.epsilon.eol.engine" version="1.4.0" match="compatible"/>
-      <import plugin="org.eclipse.epsilon.ecl.engine" version="1.4.0" match="compatible"/>
-      <import plugin="org.eclipse.epsilon.emc.emf" version="1.4.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.xbase" version="2.13.0" match="compatible"/>
       <import plugin="fr.inria.atlanmod.emfviews.virtuallinks" version="0.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.uml2.uml.resources" version="5.3.0" match="compatible"/>
-      <import plugin="org.eclipse.ocl.ecore" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.m2m.atl.core.emf" version="3.8.0" match="compatible"/>
+      <import plugin="org.eclipse.m2m.atl.engine.emfvm" version="3.8.0" match="compatible"/>
+      <import plugin="fr.inria.atlanmod.emfviews.mel" version="0.3.0" match="greaterOrEqual"/>
+      <import plugin="fr.inria.atlanmod.emfviews.mel.ide" version="0.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.ui.shared" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.ui.codetemplates.ui" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.compare" version="3.7.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.builder" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.13.0" match="compatible"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.xtext.ide" version="2.13.0" match="compatible"/>
    </requires>
 
    <plugin
-         id="fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate"
+         id="fr.inria.atlanmod.emfviews.mel"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="fr.inria.atlanmod.emfviews.virtuallinks"
+         id="fr.inria.atlanmod.emfviews.mel.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="fr.inria.atlanmod.emfviews"
+         id="fr.inria.atlanmod.emfviews.mel.ide"
          download-size="0"
          install-size="0"
          version="0.0.0"

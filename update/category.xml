@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/fr.inria.atlanmod.emfviews.feature_0.3.0.qualifier.jar" id="fr.inria.atlanmod.emfviews.feature" version="0.3.0.qualifier"/>
+   <feature url="features/fr.inria.atlanmod.emfviews.mel.feature_0.3.0.qualifier.jar" id="fr.inria.atlanmod.emfviews.mel.feature" version="0.3.0.qualifier"/>
+   <feature url="features/fr.inria.atlanmod.emfviews.vpdl.feature_0.3.0.qualifier.jar" id="fr.inria.atlanmod.emfviews.vpdl.feature" version="0.3.0.qualifier"/>
 </site>
