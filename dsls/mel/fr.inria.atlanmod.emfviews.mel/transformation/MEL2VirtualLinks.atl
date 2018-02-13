@@ -112,8 +112,8 @@ rule AddReference {
         name <- s.name,
         source <- s.refImmediateComposite().class.toLink(),
         target <- s.type.toLink(),
-        lowerBound <- s.cardinality.lowerBound.toInt(),
-        upperBound <- s.cardinality.upperBound.toInt(),
+        lowerBound <- thisModule.toInt(s.cardinality.lowerBound),
+        upperBound <- thisModule.toInt(s.cardinality.upperBound),
         composition <- s.relationType = #composition
     )
 }
@@ -136,11 +136,11 @@ unique lazy rule ModifyReference {
         		  endif,
 		lowerBound <- if s.cardinality.oclIsUndefined()
 					  then s.property.lowerBound
-					  else s.cardinality.lowerBound.toInt()
+					  else thisModule.toInt(s.cardinality.lowerBound)
 					  endif,
 		upperBound <- if s.cardinality.oclIsUndefined()
 					  then s.property.upperBound
-					  else s.cardinality.upperBound.toInt()
+					  else thisModule.toInt(s.cardinality.upperBound)
 					  endif,
 		composition <- if s.relationType.oclIsUndefined()
 					   then s.property.containment
@@ -187,9 +187,11 @@ unique lazy rule ConcreteConcept {
   	)
 }
 
-helper context MEL!CardinalityBound def : toInt() : ECORE!EInt =
-    if      self = #"0" then  0
-    else if self = #"1" then  1
+-- @Cleanup: this should be in the context of MEL!CardinalityBound, but the standard
+-- EMFVM cannot deal with that apparently.
+helper def : toInt(enum: OclAny) : ECORE!EInt =
+    if      enum = #"0" then  0
+    else if enum = #"1" then  1
          else                -1  -- '*' case
          endif
     endif
