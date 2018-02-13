@@ -16,6 +16,8 @@
 
 package fr.inria.atlanmod.emfviews.mel.tests
 
+import static org.hamcrest.CoreMatchers.*;
+
 import com.google.inject.Inject
 import fr.inria.atlanmod.emfviews.mel.mel.Model
 import org.eclipse.xtext.testing.InjectWith
@@ -33,27 +35,29 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 class MelGeneratorTest {
   @Inject IGenerator2 underTest
   @Inject ParseHelper<Model> parseHelper
-  
+
   @Test
   def void minExample() {
     val model = parseHelper.parse('''
       import uml from 'http://www.eclipse.org/uml2/5.0.0/UML'
-      
+
       define extension1 extending uml {
         add class X specializing uml.Class
       }
     ''')
+    Assert.assertThat(model.eResource.errors, is(emptyList))
+
     val fsa = new InMemoryFileSystemAccess()
     underTest.doGenerate(model.eResource, fsa, null)
     Assert.assertEquals(2, fsa.allFiles.size)
-    
+
     val eviewpointPath = IFileSystemAccess::DEFAULT_OUTPUT + "extension1.eviewpoint"
     Assert.assertTrue(fsa.allFiles.containsKey(eviewpointPath))
     Assert.assertEquals('''
       contributingMetamodels=http://www.eclipse.org/uml2/5.0.0/UML
       weavingModel=extension1.xmi
       '''.toString, fsa.allFiles.get(eviewpointPath).toString)
-      
+
     val weavingPath = IFileSystemAccess::DEFAULT_OUTPUT + "extension1.xmi"
     Assert.assertTrue(fsa.allFiles.containsKey(weavingPath))
     Assert.assertEquals('''
@@ -66,5 +70,5 @@ class MelGeneratorTest {
       </virtualLinks:WeavingModel>
       '''.toString, fsa.allFiles.get(weavingPath).toString)
   }
-  
+
 }
