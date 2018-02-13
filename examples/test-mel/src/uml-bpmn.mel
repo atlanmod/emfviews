@@ -13,7 +13,7 @@ define extension1 extending uml, bpmn {
 		add property foo : EString 0
 	}   
  
-	modify class uml.Class { 
+	modify class uml.Class {
 		add property opt : EString 0
 		add property nonOpt : EString 1
 		add composition refC : Y 0..*
@@ -26,7 +26,7 @@ define extension1 extending uml, bpmn {
 			name defaultRenamed 
 			type X 
 			cardinality 0..*
-			relation type association
+			relation-type association
 		}
 		filter constraint constraint2
 	}  
