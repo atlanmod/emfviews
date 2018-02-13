@@ -16,6 +16,8 @@
 
 package fr.inria.atlanmod.emfviews.vpdl.tests
 
+import static org.hamcrest.CoreMatchers.*;
+
 import com.google.inject.Inject
 import fr.inria.atlanmod.emfviews.vpdl.vpdl.View
 import org.eclipse.xtext.testing.InjectWith
@@ -40,11 +42,13 @@ class VpdlGeneratorTest {
     val view = parseHelper.parse('''
       create view min as 
       
-      select uml.Class
+      select uml.Class.superClass
       
       from
         'http://www.eclipse.org/uml2/5.0.0/UML' as uml
     ''')
+    Assert.assertThat(view.eResource.errors, is(emptyList))
+    
     val fsa = new InMemoryFileSystemAccess()
     underTest.doGenerate(view.eResource, fsa, null)
     Assert.assertEquals(3, fsa.allFiles.size)
@@ -61,8 +65,11 @@ class VpdlGeneratorTest {
     Assert.assertTrue(fsa.allFiles.containsKey(weavingPath))
     Assert.assertEquals('''
       <?xml version="1.0" encoding="ASCII"?>
-      <virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:virtualLinks="http://inria.fr/virtualLinks" name="min" whitelist="true">
-        <contributingModels URI="http://www.eclipse.org/uml2/5.0.0/UML"/>
+      <virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks" name="min" whitelist="true">
+        <virtualLinks xsi:type="virtualLinks:Filter" name="superClass" target="//@contributingModels.0/@concreteElements.0"/>
+        <contributingModels URI="http://www.eclipse.org/uml2/5.0.0/UML">
+          <concreteElements path="Class.superClass"/>
+        </contributingModels>
       </virtualLinks:WeavingModel>
       '''.toString, fsa.allFiles.get(weavingPath).toString)
       

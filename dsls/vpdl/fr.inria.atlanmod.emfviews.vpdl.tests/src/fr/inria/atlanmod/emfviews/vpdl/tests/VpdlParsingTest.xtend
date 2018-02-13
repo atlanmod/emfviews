@@ -28,8 +28,8 @@ import org.junit.runner.RunWith
 @RunWith(XtextRunner)
 @InjectWith(VpdlInjectorProvider)
 class VpdlParsingTest {
-	@Inject
-	ParseHelper<View> parseHelper
+  
+	@Inject ParseHelper<View> parseHelper
 	
 	@Test
 	def void fullSyntax() {
