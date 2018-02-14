@@ -1,0 +1,5 @@
+import uml from 'http://www.eclipse.org/uml2/5.0.0/UML'
+
+define minExtension extending uml {
+  add class X specializing uml.Class
+}
