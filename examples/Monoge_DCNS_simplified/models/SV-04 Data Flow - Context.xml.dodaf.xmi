@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
-  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1331" name="Camera"/>
-  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1332" name="Global Positioning"/>
-  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1333" name="UAV"/>
-  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_1373" name="rotationOut" extDest="_1331" extSource="_1333"/>
-  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_1374" name="cameraPositionCorection" extDest="_1331" extSource="_1332"/>
-  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_1375" name="viewTargetData" extDest="_1332" extSource="_1331"/>
-</dodaf:Model>

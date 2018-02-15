@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<dodaf:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dodaf="http://www.mia-software.com/dodaf/" xmi:id="x0">
-  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1338" name="EXT Destination"/>
-  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1339" name="EXT Source"/>
-  <ownedElements xsi:type="dodaf:SystemFunction" xmi:id="_1340" name="Transformation"/>
-  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_1344" name="transformationOut" extDest="_1338" extSource="_1340"/>
-  <ownedElements xsi:type="dodaf:DataFlow" xmi:id="_1345" name="tranformationIn" extDest="_1340" extSource="_1339"/>
-</dodaf:Model>

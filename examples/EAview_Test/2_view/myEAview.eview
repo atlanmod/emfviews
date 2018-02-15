@@ -1,4 +1,0 @@
-contributingModels=1_EAdata/models/1_travelAgencyEA.xmi,1_EAdata/models/2_bookingTripRequirements.xmi,1_EAdata/models/3_bookingTripProcess.xmi
-viewpoint=EAview_Test/1_viewpoint/myEAviewpoint.eviewpoint
-weavingModel=EAview_Test/2_view/myEAview.xmi
-matchingModel=EAview_Test/1_viewpoint/myEAviewpoint.ecl

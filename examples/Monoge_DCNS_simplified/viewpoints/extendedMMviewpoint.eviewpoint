@@ -1,6 +1,0 @@
-contributingMetamodels=Monoge_DCNS_simplified/metamodels/Original_Metamodel.ecore
-weavingModel=Monoge_DCNS_simplified/viewpoints/extendedMMviewpoint.xmi
-matchingModel=Monoge_DCNS_simplified/viewpoints/extendedMMviewpoint.ecl
-filtersMetamodel=/Monoge_DCNS_simplified/viewpoints/extendedMMviewpoint.ecore
-originalMetamodel=http://Original_Metamodel/1.0
-viewpointModel=platform:/resource/Monoge_DCNS_simplified/resources/extendedMMviewpoint.xmi
