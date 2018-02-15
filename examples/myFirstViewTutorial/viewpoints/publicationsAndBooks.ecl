@@ -1,5 +1,5 @@
-//alias_publication=http://publication/1.0
-//alias_book=http://book/1.0
+//alias_publication=../metamodels/Publication.ecore
+//alias_book=../metamodels/Book.ecore
 
 rule book
 match p : publication!Publication

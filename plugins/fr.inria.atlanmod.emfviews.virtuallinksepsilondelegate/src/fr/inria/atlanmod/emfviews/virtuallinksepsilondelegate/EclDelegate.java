@@ -21,22 +21,22 @@ package fr.inria.atlanmod.emfviews.virtuallinksepsilondelegate;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
@@ -46,7 +46,6 @@ import org.eclipse.epsilon.ecl.trace.Match;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
-import org.eclipse.epsilon.eol.models.Model;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import fr.inria.atlanmod.emfviews.virtuallinks.ConcreteConcept;
@@ -59,8 +58,7 @@ import fr.inria.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
-  public void createVirtualModelLinks(URI linksDslURI, URI linksModel,
-                                      List<Resource> inputModelsResourcesList) throws Exception {
+  public void createVirtualModelLinks(URI linksDslURI, URI linksModel, List<Resource> inputModels) throws Exception {
 
     File f;
 
@@ -83,46 +81,55 @@ public class EclDelegate implements IVirtualLinksDelegate {
     BufferedReader br = new BufferedReader(fr);
     String sCurrentLine = "";
 
-    Map<String, Resource> inputModelsAliasMapToResource = new HashMap<>();
-    Map<String, String> inputmodelsAliasMapMetamodelUri = new HashMap<>();
+    Map<String, Resource> inputMetamodelAliasToModel = new HashMap<>();
+    Map<String, String> inputMetamodelAliasToMetamodelNsURI = new HashMap<>();
 
+    // @Correctness: this ad-hoc parser does not signal errors, and will fail with whitespace between `alias`
+    // and the value.
     while (((sCurrentLine = br.readLine()) != null) && sCurrentLine.startsWith("//alias")) {
       String metamodelAlias =
           sCurrentLine.substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
-      String packageUri = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
+      String metamodelURI = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
 
-      Resource correctResource = null;
-      boolean foundCorrectResource = false;
-      for (int i = 0; i < inputModelsResourcesList.size() && !foundCorrectResource; i++) {
-        Resource r = inputModelsResourcesList.get(i);
-        EClassifier rootClassifier = r.getContents().get(0).eClass();
-        // XXX: the profile.uml special case looks fishy
-        if (rootClassifier.getEPackage().getNsURI().compareToIgnoreCase(packageUri) == 0
-            && !r.getURI().toString().endsWith("profile.uml")) {
-          correctResource = r;
-          foundCorrectResource = true;
+      // Try to load the metamodel first
+      EPackage metamodel;
+
+      // Paths are relative to the ECL file location
+      URI metamodelAbsoluteURI = URI.createURI(metamodelURI).resolve(linksDslURI);
+
+      // @Refactor: code lifted from Viewpoint.
+      {
+        URI uri = metamodelAbsoluteURI;
+        Optional<EPackage> p = Optional.empty();
+
+        // If it's a namespace URI, fetch from the package registry
+        if ("http".equals(uri.scheme())) {
+          p = Optional.ofNullable(EPackage.Registry.INSTANCE.getEPackage(uri.toString()));
+        }
+        // If it's an Ecore file, then get the EPackage from the resource
+        else if (uri.fileExtension().equals("ecore")) {
+          Resource r = new ResourceSetImpl().getResource(uri, true);
+          // @Assumption: the Ecore contains only one EPackage we care about
+          p = Optional.of((EPackage) r.getContents().get(0));
         }
 
+        metamodel = p.orElseThrow(() -> new IllegalArgumentException(String.format("Could not load EPackage from contributing metamodel '%s'",
+                                                                                   metamodelURI)));
       }
-      // FIXME: what if correctResource is null?
-      inputModelsAliasMapToResource.put(metamodelAlias, correctResource);
 
-      inputmodelsAliasMapMetamodelUri.put(metamodelAlias, packageUri);
+      Resource model = inputModels.stream().filter(r ->
+      // @Refactor: is there an easier way to get the NsURI of the metamodel?
+      metamodel.getNsURI().compareToIgnoreCase(r.getContents().get(0).eClass().getEPackage().getNsURI()) == 0)
+          .findFirst()
+          .orElseThrow(() -> new IllegalArgumentException(String.format("No models correspond to the metamodel %s of alias %s",
+                                                                        metamodelURI, metamodelAlias)));
 
+      inputMetamodelAliasToModel.put(metamodelAlias, model);
+      inputMetamodelAliasToMetamodelNsURI.put(metamodelAlias, metamodelAbsoluteURI.toString());
     }
     br.close();
 
     // Prepare the ECL Module
-
-    // VirtualLinksPackage vl = VirtualLinksPackage.eINSTANCE;
-    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    WeavingModel weavingModel = vLinksFactory.createWeavingModel();
-
-    XMIResourceImpl weavingModelResource = new XMIResourceImpl();
-
-    weavingModelResource.setURI(linksModel);
-    weavingModelResource.getContents().add(weavingModel);
-
     EclModule module = new EclModule();
     module.parse(f);
     if (module.getParseProblems().size() > 0) {
@@ -136,40 +143,26 @@ public class EclDelegate implements IVirtualLinksDelegate {
     module.getContext().setOperationFactory(operationFactory);
 
     Iterator<Map.Entry<String, Resource>> iter =
-        inputModelsAliasMapToResource.entrySet().iterator();
+        inputMetamodelAliasToModel.entrySet().iterator();
     while (iter.hasNext()) {
       Entry<String, Resource> tempEntry = iter.next();
       Resource modelResource = tempEntry.getValue();
       EmfModel inputModel = null;
-      if (!modelResource.getURI().toString().startsWith("cdo")) {
-        inputModel = createEmfModelByURI(tempEntry.getKey(), modelResource.getURI().toString(),
-                                         inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()),
-                                         true, false);
-      } else { // XXX: CDO special case seems fishy
-        inputModel = new EmfModel();
-        inputModel.setResource(modelResource);
-        StringProperties properties = new StringProperties();
-        properties.put(Model.PROPERTY_NAME, tempEntry.getKey());
-        properties.put(EmfModel.PROPERTY_METAMODEL_URI,
-                       inputmodelsAliasMapMetamodelUri.get(tempEntry.getKey()));
-        properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
-        inputModel.load(properties);
-        inputModel.setCachingEnabled(true);
-        TreeIterator<EObject> modelContents = modelResource.getAllContents();
-        ArrayList<EObject> allModelContents = new ArrayList<>();
-        while (modelContents.hasNext()) {
-          allModelContents.add(modelContents.next());
+      inputModel = createEmfModelByURI(tempEntry.getKey(), modelResource.getURI().toString(),
+                                       inputMetamodelAliasToMetamodelNsURI.get(tempEntry.getKey()),
+                                       true, false);
 
-        }
-        inputModel.allContents().addAll(allModelContents);
-
-      }
       module.getContext().getModelRepository().addModel(inputModel);
     }
 
+    // Execute the module
     MatchTrace mt = (MatchTrace) module.execute();
 
     List<Match> matches = mt.getMatches();
+
+    // Use the matches to construct a weaving model
+    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
+    WeavingModel weavingModel = vLinksFactory.createWeavingModel();
 
     HashMap<String, ContributingModel> modelsByURI = new HashMap<>();
 
@@ -215,12 +208,15 @@ public class EclDelegate implements IVirtualLinksDelegate {
         weavingModel.getVirtualLinks().add(vAsso);
       }
     }
+
+    // Save the weaving model
+    XMIResourceImpl weavingModelResource = new XMIResourceImpl();
     weavingModelResource.setURI(linksModel);
     weavingModelResource.getContents().add(weavingModel);
     weavingModelResource.save(null);
   }
 
-  protected EmfModel createEmfModelByURI(String name, String model, String metamodel,
+  protected EmfModel createEmfModelByURI(String name, String modelURI, String metamodelURI,
                                          boolean readOnLoad,
                                          boolean storeOnDisposal) throws EolModelLoadingException {
     // @Correctness this assumes the metamodels are in the EPackage.Registry.
@@ -229,18 +225,22 @@ public class EclDelegate implements IVirtualLinksDelegate {
     // See if we can tell Epsilon to fallback on the Ecore file.
 
     // @Correctness this condition seems fishy
-    if (metamodel.contains("UML")) {
+    if (metamodelURI.contains("UML")) {
       UMLResourcesUtil.init(null);
     }
 
     EmfModel emfModel = new EmfModel();
     StringProperties properties = new StringProperties();
-    properties.put(Model.PROPERTY_NAME, name);
-    properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodel);
-    properties.put(EmfModel.PROPERTY_MODEL_URI, model);
-    properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "false");
-    properties.put(Model.PROPERTY_READONLOAD, readOnLoad + "");
-    properties.put(Model.PROPERTY_STOREONDISPOSAL, storeOnDisposal + "");
+    properties.put(EmfModel.PROPERTY_NAME, name);
+
+    if (metamodelURI.endsWith(".ecore")) {
+      properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, metamodelURI);
+    } else {
+      properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
+    }
+    properties.put(EmfModel.PROPERTY_MODEL_URI, modelURI);
+    properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad);
+    properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal);
     emfModel.load(properties);
     return emfModel;
   }
