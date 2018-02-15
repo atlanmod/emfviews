@@ -160,6 +160,8 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
   }
 
   private void parseProperties(Properties p) {
+    // @Correctness: This doesn't check against extra properties in the file that we don't use.
+
     // Parse contributingMetamodels line
     contributingMetamodelsPaths = new ArrayList<>();
     for (String path : p.getProperty(EVIEWPOINT_CONTRIBUTING_METAMODELS).split(",")) {
@@ -174,6 +176,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
       throw EX("Weaving model path is an invalid URI: '%s'", ex);
     }
 
+    // @Refactor: should move that to the view, since we don't actually use it
     // Parse matchingModel line
     try {
       matchingModelPath = Optional.ofNullable(p.getProperty(EVIEWPOINT_MATCHING_MODEL));
@@ -202,8 +205,13 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
       // If it's an Ecore file, then get the EPackage from the resource
       else if (uri.fileExtension().equals("ecore")) {
         Resource r = new ResourceSetImpl().getResource(uri, true);
+        EPackage pack = (EPackage) r.getContents().get(0);
         // @Assumption: the Ecore contains only one EPackage we care about
-        p = Optional.of((EPackage) r.getContents().get(0));
+
+        // Add the package to the global registry, in order for ECL to find it
+        EPackage.Registry.INSTANCE.put(pack.getNsURI(), pack);
+
+        p = Optional.of(pack);
       }
 
       packages.add(p.orElseThrow(() -> EX("Could not load EPackage from contributing metamodel '%s'", path)));

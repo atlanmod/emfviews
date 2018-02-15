@@ -89,43 +89,17 @@ public class EclDelegate implements IVirtualLinksDelegate {
     while (((sCurrentLine = br.readLine()) != null) && sCurrentLine.startsWith("//alias")) {
       String metamodelAlias =
           sCurrentLine.substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
-      String metamodelURI = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
-
-      // Try to load the metamodel first
-      EPackage metamodel;
-
-      // Paths are relative to the ECL file location
-      URI metamodelAbsoluteURI = URI.createURI(metamodelURI).resolve(linksDslURI);
-
-      // @Refactor: code lifted from Viewpoint.
-      {
-        URI uri = metamodelAbsoluteURI;
-        Optional<EPackage> p = Optional.empty();
-
-        // If it's a namespace URI, fetch from the package registry
-        if ("http".equals(uri.scheme())) {
-          p = Optional.ofNullable(EPackage.Registry.INSTANCE.getEPackage(uri.toString()));
-        }
-        // If it's an Ecore file, then get the EPackage from the resource
-        else if (uri.fileExtension().equals("ecore")) {
-          Resource r = new ResourceSetImpl().getResource(uri, true);
-          // @Assumption: the Ecore contains only one EPackage we care about
-          p = Optional.of((EPackage) r.getContents().get(0));
-        }
-
-        metamodel = p.orElseThrow(() -> new IllegalArgumentException(String.format("Could not load EPackage from contributing metamodel '%s'",
-                                                                                   metamodelURI)));
-      }
+      String metamodelNsURI = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
 
       Resource model = inputModels.stream().filter(r ->
       // @Refactor: is there an easier way to get the NsURI of the metamodel?
-      metamodel.getNsURI().compareToIgnoreCase(r.getContents().get(0).eClass().getEPackage().getNsURI()) == 0)
+      metamodelNsURI.compareToIgnoreCase(r.getContents().get(0).eClass().getEPackage().getNsURI()) == 0)
           .findFirst()
           .orElseThrow(() -> new IllegalArgumentException(String.format("No models correspond to the metamodel %s of alias %s",
-                                                                        metamodelURI, metamodelAlias)));
+                                                                        metamodelNsURI, metamodelAlias)));
 
       inputMetamodelAliasToModel.put(metamodelAlias, model);
-      inputMetamodelAliasToMetamodelNsURI.put(metamodelAlias, metamodelAbsoluteURI.toString());
+      inputMetamodelAliasToMetamodelNsURI.put(metamodelAlias, metamodelNsURI);
     }
     br.close();
 
@@ -219,11 +193,6 @@ public class EclDelegate implements IVirtualLinksDelegate {
   protected EmfModel createEmfModelByURI(String name, String modelURI, String metamodelURI,
                                          boolean readOnLoad,
                                          boolean storeOnDisposal) throws EolModelLoadingException {
-    // @Correctness this assumes the metamodels are in the EPackage.Registry.
-    // This does not hold for using Ecore files directly, unless we load them into
-    // the registry first.
-    // See if we can tell Epsilon to fallback on the Ecore file.
-
     // @Correctness this condition seems fishy
     if (metamodelURI.contains("UML")) {
       UMLResourcesUtil.init(null);
@@ -232,12 +201,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
     EmfModel emfModel = new EmfModel();
     StringProperties properties = new StringProperties();
     properties.put(EmfModel.PROPERTY_NAME, name);
-
-    if (metamodelURI.endsWith(".ecore")) {
-      properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI, metamodelURI);
-    } else {
-      properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
-    }
+    properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
     properties.put(EmfModel.PROPERTY_MODEL_URI, modelURI);
     properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad);
     properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal);
