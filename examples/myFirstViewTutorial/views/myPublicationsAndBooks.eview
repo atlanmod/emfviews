@@ -1,4 +1,3 @@
-contributingModels=myFirstViewTutorial/models/publication.xmi,myFirstViewTutorial/models/book.xmi
-viewpoint=myFirstViewTutorial/viewpoints/publicationsAndBooks.eviewpoint
-weavingModel=myFirstViewTutorial/views/myPublicationsAndBooks.xmi
-matchingModel=myFirstViewTutorial/viewpoints/publicationsAndBooks.ecl
+contributingModels=../models/publication.xmi,../models/book.xmi
+viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
+weavingModel=myPublicationsAndBooks.xmi

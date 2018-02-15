@@ -1,4 +1,3 @@
-contributingMetamodels=myFirstViewTutorial/metamodels/Publication.ecore,myFirstViewTutorial/metamodels/Book.ecore
-weavingModel=myFirstViewTutorial/viewpoints/publicationsAndBooks.xmi
-matchingModel=myFirstViewTutorial/viewpoints/publicationsAndBooks.ecl
-filtersMetamodel=/myFirstViewTutorial/viewpoints/publicationsAndBooks.ecore
+contributingMetamodels=../metamodels/Publication.ecore,../metamodels/Book.ecore
+weavingModel=publicationsAndBooks.xmi
+matchingModel=publicationsAndBooks.ecl
