@@ -19,6 +19,7 @@ package fr.inria.atlanmod.emfviews.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -175,6 +176,15 @@ public class View extends ResourceImpl implements Virtualizer {
         vSource.eSet(feature, getVirtual(target));
       }
     }
+  }
+
+  @Override
+  protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
+    Properties p = new Properties();
+    p.setProperty(EVIEW_VIEWPOINT, viewpointPath);
+    p.setProperty(EVIEW_CONTRIBUTING_MODELS, contributingModelsPaths);
+    p.setProperty(EVIEW_WEAVING_MODEL, weavingModelPath);
+    p.store(outputStream, null);
   }
 
   protected void parse(InputStream s) throws IOException {
