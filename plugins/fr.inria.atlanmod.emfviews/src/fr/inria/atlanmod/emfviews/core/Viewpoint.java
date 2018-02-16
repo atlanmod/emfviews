@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +69,8 @@ import fr.inria.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class Viewpoint extends ResourceImpl implements Virtualizer {
 
-  public static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
-  public static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
+  public static final String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
+  public static final String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
 
   // Paths and URIs serialized in the EViewpoint file
   private List<String> contributingMetamodelsPaths;
@@ -99,10 +100,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
-    Properties p = new Properties();
-    p.load(inputStream);
-
-    parseProperties(p);
+    parse(inputStream);
 
     contributingEPackages = loadMetamodels(contributingMetamodelsPaths);
     virtualResourceSet = new ResourceSetImpl();
@@ -156,21 +154,30 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     return virtualContents;
   }
 
-  private void parseProperties(Properties p) {
-    // @Correctness: This doesn't check against extra properties in the file that we don't use.
+  private void parse(InputStream s) throws IOException {
+    Properties p = new Properties();
+    p.load(s);
 
-    // Parse contributingMetamodels line
-    contributingMetamodelsPaths = new ArrayList<>();
-    for (String path : p.getProperty(EVIEWPOINT_CONTRIBUTING_METAMODELS).split(",")) {
-      contributingMetamodelsPaths.add(path);
-    }
+    for (String key : p.stringPropertyNames()) {
+      switch (key) {
 
-    // Parse weavingModel line
-    String weavingModelPath = p.getProperty(EVIEWPOINT_WEAVING_MODEL);
-    try {
-      weavingModelURI = URI.createURI(weavingModelPath);
-    } catch (IllegalArgumentException ex) {
-      throw EX("Weaving model path is an invalid URI: '%s'", ex);
+      // Parse contributingMetamodels line
+      case EVIEWPOINT_CONTRIBUTING_METAMODELS:
+        contributingMetamodelsPaths = Arrays.asList(p.getProperty(key).split(","));
+        break;
+
+      // Parse weavingModel line
+      case EVIEWPOINT_WEAVING_MODEL:
+        try {
+          weavingModelURI = URI.createURI(p.getProperty(key));
+        } catch (IllegalArgumentException ex) {
+          throw EX("Weaving model path is an invalid URI: '%s'", ex);
+        }
+        break;
+
+      default:
+        throw EX("Invalid key in eviewpoint file: '%s'", key);
+      }
     }
   }
 

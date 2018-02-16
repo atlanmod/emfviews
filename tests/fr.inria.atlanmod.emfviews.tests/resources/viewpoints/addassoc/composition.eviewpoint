@@ -1,3 +1,2 @@
 contributingMetamodels=../../metamodels/minimalA.ecore,../../metamodels/minimalB.ecore
 weavingModel=composition.xmi
-matchingModel=

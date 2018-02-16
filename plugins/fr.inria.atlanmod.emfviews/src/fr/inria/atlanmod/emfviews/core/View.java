@@ -47,10 +47,10 @@ import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class View extends ResourceImpl implements Virtualizer {
 
-  public static String EVIEW_VIEWPOINT = "viewpoint";
-  public static String EVIEW_CONTRIBUTING_MODELS = "contributingModels";
-  public static String EVIEW_MATCHING_MODEL = "matchingModel";
-  public static String EVIEW_WEAVING_MODEL = "weavingModel";
+  public static final String EVIEW_VIEWPOINT = "viewpoint";
+  public static final String EVIEW_CONTRIBUTING_MODELS = "contributingModels";
+  public static final String EVIEW_MATCHING_MODEL = "matchingModel";
+  public static final String EVIEW_WEAVING_MODEL = "weavingModel";
 
   // Values from the eview file, used for loading/saving
   private String viewpointPath;
@@ -181,6 +181,9 @@ public class View extends ResourceImpl implements Virtualizer {
 
   @Override
   protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
+    // @Correctness: This rewrites the eview file as it was found.
+    // I think we should rather use the eview file to init the state of the View, and
+    // write from the correct state on save.  This would prevent writing garbage.
     Properties p = new Properties();
     p.setProperty(EVIEW_VIEWPOINT, viewpointPath);
     p.setProperty(EVIEW_CONTRIBUTING_MODELS, contributingModelsPaths);
@@ -189,7 +192,7 @@ public class View extends ResourceImpl implements Virtualizer {
     p.store(outputStream, null);
   }
 
-  protected void parse(InputStream s) throws IOException {
+  private void parse(InputStream s) throws IOException {
     Properties p = new Properties();
     p.load(s);
 
