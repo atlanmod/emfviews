@@ -47,6 +47,15 @@ import fr.inria.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class View extends ResourceImpl implements Virtualizer {
 
+  public static String EVIEW_VIEWPOINT = "viewpoint";
+  public static String EVIEW_CONTRIBUTING_MODELS = "contributingModels";
+  public static String EVIEW_WEAVING_MODEL = "weavingModel";
+
+  // Values from the eview file, used for loading/saving
+  private String viewpointPath;
+  private String contributingModelsPaths;
+  private String weavingModelPath;
+
   private Viewpoint viewpoint;
   private Map<EObject, EObject> concreteToVirtual;
   private EList<EObject> virtualContents;
@@ -89,12 +98,11 @@ public class View extends ResourceImpl implements Virtualizer {
 
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
+    parse(inputStream);
 
-    Properties properties = new Properties();
-    properties.load(inputStream);
     ResourceSet virtualResourceSet = new ResourceSetImpl();
 
-    URI viewpointURI = URI.createURI(properties.getProperty("viewpoint")).resolve(getURI());
+    URI viewpointURI = URI.createURI(viewpointPath).resolve(getURI());
     viewpoint = new Viewpoint(viewpointURI);
     viewpoint.load(null);
 
@@ -109,7 +117,7 @@ public class View extends ResourceImpl implements Virtualizer {
     contributingModelURIs = new ArrayList<>();
     modelResources = new HashMap<>();
 
-    for (String modelURI : properties.getProperty("contributingModels").split(",")) {
+    for (String modelURI : contributingModelsPaths.split(",")) {
       URI uri = URI.createURI(modelURI).resolve(getURI());
       Resource r = virtualResourceSet.getResource(uri, true);
       if (r != null) {
@@ -122,7 +130,7 @@ public class View extends ResourceImpl implements Virtualizer {
       }
     }
 
-    URI weavingModelURI = URI.createURI(properties.getProperty("weavingModel")).resolve(getURI());
+    URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
 
     Optional<URI> matchingModelURI = viewpoint.getMatchingModelURI();
     if (matchingModelURI.isPresent()) {
@@ -167,6 +175,15 @@ public class View extends ResourceImpl implements Virtualizer {
         vSource.eSet(feature, getVirtual(target));
       }
     }
+  }
+
+  protected void parse(InputStream s) throws IOException {
+    Properties p = new Properties();
+    p.load(s);
+
+    viewpointPath = p.getProperty(EVIEW_VIEWPOINT);
+    contributingModelsPaths = p.getProperty(EVIEW_CONTRIBUTING_MODELS);
+    weavingModelPath = p.getProperty(EVIEW_WEAVING_MODEL);
   }
 
   @Override
