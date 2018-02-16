@@ -17,6 +17,6 @@ with c : book!Chapter
 {
 	compare
 	{
-		return ps.title = c.title and ps.nPages >20 and not ps.isTOC;
+		return ps.title = c.title and ps.nPages > 20;
 	}
 }

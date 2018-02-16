@@ -1,4 +1,4 @@
 contributingModels=../models/publication.xmi,../models/book.xmi
 viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
-matchingModel=publicationsAndBooks.ecl
+matchingModel=publicationsAndBooksPages.ecl
 weavingModel=myPublicationsAndBooks.xmi
