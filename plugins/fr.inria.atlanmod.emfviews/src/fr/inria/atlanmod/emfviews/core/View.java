@@ -196,10 +196,31 @@ public class View extends ResourceImpl implements Virtualizer {
     Properties p = new Properties();
     p.load(s);
 
-    viewpointPath = p.getProperty(EVIEW_VIEWPOINT, "").trim();
-    contributingModelsPaths = p.getProperty(EVIEW_CONTRIBUTING_MODELS, "").trim();
-    matchingModelPath = p.getProperty(EVIEW_MATCHING_MODEL, "").trim();
-    weavingModelPath = p.getProperty(EVIEW_WEAVING_MODEL, "").trim();
+    // @Correctness: if we did not expose the eview values directly, this wouldn't be needed.
+    matchingModelPath = "";
+
+    for (String key : p.stringPropertyNames()) {
+      switch (key) {
+      case EVIEW_VIEWPOINT:
+        viewpointPath = p.getProperty(key, "").trim();
+        break;
+
+      case EVIEW_CONTRIBUTING_MODELS:
+        contributingModelsPaths = p.getProperty(key, "").trim();
+        break;
+
+      case EVIEW_MATCHING_MODEL:
+        matchingModelPath = p.getProperty(key, "").trim();
+        break;
+
+      case EVIEW_WEAVING_MODEL:
+        weavingModelPath = p.getProperty(key, "").trim();
+        break;
+
+      default:
+        throw new IllegalArgumentException(String.format("Invalid key in eview file: '%s'", key));
+      }
+    }
   }
 
   @Override
