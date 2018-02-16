@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 
 import org.eclipse.emf.common.util.ECollections;
@@ -50,11 +49,13 @@ public class View extends ResourceImpl implements Virtualizer {
 
   public static String EVIEW_VIEWPOINT = "viewpoint";
   public static String EVIEW_CONTRIBUTING_MODELS = "contributingModels";
+  public static String EVIEW_MATCHING_MODEL = "matchingModel";
   public static String EVIEW_WEAVING_MODEL = "weavingModel";
 
   // Values from the eview file, used for loading/saving
   private String viewpointPath;
   private String contributingModelsPaths;
+  private String matchingModelPath;
   private String weavingModelPath;
 
   private Viewpoint viewpoint;
@@ -133,9 +134,9 @@ public class View extends ResourceImpl implements Virtualizer {
 
     URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
 
-    Optional<URI> matchingModelURI = viewpoint.getMatchingModelURI();
-    if (matchingModelURI.isPresent()) {
-      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI.get());
+    if (!matchingModelPath.isEmpty()) {
+      URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
+      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI);
 
       try {
         vld.createVirtualModelLinks(weavingModelURI, getContributingModels());
@@ -183,6 +184,7 @@ public class View extends ResourceImpl implements Virtualizer {
     Properties p = new Properties();
     p.setProperty(EVIEW_VIEWPOINT, viewpointPath);
     p.setProperty(EVIEW_CONTRIBUTING_MODELS, contributingModelsPaths);
+    p.setProperty(EVIEW_MATCHING_MODEL, matchingModelPath);
     p.setProperty(EVIEW_WEAVING_MODEL, weavingModelPath);
     p.store(outputStream, null);
   }
@@ -191,9 +193,10 @@ public class View extends ResourceImpl implements Virtualizer {
     Properties p = new Properties();
     p.load(s);
 
-    viewpointPath = p.getProperty(EVIEW_VIEWPOINT);
-    contributingModelsPaths = p.getProperty(EVIEW_CONTRIBUTING_MODELS);
-    weavingModelPath = p.getProperty(EVIEW_WEAVING_MODEL);
+    viewpointPath = p.getProperty(EVIEW_VIEWPOINT, "").trim();
+    contributingModelsPaths = p.getProperty(EVIEW_CONTRIBUTING_MODELS, "").trim();
+    matchingModelPath = p.getProperty(EVIEW_MATCHING_MODEL, "").trim();
+    weavingModelPath = p.getProperty(EVIEW_WEAVING_MODEL, "").trim();
   }
 
   @Override

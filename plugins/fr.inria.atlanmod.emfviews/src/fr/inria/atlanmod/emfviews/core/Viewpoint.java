@@ -70,12 +70,10 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
   public static String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
   public static String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
-  public static String EVIEWPOINT_MATCHING_MODEL = "matchingModel";
 
   // Paths and URIs serialized in the EViewpoint file
   private List<String> contributingMetamodelsPaths;
   private URI weavingModelURI;
-  private Optional<String> matchingModelPath;
 
   private List<EPackage> contributingEPackages; // original, unmodified EPackages
   private WeavingModel weavingModel; // how to modify the EPackages
@@ -147,7 +145,6 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
     p.setProperty(EVIEWPOINT_CONTRIBUTING_METAMODELS,
                   String.join(",", contributingMetamodelsPaths));
     p.setProperty(EVIEWPOINT_WEAVING_MODEL, weavingModelURI.toString());
-    p.setProperty(EVIEWPOINT_MATCHING_MODEL, matchingModelPath.orElse(""));
     p.store(outputStream, null);
   }
 
@@ -174,18 +171,6 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
       weavingModelURI = URI.createURI(weavingModelPath);
     } catch (IllegalArgumentException ex) {
       throw EX("Weaving model path is an invalid URI: '%s'", ex);
-    }
-
-    // @Refactor: should move that to the view, since we don't actually use it
-    // Parse matchingModel line
-    try {
-      matchingModelPath = Optional.ofNullable(p.getProperty(EVIEWPOINT_MATCHING_MODEL));
-      // Whitespace is the same as an absent field
-      if (matchingModelPath.isPresent() && matchingModelPath.get().trim().isEmpty()) {
-        matchingModelPath = Optional.empty();
-      }
-    } catch (IllegalArgumentException ex) {
-      matchingModelPath = Optional.empty();
     }
   }
 
@@ -534,10 +519,6 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
 
   private ViewpointException EX(String msg, Object... args) {
     return new ViewpointException(msg, args);
-  }
-
-  public Optional<URI> getMatchingModelURI() {
-    return matchingModelPath.map(path -> URI.createURI(path).resolve(getURI()));
   }
 
   public List<String> getContributingMetamodelsPaths() {
