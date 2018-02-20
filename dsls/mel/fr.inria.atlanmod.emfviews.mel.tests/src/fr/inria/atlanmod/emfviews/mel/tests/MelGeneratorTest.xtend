@@ -16,19 +16,25 @@
 
 package fr.inria.atlanmod.emfviews.mel.tests
 
-import static org.hamcrest.CoreMatchers.*;
-
 import com.google.inject.Inject
 import fr.inria.atlanmod.emfviews.mel.mel.Model
+import fr.inria.atlanmod.emfviews.virtuallinks.VirtualLinksFactory
+import org.atlanmod.sexp2emf.Sexp2EMF
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.URIConverter
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.xtext.generator.IGenerator2
+import org.eclipse.xtext.generator.InMemoryFileSystemAccess
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.eclipse.xtext.generator.InMemoryFileSystemAccess
-import org.eclipse.xtext.generator.IGenerator2
-import org.eclipse.xtext.generator.IFileSystemAccess
+
+import static org.hamcrest.CoreMatchers.*
 
 @RunWith(XtextRunner)
 @InjectWith(MelInjectorProvider)
@@ -57,18 +63,23 @@ class MelGeneratorTest {
       contributingMetamodels=http://www.eclipse.org/uml2/5.0.0/UML
       weavingModel=extension1.xmi
       '''.toString, fsa.allFiles.get(eviewpointPath).toString)
-
+      
     val weavingPath = IFileSystemAccess::DEFAULT_OUTPUT + "extension1.xmi"
     Assert.assertTrue(fsa.allFiles.containsKey(weavingPath))
-    Assert.assertEquals('''
-      <?xml version="1.0" encoding="ASCII"?>
-      <virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks" name="extension1">
-        <virtualLinks xsi:type="virtualLinks:VirtualConcept" name="X" superConcepts="//@contributingModels.0/@concreteElements.0"/>
-        <contributingModels URI="http://www.eclipse.org/uml2/5.0.0/UML">
-          <concreteElements xsi:type="virtualLinks:ConcreteConcept"/>
-        </contributingModels>
-      </virtualLinks:WeavingModel>
-      '''.toString, fsa.allFiles.get(weavingPath).toString)
+    
+    val r = new ResourceSetImpl().createResource(URI.createURI('no:need'))
+    r.load(new URIConverter.ReadableInputStream(fsa.allFiles.get(weavingPath).toString), emptyMap)
+    
+    val expected = Sexp2EMF.build('''
+    (WeavingModel
+       :name 'extension1'
+       :virtualLinks [(VirtualConcept :name 'X' :superConcepts [@1])]
+       :contributingModels [(ContributingModel
+                               :URI 'http://www.eclipse.org/uml2/5.0.0/UML'
+                               :concreteElements [#1(ConcreteConcept :path 'Class')])])
+    ''', VirtualLinksFactory.eINSTANCE)
+    
+    Assert.assertTrue(EcoreUtil.equals(expected.get(0), r.getContents().get(0)));
   }
 
 }
