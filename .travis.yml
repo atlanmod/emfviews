@@ -3,6 +3,8 @@ language: java
 jdk: openjdk8
 
 install:
+  - git clone --depth 1 https://github.com/atlanmod/sexp2emf.git
+  - mvn --batch-mode -Dmaven.javadoc.skip=true --file sexp2emf/pom.xml install
   - mvn --batch-mode -Dmaven.javadoc.skip=true --file atl-maven-plugin/pom.xml install
 
 script:
