@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="ASCII"?>
-<Publication:Publication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Publication="http://publication/1.0" title="Testing ATL Transformations" isBook="true">
-  <sections title="Table of Contents" nPages="2" isTOC="true"/>
-  <sections title="Chapter 1" nPages="23" isChapter="true"/>
-  <sections title="Chapter 2" nPages="12" isChapter="true"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<Publication:Publication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                         xmlns:Publication="http://publication"
+                         title="ATL in Depth"
+                         author="A. Tlanmod"
+                         publisher="Willy"
+                         year="2022">
+
 </Publication:Publication>

@@ -1,30 +1,23 @@
-<?xml version="1.0" encoding="ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                            xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0"
                            name="publicationsAndBooks">
 
-  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="book" upperBound="1"
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="bookChapters" upperBound="-1"
                 source="//@contributingModels.0/@concreteElements.0"
                 target="//@contributingModels.1/@concreteElements.0"/>
 
-  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="chapter" upperBound="1"
-                source="//@contributingModels.0/@concreteElements.1"
+  <virtualLinks xsi:type="virtualLinks:Filter" name="nbPages"
                 target="//@contributingModels.1/@concreteElements.1"/>
 
-  <virtualLinks xsi:type="virtualLinks:Filter" name="isNew" target="//@contributingModels.1/@concreteElements.2"/>
-  <virtualLinks xsi:type="virtualLinks:Filter" name="isMultiVolume" target="//@contributingModels.1/@concreteElements.3"/>
-
-  <contributingModels URI="http://publication/1.0">
+  <contributingModels URI="http://publication">
     <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Publication"/>
-    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="PubSection"/>
   </contributingModels>
 
-  <contributingModels URI="http://book/1.0">
-    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Book"/>
+  <contributingModels URI="http://book">
     <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Chapter"/>
-    <concreteElements path="Book.isNew"/>
-    <concreteElements path="Book.isMultiVolume"/>
+    <concreteElements path="Chapter.nbPages"/>
   </contributingModels>
 
 </virtualLinks:WeavingModel>
