@@ -35,10 +35,6 @@ So far, these are the projects:
 
 * org.atlanmod.emfviews. This is the main component of the tool. It
   includes the core logic behind viewpoints and views.
-* ~~fr.inria.atlanmod.emfviews.ui. This project contributes to the Eclipse UI by
-  defining wizards to ease the creation of viewpoints and views.~~ (obsolete)
-* ~~fr.inria.atlanmod.emfviews.editor. This project contributes to Eclipse UI, by
-  defining an editor to modify viewpoints and views.~~ (obsolete)
 * org.atlanmod.emfviews.virtuallinks. EMF project defining an Ecore model
   to represent links models.
 * org.atlanmod.emfviews.virtuallinks.delegator. This package delegates the
