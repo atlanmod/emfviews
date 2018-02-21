@@ -1,0 +1,137 @@
+/*******************************************************************************
+ * Copyright (c) 2017, 2018 Armines
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the Eclipse
+ * Public License, v. 2.0 are satisfied: GNU General Public License, version 3
+ * which is available at https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Contributors:
+ *   fmdkdd - initial implementation
+ *******************************************************************************/
+
+grammar org.atlanmod.emfviews.mel.Mel with org.eclipse.xtext.common.Terminals
+generate mel "http://www.atlanmod.org/emfviews/mel/0.3.0"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+//Specific grammar to define MM extensions
+
+Model:
+  ('import' imports+=Metamodel)*
+  'define' extensionName=ID 'extending' metamodels+=[Metamodel] ("," metamodels+=[Metamodel])*
+  '{' extensions+=Extension* '}'
+;
+
+Metamodel:
+  name=ID 'from' nsURI=STRING
+;
+
+Extension:
+  AddClass | ModifyVirtualClass | ModifyClass | FilterClass
+;
+
+AddClass:
+  'add' 'class' name=ID
+  ('specializing' parents+=TargetClass ("," parents+=TargetClass)*)?
+  ('supertyping' children+=TargetClass ("," children+=TargetClass)*)?
+;
+
+TargetClass:
+  ConcreteClass | VirtualClass
+;
+
+ConcreteClass:
+  metamodel=[Metamodel] '.' class=[ecore::EClass]
+;
+
+VirtualClass:
+  class=[AddClass]
+;
+
+ModifyVirtualClass:
+  'modify' 'class' class=VirtualClass '{'
+    operators+=ModifyVirtualClassOperator*
+  '}'
+;
+
+ModifyClass:
+  'modify' 'class' class=ConcreteClass '{'
+    operators+=ModifyConcreteClassOperator*
+  '}'
+;
+
+ModifyVirtualClassOperator:
+  AddAttribute | AddReference | AddConstraint
+;
+
+ModifyConcreteClassOperator:
+  AddAttribute | AddReference | ModifyAttribute | ModifyReference | FilterProperty | AddConstraint | FilterConstraint
+;
+
+AddAttribute:
+  'add' 'property' name=ID ':' type=[ecore::EDataType] (cardinality=AttributeCardinality)?
+;
+
+AddReference:
+  'add' relationType=RelationType name=ID ':' type=TargetClass (cardinality=ReferenceCardinality)?
+;
+
+ModifyAttribute:
+  'modify' 'property' property=[ecore::EAttribute] '{'
+    (('name' newName=ID)?
+     & ('type' type=[ecore::EDataType])?
+     & ('cardinality' cardinality=AttributeCardinality)?)
+  '}'
+;
+
+ModifyReference:
+  'modify' 'association' property=[ecore::EReference] '{'
+    (('name' newName=ID)?
+     & ('type' type=TargetClass)?
+     & ('cardinality' cardinality=ReferenceCardinality)?
+     & ('relation-type' relationType=RelationType)?)
+  '}'
+;
+
+FilterProperty:
+  'filter' 'property' property=[ecore::EStructuralFeature]
+;
+
+FilterClass:
+  'filter' 'class' class=ConcreteClass
+;
+
+AddConstraint:
+  'add' 'constraint' constraint=ID value=EString
+;
+
+FilterConstraint:
+  'filter' 'constraint' constraint=EString
+;
+
+// The first value is the default.  Attributes are non-optional unless specified.
+enum AttributeCardinality:
+  MANDATORY = '1' | OPTIONAL = '0'
+;
+
+// Disable spaces inside a cardinality
+ReferenceCardinality hidden(ML_COMMENT):
+  lowerBound=CardinalityBound '..' upperBound=CardinalityBound
+;
+
+enum CardinalityBound:
+  ZERO = '0' | ONE = '1' | STAR = '*'
+;
+
+enum RelationType:
+  composition | association
+;
+
+EString returns ecore::EString:
+  STRING | ID
+;

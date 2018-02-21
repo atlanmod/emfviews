@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0"
+                           name="addconcept">
+  <virtualLinks xsi:type="virtualLinks:VirtualConcept" name="C"/>
+</virtualLinks:WeavingModel>

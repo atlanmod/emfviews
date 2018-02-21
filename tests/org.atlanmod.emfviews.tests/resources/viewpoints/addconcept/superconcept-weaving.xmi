@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0"
+                           name="superconcept">
+  <virtualLinks xsi:type="virtualLinks:VirtualConcept"
+                name="C"
+                subConcepts="//@contributingModels.0/@concreteElements.0 //@contributingModels.1/@concreteElements.0"/>
+  <contributingModels URI="http://atlanmod/emfviews/tests/minimalA">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept"
+                      path="A"/>
+  </contributingModels>
+  <contributingModels URI="http://atlanmod/emfviews/tests/minimalB">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept"
+                      path="B"/>
+  </contributingModels>
+</virtualLinks:WeavingModel>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0"
+                           name="threemodelcomp">
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="detailedProcess"
+                lowerBound="0" upperBound="1"
+                source="//@contributingModels.0/@concreteElements.0"
+                target="//@contributingModels.1/@concreteElements.0"/>
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="detailedRequirement"
+                lowerBound="0" upperBound="1"
+                source="//@contributingModels.0/@concreteElements.1"
+                target="//@contributingModels.2/@concreteElements.0"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="drivers"
+                target="//@contributingModels.0/@concreteElements.2"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="goals"
+                target="//@contributingModels.0/@concreteElements.3"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="objectives"
+                target="//@contributingModels.0/@concreteElements.4"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="units"
+                target="//@contributingModels.0/@concreteElements.5"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="actors"
+                target="//@contributingModels.0/@concreteElements.6"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="roles"
+                target="//@contributingModels.0/@concreteElements.7"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="functions"
+                target="//@contributingModels.0/@concreteElements.8"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="services"
+                target="//@contributingModels.0/@concreteElements.9"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="controls"
+                target="//@contributingModels.0/@concreteElements.10"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="events"
+                target="//@contributingModels.0/@concreteElements.11"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="locations"
+                target="//@contributingModels.0/@concreteElements.12"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="products"
+                target="//@contributingModels.0/@concreteElements.13"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="contracts"
+                target="//@contributingModels.0/@concreteElements.14"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="measures"
+                target="//@contributingModels.0/@concreteElements.15"/>
+  <virtualLinks xsi:type="virtualLinks:Filter" name="servicesQuality"
+                target="//@contributingModels.0/@concreteElements.16"/>
+
+  <contributingModels URI="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Process"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Requirement"/>
+    <concreteElements path="BusinessArchitecture.drivers"/>
+    <concreteElements path="BusinessArchitecture.goals"/>
+    <concreteElements path="BusinessArchitecture.objectives"/>
+    <concreteElements path="BusinessArchitecture.units"/>
+    <concreteElements path="BusinessArchitecture.actors"/>
+    <concreteElements path="BusinessArchitecture.roles"/>
+    <concreteElements path="BusinessArchitecture.functions"/>
+    <concreteElements path="BusinessArchitecture.services"/>
+    <concreteElements path="BusinessArchitecture.controls"/>
+    <concreteElements path="BusinessArchitecture.events"/>
+    <concreteElements path="BusinessArchitecture.locations"/>
+    <concreteElements path="BusinessArchitecture.products"/>
+    <concreteElements path="BusinessArchitecture.contracts"/>
+    <concreteElements path="BusinessArchitecture.measures"/>
+    <concreteElements path="BusinessArchitecture.servicesQuality"/>
+  </contributingModels>
+
+  <contributingModels URI="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Process"/>
+  </contributingModels>
+
+  <contributingModels URI="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="SpecObject"/>
+  </contributingModels>
+</virtualLinks:WeavingModel>

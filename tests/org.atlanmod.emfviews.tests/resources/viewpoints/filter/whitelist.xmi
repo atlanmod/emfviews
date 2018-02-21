@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0"
+                           name="filter"
+                           whitelist="true">
+  <virtualLinks xsi:type="virtualLinks:Filter"
+                name=""
+                target="//@contributingModels.0/@concreteElements.0"/>
+  <contributingModels URI="http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0">
+    <concreteElements path="Element.ID"/>
+  </contributingModels>
+</virtualLinks:WeavingModel>

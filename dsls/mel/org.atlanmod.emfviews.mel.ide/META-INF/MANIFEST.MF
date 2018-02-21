@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MEL Metamodel Extension Language IDE
+Bundle-Vendor: Atlanmod
+Bundle-Version: 0.3.0.qualifier
+Bundle-SymbolicName: org.atlanmod.emfviews.mel.ide;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.atlanmod.emfviews.mel;bundle-version="0.3.0",
+ org.eclipse.xtext.ide;bundle-version="[2.13.0,3.0.0)",
+ org.eclipse.xtext.xbase.lib;bundle-version="[2.13.0,3.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.atlanmod.emfviews.mel.ide.contentassist.antlr,
+ org.atlanmod.emfviews.mel.ide.contentassist.antlr.internal

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EMF Views Tests
+Bundle-SymbolicName: org.atlanmod.emfviews.tests
+Bundle-Version: 0.3.0.qualifier
+Export-Package: org.atlanmod.emfviews.tests
+Require-Bundle: org.junit;bundle-version="[4.12.0,5.0.0)",
+ org.obeonetwork.dsl.bpmn2;bundle-version="1.1.0",
+ org.eclipse.rmf.reqif10;bundle-version="0.9.0",
+ org.atlanmod.emfviews;bundle-version="0.3.0",
+ org.atlanmod.emfviews.virtuallinksepsilondelegate;bundle-version="0.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Atlanmod

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://inria.fr/virtualLinks">
+<virtualLinks:VirtualLinks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0">
   <virtualLinks xsi:type="virtualLinks:Association" name="MatchProcessWithProcess" upperBound="1" associationTypeName="MatchProcessWithProcess" sourceElement="//@linkedElements.0" targetElements="//@linkedElements.1"/>
   <virtualLinks xsi:type="virtualLinks:Association" name="requirement2reqif" upperBound="1" associationTypeName="requirement2reqif" sourceElement="//@linkedElements.2" targetElements="//@linkedElements.3"/>
   <virtualLinks xsi:type="virtualLinks:Association" name="requirement2reqif" upperBound="1" associationTypeName="requirement2reqif" sourceElement="//@linkedElements.4" targetElements="//@linkedElements.5"/>
