@@ -13,7 +13,7 @@
  *
  * Contributors:
  *   fmdkdd - refactoring and extension
- *   Caué Clasen - initial API an implementation
+ *   Cauê Clasen - initial API an implementation
  *******************************************************************************/
 
 package org.atlanmod.emfviews.core;
