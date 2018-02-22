@@ -6,6 +6,6 @@
 
   <chapters title="Introduction to ATL" nbPages="12"/>
   <chapters title="An Example Transformation" nbPages="22"/>
-  <chapters title="A Couple of Compiler(s)" nbPages="57"/>
+  <chapters title="A Couple of Compilers" nbPages="57"/>
   <chapters title="ATL Harder" nbPages="18"/>
 </Book:Book>

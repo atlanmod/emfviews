@@ -1,6 +1,0 @@
-create view min as 
-
-select uml.Class.superClass
-      
-from
-	'http://www.eclipse.org/uml2/5.0.0/UML' as uml
