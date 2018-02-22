@@ -34,9 +34,8 @@ define extension1 extending uml, bpmn {
 	modify class uml.Behavior {
 		modify property isReentrant {
 			type EString  
-			//cardinality 0
-		} 
-		//filter property isReentrant
+			cardinality 0
+		}
 	}
 	
 	modify class uml.Activity {

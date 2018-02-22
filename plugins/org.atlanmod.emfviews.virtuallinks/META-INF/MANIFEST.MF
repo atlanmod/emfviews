@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.atlanmod.emfviews.virtuallinks;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: Atlanmod
-Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.atlanmod.emfviews.virtuallinks;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.atlanmod.emfviews.virtuallinks.delegator;uses:="org.eclipse.emf.common.util",
