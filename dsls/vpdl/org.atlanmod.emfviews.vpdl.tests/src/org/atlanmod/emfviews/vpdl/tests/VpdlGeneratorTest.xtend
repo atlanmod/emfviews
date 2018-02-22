@@ -58,7 +58,6 @@ class VpdlGeneratorTest {
     Assert.assertEquals('''
       contributingMetamodels=http://www.eclipse.org/uml2/5.0.0/UML
       weavingModel=min.xmi
-      matchingModel=min.ecl
       '''.toString, fsa.allFiles.get(eviewpointPath).toString)
 
     val weavingPath = IFileSystemAccess::DEFAULT_OUTPUT + "min.xmi"
