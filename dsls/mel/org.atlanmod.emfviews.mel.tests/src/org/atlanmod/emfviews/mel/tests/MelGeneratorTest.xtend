@@ -43,8 +43,8 @@ class MelGeneratorTest {
   @Inject IGenerator2 underTest
   @Inject ParseHelper<Model> parseHelper
   
-  def void expect(String extensionName, CharSequence vpdl, CharSequence viewpointContent, CharSequence expectedModel) {
-    val model = parseHelper.parse(vpdl)
+  def void expect(String extensionName, CharSequence mel, CharSequence viewpointContent, CharSequence expectedModel) {
+    val model = parseHelper.parse(mel)
     Assert.assertThat(model.eResource.errors, is(emptyList))
     
     val fsa = new InMemoryFileSystemAccess()

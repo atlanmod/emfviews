@@ -29,6 +29,13 @@ import org.junit.runner.RunWith
 import org.eclipse.xtext.generator.InMemoryFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IFileSystemAccess
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.URIConverter
+import org.eclipse.emf.ecore.util.EcoreUtil
+import java.io.ByteArrayOutputStream
+import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory
+import org.atlanmod.sexp2emf.Sexp2EMF
 
 @RunWith(XtextRunner)
 @InjectWith(VpdlInjectorProvider)
@@ -37,46 +44,71 @@ class VpdlGeneratorTest {
   @Inject IGenerator2 underTest
   @Inject ParseHelper<View> parseHelper
 
+
+  def void expect(String extensionName, CharSequence vpdl, CharSequence viewpointContent,
+                  CharSequence expectedModel, CharSequence matchingModel) {
+    // @Refactor: similar from MelGeneratorTest, with matchingModel in there
+
+    val model = parseHelper.parse(vpdl)
+    Assert.assertThat(model.eResource.errors, is(emptyList))
+
+    val fsa = new InMemoryFileSystemAccess()
+    underTest.doGenerate(model.eResource, fsa, null)
+    Assert.assertEquals(3, fsa.allFiles.size)
+
+    val eviewpointPath = IFileSystemAccess::DEFAULT_OUTPUT + extensionName + ".eviewpoint"
+    Assert.assertTrue(fsa.allFiles.containsKey(eviewpointPath))
+    Assert.assertEquals(viewpointContent.toString, fsa.allFiles.get(eviewpointPath).toString)
+
+    val weavingPath = IFileSystemAccess::DEFAULT_OUTPUT + extensionName + ".xmi"
+    Assert.assertTrue(fsa.allFiles.containsKey(weavingPath))
+
+    val weavingModelXMI = fsa.allFiles.get(weavingPath).toString()
+    val r = new ResourceSetImpl().createResource(URI.createURI('no:need'))
+    r.load(new URIConverter.ReadableInputStream(weavingModelXMI), emptyMap)
+
+    val expected = Sexp2EMF.build(expectedModel.toString, VirtualLinksFactory.eINSTANCE)
+    if (!EcoreUtil.equals(expected.get(0), r.getContents().get(0))) {
+      // Write the expected resource to XMI and compare that, so that we can
+      // actually understand what is different between the two models.
+      // There might be a way to leverage EMF compare here, but at least it's better
+      // than getting "AssertionError".
+      val out = new ResourceSetImpl().createResource(URI.createURI('no:need'))
+      out.contents.add(expected.get(0))
+      val expectedXMI = new ByteArrayOutputStream
+      out.save(expectedXMI, emptyMap)
+      Assert.assertEquals(expectedXMI.toString, weavingModelXMI)
+    }
+
+    val matchingPath = IFileSystemAccess::DEFAULT_OUTPUT + extensionName + ".ecl"
+    Assert.assertTrue(fsa.allFiles.containsKey(matchingPath))
+    Assert.assertEquals(matchingModel.toString, fsa.allFiles.get(matchingPath).toString)
+  }
+
   @Test
   def void minExample() {
-    val view = parseHelper.parse('''
+    expect("min", '''
       create view min as
 
       select uml.Class.superClass
 
       from
         'http://www.eclipse.org/uml2/5.0.0/UML' as uml
-    ''')
-    Assert.assertThat(view.eResource.errors, is(emptyList))
-
-    val fsa = new InMemoryFileSystemAccess()
-    underTest.doGenerate(view.eResource, fsa, null)
-    Assert.assertEquals(3, fsa.allFiles.size)
-
-    val eviewpointPath = IFileSystemAccess::DEFAULT_OUTPUT + "min.eviewpoint"
-    Assert.assertTrue(fsa.allFiles.containsKey(eviewpointPath))
-    Assert.assertEquals('''
+    ''',
+    '''
       contributingMetamodels=http://www.eclipse.org/uml2/5.0.0/UML
       weavingModel=min.xmi
-      '''.toString, fsa.allFiles.get(eviewpointPath).toString)
-
-    val weavingPath = IFileSystemAccess::DEFAULT_OUTPUT + "min.xmi"
-    Assert.assertTrue(fsa.allFiles.containsKey(weavingPath))
-    Assert.assertEquals('''
-      <?xml version="1.0" encoding="ASCII"?>
-      <virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0" name="min" whitelist="true">
-        <virtualLinks xsi:type="virtualLinks:Filter" name="superClass" target="//@contributingModels.0/@concreteElements.0"/>
-        <contributingModels URI="http://www.eclipse.org/uml2/5.0.0/UML">
-          <concreteElements path="Class.superClass"/>
-        </contributingModels>
-      </virtualLinks:WeavingModel>
-      '''.toString, fsa.allFiles.get(weavingPath).toString)
-
-    val matchingPath = IFileSystemAccess::DEFAULT_OUTPUT + "min.ecl"
-    Assert.assertTrue(fsa.allFiles.containsKey(matchingPath))
-    Assert.assertEquals('''
+    ''',
+    '''
+    (WeavingModel
+      :name 'min' :whitelist true
+      :virtualLinks [(Filter :name 'superClass' :target @1)]
+      :contributingModels [(ContributingModel :URI 'http://www.eclipse.org/uml2/5.0.0/UML'
+                                              :concreteElements [#1(ConcreteElement :path 'Class.superClass')])])
+    ''',
+    '''
       //alias_uml=http://www.eclipse.org/uml2/5.0.0/UML
 
-    '''.toString, fsa.allFiles.get(matchingPath).toString)
+    ''')
   }
 }
