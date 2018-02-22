@@ -76,7 +76,6 @@ class VpdlGenerator extends AbstractGenerator {
   def CharSequence compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
     contributingMetamodels=«r.getListMetamodels.map([m | m.nsURI]).join(',')»
     weavingModel=«viewpointName(r)».xmi
-    matchingModel=«viewpointName(r)».ecl
   '''
 
   def CharSequence compileEcl(Resource resource) '''
