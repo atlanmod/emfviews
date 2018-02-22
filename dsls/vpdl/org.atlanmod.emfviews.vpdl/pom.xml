@@ -31,10 +31,11 @@
         <artifactId>xtend-maven-plugin</artifactId>
       </plugin>
 
-      <plugin>
-        <groupId>org.atlanmod</groupId>
-        <artifactId>atl-maven-plugin</artifactId>
-      </plugin>
+      <!-- Disabled until it can build with EMFTVM -->
+      <!-- <plugin> -->
+      <!--   <groupId>org.atlanmod</groupId> -->
+      <!--   <artifactId>atl-maven-plugin</artifactId> -->
+      <!-- </plugin> -->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
