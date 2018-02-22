@@ -23,16 +23,10 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import org.atlanmod.emfviews.mel.mel.Model
 import java.io.ByteArrayOutputStream
 import org.atlanmod.emfviews.mel.mel.Metamodel
-import org.eclipse.m2m.atl.core.emf.EMFInjector
-import org.eclipse.m2m.atl.core.emf.EMFModelFactory
-import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher
-import org.eclipse.core.runtime.NullProgressMonitor
-import org.eclipse.m2m.atl.core.launch.ILauncher
-import java.util.Collections
-import java.net.URL
-import org.eclipse.m2m.atl.core.emf.EMFExtractor
-import java.util.HashMap
-import org.eclipse.emf.ecore.xmi.XMLResource
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.m2m.atl.emftvm.EmftvmFactory
+import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
 
 /*
  * Generates code from your model files on save.
@@ -64,37 +58,41 @@ class MelGenerator extends AbstractGenerator {
   def String compileXMI(Resource r) {
     // @Refactor: lifted from VpdlGenerator
 
-    var injector = new EMFInjector()
-    var factory = new EMFModelFactory()
+    val factory = EmftvmFactory.eINSTANCE
+    val rs = new ResourceSetImpl()
 
-    var ecoreMM = factory.newReferenceModel()
-    injector.inject(ecoreMM, "http://www.eclipse.org/emf/2002/Ecore")
+    val env = factory.createExecEnv()
 
-    var sourceMM = factory.newReferenceModel()
-    injector.inject(sourceMM, "http://www.atlanmod.org/emfviews/mel/0.3.0")
+    // Load metamodels
+    val sourceMM = factory.createMetamodel()
+    sourceMM.resource = rs.getResource(URI.createURI("http://www.atlanmod.org/emfviews/mel/0.3.0"), true)
+    env.registerMetaModel("MEL", sourceMM)
 
-    var targetMM = factory.newReferenceModel()
-    injector.inject(targetMM, "http://www.atlanmod.org/emfviews/virtuallinks/0.3.0")
+    val targetMM = factory.createMetamodel()
+    targetMM.resource = rs.getResource(URI.createURI("http://www.atlanmod.org/emfviews/virtuallinks/0.3.0"), true)
+    env.registerMetaModel("VirtualLinks", targetMM)
 
-    var sourceModel = factory.newModel(sourceMM)
-    injector.inject(sourceModel, r)
+    // Load models
+    val sourceModel = factory.createModel()
+    sourceModel.resource = r
+    env.registerInputModel("IN", sourceModel)
 
-    var targetModel = factory.newModel(targetMM)
+    val targetModel = factory.createModel()
+    // The URI does not actually matter here, as we save the resource to a String
+    targetModel.resource = rs.createResource(URI.createFileURI("foo.xmi"))
+    env.registerOutputModel("OUT", targetModel)
 
-    var launcher = new EMFVMLauncher();
-    launcher.initialize(null)
-    launcher.addInModel(ecoreMM, "ECORE", "ECORE")
-    launcher.addInModel(sourceModel, "IN", "MEL")
-    launcher.addOutModel(targetModel, "OUT", "VirtualLinks")
-    launcher.launch(ILauncher.RUN_MODE, new NullProgressMonitor(), Collections.EMPTY_MAP,
-      new URL("platform:/plugin/org.atlanmod.emfviews.mel/transformation/MEL2VirtualLinks.asm").openStream)
+    // Run the transformation
+    val mr = new DefaultModuleResolver("platform:/plugin/org.atlanmod.emfviews.mel/transformation/",
+      new ResourceSetImpl())
 
-    var extractor = new EMFExtractor()
-    var out = new ByteArrayOutputStream()
-    var options = new HashMap()
-    options.put(XMLResource.OPTION_ENCODING, "ASCII")
-    extractor.extract(targetModel, out, options)
+    env.loadModule(mr, "MEL2VirtualLinks")
+    env.run(null)
 
-    new String(out.toByteArray())
+    // Write to a String and return
+    val out = new ByteArrayOutputStream()
+    targetModel.resource.save(out, null)
+
+    out.toString
   }
 }
