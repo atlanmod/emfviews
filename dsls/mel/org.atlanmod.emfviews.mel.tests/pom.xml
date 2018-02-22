@@ -13,6 +13,14 @@
 
   <packaging>eclipse-test-plugin</packaging>
 
+  <repositories>
+    <repository>
+      <id>obeo-bpmn2</id>
+      <layout>p2</layout>
+      <url>https://s3-eu-west-1.amazonaws.com/obeo-bpmndesigner-releases/3.5.0/repository/</url>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
