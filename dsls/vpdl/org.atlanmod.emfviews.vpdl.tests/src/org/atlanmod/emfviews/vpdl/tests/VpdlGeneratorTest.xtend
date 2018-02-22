@@ -111,4 +111,50 @@ class VpdlGeneratorTest {
 
     ''')
   }
+
+  @Test
+  def void fullExample() {
+    expect("full", '''
+      create view full as
+
+      select v.ConcreteElement[model, path],
+             v.ConcreteConcept join ecore.EClass as eClass,
+
+      from 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0' as v,
+           'http://www.eclipse.org/emf/2002/Ecore' as ecore,
+
+      where 'this is not tested yet' for eClass
+    ''',
+    '''
+      contributingMetamodels=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0,http://www.eclipse.org/emf/2002/Ecore
+      weavingModel=full.xmi
+    ''',
+    '''
+    (WeavingModel
+          :name 'full' :whitelist true
+          :virtualLinks [(Filter :name 'model' :target @1)
+                         (Filter :name 'path' :target @2)
+                         (VirtualAssociation :name 'eClass' :source @3  :target @4 :upperBound 1)]
+          :contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0'
+                                                  :concreteElements [#1(ConcreteElement :path 'ConcreteElement.model')
+                                                                     #2(ConcreteElement :path 'ConcreteElement.path')
+                                                                     #3(ConcreteConcept :path 'ConcreteConcept')])
+                               (ContributingModel :URI 'http://www.eclipse.org/emf/2002/Ecore'
+                                                  :concreteElements [#4(ConcreteConcept :path 'EClass')])])
+    ''',
+    '''
+    //alias_v=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
+    //alias_ecore=http://www.eclipse.org/emf/2002/Ecore
+
+    rule eClass
+    match s : v!ConcreteConcept
+    with  t : ecore!EClass
+    {
+      compare
+      {
+        return this is not tested yet;
+      }
+    }
+    ''')
+  }
 }
