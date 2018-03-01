@@ -5,7 +5,6 @@ EMF Views
 
 What is this project about?
 ---------------------------
-
 Some users only need to see some parts of a model, others have to get the full
 model extended with data from another model, and others simply access to a
 combination of information coming from different models. Based on the
@@ -25,7 +24,6 @@ they still show the overall principles and capabilities of the approach.
 
 What can you find in this repository?
 -------------------------------------
-
 These are the core plugins:
 
 * `org.atlanmod.emfviews`: This is the main component of the tool. It includes the
@@ -79,7 +77,6 @@ The following people have made significant contributions to the project:
 
 Copyright information
 ---------------------
-
 This program and the accompanying materials are made available under the terms
 of the Eclipse Public License 2.0 which is available at
 https://www.eclipse.org/legal/epl-2.0/
