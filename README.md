@@ -3,10 +3,6 @@ EMF Views
 
 [![Build Status](https://travis-ci.org/atlanmod/emfviews.svg?branch=master)](https://travis-ci.org/atlanmod/emfviews)
 
-*Note (November 2017)*: As we are in the process of rewriting most of EMF Views,
-some plugins (mainly editors and UI) are outdated and are currently not working
-with the new core.
-
 What is this project about?
 ---------------------------
 
@@ -14,8 +10,7 @@ Some users only need to see some parts of a model, others have to get the full
 model extended with data from another model, and others simply access to a
 combination of information coming from different models. Based on the
 unquestionable success and usefulness of database views to solve similar
-problems in databases, EMF Views aims to bring the same concept to the modeling
-world.
+problems in databases, EMF Views brings the same concept to the modeling world.
 
 Screencasts
 -----------
@@ -31,36 +26,30 @@ they still show the overall principles and capabilities of the approach.
 What can you find in this repository?
 -------------------------------------
 
-So far, these are the projects:
+These are the core plugins:
 
-* org.atlanmod.emfviews. This is the main component of the tool. It
-  includes the core logic behind viewpoints and views.
-* org.atlanmod.emfviews.virtuallinks. EMF project defining an Ecore model
-  to represent links models.
-* org.atlanmod.emfviews.virtuallinks.delegator. This package delegates the
+* `org.atlanmod.emfviews`: This is the main component of the tool. It includes the
+  core logic behind viewpoints and views.
+* `org.atlanmod.emfviews.virtuallinks`: An Ecore-based model of links used to
+  construct viewpoints and views.
+* `org.atlanmod.emfviews.virtuallinks.delegator`: This package delegates the
   creation of virtual links to concrete implementations.
-* org.atlanmod.emfviews.virtuallinksepsilondelegate. This project allows to
-  generate links from the Epsilon Comparison Language (ECL).
+* `org.atlanmod.emfviews.virtuallinksepsilondelegate`: This project generate
+  virtual links from the Epsilon Comparison Language (ECL).
 
 We have also defined two DSLs, VPDL and MEL, which have accompanying Eclipse
 plugins for edition:
 
-* org.atlanmod.emfviews.vpdl.  ViewPoint Description Language; useful for
+* `org.atlanmod.emfviews.vpdl`: ViewPoint Description Language; useful for
   creating a viewpoint by filtering multiple metamodels, with a syntax inspired
   by the `SELECT` query in SQL.
-* org.atlanmod.emfviews.mel.  Metamodel Extension Language; can extend
+* `org.atlanmod.emfviews.mel`: Metamodel Extension Language; can extend
   metamodel with new classes, attributes, relations.
 
-The `examples` folder can help give an idea of how to use EMF Views:
+The `examples` folder contains ideas of how to use EMF Views and the DSLs:
 
-* myFirstViewTutorial. Create your first Viewpoint and View.
-* myFirstViewTransformationTutorial. Create your first M2M transformation using
-  a View as input
-* enterpriseEAtutorial. Create more complex views in an Enterprise Architecture
-  context.
-* 1_EAdata: metamodels and models to be used in the viewpoint and view
-* 2_EAview: Example to create views from EA, BPMN, reqif
-* EMFViewsSQLTest: Example of view definiton with the DSL
+* `emfviews-tutorial`: Create your first Viewpoint and View.
+* `vpdl-tutorial`: Define a viewpoint with VPDL.
 
 Installation
 ------------
@@ -77,8 +66,7 @@ Needed to install the following plugins:
 
 Who is behind this project?
 ---------------------------
-This project is held by [Atlanmod](http://www.emn.fr/z-info/atlanmod), a
-research team of Inria, IMT Atlantique, and LS2N.
+This is an [Atlanmod](http://www.atlanmod.org) project.
 
 The following people have made significant contributions to the project:
 
