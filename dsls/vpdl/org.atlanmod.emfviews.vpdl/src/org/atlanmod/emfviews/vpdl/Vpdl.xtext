@@ -22,15 +22,13 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 // Grammar for an SQL-like language to create model viewpoints
 // to use with EMFViews
 
-// TODO: allow uppercase keywords
-
-View: 'create' 'view' name=ID 'as'
+View: K_CREATE K_VIEW name=ID K_AS
   select=Select
   from=From
   where=Where?;
 
 // TODO: allow wildcard '*'
-Select: 'select' features+=SelectFeature (',' features+=SelectFeature)* ','?;
+Select: K_SELECT features+=SelectFeature (',' features+=SelectFeature)* ','?;
 
 SelectFeature: metamodel=[Metamodel] '.' class=[ecore::EClass] rest=SelectFeatureRest;
 
@@ -42,21 +40,30 @@ Feature: Attribute | Relation;
 
 Attribute: attribute=[ecore::EStructuralFeature];
 
-Relation: 'join' metamodelRight=[Metamodel] '.' classRight=[ecore::EClass] 'as' name=ID;
+Relation: K_JOIN metamodelRight=[Metamodel] '.' classRight=[ecore::EClass] K_AS name=ID;
 
-From: 'from' metamodels+=Metamodel (','metamodels+=Metamodel)* ','?;
+From: K_FROM metamodels+=Metamodel (','metamodels+=Metamodel)* ','?;
 
-Metamodel: nsURI=STRING 'as' name=ID;
+Metamodel: nsURI=STRING K_AS name=ID;
 
 Where:
-  'where' rules+=Rule+
+  K_WHERE rules+=Rule+
 ;
 
 Rule:
   condition=STRING
-  'for'
+  K_FOR
   relation=[Relation]
 ;
+
+K_CREATE: 'create' | 'CREATE';
+K_VIEW: 'view' | 'VIEW';
+K_AS: 'as' | 'AS';
+K_FOR: 'for' | 'FOR';
+K_JOIN: 'join' | 'JOIN';
+K_FROM: 'from' | 'FROM';
+K_WHERE: 'where' | 'WHERE';
+K_SELECT: 'select' | 'SELECT';
 
 // These are for integrating a bit of the ECL syntax into VPDL
 // Currently unused
