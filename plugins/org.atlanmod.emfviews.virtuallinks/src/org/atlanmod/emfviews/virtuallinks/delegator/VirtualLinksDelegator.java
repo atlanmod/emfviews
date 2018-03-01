@@ -56,8 +56,8 @@ public class VirtualLinksDelegator {
     }
   }
 
-  public WeavingModel createVirtualModelLinks(List<Resource> contributingModels) throws Exception {
-    return virtualLinksDelegate.createVirtualModelLinks(linksDslFile, contributingModels);
+  public WeavingModel createWeavingModel(List<Resource> contributingModels) throws Exception {
+    return delegate.createWeavingModel(matchingModelURI, contributingModels);
   }
 
 }

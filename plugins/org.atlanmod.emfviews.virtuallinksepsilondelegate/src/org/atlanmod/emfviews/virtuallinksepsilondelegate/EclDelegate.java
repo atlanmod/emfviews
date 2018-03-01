@@ -54,7 +54,7 @@ import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
-  public WeavingModel createVirtualModelLinks(URI linksDslURI, List<Resource> inputModels) throws Exception {
+  public WeavingModel createWeavingModel(URI linksDslURI, List<Resource> inputModels) throws Exception {
 
     File f;
 

@@ -140,7 +140,7 @@ public class View extends ResourceImpl implements Virtualizer {
       VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI);
 
       try {
-        weavingModel = vld.createVirtualModelLinks(getContributingModels());
+        weavingModel = vld.createWeavingModel(getContributingModels());
       } catch (Exception e) {
         throw new RuntimeException("Exception while creating weaving model from matching model", e);
       }
