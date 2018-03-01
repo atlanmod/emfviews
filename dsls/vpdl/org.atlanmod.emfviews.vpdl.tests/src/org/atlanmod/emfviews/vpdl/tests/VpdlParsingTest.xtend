@@ -33,9 +33,15 @@ class VpdlParsingTest {
 
 	@Inject ParseHelper<View> parseHelper
 
+	def void expect(CharSequence vpdl) {
+	  val result = parseHelper.parse(vpdl)
+	  Assert.assertNotNull("Could not parse VPDL file", result)
+	  Assert.assertThat(result.eResource.errors, is(emptyList))
+	}
+
 	@Test
 	def void fullSyntax() {
-		val result = parseHelper.parse('''
+		expect('''
 			create view threeModelComposition as
 
 			select
@@ -73,19 +79,23 @@ class VpdlParsingTest {
 			      "t.values.exists(v | v.theValue=s.name)"
 			      for detailedRequirement
 		''')
-		Assert.assertNotNull(result)
-		Assert.assertThat(result.eResource.errors, is(emptyList))
 	}
 
 	@Test
 	def void capitalKeywords() {
-	  val result = parseHelper.parse('''
+    expect('''
 	  CREATE VIEW v AS
 
 	  SELECT a.b JOIN d.e AS r FROM '' AS mm
 	  WHERE '' FOR r
 	  ''')
-	  Assert.assertNotNull(result)
-	  Assert.assertThat(result.eResource.errors, is(emptyList))
+	}
+
+	@Test
+	def void wildcardSelector() {
+	  expect('''
+	  create view v as
+	  select a.b.* from '' as mm
+	  ''')
 	}
 }

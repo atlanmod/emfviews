@@ -587,6 +587,31 @@ public class TestEMFViews {
     new File(here + "/resources/viewpoints/paths/absolute-platform-scheme.eviewpoint").delete();
   }
 
+  @Test
+  public void wildcardPath() throws IOException {
+    // A '*' in a concrete element should include (or exclude) all
+    // attributes.
+
+    // @Correctness: should '*' include inherited features as well?
+
+    Viewpoint v = new Viewpoint(resourceURI("viewpoints/wildcard/wildcard.eviewpoint"));
+    v.load(null);
+
+    EList<EObject> l = v.getContents();
+    // There is only the VirtualLinks package
+    assertEquals(1, l.size());
+    EObject p = l.get(0);
+
+    // Package has only one classifier
+    assertEquals(1, getClassifiers(p).size());
+    EObject C = getClassifiers(p).get(0);
+
+    // All features are present
+    assertEquals(2, getFeatures(C).size());
+    assertTrue(getFeature(C, "model").isPresent());
+    assertTrue(getFeature(C, "path").isPresent());
+  }
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Helpers for reducing the boilerplate of calling the reflective EMF API
 

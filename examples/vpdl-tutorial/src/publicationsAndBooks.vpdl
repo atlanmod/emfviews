@@ -1,6 +1,6 @@
 create view publicationsAndBooks as
 
-select pub.Publication[title, author, publisher, year],
+select pub.Publication.*,
        pub.Publication join book.Chapter as firstChapter,
        book.Chapter.title,
 

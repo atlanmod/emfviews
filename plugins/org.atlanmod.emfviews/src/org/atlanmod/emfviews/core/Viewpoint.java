@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
@@ -303,8 +304,9 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
           if ((o instanceof ENamedElement)) {
             String path = EMFViewsUtil.getEObjectPath(o);
 
-            // If path is not a prefix for any element filter, we can delete this object
-            if (!filters.stream().anyMatch(f -> f.getTarget().getPath().startsWith(path))) {
+            // If path does not match any filter, we can delete this object
+            if (!filters.stream()
+                .anyMatch(f -> matchesFilter(f.getTarget().getPath(), path))) {
               filtered.add(o);
             }
           }
@@ -324,6 +326,27 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
           p.filterClassifier(c);
         }
       }
+    }
+  }
+
+  private static boolean matchesFilter(String filter, String path) {
+    if (filter.endsWith(".*")) {
+      // In the case of a wildcard 'a.b.*', it's a match if the path is
+      // of the form 'a.b.x', but not 'a.b.x.y'.
+      // It's also a match if the path is 'a.b' and 'a', to include parents.
+
+      // Drop the '.*'
+      String filterBase = filter.substring(0, filter.length() - 3);
+
+      // Drop anything after the last dot
+      String[] pathComp = path.split("\\.");
+      String pathBase = Arrays.stream(pathComp)
+          .limit(Math.max(1, pathComp.length - 1)).collect(Collectors.joining(","));
+
+      return pathBase.startsWith(filterBase);
+    } else {
+      // Otherwise, if path is a prefix of filter, it's a match
+      return filter.startsWith(path);
     }
   }
 

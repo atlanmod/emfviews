@@ -131,16 +131,16 @@ class VpdlGeneratorTest {
     ''',
     '''
     (WeavingModel
-          :name 'full' :whitelist true
-          :virtualLinks [(Filter :name 'model' :target @1)
-                         (Filter :name 'path' :target @2)
-                         (VirtualAssociation :name 'eClass' :source @3  :target @4 :upperBound 1)]
-          :contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0'
-                                                  :concreteElements [#1(ConcreteElement :path 'ConcreteElement.model')
-                                                                     #2(ConcreteElement :path 'ConcreteElement.path')
-                                                                     #3(ConcreteConcept :path 'ConcreteConcept')])
-                               (ContributingModel :URI 'http://www.eclipse.org/emf/2002/Ecore'
-                                                  :concreteElements [#4(ConcreteConcept :path 'EClass')])])
+      :name 'full' :whitelist true
+      :virtualLinks [(Filter :name 'model' :target @1)
+                     (Filter :name 'path' :target @2)
+                     (VirtualAssociation :name 'eClass' :source @3  :target @4 :upperBound 1)]
+      :contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0'
+                                              :concreteElements [#1(ConcreteElement :path 'ConcreteElement.model')
+                                                                 #2(ConcreteElement :path 'ConcreteElement.path')
+                                                                 #3(ConcreteConcept :path 'ConcreteConcept')])
+                           (ContributingModel :URI 'http://www.eclipse.org/emf/2002/Ecore'
+                                              :concreteElements [#4(ConcreteConcept :path 'EClass')])])
     ''',
     '''
     //alias_v=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
@@ -156,5 +156,30 @@ class VpdlGeneratorTest {
       }
     }
     ''')
+  }
+
+  @Test
+  def void wildcardSelect() {
+    expect("v", '''
+      create view v as
+      select m.ConcreteElement.*
+      from 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0' as m
+    ''',
+    '''
+      contributingMetamodels=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
+      weavingModel=v.xmi
+    ''',
+    '''
+    (WeavingModel
+      :name 'v' :whitelist true
+      :virtualLinks [(Filter :name '*' :target @1)]
+      :contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0'
+                                              :concreteElements [#1(ConcreteElement :path 'ConcreteElement.*')])])
+    ''',
+    '''
+      //alias_m=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
+
+    '''
+    )
   }
 }

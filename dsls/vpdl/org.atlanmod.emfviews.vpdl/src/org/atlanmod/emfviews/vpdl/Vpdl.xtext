@@ -34,9 +34,12 @@ SelectFeature: metamodel=[Metamodel] '.' class=[ecore::EClass] rest=SelectFeatur
 
 SelectFeatureRest: '.' features+=Attribute
   | features+=Relation
-  | '[' features+=Feature (',' features+=Feature)* ','? ']';
+  | '[' features+=Feature (',' features+=Feature)* ','? ']'
+  | features+=AllAttributes;
 
-Feature: Attribute | Relation;
+Feature: Attribute | Relation | AllAttributes;
+
+AllAttributes: wildcard='.*';
 
 Attribute: attribute=[ecore::EStructuralFeature];
 

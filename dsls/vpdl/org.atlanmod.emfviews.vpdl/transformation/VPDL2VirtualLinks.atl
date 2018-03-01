@@ -81,3 +81,16 @@ rule Relations {
           path <- s.classRight.name
 	  )
 }
+
+rule AllAttributes {
+    from s : VPDL!AllAttributes
+    to f : VirtualLinks!Filter (
+          name <- '*',
+          target <- c
+        ),
+
+        c : VirtualLinks!ConcreteElement (
+          model <- s.metamodel,
+          path <- s.class.name + '.*'
+        )
+}
