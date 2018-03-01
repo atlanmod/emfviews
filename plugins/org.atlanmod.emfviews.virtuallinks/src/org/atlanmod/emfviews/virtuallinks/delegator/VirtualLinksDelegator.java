@@ -1,15 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2013 INRIA.
+ * Copyright (c) 2018 Armines
+ * Copyright (c) 2013 INRIA
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Juan David Villa Calle - initial API and implementation
+ *   fmdkdd - refactoring and extension
+ *   Juan David Villa Calle - initial API and implementation
  *******************************************************************************/
+
 package org.atlanmod.emfviews.virtuallinks.delegator;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
@@ -22,37 +26,33 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public class VirtualLinksDelegator {
 
-  IVirtualLinksDelegate virtualLinksDelegate;
-  URI linksDslFile;
+  static final String EXTENSION_POINT = "org.atlanmod.emfviews.virtuallinks.delegator";
 
-  public VirtualLinksDelegator(URI linksDslFile) {
+  IVirtualLinksDelegate delegate;
+  URI matchingModelURI;
 
-    this.linksDslFile = linksDslFile;
-    String dslExtension = linksDslFile.fileExtension();
-    // FIXME: hardcoding the extension point ID seems brittle
-    IExtension[] extensions = Platform.getExtensionRegistry()
-        .getExtensionPoint("org.atlanmod.emfviews.virtuallinks.delegator").getExtensions();
-    boolean finished = false;
-    IExtension matchingExtension = null;
-    for (int i = 0; i < extensions.length && !finished; i++) {
-      IConfigurationElement[] configElements = extensions[i].getConfigurationElements();
-      for (int j = 0; j < configElements.length && !finished; j++) {
-        if (configElements[j].getAttribute("fileExtension")
-            .compareToIgnoreCase(dslExtension) == 0) {
-          matchingExtension = extensions[i];
-          if (Boolean.parseBoolean(configElements[j].getAttribute("default")) == true)
-            finished = true;
-        }
-      }
-    }
-    // FIXME: what if there is no matching extension?
-    IConfigurationElement[] matchingConfigElements = matchingExtension.getConfigurationElements();
+  public VirtualLinksDelegator(URI matchingModelURI) {
+    this.matchingModelURI = matchingModelURI;
+    String extension = matchingModelURI.fileExtension();
+
+    // Find the virtual links delegate that is the default handler for
+    // the file extension
+
+    IExtension[] handlers = Platform.getExtensionRegistry()
+        .getExtensionPoint(EXTENSION_POINT).getExtensions();
+
+    // Get all handlers for this file extension.  Default handlers are picked first.
+    IConfigurationElement handler = Arrays.stream(handlers)
+        .flatMap(h -> Arrays.stream(h.getConfigurationElements()))
+        .filter(c -> extension.compareToIgnoreCase(c.getAttribute("fileExtension")) == 0)
+        .sorted((a, b) -> Boolean.parseBoolean(a.getAttribute("default")) ? -1 : 1)
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException(String.format("No registered virtual links delegator for extension %s", extension)));
+
     try {
-      virtualLinksDelegate =
-          (IVirtualLinksDelegate) matchingConfigElements[0].createExecutableExtension("class");
+      delegate = (IVirtualLinksDelegate) handler.createExecutableExtension("class");
     } catch (CoreException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new IllegalStateException(String.format("Cannot instantiate virtual links delegator"), e);
     }
   }
 
