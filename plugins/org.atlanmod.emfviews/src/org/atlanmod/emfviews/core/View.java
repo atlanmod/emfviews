@@ -202,6 +202,11 @@ public class View extends ResourceImpl implements Virtualizer {
     // @Correctness: if we did not expose the eview values directly, this wouldn't be needed.
     matchingModelPath = "";
 
+    // There cannot be a matching model and weaving model specified together
+    if (p.containsKey(EVIEW_MATCHING_MODEL) && p.containsKey(EVIEW_WEAVING_MODEL)) {
+      throw new IllegalArgumentException("Error in parsing eview file: there can only be one of {matching model, weaving model}");
+    }
+
     for (String key : p.stringPropertyNames()) {
       switch (key) {
       case EVIEW_VIEWPOINT:

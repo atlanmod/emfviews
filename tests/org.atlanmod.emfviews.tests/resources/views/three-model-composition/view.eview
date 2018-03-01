@@ -1,4 +1,3 @@
 contributingModels=../../models/travelAgencyEA.xmi,../../models/bookingTripRequirements.xmi,../../models/bookingTripProcess.xmi
 viewpoint=../../viewpoints/three-model-composition/viewpoint.eviewpoint
 matchingModel=matching.ecl
-weavingModel=weaving.xmi
