@@ -42,7 +42,6 @@ import org.eclipse.epsilon.ecl.trace.Match;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
-import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ContributingModel;
@@ -185,11 +184,6 @@ public class EclDelegate implements IVirtualLinksDelegate {
   protected EmfModel createEmfModelByURI(String name, String modelURI, String metamodelURI,
                                          boolean readOnLoad,
                                          boolean storeOnDisposal) throws EolModelLoadingException {
-    // @Correctness this condition seems fishy
-    if (metamodelURI.contains("UML")) {
-      UMLResourcesUtil.init(null);
-    }
-
     EmfModel emfModel = new EmfModel();
     StringProperties properties = new StringProperties();
     properties.put(EmfModel.PROPERTY_NAME, name);
