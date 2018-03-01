@@ -34,7 +34,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.ecl.EclModule;
@@ -55,7 +54,7 @@ import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
-  public void createVirtualModelLinks(URI linksDslURI, URI linksModel, List<Resource> inputModels) throws Exception {
+  public WeavingModel createVirtualModelLinks(URI linksDslURI, List<Resource> inputModels) throws Exception {
 
     File f;
 
@@ -180,11 +179,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       }
     }
 
-    // Save the weaving model
-    XMIResourceImpl weavingModelResource = new XMIResourceImpl();
-    weavingModelResource.setURI(linksModel);
-    weavingModelResource.getContents().add(weavingModel);
-    weavingModelResource.save(null);
+    return weavingModel;
   }
 
   protected EmfModel createEmfModelByURI(String name, String modelURI, String metamodelURI,

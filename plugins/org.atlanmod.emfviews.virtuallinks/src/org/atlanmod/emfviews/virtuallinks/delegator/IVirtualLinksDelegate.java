@@ -12,12 +12,12 @@ package org.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.List;
 
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
 public interface IVirtualLinksDelegate {
 
-  public void createVirtualModelLinks(URI linksDslFile, URI linksModelURI,
-                                      List<Resource> inputModels) throws Exception;
+  public WeavingModel createVirtualModelLinks(URI linksDslFile, List<Resource> inputModels) throws Exception;
 
 }

@@ -131,24 +131,6 @@ public class TestEMFViews {
   }
 
   @Test
-  public void matchingModel() throws IOException {
-    // Ensure a weaving model is created from a matching model when one exists
-
-    // First delete the file if it as already been created by a test
-    File weavingFile = new File("resources/views/three-model-composition/weaving.xmi");
-    if (weavingFile.exists()) {
-      weavingFile.delete();
-    }
-
-    // Load a view
-    View v = new View(resourceURI("views/three-model-composition/view.eview"));
-    v.load(null);
-
-    // The file should be created
-    assertTrue(weavingFile.exists());
-  }
-
-  @Test
   public void viewUpdate() throws IOException {
     // When modifying a contributing model, the change should propagate to the
     // virtual model

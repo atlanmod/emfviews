@@ -132,23 +132,26 @@ public class View extends ResourceImpl implements Virtualizer {
       }
     }
 
-    URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
+    // Get the weaving model from the matching model, if there is one
+    WeavingModel weavingModel;
 
     if (!matchingModelPath.isEmpty()) {
       URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
       VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI);
 
       try {
-        vld.createVirtualModelLinks(weavingModelURI, getContributingModels());
+        weavingModel = vld.createVirtualModelLinks(getContributingModels());
       } catch (Exception e) {
         throw new RuntimeException("Exception while creating weaving model from matching model", e);
       }
+    } else {
+      // Otherwise, the weaving model should be provided in the eview file
+      URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
+      Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
+      weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
     }
 
     // Populate the model with values for virtual associations
-    Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
-    WeavingModel weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
-
     for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {
       // @Correctness: this should work with VirtualConcept as well
 

@@ -12,6 +12,7 @@ package org.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.List;
 
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -55,9 +56,8 @@ public class VirtualLinksDelegator {
     }
   }
 
-  public void createVirtualModelLinks(URI linksModelURI,
-                                      List<Resource> contributingModels) throws Exception {
-    virtualLinksDelegate.createVirtualModelLinks(linksDslFile, linksModelURI, contributingModels);
+  public WeavingModel createVirtualModelLinks(List<Resource> contributingModels) throws Exception {
+    return virtualLinksDelegate.createVirtualModelLinks(linksDslFile, contributingModels);
   }
 
 }
