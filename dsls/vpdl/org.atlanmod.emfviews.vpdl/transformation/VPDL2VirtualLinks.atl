@@ -25,7 +25,13 @@ create OUT : VirtualLinks from IN : VPDL;
 helper context VPDL!Feature def : metamodel : VPDL!Metamodel =
     self.refImmediateComposite().refImmediateComposite().metamodel;
 
+helper context VPDL!AllAttributes def : metamodel : VPDL!Metamodel =
+    self.refImmediateComposite().refImmediateComposite().metamodel;
+
 helper context VPDL!Feature def : class : ECORE!EClass =
+    self.refImmediateComposite().refImmediateComposite().class;
+
+helper context VPDL!AllAttributes def : class : ECORE!EClass =
     self.refImmediateComposite().refImmediateComposite().class;
 
 rule Model2VirtualLinks {
@@ -36,7 +42,8 @@ rule Model2VirtualLinks {
 		name <- s.name,
 		whitelist <- true,
 		contributingModels <- s."from".metamodels,
-		virtualLinks <- VPDL!Feature.allInstances()
+		virtualLinks <- Bag{VPDL!Feature.allInstances(),
+		                    VPDL!AllAttributes.allInstances()}->flatten()
     )
 }
 
