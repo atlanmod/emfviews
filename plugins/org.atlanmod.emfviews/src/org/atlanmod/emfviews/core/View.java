@@ -202,9 +202,20 @@ public class View extends ResourceImpl implements Virtualizer {
     // @Correctness: if we did not expose the eview values directly, this wouldn't be needed.
     matchingModelPath = "";
 
-    // There cannot be a matching model and weaving model specified together
-    if (p.containsKey(EVIEW_MATCHING_MODEL) && p.containsKey(EVIEW_WEAVING_MODEL)) {
-      throw new IllegalArgumentException("Error in parsing eview file: there can only be one of {matching model, weaving model}");
+    // Check all required fields are present
+    // FIXME: Ecore editor silently eats these exceptions (test with empty viewpoint
+    // and see)
+    if (!p.containsKey(EVIEW_VIEWPOINT)) {
+      throw new IllegalArgumentException(String.format("Error in parsing eview file: missing %s field", EVIEW_VIEWPOINT));
+    }
+    if (!p.containsKey(EVIEW_CONTRIBUTING_MODELS)) {
+      throw new IllegalArgumentException(String.format("Error in parsing eview file: missing %s field", EVIEW_CONTRIBUTING_MODELS));
+    }
+
+    // There cannot be a matching model and weaving model specified together, but
+    // at least one of them must be present.
+    if (p.containsKey(EVIEW_MATCHING_MODEL) == p.containsKey(EVIEW_WEAVING_MODEL)) {
+      throw new IllegalArgumentException("Error in parsing eview file: exactly one of {matching model, weaving model} must be present");
     }
 
     for (String key : p.stringPropertyNames()) {
