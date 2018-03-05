@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.DynamicValueHolder;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
 
 public class VirtualEObject extends DynamicEObjectImpl {
 
@@ -79,7 +80,9 @@ public class VirtualEObject extends DynamicEObjectImpl {
       }
     }
 
-    return ECollections.unmodifiableEList(contents);
+    // We need an InternalEList here, at least for MoDiSco to work with views.
+    // @Correctness: not sure what the owning feature should be, but null seems to work.
+    return new EcoreEList.UnmodifiableEList<>(this, null, contents.size(), contents.toArray());
   }
 
   @Override
