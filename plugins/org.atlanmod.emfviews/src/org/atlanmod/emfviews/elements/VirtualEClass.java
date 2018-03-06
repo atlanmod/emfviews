@@ -68,6 +68,10 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     }
   }
 
+  public boolean isFeatureVirtual(EStructuralFeature f) {
+    return virtualFeatures.contains(virtualizer.getVirtual(f));
+  }
+
   @Override
   public Object dynamicGet(int dynamicFeatureID) {
     EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
