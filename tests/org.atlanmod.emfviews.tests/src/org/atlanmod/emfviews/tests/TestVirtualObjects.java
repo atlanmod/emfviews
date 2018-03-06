@@ -21,6 +21,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
@@ -46,6 +48,7 @@ import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
+import org.atlanmod.sexp2emf.Sexp2EMF;
 
 public class TestVirtualObjects {
 
@@ -185,9 +188,8 @@ public class TestVirtualObjects {
     // eAllSuperTypes
     assertEquals(1, VS.getEAllSuperTypes().size());
     A.getESuperTypes().add(B);
-    assertEquals(2, VS.getEAllSuperTypes().size());
-    assertEquals(viewpoint.getVirtual(B), VS.getEAllSuperTypes().get(0));
-    assertEquals(viewpoint.getVirtual(A), VS.getEAllSuperTypes().get(1));
+    assertEquals(new HashSet<>(Arrays.asList(VA, viewpoint.getVirtual(B))),
+                 new HashSet<>(VS.getEAllSuperTypes()));
 
     // eReferences
     assertEquals(0, VA.getEReferences().size());
@@ -634,6 +636,26 @@ public class TestVirtualObjects {
     assertEquals(Vb, fs.get(1));
     assertEquals(viewpoint.getVirtual(s), fs.get(2));
     assertEquals(Vc, fs.get(3));
+  }
+
+  @Test
+  public void diamondInheritance() {
+    // In a diamond inheritance situation, the bottom class should not have
+    // duplicate supertypes.
+
+    EPackage p = (EPackage) (Sexp2EMF.build("(EPackage :name 'P'" +
+        " :eClassifiers [(EClass :name 'A' :eSuperTypes [@1 @2])" +
+        "                #1(EClass :name 'B' :eSuperTypes [@3])" +
+        "                #2(EClass :name 'C' :eSuperTypes [@3])" +
+        "                #3(EClass :name 'D')])"
+        , EcoreFactory.eINSTANCE)[0]);
+
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(p.getEClassifier("A"));
+    assertEquals(new HashSet<>(Arrays
+        .asList(viewpoint.getVirtual(p.getEClassifier("B")),
+                viewpoint.getVirtual(p.getEClassifier("C")),
+                viewpoint.getVirtual(p.getEClassifier("D")))),
+                 new HashSet<>(VA.getEAllSuperTypes()));
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

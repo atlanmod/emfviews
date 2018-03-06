@@ -18,6 +18,7 @@ package org.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -308,7 +309,9 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EClass> getEAllSuperTypes() {
-    List<EClass> sups = new ArrayList<>();
+    // Use a set to ensure no duplicate super types.
+    // LinkedHashSet preserves the insertion order for stability.
+    Set<EClass> sups = new LinkedHashSet<>();
 
     for (EClass sup : getESuperTypes()) {
       sups.addAll(sup.getEAllSuperTypes());
@@ -316,7 +319,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
     sups.addAll(getESuperTypes());
 
-    return ECollections.unmodifiableEList(sups);
+    return ECollections.unmodifiableEList(new ArrayList<>(sups));
   }
 
   @Override
