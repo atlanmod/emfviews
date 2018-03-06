@@ -327,7 +327,9 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   protected List<EStructuralFeature> getAllFeatures() {
     // @Optimize: could use a lazy iterator
 
-    List<EStructuralFeature> elems = new ArrayList<>();
+    // Use a set to ensure features are not added twice.
+    // LinkedHashSet preserves the insertion order for stability.
+    Set<EStructuralFeature> elems = new LinkedHashSet<>();
 
     for (EClass sup : getESuperTypes()) {
       // Add all (filtered and non-filtered) features from supertypes
@@ -344,7 +346,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
       elems.add(f);
     }
 
-    return elems;
+    return new ArrayList<>(elems);
   }
 
   protected List<EStructuralFeature> getAllLocalFeatures() {
