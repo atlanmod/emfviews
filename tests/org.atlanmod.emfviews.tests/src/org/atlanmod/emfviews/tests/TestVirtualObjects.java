@@ -65,31 +65,19 @@ public class TestVirtualObjects {
 
   @Before
   public void createConcreteModel() {
-    P = EcoreFactory.eINSTANCE.createEPackage();
-    P.setName("P");
+    P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' " +
+        ":eClassifiers [#1(EClass :name 'A'" +
+        "                         :eStructuralFeatures [(EAttribute :name 'a' :eType EInt)])" +
+        "               (EClass :name 'B')" +
+        "               (EClass :name 'S' :eSuperTypes [@1]" +
+        "                       :eStructuralFeatures [(EAttribute :name 's' :eType EString)])" +
+        "])", EcoreFactory.eINSTANCE)[0];
 
-    A = EcoreFactory.eINSTANCE.createEClass();
-    A.setName("A");
-    P.getEClassifiers().add(A);
-
-    a = EcoreFactory.eINSTANCE.createEAttribute();
-    a.setName("a");
-    a.setEType(EcorePackage.Literals.EINT);
-    A.getEStructuralFeatures().add(a);
-
-    B = EcoreFactory.eINSTANCE.createEClass();
-    B.setName("B");
-    P.getEClassifiers().add(B);
-
-    S = EcoreFactory.eINSTANCE.createEClass();
-    S.setName("S");
-    S.getESuperTypes().add(A);
-    P.getEClassifiers().add(S);
-
-    s = EcoreFactory.eINSTANCE.createEAttribute();
-    s.setName("s");
-    s.setEType(EcorePackage.Literals.ESTRING);
-    S.getEStructuralFeatures().add(s);
+    A = (EClass) P.getEClassifier("A");
+    B = (EClass) P.getEClassifier("B");
+    S = (EClass) P.getEClassifier("S");
+    a = (EAttribute) A.getEStructuralFeature("a");
+    s = (EAttribute) S.getEStructuralFeature("s");
 
     viewpoint = new Viewpoint();
     view = new View();
