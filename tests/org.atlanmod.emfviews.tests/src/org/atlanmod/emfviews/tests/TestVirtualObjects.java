@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.After;
@@ -644,6 +645,89 @@ public class TestVirtualObjects {
                 viewpoint.getVirtual(p.getEClassifier("C")),
                 viewpoint.getVirtual(p.getEClassifier("D")))),
                  new HashSet<>(VA.getEAllSuperTypes()));
+  }
+
+  @Test
+  public void bidirectionalReference() {
+    // Adding an element to one end of a virtual association should populate
+    // the virtual opposite as well.
+
+    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VB = (VirtualEClass) viewpoint.getVirtual(B);
+
+    // Create the bidirectional references
+    EReference r = EcoreFactory.eINSTANCE.createEReference();
+    r.setName("AtoB");
+    r.setEType(VB);
+    r.setLowerBound(0);
+    VirtualEReference Vr = (VirtualEReference) viewpoint.getVirtual(r);
+    VA.addVirtualFeature(Vr);
+    ((InternalEObject) r).eInverseAdd(VA, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
+                                       EStructuralFeature.class, null);
+
+    EReference r2 = EcoreFactory.eINSTANCE.createEReference();
+    r2.setName("BtoA");
+    r2.setEType(VA);
+    r2.setLowerBound(0);
+    VirtualEReference Vr2 = (VirtualEReference) viewpoint.getVirtual(r2);
+    VB.addVirtualFeature(Vr2);
+    ((InternalEObject) r2).eInverseAdd(VB, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
+                                        EStructuralFeature.class, null);
+
+    Vr.setVirtualOpposite(Vr2);
+    Vr2.setVirtualOpposite(Vr);
+
+    // Case 1: many to many
+    {
+      r.setUpperBound(-1);
+      r2.setUpperBound(-1);
+
+      EObject va1 = view.getVirtual(EcoreUtil.create(A));
+      EObject vb1 = view.getVirtual(EcoreUtil.create(B));
+
+      @SuppressWarnings("unchecked")
+      EList<EObject> l = ((EList<EObject>) va1.eGet(Vr));
+      l.add(vb1);
+      assertEquals(Arrays.asList(va1), vb1.eGet(Vr2));
+    }
+
+    // Case 2: many to one
+    {
+      r.setUpperBound(-1);
+      r2.setUpperBound(1);
+
+      EObject va1 = view.getVirtual(EcoreUtil.create(A));
+      EObject vb1 = view.getVirtual(EcoreUtil.create(B));
+
+      @SuppressWarnings("unchecked")
+      EList<EObject> l = ((EList<EObject>) va1.eGet(Vr));
+      l.add(vb1);
+      assertEquals(va1, vb1.eGet(Vr2));
+    }
+
+    // Case 3: one to many
+    {
+      r.setUpperBound(1);
+      r2.setUpperBound(-1);
+
+      EObject va1 = view.getVirtual(EcoreUtil.create(A));
+      EObject vb1 = view.getVirtual(EcoreUtil.create(B));
+
+      va1.eSet(Vr, vb1);
+      assertEquals(Arrays.asList(va1), vb1.eGet(Vr2));
+    }
+
+    // Case 4: one to one
+    {
+      r.setUpperBound(1);
+      r2.setUpperBound(1);
+
+      EObject va1 = view.getVirtual(EcoreUtil.create(A));
+      EObject vb1 = view.getVirtual(EcoreUtil.create(B));
+
+      va1.eSet(Vr, vb1);
+      assertEquals(va1, vb1.eGet(Vr2));
+    }
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

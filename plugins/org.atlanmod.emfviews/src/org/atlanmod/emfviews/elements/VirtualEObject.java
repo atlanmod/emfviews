@@ -17,10 +17,12 @@
 package org.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -124,10 +126,53 @@ public class VirtualEObject extends DynamicEObjectImpl {
     } else {
       // If it's a reference, make sure it's a list
       if (feature.isMany() && virtualValues().get(feature) == null) {
-          virtualValues().put(feature, ECollections.asEList(new ArrayList<EObject>()));
+
+        // @Correctness: do we need to distinguish concrete from virtual opposites?
+        EReference opposite = ((EReference) feature).getEOpposite();
+
+        // If the virtual feature has a virtual opposite, we need to return a
+        // list that will keep the opposite in sync.
+        if (opposite != null) {
+          virtualValues().put(feature, new EListWithInverse(opposite));
+        } else {
+          // Otherwise, a regular list will do
+          virtualValues().put(feature, ECollections.asEList(new ArrayList<>()));
+        }
       }
 
       return virtualValues().get(feature);
+    }
+  }
+
+  class EListWithInverse extends BasicEList<EObject> {
+    private static final long serialVersionUID = 1L;
+
+    private final EStructuralFeature opposite;
+
+    public EListWithInverse(EStructuralFeature opposite) {
+      this.opposite = opposite;
+    }
+
+    @Override
+    public boolean add(EObject e) {
+      boolean added = super.add(e);
+
+      // If the element was adedd, sync with the opposite
+      if (added) {
+        if (opposite.isMany()) {
+          // @Assumption: the opposite is a virtual feature.
+          // Otherwise, maybe we can use eInverseAdd?
+          ((EListWithInverse) e.eGet(opposite)).addWithoutInverse(VirtualEObject.this);
+        } else {
+          e.eSet(opposite, VirtualEObject.this);
+        }
+      }
+
+      return added;
+    }
+
+    boolean addWithoutInverse(EObject e) {
+      return super.add(e);
     }
   }
 
@@ -149,7 +194,33 @@ public class VirtualEObject extends DynamicEObjectImpl {
     } else {
       // If not then it's a virtual feature
       virtualValues().put(feature, value);
+
+      if (feature instanceof EReference) {
+        // If it's a reference, then the value must be an EObject
+        EObject e = (EObject) value;
+
+        // If there is an opposite, keep it in sync
+        EReference opposite = ((EReference) feature).getEOpposite();
+
+        if (opposite != null) {
+          // @Refactor: write a function that adds to a feature
+          // if it's many-valued, or set if it's single-valued.
+          // We do this dance many times.
+          if (opposite.isMany()) {
+            ((EListWithInverse) e.eGet(opposite)).addWithoutInverse(VirtualEObject.this);
+          } else {
+            // @Correctness: we don't do anything if the other end is a concrete object?
+            if (e instanceof VirtualEObject) {
+              ((VirtualEObject) e).eSetWithoutInverse(opposite, VirtualEObject.this);
+            }
+          }
+        }
+      }
     }
+  }
+
+  void eSetWithoutInverse(EStructuralFeature feature, Object value) {
+    virtualValues().put(feature, value);
   }
 
   @Override
