@@ -8,4 +8,8 @@ Export-Package: org.atlanmod.emfviews.core,
  org.atlanmod.emfviews.elements
 Bundle-Vendor: Atlanmod
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="[2.13.0,3.0.0)",
- org.atlanmod.emfviews.virtuallinks;bundle-version="0.3.0"
+ org.atlanmod.emfviews.virtuallinks;bundle-version="0.3.0",
+ fr.inria.atlanmod.neoemf.core;bundle-version="1.0.3",
+ fr.inria.atlanmod.neoemf.data.blueprints.core;bundle-version="1.0.3",
+ fr.inria.atlanmod.neoemf.data.blueprints.neo4j;bundle-version="1.0.3",
+ fr.inria.atlanmod.neoemf.data.blueprints.neo4j.wrapper;bundle-version="1.0.3"

@@ -17,6 +17,7 @@
 
 package org.atlanmod.emfviews.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,6 +37,16 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
+import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
+import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jResourceOptions;
+import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
+import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
+
+import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
@@ -115,9 +126,29 @@ public class View extends ResourceImpl implements Virtualizer {
     contributingModelURIs = new ArrayList<>();
     modelResources = new HashMap<>();
 
+    PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
+                                               BlueprintsPersistenceBackendFactory.getInstance());
+    virtualResourceSet.getResourceFactoryRegistry()
+    .getProtocolToFactoryMap()
+    .put(BlueprintsURI.SCHEME,
+         PersistentResourceFactory.getInstance());
+
     for (String modelURI : contributingModelsPaths.split(",")) {
       URI uri = URI.createURI(modelURI).resolve(getURI());
-      Resource r = virtualResourceSet.getResource(uri, true);
+      Resource r;
+
+      if (modelURI.endsWith(".graphdb")) {
+        uri = BlueprintsURI.createFileURI(new File("/home/fmdkdd/workspaces/emfviews/examples/petstore-view-neoemf/models/log.graphdb"));
+        r = virtualResourceSet.createResource(uri);
+
+        // TODO: close the NeoEMF resource to release the lock
+        r.load(BlueprintsNeo4jOptionsBuilder.newBuilder().asMap());
+
+        //((PersistentResource) r).close();
+      }
+      else {
+        r = virtualResourceSet.getResource(uri, true);
+      }
       if (r != null) {
         // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
         String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
