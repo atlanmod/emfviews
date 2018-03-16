@@ -105,7 +105,7 @@ public class View extends ResourceImpl implements Virtualizer {
     ResourceSet virtualResourceSet = new ResourceSetImpl();
 
     URI viewpointURI = URI.createURI(viewpointPath).resolve(getURI());
-    viewpoint = new Viewpoint(viewpointURI);
+    viewpoint = ViewpointRegistry.INSTANCE.getViewpoint(viewpointURI);
     viewpoint.load(null);
 
     // Load contributing metamodels into the virtual resource set,
