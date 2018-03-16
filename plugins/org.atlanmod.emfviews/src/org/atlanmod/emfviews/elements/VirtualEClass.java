@@ -601,4 +601,12 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     this.eClassifierExtendedMetaData = eClassifierExtendedMetaData;
   }
 
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("VirtualEClass of ");
+    sb.append(concreteEClass.toString());
+    return sb.toString();
+  }
+
 }
