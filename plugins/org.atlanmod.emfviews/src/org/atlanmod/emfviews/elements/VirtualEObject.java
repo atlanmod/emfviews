@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.DynamicValueHolder;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
 public class VirtualEObject extends DynamicEObjectImpl {
@@ -248,5 +249,20 @@ public class VirtualEObject extends DynamicEObjectImpl {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public EObject eContainer() {
+    return virtualizer.getVirtual(concreteEObject.eContainer());
+  }
+
+  @Override
+  public Resource eResource() {
+    // @Correctness: it might be best to add a Resource attribute to a
+    // virtualEObject, or re-use the internalResource field of DynamicEObjectImpl,
+    // as Virtualizers may not necessarily be resources in the future.
+    if (virtualizer instanceof Resource) {
+      return (Resource) virtualizer;
+    }
+    return null;
+  }
 
 }

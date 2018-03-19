@@ -730,6 +730,21 @@ public class TestVirtualObjects {
     }
   }
 
+  @Test
+  public void eResource() {
+    // A VirtualEObject's resource should be the View that holds it
+    assertEquals(view, view.getVirtual(A).eResource());
+  }
+
+  @Test
+  public void eContainer() {
+    // A VirtualEObject's container should be the virtualization of
+    // its container feature.
+
+    assertEquals(A, a.eContainer());
+    assertEquals(view.getVirtual(A), view.getVirtual(a).eContainer());
+  }
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Helpers for reducing the boilerplate of calling the reflective EMF API
 
