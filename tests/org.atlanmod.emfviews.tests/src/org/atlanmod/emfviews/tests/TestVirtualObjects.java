@@ -596,6 +596,23 @@ public class TestVirtualObjects {
   }
 
   @Test
+  public void isSuperTypeOf() {
+    // Virtualization preserves the supertype relation
+    assertTrue(viewpoint.getVirtual(A).isSuperTypeOf(S));
+    assertTrue(viewpoint.getVirtual(A).isSuperTypeOf(viewpoint.getVirtual(S)));
+
+    // The predicate includes virtual super types
+    EClass sup = EcoreFactory.eINSTANCE.createEClass();
+    sup.setName("Sup");
+    VirtualEClass VSup = viewpoint.getVirtual(sup);
+
+    VirtualEClass VA = viewpoint.getVirtual(A);
+    VA.addVirtualSuperType(VSup);
+
+    assertTrue(VSup.isSuperTypeOf(VA));
+  }
+
+  @Test
   public void inheritVirtualFeatures() {
     // If a superclass has a virtual feature, it should appear in the eAllFeature feature
     // of the subclass
@@ -743,6 +760,17 @@ public class TestVirtualObjects {
 
     assertEquals(A, a.eContainer());
     assertEquals(view.getVirtual(A), view.getVirtual(a).eContainer());
+  }
+
+  @Test
+  public void isInstance() {
+    // A VirtualEObject should be an instance of its virtual EClass.
+
+    EObject anA = EcoreUtil.create(A);
+    assertTrue(viewpoint.getVirtual(A).isInstance(view.getVirtual(anA)));
+
+    // A concrete object should be an instance of its virtual EClass.
+    assertTrue(viewpoint.getVirtual(A).isInstance(anA));
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

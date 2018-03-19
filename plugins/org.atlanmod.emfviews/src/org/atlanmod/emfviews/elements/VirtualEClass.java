@@ -395,12 +395,15 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public boolean isSuperTypeOf(EClass someClass) {
-    boolean concreteSuper = concreteEClass.isSuperTypeOf(someClass);
+    if (someClass instanceof VirtualEClass) {
+      VirtualEClass c = (VirtualEClass) someClass;
 
-    boolean virtualSuper = someClass instanceof VirtualEClass
-        && ((VirtualEClass) someClass).virtualSuperTypes.contains(this);
-
-    return concreteSuper || virtualSuper;
+      return c.concreteClassifier == this.concreteClassifier
+          || c.virtualSuperTypes.contains(this)
+          || c.getEAllSuperTypes().contains(this);
+    } else {
+      return ((EClass) concreteClassifier).isSuperTypeOf(someClass);
+    }
   }
 
   @Override
@@ -484,7 +487,11 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public boolean isInstance(Object object) {
-    return concreteClassifier.isInstance(object);
+    if (object instanceof VirtualEObject) {
+      return isSuperTypeOf(((VirtualEObject) object).eClass());
+    } else {
+      return concreteClassifier.isInstance(object);
+    }
   }
 
   @Override
