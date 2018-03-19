@@ -14,7 +14,7 @@
  *   fmdkdd - initial API and implementation
  *******************************************************************************/
 
-package org.atlanmod.emfviews.elements;
+package org.atlanmod.emfviews.core;
 
 import org.eclipse.emf.ecore.EObject;
 
