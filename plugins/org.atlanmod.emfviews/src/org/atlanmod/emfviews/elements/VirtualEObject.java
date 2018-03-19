@@ -118,7 +118,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
       if (feature.isMany()) {
         @SuppressWarnings("unchecked")
         EList<EObject> list = (EList<EObject>) value;
-        return new VirtualEList<>(list, virtualizer);
+        return new VirtualEList(list, virtualizer);
       } else if (value instanceof EObject) {
         return virtualizer.getVirtual((EObject) value);
       } else {

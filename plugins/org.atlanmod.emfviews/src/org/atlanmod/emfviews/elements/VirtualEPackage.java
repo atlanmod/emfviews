@@ -16,15 +16,18 @@
 
 package org.atlanmod.emfviews.elements;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -36,9 +39,9 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   private EPackage concreteEPackage;
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
   private Set<EClassifier> filteredClassifiers = new HashSet<>();
-  private Virtualizer virtualizer;
+  private EcoreVirtualizer virtualizer;
 
-  public VirtualEPackage(EPackage concreteEPackage, Virtualizer virtualizer) {
+  public VirtualEPackage(EPackage concreteEPackage, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EPACKAGE);
     this.concreteEPackage = concreteEPackage;
     this.virtualizer = virtualizer;
@@ -202,8 +205,8 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EList<EPackage> getESubpackages() {
-    return new VirtualESettingList<>(concreteEPackage.getESubpackages(), virtualizer,
-        this, EcorePackage.Literals.EPACKAGE__ESUBPACKAGES);
+    return new VirtualEPackageSettingList(concreteEPackage.getESubpackages(), virtualizer,
+                                          this, EcorePackage.Literals.EPACKAGE__ESUBPACKAGES);
   }
 
   @Override
@@ -224,6 +227,76 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
       }
     }
     return null;
+  }
+
+  // This class is needed for getESubpackages above.
+  // Unfortunately, it cannot be extracted as a standalone, generic <E> class,
+  // because of a getVirtual() call which must know the type of its argument.
+  static class VirtualEPackageSettingList extends AbstractList<EPackage>implements EStructuralFeature.Setting,EList<EPackage> {
+
+    private EList<EPackage> concreteList;
+    private EObject owner;
+    private EStructuralFeature feature;
+    private EcoreVirtualizer virtualizer;
+
+    public VirtualEPackageSettingList(EList<EPackage> concreteList, EcoreVirtualizer virtualizer, EObject owner,
+                                      EStructuralFeature feature) {
+      this.concreteList = concreteList;
+      this.owner = owner;
+      this.feature = feature;
+      this.virtualizer = virtualizer;
+    }
+
+    @Override
+    public EObject getEObject() {
+      return owner;
+    }
+
+    @Override
+    public EStructuralFeature getEStructuralFeature() {
+      return feature;
+    }
+
+    @Override
+    public Object get(boolean resolve) {
+      return this;
+    }
+
+    @Override
+    public EPackage get(int index) {
+      return virtualizer.getVirtual(concreteList.get(index));
+    }
+
+    @Override
+    public void set(Object newValue) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean isSet() {
+      return !isEmpty();
+    }
+
+    @Override
+    public void unset() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int size() {
+      return concreteList.size();
+    }
+
+    @Override
+    public void move(int newPosition, EPackage object) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EPackage move(int newPosition, int oldPosition) {
+      throw new UnsupportedOperationException();
+    }
+
   }
 
 }

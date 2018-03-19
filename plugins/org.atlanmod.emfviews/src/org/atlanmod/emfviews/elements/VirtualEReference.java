@@ -16,6 +16,7 @@
 
 package org.atlanmod.emfviews.elements;
 
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
@@ -28,7 +29,7 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
 
   private EReference virtualOpposite;
 
-  public VirtualEReference(EReference concreteReference, Virtualizer virtualizer) {
+  public VirtualEReference(EReference concreteReference, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EREFERENCE, concreteReference, virtualizer);
   }
 

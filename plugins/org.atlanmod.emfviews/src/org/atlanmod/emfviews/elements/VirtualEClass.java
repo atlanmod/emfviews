@@ -22,9 +22,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
@@ -33,25 +33,19 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.impl.ESuperAdapter;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
-public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperAdapter.Holder, EClassifierExtendedMetaData.Holder {
+public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperAdapter.Holder, EClassifierExtendedMetaData.Holder {
 
-  private EClass concreteEClass;
   private List<VirtualEStructuralFeature> virtualFeatures = new ArrayList<>();
   private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
   private List<EClass> virtualSuperTypes = new ArrayList<>();
-  private Virtualizer virtualizer;
 
-  public VirtualEClass(EClass concreteEClass, Virtualizer virtualizer) {
-    super(EcorePackage.Literals.ECLASS);
-    this.concreteEClass = concreteEClass;
-    this.virtualizer = virtualizer;
+  public VirtualEClass(EClass concreteEClass, EcoreVirtualizer virtualizer) {
+    super(EcorePackage.Literals.ECLASS, concreteEClass, virtualizer);
   }
 
   public void addVirtualFeature(VirtualEStructuralFeature f) {
@@ -76,33 +70,6 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   public Object dynamicGet(int dynamicFeatureID) {
     EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
 
-    if (feature == EcorePackage.Literals.ENAMED_ELEMENT__NAME) {
-      return getName();
-    }
-    if (feature == EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS) {
-      return getEAnnotations();
-    }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__ETYPE_PARAMETERS) {
-      return getETypeParameters();
-    }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__DEFAULT_VALUE) {
-      return getETypeParameters();
-    }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__EPACKAGE) {
-      return getETypeParameters();
-    }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__ETYPE_PARAMETERS) {
-      return getETypeParameters();
-    }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__INSTANCE_CLASS) {
-      return getInstanceClass();
-    }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__INSTANCE_CLASS_NAME) {
-      return getInstanceClassName();
-    }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__INSTANCE_TYPE_NAME) {
-      return getInstanceTypeName();
-    }
     if (feature == EcorePackage.Literals.ECLASS__ABSTRACT) {
       return isAbstract();
     }
@@ -152,17 +119,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
       return isInterface();
     }
 
-    throw new IllegalArgumentException("Unknown feature: " + feature.getName());
-  }
-
-  @Override
-  public void dynamicSet(int dynamicFeatureID, Object value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public void dynamicUnset(int dynamicFeatureID) {
-    throw new UnsupportedOperationException();
+    return super.dynamicGet(dynamicFeatureID);
   }
 
   public void filterFeature(EStructuralFeature f) {
@@ -179,93 +136,17 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EObject eContainer() {
-    return virtualizer.getVirtual(concreteEClass.eContainer());
+    return virtualizer.getVirtual((EPackage) concreteClassifier.eContainer());
   }
 
   @Override
   public EReference eContainmentFeature() {
-    return virtualizer.getVirtual(concreteEClass.eContainmentFeature());
-  }
-
-  @Override
-  public String getInstanceClassName() {
-    return concreteEClass.getInstanceClassName();
-  }
-
-  @Override
-  public void setInstanceClassName(String value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Class<?> getInstanceClass() {
-    return concreteEClass.getInstanceClass();
-  }
-
-  @Override
-  public void setInstanceClass(Class<?> value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Object getDefaultValue() {
-    return concreteEClass.getDefaultValue();
-  }
-
-  @Override
-  public String getInstanceTypeName() {
-    return concreteEClass.getInstanceTypeName();
-  }
-
-  @Override
-  public void setInstanceTypeName(String value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EPackage getEPackage() {
-    return virtualizer.getVirtual(concreteEClass.getEPackage());
-  }
-
-  @Override
-  public EList<ETypeParameter> getETypeParameters() {
-    return concreteEClass.getETypeParameters();
-  }
-
-  @Override
-  public boolean isInstance(Object object) {
-    return concreteEClass.isInstance(object);
-  }
-
-  @Override
-  public int getClassifierID() {
-    // @Correctness: not sure what this should return in the presence of filters
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public String getName() {
-    return concreteEClass.getName();
-  }
-
-  @Override
-  public void setName(String value) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public EList<EAnnotation> getEAnnotations() {
-    return concreteEClass.getEAnnotations();
-  }
-
-  @Override
-  public EAnnotation getEAnnotation(String source) {
-    return concreteEClass.getEAnnotation(source);
+    return virtualizer.getVirtual(concreteClassifier.eContainmentFeature());
   }
 
   @Override
   public boolean isAbstract() {
-    return concreteEClass.isAbstract();
+    return ((EClass) concreteClassifier).isAbstract();
   }
 
   @Override
@@ -275,7 +156,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public boolean isInterface() {
-    return concreteEClass.isInterface();
+    return ((EClass) concreteClassifier).isInterface();
   }
 
   @Override
@@ -294,7 +175,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     // so we can query it only once.
     VirtualEPackage vpackage = (VirtualEPackage) getEPackage();
 
-    for (EClass c : concreteEClass.getESuperTypes()) {
+    for (EClass c : ((EClass) concreteClassifier).getESuperTypes()) {
       EClass vc = virtualizer.getVirtual(c);
       if (!vpackage.isClassifierFiltered(vc)) {
         types.add(vc);
@@ -328,7 +209,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EAttribute getEIDAttribute() {
-    return virtualizer.getVirtual(concreteEClass.getEIDAttribute());
+    return virtualizer.getVirtual(((EClass) concreteClassifier).getEIDAttribute());
   }
 
   protected List<EStructuralFeature> getAllFeatures() {
@@ -344,7 +225,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     }
 
     // Add all features from the concrete class
-    for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
+    for (EStructuralFeature f : ((EClass) concreteClassifier).getEStructuralFeatures()) {
       elems.add(virtualizer.getVirtual(f));
     }
 
@@ -362,7 +243,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
     List<EStructuralFeature> elems = new ArrayList<>();
 
     // Add all features from the concrete class
-    for (EStructuralFeature f : concreteEClass.getEStructuralFeatures()) {
+    for (EStructuralFeature f : ((EClass) concreteClassifier).getEStructuralFeatures()) {
       elems.add(virtualizer.getVirtual(f));
     }
 
@@ -413,7 +294,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EGenericType> getEGenericSuperTypes() {
-    return concreteEClass.getEGenericSuperTypes();
+    return ((EClass) concreteClassifier).getEGenericSuperTypes();
   }
 
   @Override
@@ -503,7 +384,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EList<EOperation> getEOperations() {
-    return concreteEClass.getEOperations();
+    return ((EClass) concreteClassifier).getEOperations();
   }
 
   @Override
@@ -569,7 +450,7 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public EGenericType getFeatureType(EStructuralFeature feature) {
-    return concreteEClass.getFeatureType(feature);
+    return ((EClass) concreteClassifier).getFeatureType(feature);
   }
 
   @Override
@@ -579,13 +460,13 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
 
   @Override
   public ESuperAdapter getESuperAdapter() {
-    return ((ESuperAdapter.Holder) concreteEClass).getESuperAdapter();
+    return ((ESuperAdapter.Holder) concreteClassifier).getESuperAdapter();
   }
 
   @Override
   public boolean isFrozen() {
     // @Correctness: not sure whether we should delegate this, or just return false
-    return ((ESuperAdapter.Holder) concreteEClass).isFrozen();
+    return ((ESuperAdapter.Holder) concreteClassifier).isFrozen();
   }
 
   // Not sure what this is useful for, but the Sample ECore editor seems to use it
@@ -602,10 +483,21 @@ public class VirtualEClass extends DynamicEObjectImpl implements EClass, ESuperA
   }
 
   @Override
+  public boolean isInstance(Object object) {
+    return concreteClassifier.isInstance(object);
+  }
+
+  @Override
+  public int getClassifierID() {
+    // @Correctness: not sure what this should return in the presence of filters
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("VirtualEClass of ");
-    sb.append(concreteEClass.toString());
+    sb.append(concreteClassifier.toString());
     return sb.toString();
   }
 

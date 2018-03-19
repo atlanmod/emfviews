@@ -289,12 +289,12 @@ public class TestVirtualObjects {
     // Adding a virtual class to a VirtualEPackage
 
     // Create the virtual package
-    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
+    VirtualEPackage VP = viewpoint.getVirtual(P);
 
     // Create the virtual class
     EClass c = EcoreFactory.eINSTANCE.createEClass();
     c.setName("C");
-    VirtualEClass Vc = (VirtualEClass) viewpoint.getVirtual(c);
+    VirtualEClass Vc = viewpoint.getVirtual(c);
     VP.addVirtualClassifier(Vc);
 
     EAttribute a = EcoreFactory.eINSTANCE.createEAttribute();
@@ -325,7 +325,7 @@ public class TestVirtualObjects {
   public void filterClass() {
     // Hide class from a virtual package
 
-    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
+    VirtualEPackage VP = viewpoint.getVirtual(P);
 
     assertTrue(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
@@ -341,7 +341,7 @@ public class TestVirtualObjects {
     // We can use a VirtualEClass with a DynamicEObject, but
     // the dynamic object is oblivious to virtual and filtered features
 
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VA = viewpoint.getVirtual(A);
 
     {
       DynamicEObjectImpl Do = new DynamicEObjectImpl(VA);
@@ -359,7 +359,7 @@ public class TestVirtualObjects {
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
+    VirtualEAttribute Vb = viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     {
@@ -384,7 +384,7 @@ public class TestVirtualObjects {
   @Test
   public void virtualEObject() {
     // Wrapping an object with a VirtualEObject, we can still access its features
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VA = viewpoint.getVirtual(A);
 
     // Create the virtual object
     EObject o = EcoreUtil.create(A);
@@ -398,7 +398,7 @@ public class TestVirtualObjects {
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
+    VirtualEAttribute Vb = viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     // The feature can be set and get on the same virtual object
@@ -431,13 +431,13 @@ public class TestVirtualObjects {
     // Adding a virtual attribute to a VirtualEClass
 
     // Create the virtual class
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VA = viewpoint.getVirtual(A);
 
     // Add a virtual attribute
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
+    VirtualEAttribute Vb = viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     // Can access the features using the EClass method and reflective API
@@ -460,8 +460,8 @@ public class TestVirtualObjects {
     // Adding a virtual reference to a VirtualEClass
 
     // Create the virtual classes
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
-    VirtualEClass VB = (VirtualEClass) viewpoint.getVirtual(B);
+    VirtualEClass VA = viewpoint.getVirtual(A);
+    VirtualEClass VB = viewpoint.getVirtual(B);
 
     // Add the new reference
     EReference r = EcoreFactory.eINSTANCE.createEReference();
@@ -469,7 +469,7 @@ public class TestVirtualObjects {
     r.setEType(VB);
     r.setLowerBound(0);
     r.setUpperBound(-1);
-    VirtualEReference Vr = (VirtualEReference) viewpoint.getVirtual(r);
+    VirtualEReference Vr = viewpoint.getVirtual(r);
     VA.addVirtualFeature(Vr);
 
     // Create one A and two Bs
@@ -532,7 +532,7 @@ public class TestVirtualObjects {
     A.getEStructuralFeatures().add(a2);
 
     // Wrap A in a virtual class
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VA = viewpoint.getVirtual(A);
 
     // Ensure both features are here
     assertTrue(getFeature(VA, "a").isPresent());
@@ -569,9 +569,9 @@ public class TestVirtualObjects {
 
     EClass sup = EcoreFactory.eINSTANCE.createEClass();
     sup.setName("Sup");
-    VirtualEClass VSup = (VirtualEClass) viewpoint.getVirtual(sup);
+    VirtualEClass VSup = viewpoint.getVirtual(sup);
 
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
+    VirtualEClass VA = viewpoint.getVirtual(A);
 
     assertEquals(0, VA.getESuperTypes().size());
 
@@ -589,7 +589,7 @@ public class TestVirtualObjects {
     assertEquals(1, VS.getESuperTypes().size());
 
     // Filter the superclass it through its package
-    VirtualEPackage VP = (VirtualEPackage) viewpoint.getVirtual(P);
+    VirtualEPackage VP = viewpoint.getVirtual(P);
     VP.filterClassifier(viewpoint.getVirtual(A));
 
     assertEquals(0, VS.getESuperTypes().size());
@@ -600,21 +600,21 @@ public class TestVirtualObjects {
     // If a superclass has a virtual feature, it should appear in the eAllFeature feature
     // of the subclass
 
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
-    VirtualEClass VS = (VirtualEClass) viewpoint.getVirtual(S);
+    VirtualEClass VA = viewpoint.getVirtual(A);
+    VirtualEClass VS = viewpoint.getVirtual(S);
 
     // Add the virtual feature on parent A
     EAttribute b = EcoreFactory.eINSTANCE.createEAttribute();
     b.setName("b");
     b.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vb = (VirtualEAttribute) viewpoint.getVirtual(b);
+    VirtualEAttribute Vb = viewpoint.getVirtual(b);
     VA.addVirtualFeature(Vb);
 
     // Add also a virtual feature on S
     EAttribute c = EcoreFactory.eINSTANCE.createEAttribute();
     c.setName("c");
     c.setEType(EcorePackage.Literals.EINT);
-    VirtualEAttribute Vc = (VirtualEAttribute) viewpoint.getVirtual(c);
+    VirtualEAttribute Vc = viewpoint.getVirtual(c);
     VS.addVirtualFeature(Vc);
 
     // Check the feature is present
@@ -652,15 +652,15 @@ public class TestVirtualObjects {
     // Adding an element to one end of a virtual association should populate
     // the virtual opposite as well.
 
-    VirtualEClass VA = (VirtualEClass) viewpoint.getVirtual(A);
-    VirtualEClass VB = (VirtualEClass) viewpoint.getVirtual(B);
+    VirtualEClass VA = viewpoint.getVirtual(A);
+    VirtualEClass VB = viewpoint.getVirtual(B);
 
     // Create the bidirectional references
     EReference r = EcoreFactory.eINSTANCE.createEReference();
     r.setName("AtoB");
     r.setEType(VB);
     r.setLowerBound(0);
-    VirtualEReference Vr = (VirtualEReference) viewpoint.getVirtual(r);
+    VirtualEReference Vr = viewpoint.getVirtual(r);
     VA.addVirtualFeature(Vr);
     ((InternalEObject) r).eInverseAdd(VA, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
                                        EStructuralFeature.class, null);
@@ -669,7 +669,7 @@ public class TestVirtualObjects {
     r2.setName("BtoA");
     r2.setEType(VA);
     r2.setLowerBound(0);
-    VirtualEReference Vr2 = (VirtualEReference) viewpoint.getVirtual(r2);
+    VirtualEReference Vr2 = viewpoint.getVirtual(r2);
     VB.addVirtualFeature(Vr2);
     ((InternalEObject) r2).eInverseAdd(VB, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
                                         EStructuralFeature.class, null);

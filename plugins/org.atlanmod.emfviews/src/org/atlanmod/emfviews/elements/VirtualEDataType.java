@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2018 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,51 +16,34 @@
 
 package org.atlanmod.emfviews.elements;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EcorePackage;
 
-public class VirtualESettingList<E extends EObject> extends VirtualEList<E> implements EStructuralFeature.Setting {
+public class VirtualEDataType extends VirtualEClassifier implements EDataType {
 
-  private EObject owner;
-  private EStructuralFeature feature;
-
-  public VirtualESettingList(EList<E> concreteList, Virtualizer virtualizer, EObject owner, EStructuralFeature feature) {
-    super(concreteList, virtualizer);
-    this.owner = owner;
-    this.feature = feature;
+  public VirtualEDataType(EDataType concreteDataType, EcoreVirtualizer virtualizer) {
+    super(EcorePackage.Literals.EDATA_TYPE, concreteDataType, virtualizer);
   }
 
   @Override
-  public EObject getEObject() {
-    return owner;
+  public boolean isSerializable() {
+    return ((EDataType) concreteClassifier).isSerializable();
   }
 
   @Override
-  public EStructuralFeature getEStructuralFeature() {
-    return feature;
-  }
-
-  @Override
-  public Object get(boolean resolve) {
-    return this;
-  }
-
-  @Override
-  public void set(Object newValue) {
+  public void setSerializable(boolean value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean isSet() {
-    return !isEmpty();
-  }
-
-  @Override
-  public void unset() {
+  public boolean isInstance(Object object) {
     throw new UnsupportedOperationException();
   }
 
-
+  @Override
+  public int getClassifierID() {
+    throw new UnsupportedOperationException();
+  }
 
 }

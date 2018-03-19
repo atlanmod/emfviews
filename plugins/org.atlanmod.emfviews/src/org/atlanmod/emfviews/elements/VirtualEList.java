@@ -21,29 +21,29 @@ import java.util.AbstractList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-public class VirtualEList<E extends EObject> extends AbstractList<E> implements EList<E> {
+public class VirtualEList extends AbstractList<EObject> implements EList<EObject> {
 
-  private EList<E> concreteList;
+  private EList<EObject> concreteList;
   private Virtualizer virtualizer;
 
-  public VirtualEList(EList<E> concreteList, Virtualizer virtualizer) {
+  public VirtualEList(EList<EObject> concreteList, Virtualizer virtualizer) {
     this.concreteList = concreteList;
     this.virtualizer = virtualizer;
   }
 
   @Override
-  public void move(int newPosition, E object) {
+  public void move(int newPosition, EObject object) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public E move(int newPosition, int oldPosition) {
+  public EObject move(int newPosition, int oldPosition) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public E get(int index) {
-    E o = concreteList.get(index);
+  public EObject get(int index) {
+    EObject o = concreteList.get(index);
     return virtualizer.getVirtual(o);
   }
 

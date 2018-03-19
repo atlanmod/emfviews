@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.elements.Virtualizer;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
@@ -77,25 +76,23 @@ public class View extends ResourceImpl implements Virtualizer {
   }
 
   @Override
-  public <E extends EObject> E getVirtual(E obj) {
+  public EObject getVirtual(EObject obj) {
     if (concreteToVirtual == null) {
       concreteToVirtual = new HashMap<>();
     }
 
-    @SuppressWarnings("unchecked") // we map anything to a VirtualEObject, so it works
-    E virtual = (E) concreteToVirtual.computeIfAbsent(obj, o -> {
-      if (o == null) {
-        return o;
-      }
+    if (obj == null) {
+      return null;
+    }
 
-      // Don't virtualize virtual objects
-      if (o instanceof VirtualEObject)
-        return o;
+    // Idempotent
+    if (obj instanceof VirtualEObject) {
+      return obj;
+    }
 
-      return new VirtualEObject(o, (VirtualEClass) viewpoint.getVirtual(o.eClass()), this);
-    });
-
-    return virtual;
+    return concreteToVirtual.computeIfAbsent(obj, o ->
+      new VirtualEObject(o, viewpoint.getVirtual(o.eClass()), this)
+    );
   }
 
   @Override

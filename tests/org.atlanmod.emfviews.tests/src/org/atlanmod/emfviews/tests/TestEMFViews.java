@@ -343,7 +343,7 @@ public class TestEMFViews {
     {
       EObject f = getFeature(A, "newProperty").get();
       assertEquals("newProperty", eGet(f, "name"));
-      assertEquals(EcorePackage.Literals.ESTRING, eGet(f, "eType"));
+      assertEquals(v.getVirtual(EcorePackage.Literals.ESTRING), eGet(f, "eType"));
       // It's not optional by default
       assertEquals(1, eGet(f, "lowerBound"));
       assertEquals(1, eGet(f, "upperBound"));
@@ -353,7 +353,7 @@ public class TestEMFViews {
     {
       EObject f = getFeature(A, "newOptionalProperty").get();
       assertEquals("newOptionalProperty", eGet(f, "name"));
-      assertEquals(EcorePackage.Literals.EINT, eGet(f, "eType"));
+      assertEquals(v.getVirtual(EcorePackage.Literals.EINT), eGet(f, "eType"));
       assertEquals(0, eGet(f, "lowerBound"));
       assertEquals(1, eGet(f, "upperBound"));
     }

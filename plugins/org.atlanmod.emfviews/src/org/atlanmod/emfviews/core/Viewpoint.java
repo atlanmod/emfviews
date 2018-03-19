@@ -36,6 +36,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -52,10 +53,11 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
+import org.atlanmod.emfviews.elements.VirtualEClassifier;
+import org.atlanmod.emfviews.elements.VirtualEDataType;
 import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
 import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
-import org.atlanmod.emfviews.elements.Virtualizer;
 import org.atlanmod.emfviews.util.EMFViewsUtil;
 import org.atlanmod.emfviews.virtuallinks.Association;
 import org.atlanmod.emfviews.virtuallinks.Concept;
@@ -68,7 +70,7 @@ import org.atlanmod.emfviews.virtuallinks.VirtualElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
-public class Viewpoint extends ResourceImpl implements Virtualizer {
+public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
 
   public static final String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
   public static final String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
@@ -221,36 +223,114 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
   }
 
   @Override
-  public <E extends EObject> E getVirtual(E o) {
+  public VirtualEPackage getVirtual(EPackage o) {
     if (o == null) {
-      return o;
-    }
-
-    // Don't virtualize virtual objects!
-    if (o instanceof VirtualEPackage
-        || o instanceof VirtualEClass
-        || o instanceof VirtualEStructuralFeature)
-      return o;
-
-    @SuppressWarnings("unchecked") // trust me, we map E to E
-    E virtual = (E) concreteToVirtual().computeIfAbsent(o, obj -> {
-      // @Refactor: looks like a factory
-      if (o instanceof EPackage) return new VirtualEPackage((EPackage) obj, this);
-      if (o instanceof EClass) return new VirtualEClass((EClass) obj, this);
-      if (o instanceof EAttribute) return new VirtualEAttribute((EAttribute) obj, this);
-      if (o instanceof EReference) return new VirtualEReference((EReference) obj, this);
-
-      // Abort the mapping if it's an object we cannot virtualize
       return null;
-    });
-
-    if (virtual != null) {
-      return virtual;
-    } else {
-      // @Correctness: maybe we should fail here.  Currently, this lets EDataType and EEnum
-      // pass unvirtualized
-      return o;
     }
+
+    // Idempotent
+    if (o instanceof VirtualEPackage) {
+      return (VirtualEPackage) o;
+    }
+
+    return (VirtualEPackage) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEPackage(o, this));
+  }
+
+  @Override
+  public VirtualEClassifier getVirtual(EClassifier o) {
+    if (o == null) {
+      return null;
+    }
+
+    // Idempotent
+    if (o instanceof VirtualEClassifier) {
+      return (VirtualEClassifier) o;
+    }
+
+    if (o instanceof EClass) {
+      return getVirtual((EClass) o);
+    } else if (o instanceof EDataType) {
+      return getVirtual((EDataType) o);
+    } else {
+      throw EX("Cannot virtualize EClassifier %s", o);
+    }
+  }
+
+  @Override
+  public VirtualEClass getVirtual(EClass o) {
+    if (o == null) {
+      return null;
+    }
+
+    // Idempotent
+    if (o instanceof VirtualEClass) {
+      return (VirtualEClass) o;
+    }
+
+    return (VirtualEClass) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEClass(o, this));
+  }
+
+  @Override
+  public VirtualEDataType getVirtual(EDataType o) {
+    if (o == null) {
+      return null;
+    }
+
+    // Idempotent
+    if (o instanceof VirtualEDataType) {
+      return (VirtualEDataType) o;
+    }
+
+    return (VirtualEDataType) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEDataType(o, this));
+  }
+
+  @Override
+  public VirtualEStructuralFeature getVirtual(EStructuralFeature o) {
+    if (o == null) {
+      return null;
+    }
+
+    // Idempotent
+    if (o instanceof VirtualEStructuralFeature) {
+      return (VirtualEStructuralFeature) o;
+    }
+
+    if (o instanceof EAttribute) {
+      return getVirtual((EAttribute) o);
+    } else if (o instanceof EReference) {
+      return getVirtual((EReference) o);
+    } else {
+      throw EX("Cannot virtualize EStructuralFeature %s", o);
+    }
+  }
+
+  @Override
+  public VirtualEAttribute getVirtual(EAttribute o) {
+    if (o == null) {
+      return null;
+    }
+
+    // Idempotent
+    if (o instanceof VirtualEAttribute) {
+      return (VirtualEAttribute) o;
+    }
+
+    return (VirtualEAttribute) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEAttribute(o, this));
+  }
+
+
+  @Override
+  public VirtualEReference getVirtual(EReference o) {
+    if (o == null) {
+      return null;
+    }
+
+    // Idempotent
+    if (o instanceof VirtualEReference) {
+      return (VirtualEReference) o;
+    }
+
+    return (VirtualEReference) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEReference(o, this));
   }
 
   // Clone the packages into the given package registry
@@ -322,7 +402,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
           // @Correctness: the getVirtual is necessary because EEnum are not virtualized,
           // and hence their getEPackage result will not be virtualized either.
           // Maybe we should implement VirtualEClassifier after all?
-          VirtualEPackage p = (VirtualEPackage) getVirtual(c.getEPackage());
+          VirtualEPackage p = getVirtual(c.getEPackage());
           p.filterClassifier(c);
         }
       }
@@ -392,7 +472,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
         EObject sub = findEObject(e, registry);
         if (!(sub instanceof EClass))
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
-        ((VirtualEClass) getVirtual(sub)).addVirtualSuperType(klass);
+        getVirtual((EClass) sub).addVirtualSuperType(klass);
       }
     }
   }
@@ -402,7 +482,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
       EObject parent = findEObject(p.getParent(), registry);
       if (!(parent instanceof EClass))
         throw EX("Parent of new property '%s' should be an EClass", p.getName());
-      VirtualEClass parentClass = (VirtualEClass) getVirtual(parent);
+      VirtualEClass parentClass = getVirtual((EClass) parent);
 
       String n = p.getName();
       EAttribute attr = (EAttribute) syntheticElements.get(p);
@@ -414,7 +494,7 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
         attr.setLowerBound(0);
       else
         attr.setLowerBound(1);
-      parentClass.addVirtualFeature((VirtualEAttribute) getVirtual(attr));
+      parentClass.addVirtualFeature(getVirtual(attr));
     }
   }
 
@@ -443,13 +523,13 @@ public class Viewpoint extends ResourceImpl implements Virtualizer {
         if (!(o instanceof EReference))
           throw EX("Opposite of new association '%s' should be an EReference", a.getName());
         EReference opp = (EReference) o;
-        ((VirtualEReference) getVirtual(ref)).setVirtualOpposite(getVirtual(opp));
-        ((VirtualEReference) getVirtual(opp)).setVirtualOpposite(getVirtual(ref));
+        getVirtual(ref).setVirtualOpposite(getVirtual(opp));
+        getVirtual(opp).setVirtualOpposite(getVirtual(ref));
       }
 
       ref.setContainment(a.isComposition());
 
-      ((VirtualEClass) source).addVirtualFeature((VirtualEStructuralFeature) getVirtual(ref));
+      ((VirtualEClass) source).addVirtualFeature(getVirtual(ref));
 
       // We have to set the eContainingClass feature of the reference manually, since the feature is virtual.
       // We don't want this to be done automatically in addVirtualFeature, because we don't want to alter

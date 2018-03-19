@@ -16,6 +16,7 @@
 
 package org.atlanmod.emfviews.elements;
 
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -23,7 +24,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 public class VirtualEAttribute extends VirtualEStructuralFeature implements EAttribute {
 
-  public VirtualEAttribute(EAttribute concreteAttribute, Virtualizer virtualizer) {
+  public VirtualEAttribute(EAttribute concreteAttribute, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EATTRIBUTE, concreteAttribute, virtualizer);
   }
 

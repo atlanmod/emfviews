@@ -16,6 +16,7 @@
 
 package org.atlanmod.emfviews.elements;
 
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -33,9 +34,9 @@ import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EStructuralFeatureExtend
 public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal, EStructuralFeatureExtendedMetaData.Holder {
 
   protected EStructuralFeature concreteFeature;
-  protected Virtualizer virtualizer;
+  protected EcoreVirtualizer virtualizer;
 
-  protected VirtualEStructuralFeature(EClass eClass, EStructuralFeature concreteFeature, Virtualizer virtualizer) {
+  protected VirtualEStructuralFeature(EClass eClass, EStructuralFeature concreteFeature, EcoreVirtualizer virtualizer) {
     super(eClass);
     this.concreteFeature = concreteFeature;
     this.virtualizer = virtualizer;
@@ -115,7 +116,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public EObject eContainer() {
-    return virtualizer.getVirtual(concreteFeature.eContainer());
+    return virtualizer.getVirtual((EClass) concreteFeature.eContainer());
   }
 
   @Override
