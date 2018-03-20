@@ -141,10 +141,7 @@ public class View extends ResourceImpl implements Virtualizer {
         uri = BlueprintsURI.createFileURI(new File("/home/fmdkdd/workspaces/emfviews/examples/petstore-view-neoemf/models/log.graphdb"));
         r = virtualResourceSet.createResource(uri);
 
-        // TODO: close the NeoEMF resource to release the lock
         r.load(BlueprintsNeo4jOptionsBuilder.newBuilder().asMap());
-
-        //((PersistentResource) r).close();
       }
       else {
         r = virtualResourceSet.getResource(uri, true);
@@ -270,6 +267,16 @@ public class View extends ResourceImpl implements Virtualizer {
   }
 
   @Override
+  protected void doUnload() {
+    super.doUnload();
+
+    // Make sure to close any contributing resource
+    for (Resource r : getContributingModels()) {
+      r.unload();
+    }
+  }
+
+  @Override
   public EList<EObject> getContents() {
     if (virtualContents == null) {
       List<EObject> contents = new ArrayList<>();
@@ -280,7 +287,7 @@ public class View extends ResourceImpl implements Virtualizer {
         }
       }
 
-      virtualContents = ECollections.unmodifiableEList(contents);
+      virtualContents = ECollections.asEList(contents);
     }
     return virtualContents;
   }

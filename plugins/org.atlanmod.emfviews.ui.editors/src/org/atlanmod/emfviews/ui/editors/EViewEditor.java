@@ -29,6 +29,7 @@ import org.atlanmod.emfviews.core.EmfViewsFactory;
 
 public class EViewEditor extends EditorPart {
   private TreeViewer treeViewer;
+  private Resource view;
 
   @Override
   public void createPartControl(Composite parent) {
@@ -38,10 +39,10 @@ public class EViewEditor extends EditorPart {
     URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 
     // @Refactor: maybe there's a way to use a global resource factory registry instead?
-    Resource v = new EmfViewsFactory().createResource(uri);
+    view = new EmfViewsFactory().createResource(uri);
 
     try {
-      v.load(null);
+      view.load(null);
     } catch (IOException ex) {
       ex.printStackTrace();
     }
@@ -93,7 +94,7 @@ public class EViewEditor extends EditorPart {
     });
     treeViewer.setLabelProvider(new VirtualEObjectLabelProvider());
 
-    treeViewer.setInput(new Object[] { v });
+    treeViewer.setInput(new Object[] { view });
     getEditorSite().setSelectionProvider(treeViewer);
 
     // Refresh on right-click
@@ -149,6 +150,13 @@ public class EViewEditor extends EditorPart {
         }
       }
     });
+  }
+
+  @Override
+  public void dispose() {
+    view.unload();
+
+    super.dispose();
   }
 
   protected static String getEObjectPath(EObject o) {
