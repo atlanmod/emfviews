@@ -27,12 +27,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -41,12 +45,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
-import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jResourceOptions;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
-import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
-import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
@@ -137,15 +138,22 @@ public class View extends ResourceImpl implements Virtualizer {
       URI uri = URI.createURI(modelURI).resolve(getURI());
       Resource r;
 
+      // @Correctness: matching on file extension is brittle, unless NeoEMF resources
+      // always ends with it.
       if (modelURI.endsWith(".graphdb")) {
-        uri = BlueprintsURI.createFileURI(new File("/home/fmdkdd/workspaces/emfviews/examples/petstore-view-neoemf/models/log.graphdb"));
-        r = virtualResourceSet.createResource(uri);
+        // Find the system path for the file from the workspace URI
+        IContainer wsroot = EcorePlugin.getWorkspaceRoot();
+        IFile ifile = wsroot.getFile(new Path(uri.toPlatformString(true)));
+        File dbLocation = new File(ifile.getLocationURI());
 
+        uri = BlueprintsURI.createFileURI(dbLocation);
+        r = virtualResourceSet.createResource(uri);
         r.load(BlueprintsNeo4jOptionsBuilder.newBuilder().asMap());
       }
       else {
         r = virtualResourceSet.getResource(uri, true);
       }
+
       if (r != null) {
         // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
         String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
