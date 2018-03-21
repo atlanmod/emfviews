@@ -529,7 +529,7 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
 
       ref.setContainment(a.isComposition());
 
-      ((VirtualEClass) source).addVirtualFeature(getVirtual(ref));
+      getVirtual((EClass) source).addVirtualFeature(getVirtual(ref));
 
       // We have to set the eContainingClass feature of the reference manually, since the feature is virtual.
       // We don't want this to be done automatically in addVirtualFeature, because we don't want to alter
