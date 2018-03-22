@@ -17,12 +17,11 @@
 package org.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.atlanmod.emfviews.core.Virtualizer;
+import org.atlanmod.emfviews.util.LazyEContentsList;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
@@ -32,7 +31,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.DynamicValueHolder;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreEList;
 
 public class VirtualEObject extends DynamicEObjectImpl {
 
@@ -61,32 +59,15 @@ public class VirtualEObject extends DynamicEObjectImpl {
     return virtualValues;
   }
 
+  private EList<EObject> cachedContents;
+
   @Override
   public EList<EObject> eContents() {
-    // @Optimize: maybe use an iterator?
-
-    List<EObject> contents = new ArrayList<>();
-
-    for (EReference ref : eClass().getEAllContainments()) {
-      if (ref.isMany()) {
-        @SuppressWarnings("unchecked")
-        List<EObject> list = (List<EObject>) eGet(ref);
-        if (list != null) {
-          for (EObject o : list) {
-            contents.add(virtualizer.getVirtual(o));
-          }
-        }
-      } else {
-        EObject value = (EObject) eGet(ref);
-        if (value != null) {
-          contents.add(virtualizer.getVirtual(value));
-        }
-      }
+    if (cachedContents == null) {
+      cachedContents = new LazyEContentsList(this);
     }
 
-    // We need an InternalEList here, at least for MoDiSco to work with views.
-    // @Correctness: not sure what the owning feature should be, but null seems to work.
-    return new EcoreEList.UnmodifiableEList<>(this, null, contents.size(), contents.toArray());
+    return cachedContents;
   }
 
   @Override
