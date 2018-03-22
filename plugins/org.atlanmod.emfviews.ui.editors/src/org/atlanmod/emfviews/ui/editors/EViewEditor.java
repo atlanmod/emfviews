@@ -12,7 +12,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ILazyTreeContentProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -33,7 +33,7 @@ public class EViewEditor extends EditorPart {
 
   @Override
   public void createPartControl(Composite parent) {
-    treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+    treeViewer = new TreeViewer(parent, SWT.VIRTUAL);
 
     IFile file = ((IFileEditorInput) getEditorInput()).getFile();
     URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
@@ -47,33 +47,11 @@ public class EViewEditor extends EditorPart {
       ex.printStackTrace();
     }
 
-    treeViewer.setContentProvider(new ITreeContentProvider() {
-
-      @Override
-      public Object[] getElements(Object inputElement) {
-        if (inputElement instanceof Object[]) {
-          return (Object[]) inputElement;
-        } else {
-          return new Object[0];
-        }
-      }
-
-      @Override
-      public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof Resource) {
-          return ((Resource) parentElement).getContents().toArray();
-        } else if (parentElement instanceof EObject) {
-          return ((EObject) parentElement).eContents().toArray();
-        } else {
-          return new Object[0];
-        }
-      }
+    treeViewer.setContentProvider(new ILazyTreeContentProvider() {
 
       @Override
       public Object getParent(Object element) {
-        if (element instanceof Resource) {
-          return null;
-        } else if (element instanceof EObject) {
+        if (element instanceof EObject) {
           return ((EObject) element).eContainer();
         } else {
           return null;
@@ -81,20 +59,36 @@ public class EViewEditor extends EditorPart {
       }
 
       @Override
-      public boolean hasChildren(Object element) {
-        if (element instanceof Resource) {
-          return !((Resource) element).getContents().isEmpty();
-        } else if (element instanceof EObject) {
-          return !((EObject) element).eContents().isEmpty();
-        } else {
-          return false;
+      public void updateElement(Object parent, int index) {
+        if (parent instanceof Resource) {
+          Resource r = (Resource) parent;
+          EObject child = r.getContents().get(index);
+          treeViewer.replace(parent, index, child);
+          treeViewer.setChildCount(child, child.eContents().size());
+        } else if (parent instanceof EObject) {
+          EObject e = (EObject) parent;
+          EObject child = e.eContents().get(index);
+          treeViewer.replace(parent, index, child);
+          treeViewer.setHasChildren(child, true);
+          treeViewer.setChildCount(child, child.eContents().size());
         }
       }
 
+      @Override
+      public void updateChildCount(Object element, int currentChildCount) {
+        if (element instanceof Resource) {
+          Resource r = (Resource) element;
+          treeViewer.setChildCount(element, r.getContents().size());
+        } else if (element instanceof EObject) {
+          EObject e = (EObject) element;
+          treeViewer.setChildCount(element, e.eContents().size());
+        }
+      }
     });
     treeViewer.setLabelProvider(new VirtualEObjectLabelProvider());
 
-    treeViewer.setInput(new Object[] { view });
+    treeViewer.setUseHashlookup(true);
+    treeViewer.setInput(view);
     getEditorSite().setSelectionProvider(treeViewer);
 
     // Refresh on right-click
