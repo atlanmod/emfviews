@@ -143,11 +143,16 @@ public class View extends ResourceImpl implements Virtualizer {
       // always ends with it.
       if (modelURI.endsWith(".graphdb")) {
         // Find the system path for the file from the workspace URI
-        IContainer wsroot = EcorePlugin.getWorkspaceRoot();
-        IFile ifile = wsroot.getFile(new Path(uri.toPlatformString(true)));
-        File dbLocation = new File(ifile.getLocationURI());
+        if (!uri.isFile()) {
+          IContainer wsroot = EcorePlugin.getWorkspaceRoot();
+          IFile ifile = wsroot.getFile(new Path(uri.toPlatformString(true)));
+          File dbLocation = new File(ifile.getLocationURI());
 
-        uri = BlueprintsURI.createFileURI(dbLocation);
+          uri = BlueprintsURI.createFileURI(dbLocation);
+        } else {
+          uri = BlueprintsURI.createFileURI(uri);
+        }
+
         r = virtualResourceSet.createResource(uri);
         r.load(BlueprintsNeo4jOptionsBuilder.newBuilder().asMap());
       }
