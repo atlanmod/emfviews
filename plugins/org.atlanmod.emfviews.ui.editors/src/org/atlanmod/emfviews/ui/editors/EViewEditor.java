@@ -101,14 +101,18 @@ public class EViewEditor extends EditorPart {
           // Save the expanded state
           Object[] expandedElements = treeViewer.getExpandedElements();
 
-          Resource r = new EmfViewsFactory().createResource(uri);
+          // Unload the resource to release any locks
+          view.unload();
+
+          // Re-create the resource from scratch
+          view = new EmfViewsFactory().createResource(uri);
           try {
-            r.load(null);
+            view.load(null);
           } catch (IOException ex) {
             ex.printStackTrace();
           }
 
-          treeViewer.setInput(new Object[] { r });
+          treeViewer.setInput(view);
 
           // Restore the expanded state
           // Find the equivalent object in the new resource, and expand it
@@ -119,7 +123,7 @@ public class EViewEditor extends EditorPart {
               // some objects have no name, but still have children
               String fqn = getEObjectPath((EObject) o);
               // @Optimize: that's a dumb and slow way to do it
-              TreeIterator<EObject> it = r.getAllContents();
+              TreeIterator<EObject> it = view.getAllContents();
               while (it.hasNext()) {
                 EObject ro = it.next();
                 if (fqn.equals(getEObjectPath(ro))) {
@@ -130,7 +134,7 @@ public class EViewEditor extends EditorPart {
                 }
               }
             } else if (o instanceof Resource) {
-              treeViewer.setExpandedState(r, true);
+              treeViewer.setExpandedState(view, true);
             }
           }
         } else if (event.button == 1) {
