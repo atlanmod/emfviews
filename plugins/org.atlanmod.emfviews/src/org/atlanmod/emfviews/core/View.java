@@ -128,6 +128,9 @@ public class View extends ResourceImpl implements Virtualizer {
     contributingModelURIs = new ArrayList<>();
     modelResources = new HashMap<>();
 
+    // @Correctness: we shouldn't directly depend on NeoEMF for that
+    // The initialization can be done programmatically, but how to
+    // do it when opening a view with a graphical editor?
     PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
                                                BlueprintsPersistenceBackendFactory.getInstance());
     virtualResourceSet.getResourceFactoryRegistry()

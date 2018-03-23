@@ -18,6 +18,8 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
   private VirtualEObject owner;
 
   // Cached values
+  // @Optimize: Maybe lazily initializing all of that hampers performance
+  // more than it helps.  Need to crunch some numbers.
   private EList<EReference> containments;
   private int numContainments = -1;
   private Object[] containedValues;

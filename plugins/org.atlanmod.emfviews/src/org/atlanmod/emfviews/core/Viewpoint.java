@@ -117,7 +117,7 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
     // Filter concrete elements
     applyFilters(weavingModel.getFilters(), registry, !weavingModel.isWhitelist());
 
-    // Create all New* elements first, and set their EMF attribute after to avoid any circular dependencies
+    // Create all *new* elements first, and set their EMF attribute after to avoid any circular dependencies
     syntheticElements = createSyntheticElements(weavingModel.getVirtualElements());
 
     // The virtualPackage holds all the new concepts, but is created only if
