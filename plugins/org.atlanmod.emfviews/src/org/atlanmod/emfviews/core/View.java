@@ -46,6 +46,7 @@ import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 import org.atlanmod.emfviews.elements.VirtualEObject;
@@ -276,11 +277,13 @@ public class View extends ResourceImpl implements Virtualizer {
 
   @Override
   protected void doUnload() {
-    super.doUnload();
-
     // Make sure to close any contributing resource
     for (Resource r : getContributingModels()) {
-      r.unload();
+      if (r instanceof PersistentResource) {
+        ((PersistentResource) r).close();
+      } else {
+        r.unload();
+      }
     }
   }
 
