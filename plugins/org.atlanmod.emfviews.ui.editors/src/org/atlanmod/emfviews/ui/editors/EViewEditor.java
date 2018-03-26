@@ -64,13 +64,12 @@ public class EViewEditor extends EditorPart {
           Resource r = (Resource) parent;
           EObject child = r.getContents().get(index);
           treeViewer.replace(parent, index, child);
-          treeViewer.setChildCount(child, child.eContents().size());
+          treeViewer.setHasChildren(child, !child.eContents().isEmpty());
         } else if (parent instanceof EObject) {
           EObject e = (EObject) parent;
           EObject child = e.eContents().get(index);
           treeViewer.replace(parent, index, child);
-          treeViewer.setHasChildren(child, true);
-          treeViewer.setChildCount(child, child.eContents().size());
+          treeViewer.setHasChildren(child, !child.eContents().isEmpty());
         }
       }
 

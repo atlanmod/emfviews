@@ -89,7 +89,14 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
 
   @Override
   public boolean isEmpty() {
-    return size() == 0;
+    // If there is at least one element, then it's not empty.
+    // This is faster than getting the actual size.
+    for (int i=0; i < numContainments(); ++i) {
+      if (containedSize(i) > 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override
