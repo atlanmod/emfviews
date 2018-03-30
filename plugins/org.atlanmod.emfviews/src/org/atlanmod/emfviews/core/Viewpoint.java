@@ -167,6 +167,8 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
       // Parse contributingMetamodels line
       case EVIEWPOINT_CONTRIBUTING_METAMODELS:
         contributingMetamodelsPaths = Arrays.asList(p.getProperty(key).split(","));
+        // @Correctness: we should trim every property, for Viewpoint and View
+        contributingMetamodelsPaths.replaceAll(m -> m.trim());
         break;
 
       // Parse weavingModel line
