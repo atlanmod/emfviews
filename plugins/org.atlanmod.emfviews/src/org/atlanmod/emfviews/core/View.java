@@ -52,7 +52,9 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import org.atlanmod.emfviews.virtuallinks.ContributingModel;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
+import org.atlanmod.emfviews.virtuallinks.VirtualLink;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
@@ -157,7 +159,7 @@ public class View extends ResourceImpl implements Virtualizer {
         }
 
         r = virtualResourceSet.createResource(uri);
-        r.load(BlueprintsNeo4jOptionsBuilder.newBuilder().asMap());
+        r.load(BlueprintsNeo4jOptionsBuilder.newBuilder().weakCache().asMap());
       }
       else {
         r = virtualResourceSet.getResource(uri, true);
@@ -187,38 +189,53 @@ public class View extends ResourceImpl implements Virtualizer {
       }
     } else {
       // Otherwise, the weaving model should be provided in the eview file
+
       URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
-      Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
+      Resource weavingModelResource;
+      if (weavingModelPath.endsWith(".graphdb")) {
+        weavingModelURI = BlueprintsURI.createURI(weavingModelURI);
+        weavingModelResource = new ResourceSetImpl().createResource(weavingModelURI);
+        weavingModelResource.load(BlueprintsNeo4jOptionsBuilder.newBuilder().weakCache().asMap());
+      } else {
+        weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
+      }
+
       weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
     }
 
     // Populate the model with values for virtual associations
-    for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {
-      // @Correctness: this should work with VirtualConcept as well
+    for (VirtualLink link : weavingModel.getVirtualLinks()) {
+      if (link instanceof VirtualAssociation) {
+        VirtualAssociation assoc = (VirtualAssociation) link;
+        // @Correctness: this should work with VirtualConcept as well
 
-      ConcreteElement elem = (ConcreteConcept) assoc.getSource();
-      // Get the NsURI of the metamodel
-      String nsURI = elem.getModel().getURI();
-      // Find the corresponding resource
-      Resource model = modelResources.get(nsURI);
-      // Find the referenced element in that resource
-      EObject source = model.getEObject(elem.getPath());
+        ConcreteElement elem = (ConcreteConcept) assoc.getSource();
+        // Get the NsURI of the metamodel
 
-      // Do the same for the target
-      elem = (ConcreteConcept) assoc.getTarget();
-      EObject target = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
+        // @Hack: NeoEMF returns null for getModel, but we can use eContainer instead
+        String nsURI = ((ContributingModel) elem.eContainer()).getURI();
+        // Find the corresponding resource
+        Resource model = modelResources.get(nsURI);
+        // Find the referenced element in that resource
+        EObject source = model.getEObject(elem.getPath());
 
-      // Find the feature for this virtual association
-      EObject vSource = getVirtual(source);
-      EStructuralFeature feature = vSource.eClass().getEStructuralFeature(assoc.getName());
+        // Do the same for the target
+        elem = (ConcreteConcept) assoc.getTarget();
+        // @Hack: ibidem
+        EObject target = modelResources.get(((ContributingModel) elem.eContainer()).getURI()).getEObject(elem.getPath());
 
-      // If it's a many feature, add to the list
-      if (feature.isMany()) {
-        @SuppressWarnings("unchecked")
-        List<EObject> list = (List<EObject>) vSource.eGet(feature);
-        list.add(getVirtual(target));
-      } else {
-        vSource.eSet(feature, getVirtual(target));
+        // Find the feature for this virtual association
+        EObject vSource = getVirtual(source);
+        EStructuralFeature feature = vSource.eClass().getEStructuralFeature(assoc.getName());
+
+        // If it's a many feature, add to the list
+        if (feature.isMany()) {
+          @SuppressWarnings("unchecked")
+          List<EObject> list = (List<EObject>) vSource.eGet(feature);
+          list.add(getVirtual(target));
+        } else {
+          vSource.eSet(feature, getVirtual(target));
+        }
       }
     }
   }
