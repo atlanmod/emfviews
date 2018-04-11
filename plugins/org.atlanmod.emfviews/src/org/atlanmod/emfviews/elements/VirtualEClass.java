@@ -166,8 +166,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EClass> getESuperTypes() {
-    // @Optimize: could use an iterator
-
     // This is just a map(getVirtual).filter(!filtered)
     List<EClass> types = new ArrayList<>();
 
@@ -213,8 +211,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getAllFeatures() {
-    // @Optimize: could use a lazy iterator
-
     // Use a set to ensure features are not added twice.
     // LinkedHashSet preserves the insertion order for stability.
     Set<EStructuralFeature> elems = new LinkedHashSet<>();
@@ -238,8 +234,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getAllLocalFeatures() {
-    // @Optimize: could use a lazy iterator
-
     List<EStructuralFeature> elems = new ArrayList<>();
 
     // Add all features from the concrete class
@@ -256,8 +250,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getVisibleFeatures() {
-    // @Optimize: could use a lazy iterator
-
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : getAllFeatures()) {
@@ -270,8 +262,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
   }
 
   protected List<EStructuralFeature> getVisibleLocalFeatures() {
-    // @Optimize: could use a lazy iterator
-
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : getAllLocalFeatures()) {
@@ -305,7 +295,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EAttribute> getEAttributes() {
-    // @Optimize: could use a lazy iterator
     List<EAttribute> attrs = new ArrayList<>();
 
     for (EStructuralFeature f : getEStructuralFeatures()) {
@@ -319,7 +308,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EAttribute> getEAllAttributes() {
-    // @Optimize: could use a lazy iterator
     List<EAttribute> attrs = new ArrayList<>();
 
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
@@ -333,7 +321,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEReferences() {
-    // @Optimize: could use a layz iterator
     List<EReference> refs = new ArrayList<>();
 
     for (EStructuralFeature f : getEStructuralFeatures()) {
@@ -347,7 +334,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEAllReferences() {
-    // @Optimize: could use a lazy iterator
     List<EReference> references = new ArrayList<>();
 
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
@@ -361,7 +347,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EReference> getEAllContainments() {
-    // @Optimize: could use a lazy iterator
     List<EReference> containments = new ArrayList<>();
 
     for (EReference ref : getEAllReferences()) {
