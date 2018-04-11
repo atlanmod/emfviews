@@ -163,8 +163,6 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   // @Refactor: quite close to getAllFeatures in VirtualEClass
   protected List<EClassifier> getAllClassifiers() {
-    // @Optimize: an iterator would be best here
-
     List<EClassifier> elems = new ArrayList<>();
 
     for (EClassifier f : concreteEPackage.getEClassifiers()) {
@@ -180,8 +178,6 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   // @Refactor: quite close to getAllFeatures in VirtualEClass
   protected List<EClassifier> getNonFilteredClassifiers() {
-    // @Optimize: an iterator would be best here
-
     List<EClassifier> elems = new ArrayList<>();
 
     for (EClassifier f : getAllClassifiers()) {
