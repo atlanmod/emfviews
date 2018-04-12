@@ -52,7 +52,6 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
-import org.atlanmod.emfviews.virtuallinks.ContributingModel;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.VirtualLink;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
@@ -212,8 +211,7 @@ public class View extends ResourceImpl implements Virtualizer {
         ConcreteElement elem = (ConcreteConcept) assoc.getSource();
         // Get the NsURI of the metamodel
 
-        // @Hack: NeoEMF returns null for getModel, but we can use eContainer instead
-        String nsURI = ((ContributingModel) elem.eContainer()).getURI();
+        String nsURI = elem.getModel().getURI();
         // Find the corresponding resource
         Resource model = modelResources.get(nsURI);
         // Find the referenced element in that resource
@@ -221,8 +219,7 @@ public class View extends ResourceImpl implements Virtualizer {
 
         // Do the same for the target
         elem = (ConcreteConcept) assoc.getTarget();
-        // @Hack: ibidem
-        EObject target = modelResources.get(((ContributingModel) elem.eContainer()).getURI()).getEObject(elem.getPath());
+        EObject target = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
 
         // Find the feature for this virtual association
         EObject vSource = getVirtual(source);
