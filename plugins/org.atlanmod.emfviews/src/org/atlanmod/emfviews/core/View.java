@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -193,11 +194,9 @@ public class View extends ResourceImpl implements Virtualizer {
       Resource weavingModelResource;
       if (weavingModelPath.endsWith(".graphdb")) {
         weavingModelURI = BlueprintsURI.createURI(weavingModelURI);
-        weavingModelResource = new ResourceSetImpl().createResource(weavingModelURI);
-        weavingModelResource.load(BlueprintsNeo4jOptionsBuilder.newBuilder().weakCache().asMap());
-      } else {
-        weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
       }
+      weavingModelResource = new ResourceSetImpl().createResource(weavingModelURI);
+      weavingModelResource.load(Collections.EMPTY_MAP);
 
       weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
     }
