@@ -43,11 +43,6 @@ import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 
-import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
-import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
-
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ContributingModel;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
@@ -103,15 +98,6 @@ public class EclDelegate implements IVirtualLinksDelegate {
     }
     br.close();
 
-    // @Correctness: ECL needs to know about the neo-blueprints scheme in order to load
-    // GraphDB resources.
-    PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
-                                               BlueprintsPersistenceBackendFactory.getInstance());
-    Resource.Factory.Registry.INSTANCE
-    .getProtocolToFactoryMap()
-    .put(BlueprintsURI.SCHEME,
-         PersistentResourceFactory.getInstance());
-
     // Prepare the ECL Module
     EclModule module = new EclModule();
     module.parse(f);
@@ -130,9 +116,10 @@ public class EclDelegate implements IVirtualLinksDelegate {
     while (iter.hasNext()) {
       Entry<String, Resource> tempEntry = iter.next();
       Resource modelResource = tempEntry.getValue();
-      EmfModel inputModel = createEmfModelByURI(tempEntry.getKey(), modelResource,
-                                                inputMetamodelAliasToMetamodelNsURI.get(tempEntry.getKey()),
-                                                true, false);
+      EmfModel inputModel = null;
+      inputModel = createEmfModelByURI(tempEntry.getKey(), modelResource.getURI().toString(),
+                                       inputMetamodelAliasToMetamodelNsURI.get(tempEntry.getKey()),
+                                       true, false);
 
       module.getContext().getModelRepository().addModel(inputModel);
     }
@@ -194,18 +181,17 @@ public class EclDelegate implements IVirtualLinksDelegate {
     return weavingModel;
   }
 
-  protected EmfModel createEmfModelByURI(String name, Resource model, String metamodelURI,
+  protected EmfModel createEmfModelByURI(String name, String modelURI, String metamodelURI,
                                          boolean readOnLoad,
                                          boolean storeOnDisposal) throws EolModelLoadingException {
     EmfModel emfModel = new EmfModel();
     StringProperties properties = new StringProperties();
     properties.put(EmfModel.PROPERTY_NAME, name);
     properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
-    properties.put(EmfModel.PROPERTY_MODEL_URI, model.getURI().toString());
-    properties.put(EmfModel.PROPERTY_READONLOAD, false);
+    properties.put(EmfModel.PROPERTY_MODEL_URI, modelURI);
+    properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad);
     properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal);
     emfModel.load(properties);
-    emfModel.setModelImpl(model);
     return emfModel;
   }
 
