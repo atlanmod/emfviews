@@ -17,7 +17,6 @@
 
 package org.atlanmod.emfviews.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,16 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -45,7 +40,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
@@ -142,37 +136,19 @@ public class View extends ResourceImpl implements Virtualizer {
 
     for (String modelURI : contributingModelsPaths.split(",")) {
       URI uri = URI.createURI(modelURI).resolve(getURI());
-      Resource r;
 
       // @Correctness: matching on file extension is brittle, unless NeoEMF resources
       // always ends with it.
       if (modelURI.endsWith(".graphdb")) {
-        // Find the system path for the file from the workspace URI
-        if (!uri.isFile()) {
-          IContainer wsroot = EcorePlugin.getWorkspaceRoot();
-          IFile ifile = wsroot.getFile(new Path(uri.toPlatformString(true)));
-          File dbLocation = new File(ifile.getLocationURI());
-
-          uri = BlueprintsURI.createFileURI(dbLocation);
-        } else {
-          uri = BlueprintsURI.createFileURI(uri);
-        }
-
-        r = virtualResourceSet.createResource(uri);
-        r.load(BlueprintsNeo4jOptionsBuilder.newBuilder().weakCache().asMap());
+        uri = BlueprintsURI.createURI(uri);
       }
-      else {
-        r = virtualResourceSet.getResource(uri, true);
-      }
+      Resource r = virtualResourceSet.createResource(uri);
+      r.load(Collections.EMPTY_MAP);
 
-      if (r != null) {
-        // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
-        String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
-        contributingModelURIs.add(nsURI);
-        modelResources.put(nsURI, r);
-      } else {
-        throw new NullPointerException("No such resource: " + modelURI);
-      }
+      // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
+      String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
+      contributingModelURIs.add(nsURI);
+      modelResources.put(nsURI, r);
     }
 
     // Get the weaving model from the matching model, if there is one
