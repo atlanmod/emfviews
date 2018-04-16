@@ -70,6 +70,7 @@ public class View extends ResourceImpl implements Virtualizer {
   private EList<EObject> virtualContents;
   private Map<String, Resource> modelResources;
   private List<String> contributingModelURIs;
+  private WeavingModel weavingModel;
 
   public View() {
     super();
@@ -152,8 +153,6 @@ public class View extends ResourceImpl implements Virtualizer {
     }
 
     // Get the weaving model from the matching model, if there is one
-    WeavingModel weavingModel;
-
     if (!matchingModelPath.isEmpty()) {
       URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
       VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI);
@@ -175,40 +174,6 @@ public class View extends ResourceImpl implements Virtualizer {
       weavingModelResource.load(Collections.EMPTY_MAP);
 
       weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
-    }
-
-    // Populate the model with values for virtual associations
-    for (VirtualLink link : weavingModel.getVirtualLinks()) {
-      if (link instanceof VirtualAssociation) {
-        VirtualAssociation assoc = (VirtualAssociation) link;
-        // @Correctness: this should work with VirtualConcept as well
-
-        ConcreteElement elem = (ConcreteConcept) assoc.getSource();
-        // Get the NsURI of the metamodel
-
-        String nsURI = elem.getModel().getURI();
-        // Find the corresponding resource
-        Resource model = modelResources.get(nsURI);
-        // Find the referenced element in that resource
-        EObject source = model.getEObject(elem.getPath());
-
-        // Do the same for the target
-        elem = (ConcreteConcept) assoc.getTarget();
-        EObject target = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
-
-        // Find the feature for this virtual association
-        EObject vSource = getVirtual(source);
-        EStructuralFeature feature = vSource.eClass().getEStructuralFeature(assoc.getName());
-
-        // If it's a many feature, add to the list
-        if (feature.isMany()) {
-          @SuppressWarnings("unchecked")
-          List<EObject> list = (List<EObject>) vSource.eGet(feature);
-          list.add(getVirtual(target));
-        } else {
-          vSource.eSet(feature, getVirtual(target));
-        }
-      }
     }
   }
 
@@ -288,6 +253,40 @@ public class View extends ResourceImpl implements Virtualizer {
   public EList<EObject> getContents() {
     if (virtualContents == null) {
       List<EObject> contents = new ArrayList<>();
+
+      // Populate the model with values for virtual associations
+      for (VirtualLink link : weavingModel.getVirtualLinks()) {
+        if (link instanceof VirtualAssociation) {
+          VirtualAssociation assoc = (VirtualAssociation) link;
+          // @Correctness: this should work with VirtualConcept as well
+
+          ConcreteElement elem = (ConcreteConcept) assoc.getSource();
+          // Get the NsURI of the metamodel
+
+          String nsURI = elem.getModel().getURI();
+          // Find the corresponding resource
+          Resource model = modelResources.get(nsURI);
+          // Find the referenced element in that resource
+          EObject source = model.getEObject(elem.getPath());
+
+          // Do the same for the target
+          elem = (ConcreteConcept) assoc.getTarget();
+          EObject target = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
+
+          // Find the feature for this virtual association
+          EObject vSource = getVirtual(source);
+          EStructuralFeature feature = vSource.eClass().getEStructuralFeature(assoc.getName());
+
+          // If it's a many feature, add to the list
+          if (feature.isMany()) {
+            @SuppressWarnings("unchecked")
+            List<EObject> list = (List<EObject>) vSource.eGet(feature);
+            list.add(getVirtual(target));
+          } else {
+            vSource.eSet(feature, getVirtual(target));
+          }
+        }
+      }
 
       for (Resource r : getContributingModels()) {
         for (EObject o : r.getContents()) {
