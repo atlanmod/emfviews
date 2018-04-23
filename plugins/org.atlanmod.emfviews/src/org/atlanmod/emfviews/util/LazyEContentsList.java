@@ -265,8 +265,7 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
 
   @Override
   public Iterator<EObject> basicIterator() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return iterator();
   }
 
   @Override
