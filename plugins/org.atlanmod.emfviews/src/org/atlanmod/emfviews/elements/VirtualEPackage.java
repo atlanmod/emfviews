@@ -128,7 +128,8 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    throw new UnsupportedOperationException();
+    // @Correctness: we don't virtualize annotations.  Should we?
+    return concreteEPackage.getEAnnotation(source);
   }
 
   @Override

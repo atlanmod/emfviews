@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.ESuperAdapter;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
@@ -491,6 +492,19 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     sb.append("VirtualEClass of ");
     sb.append(concreteClassifier.toString());
     return sb.toString();
+  }
+
+  @Override
+  public Resource eResource() {
+    // @Refactor: this belongs to a BaseVirtualEObject of some kind
+    // since this is duplicated in VirtualEObject.
+    // @Correctness: this should actually be set as part of the opposite reference
+    // of a VirtualEPackage.getContents().add, but in our case we know the virtualizer
+    // is the resource.
+    if (virtualizer instanceof Resource) {
+      return (Resource) virtualizer;
+    }
+    return null;
   }
 
 }
