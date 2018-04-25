@@ -67,6 +67,10 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     return virtualFeatures.contains(virtualizer.getVirtual(f));
   }
 
+  public EClass getConcreteEClass() {
+    return (EClass) concreteClassifier;
+  }
+
   @Override
   public Object dynamicGet(int dynamicFeatureID) {
     EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);

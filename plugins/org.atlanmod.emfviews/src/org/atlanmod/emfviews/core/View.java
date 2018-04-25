@@ -26,10 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -40,10 +42,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
+import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
@@ -140,11 +144,14 @@ public class View extends ResourceImpl implements Virtualizer {
 
       // @Correctness: matching on file extension is brittle, unless NeoEMF resources
       // always ends with it.
+      Map<?,?> loadOptions = Collections.EMPTY_MAP;
       if (modelURI.endsWith(".graphdb")) {
         uri = BlueprintsURI.createURI(uri);
+        loadOptions = BlueprintsNeo4jOptionsBuilder.newBuilder()
+            .softCache().directWriteLongListSupport().autocommit().asMap();
       }
       Resource r = virtualResourceSet.createResource(uri);
-      r.load(Collections.EMPTY_MAP);
+      r.load(loadOptions);
 
       // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
       String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
@@ -307,6 +314,30 @@ public class View extends ResourceImpl implements Virtualizer {
     }
 
     return models;
+  }
+
+  public List<EObject> getAllInstances(EClass cls) {
+
+    // If the classifier does not exist on the viewpoint,
+    // there can be no instances
+    if (!viewpoint.hasClassifier(cls)) {
+      return Collections.emptyList();
+    } else {
+      // Get the concrete classifier
+      EClass ccls = ((VirtualEClass) cls).getConcreteEClass();
+      List<EObject> result = new ArrayList<>();
+      for (Resource r : getContributingModels()) {
+        // If the class belongs to a NeoEMF resource, then we can use the
+        // more efficient getAllInstances
+        if (r instanceof PersistentResource) {
+          result.addAll(((PersistentResource) r).getAllInstances(ccls));
+        } else {
+          // Otherwise iterate on contents and check instances
+          result.addAll(r.getContents().stream().filter(ccls::isInstance).collect(Collectors.toList()));
+        }
+      }
+      return result;
+    }
   }
 
 }

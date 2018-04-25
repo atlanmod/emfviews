@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -639,6 +640,17 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
 
   public List<EPackage> getContributingEPackages() {
     return contributingEPackages;
+  }
+
+  public boolean hasClassifier(EClassifier cls) {
+    Iterator it = getAllContents();
+    while (it.hasNext()) {
+      if (cls == it.next()) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }
