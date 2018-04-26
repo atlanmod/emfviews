@@ -2,10 +2,15 @@ sudo: false
 language: java
 jdk: openjdk8
 
-install:
+before_install:
   - git clone --depth 1 https://github.com/atlanmod/sexp2emf.git
-  - mvn --batch-mode -Dmaven.javadoc.skip=true --file sexp2emf/pom.xml install
-  - mvn --batch-mode -Dmaven.javadoc.skip=true --file atl-maven-plugin/pom.xml install
+  - mvn --batch-mode -Dmaven.javadoc.skip=true -DskipTests --file sexp2emf/pom.xml install
+  - git clone --single-branch --branch graph-long-list-support --depth 1 https://github.com/SOM-Research/NeoEMF.git
+  - mvn --batch-mode -Dmaven.javadoc.skip=true -DskipTests --file NeoEMF/pom.xml install
+  - mvn --batch-mode -Dmaven.javadoc.skip=true -DskipTests --file NeoEMF/plugins/eclipse/pom.xml install
+
+install:
+  - mvn --batch-mode -Dmaven.javadoc.skip=true -DskipTests --file atl-maven-plugin/pom.xml install
 
 script:
   - mvn --show-version --batch-mode -Dmaven.javadoc.skip=true integration-test
