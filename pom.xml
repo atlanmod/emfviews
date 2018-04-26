@@ -46,11 +46,11 @@
       <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext-version}/</url>
     </repository>
 
-    <!-- <repository> -->
-    <!--   <id>neoemf</id> -->
-    <!--   <layout>p2</layout> -->
-    <!--   <url>http://www.atlanmod.org/NeoEMF/releases/${neoemf-version}/plugin/</url> -->
-    <!-- </repository> -->
+    <repository>
+      <id>neoemf</id>
+      <layout>p2</layout>
+      <url>file:${user.home}/.m2/repository/fr/inria/atlanmod/neoemf/plugins/fr.inria.atlanmod.neoemf.eclipse.update/1.0.3-SNAPSHOT/fr.inria.atlanmod.neoemf.eclipse.update-1.0.3-SNAPSHOT.zip</url>
+    </repository>
   </repositories>
 
   <build>
