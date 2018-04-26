@@ -46,11 +46,11 @@
       <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext-version}/</url>
     </repository>
 
-    <repository>
-      <id>neoemf</id>
-      <layout>p2</layout>
-      <url>http://www.atlanmod.org/NeoEMF/releases/${neoemf-version}/plugin/</url>
-    </repository>
+    <!-- <repository> -->
+    <!--   <id>neoemf</id> -->
+    <!--   <layout>p2</layout> -->
+    <!--   <url>http://www.atlanmod.org/NeoEMF/releases/${neoemf-version}/plugin/</url> -->
+    <!-- </repository> -->
   </repositories>
 
   <build>
