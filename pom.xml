@@ -49,7 +49,7 @@
     <repository>
       <id>neoemf</id>
       <layout>p2</layout>
-      <url>file:/home/travis/build/atlanmod/emfviews/NeoEMF/plugins/eclipse/update/target/</url>
+      <url>file:/home/travis/build/atlanmod/emfviews/NeoEMF/plugins/eclipse/update/target/repository/</url>
     </repository>
   </repositories>
 
