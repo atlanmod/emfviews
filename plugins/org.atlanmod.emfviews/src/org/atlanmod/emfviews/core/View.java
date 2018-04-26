@@ -49,6 +49,7 @@ import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEObject;
+import org.atlanmod.emfviews.util.EMFViewsUtil;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
@@ -336,10 +337,11 @@ public class View extends ResourceImpl implements Virtualizer {
           result.addAll(((PersistentResource) r).getAllInstances(ccls));
         } else {
           // Otherwise iterate on contents and check instances
-          result.addAll(r.getContents().stream().filter(ccls::isInstance).collect(Collectors.toList()));
+          result.addAll(EMFViewsUtil.asStream(r.getAllContents()).filter(ccls::isInstance).collect(Collectors.toList()));
         }
       }
-      return result;
+
+      return result.stream().map(this::getVirtual).collect(Collectors.toList());
     }
   }
 

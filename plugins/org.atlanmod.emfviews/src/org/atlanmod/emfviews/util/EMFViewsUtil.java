@@ -19,9 +19,12 @@ package org.atlanmod.emfviews.util;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -94,6 +97,15 @@ public final class EMFViewsUtil {
 
     Collections.reverse(comps);
     return String.join(".", comps);
+  }
+
+  public static <E> Stream<E> asStream(Iterator<E> it, boolean parallel) {
+    Iterable<E> iterable = () -> it;
+    return StreamSupport.stream(iterable.spliterator(), parallel);
+  }
+
+  public static <E> Stream<E> asStream(Iterator<E> it) {
+    return asStream(it, false);
   }
 
 }
