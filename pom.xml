@@ -49,7 +49,7 @@
     <repository>
       <id>neoemf</id>
       <layout>p2</layout>
-      <url>file:${user.home}/.m2/repository/fr/inria/atlanmod/neoemf/plugins/fr.inria.atlanmod.neoemf.eclipse.update/1.0.3-SNAPSHOT/fr.inria.atlanmod.neoemf.eclipse.update-1.0.3-SNAPSHOT.zip</url>
+      <url>file:/home/travis/build/atlanmod/emfviews/NeoEMF/plugins/eclipse/update/target/</url>
     </repository>
   </repositories>
 
