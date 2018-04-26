@@ -174,11 +174,14 @@ public class View extends ResourceImpl implements Virtualizer {
 
       URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
       Resource weavingModelResource;
+      Map<?,?> loadOptions = Collections.EMPTY_MAP;
       if (weavingModelPath.endsWith(".graphdb")) {
         weavingModelURI = BlueprintsURI.createURI(weavingModelURI);
+        loadOptions = BlueprintsNeo4jOptionsBuilder.newBuilder()
+            .softCache().directWriteLongListSupport().autocommit().asMap();
       }
       weavingModelResource = new ResourceSetImpl().createResource(weavingModelURI);
-      weavingModelResource.load(Collections.EMPTY_MAP);
+      weavingModelResource.load(loadOptions);
 
       weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
     }
