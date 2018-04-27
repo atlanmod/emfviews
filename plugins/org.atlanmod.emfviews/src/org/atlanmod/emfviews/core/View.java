@@ -26,6 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.atlanmod.emfviews.elements.VirtualEObject;
+import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
+import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -36,12 +42,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.atlanmod.emfviews.elements.VirtualEObject;
-import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
-import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
-import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
-import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class View extends ResourceImpl implements Virtualizer {
 

@@ -84,6 +84,7 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
 
   private ResourceSet virtualResourceSet; // contains the cloned and modified EPackages
   private EPackage virtualPackage; // contains the new concepts
+  private VirtualEPackage root; // contains the virtual contributing packages and virtual package
   private EList<EObject> virtualContents; // built from the modified EPackages and the VirtualPackage
 
   // map to keep track of the EObject created by each New* element from the weaving model,
@@ -108,6 +109,15 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
     contributingEPackages = loadMetamodels(contributingMetamodelsPaths);
     virtualResourceSet = new ResourceSetImpl();
     EPackage.Registry registry = virtualResourceSet.getPackageRegistry();
+
+    // All contributing packages are put under a parent virtual package,
+    // otherwise OCL will have difficulties finding classifiers
+    EPackage concreteRoot = EcoreFactory.eINSTANCE.createEPackage();
+    // @Correctness: These should be configurable when creating the viewpoint
+    concreteRoot.setName("supervirtualpackage");
+    concreteRoot.setNsURI("http://www.atlanmod.org/emfviews/virtualroot/");
+    root = getVirtual(concreteRoot);
+
     // Clone each metamodel into our virtual resource set, so that we can add and
     // remove elements from them without affecting the originals.
     cloneEPackages(contributingEPackages, registry);
@@ -338,8 +348,6 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
   // Clone the packages into the given package registry
   private void cloneEPackages(List<EPackage> packages, EPackage.Registry registry) {
     for (EPackage p : packages) {
-      // @Optimize: maybe we can avoid virtualizing everything early.  But delaying
-      // their creation could be tricky to get right.
       registry.put(p.getNsURI(), getVirtual(p));
     }
   }
@@ -602,20 +610,18 @@ public class Viewpoint extends ResourceImpl implements EcoreVirtualizer {
   }
 
   private EList<EObject> buildVirtualContents() {
-    List<EObject> contents = new ArrayList<>();
-
     // The order of packages in the virtual contents matters. We use the order
     // specified by the contributing models, and the virtual package is last.
     for (EPackage p : contributingEPackages) {
-      contents.add((EObject) virtualResourceSet.getPackageRegistry().get(p.getNsURI()));
+      root.addVirtualPackage((VirtualEPackage) virtualResourceSet.getPackageRegistry().get(p.getNsURI()));
     }
 
     // The virtual package is not included if there are no new concepts.
     if (virtualPackage != null) {
-      contents.add(getVirtual(virtualPackage));
+      root.addVirtualPackage(getVirtual(virtualPackage));
     }
 
-    return ECollections.unmodifiableEList(contents);
+    return ECollections.unmodifiableEList(Arrays.asList(root));
   }
 
   private void validateVirtualResourceSet(ResourceSet r) {

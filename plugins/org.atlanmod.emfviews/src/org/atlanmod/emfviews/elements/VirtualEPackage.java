@@ -38,6 +38,8 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   private EPackage concreteEPackage;
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
+  private List<VirtualEPackage> virtualPackages = new ArrayList<>();
+  private VirtualEPackage virtualSuperPackage;
   private Set<EClassifier> filteredClassifiers = new HashSet<>();
   private EcoreVirtualizer virtualizer;
 
@@ -53,6 +55,13 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   public void addVirtualClassifier(VirtualEClass f) {
     if (!virtualClassifiers.contains(f)) {
       virtualClassifiers.add(f);
+    }
+  }
+
+  public void addVirtualPackage(VirtualEPackage p) {
+    if (!virtualPackages.contains(p)) {
+      virtualPackages.add(p);
+      p.virtualSuperPackage = this;
     }
   }
 
@@ -202,18 +211,20 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EList<EPackage> getESubpackages() {
-    return new VirtualEPackageSettingList(concreteEPackage.getESubpackages(), virtualizer,
-                                          this, EcorePackage.Literals.EPACKAGE__ESUBPACKAGES);
+    return new VirtualEPackageSettingList(concreteEPackage.getESubpackages(), virtualPackages,
+                                          virtualizer, this,
+                                          EcorePackage.Literals.EPACKAGE__ESUBPACKAGES);
   }
 
   @Override
   public EPackage getESuperPackage() {
-    EPackage sup = concreteEPackage.getESuperPackage();
-    if (sup != null) {
-      return virtualizer.getVirtual(sup);
-    } else {
-      return sup;
+    // The virtual super package overrides the concrete one
+    if (virtualSuperPackage != null) {
+      return virtualSuperPackage;
     }
+
+    EPackage sup = concreteEPackage.getESuperPackage();
+    return sup != null ? virtualizer.getVirtual(sup) : null;
   }
 
   @Override
@@ -232,13 +243,16 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   static class VirtualEPackageSettingList extends AbstractList<EPackage>implements EStructuralFeature.Setting,EList<EPackage> {
 
     private EList<EPackage> concreteList;
+    private List<VirtualEPackage> virtualPackages;
     private EObject owner;
     private EStructuralFeature feature;
     private EcoreVirtualizer virtualizer;
 
-    public VirtualEPackageSettingList(EList<EPackage> concreteList, EcoreVirtualizer virtualizer, EObject owner,
+    public VirtualEPackageSettingList(EList<EPackage> concreteList, List<VirtualEPackage> virtualPackages,
+                                      EcoreVirtualizer virtualizer, EObject owner,
                                       EStructuralFeature feature) {
       this.concreteList = concreteList;
+      this.virtualPackages = virtualPackages;
       this.owner = owner;
       this.feature = feature;
       this.virtualizer = virtualizer;
@@ -261,7 +275,11 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
     @Override
     public EPackage get(int index) {
-      return virtualizer.getVirtual(concreteList.get(index));
+      if (index < concreteList.size()) {
+        return virtualizer.getVirtual(concreteList.get(index));
+      } else {
+        return virtualPackages.get(index - concreteList.size());
+      }
     }
 
     @Override
@@ -281,7 +299,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
     @Override
     public int size() {
-      return concreteList.size();
+      return concreteList.size() + virtualPackages.size();
     }
 
     @Override
