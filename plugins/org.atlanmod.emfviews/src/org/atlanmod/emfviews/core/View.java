@@ -247,15 +247,17 @@ public class View extends ResourceImpl implements Virtualizer {
     }
   }
 
-  @Override
-  protected void doUnload() {
+  public void close() {
     // Make sure to close any contributing resource
     for (Resource r : getContributingModels()) {
       if (r instanceof PersistentResource) {
         ((PersistentResource) r).close();
-      } else {
-        r.unload();
       }
+    }
+
+    // And the weaving model
+    if (weavingModelResource instanceof PersistentResource) {
+      ((PersistentResource) weavingModelResource).close();
     }
   }
 
