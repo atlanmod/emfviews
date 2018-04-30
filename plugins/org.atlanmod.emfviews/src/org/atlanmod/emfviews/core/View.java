@@ -53,7 +53,6 @@ import org.atlanmod.emfviews.util.EMFViewsUtil;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
-import org.atlanmod.emfviews.virtuallinks.VirtualLink;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
@@ -149,7 +148,7 @@ public class View extends ResourceImpl implements Virtualizer {
       if (modelURI.endsWith(".graphdb")) {
         uri = BlueprintsURI.createURI(uri);
         loadOptions = BlueprintsNeo4jOptionsBuilder.newBuilder()
-            .softCache().directWriteLongListSupport().autocommit().asMap();
+            .softCache().directWriteLongListSupport().asMap();
       }
       Resource r = virtualResourceSet.createResource(uri);
       r.load(loadOptions);
@@ -179,7 +178,7 @@ public class View extends ResourceImpl implements Virtualizer {
       if (weavingModelPath.endsWith(".graphdb")) {
         weavingModelURI = BlueprintsURI.createURI(weavingModelURI);
         loadOptions = BlueprintsNeo4jOptionsBuilder.newBuilder()
-            .softCache().directWriteLongListSupport().autocommit().asMap();
+            .softCache().directWriteLongListSupport().asMap();
       }
       weavingModelResource = new ResourceSetImpl().createResource(weavingModelURI);
       weavingModelResource.load(loadOptions);
