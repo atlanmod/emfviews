@@ -18,8 +18,12 @@ package org.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Virtualizer;
 import org.atlanmod.emfviews.util.LazyEContentsList;
 import org.eclipse.emf.common.util.BasicEList;
@@ -43,12 +47,14 @@ public class VirtualEObject extends DynamicEObjectImpl {
   // With feature ID, the mapping is: 'a': 0, 'c': 1, 'd': 2, so the virtual value associated to 'b'
   // is now associated to 'c'.  With a map we keep track of all structural features, filtered or not.
   private Map<EStructuralFeature, Object> virtualValues;
+  private Set<EStructuralFeature> virtualValuesLoadedFromWeavingModel;
 
   private Virtualizer virtualizer;
 
   public VirtualEObject(EObject concreteEObject, VirtualEClass virtualEClass, Virtualizer virtualizer) {
     this.concreteEObject = concreteEObject;
     this.virtualizer = virtualizer;
+    this.virtualValuesLoadedFromWeavingModel = new HashSet<>();
     eSetClass(virtualEClass);
   }
 
@@ -123,6 +129,20 @@ public class VirtualEObject extends DynamicEObjectImpl {
           // Otherwise, a regular list will do
           virtualValues().put(feature, ECollections.asEList(new ArrayList<>()));
         }
+      }
+
+      // If the virtual feature has not been populated by the view weaving model,
+      // now is the time
+      if (!virtualValuesLoadedFromWeavingModel.contains(feature)) {
+        Object contents = ((View) virtualizer).getInitialContentForVirtualAssociation(this, feature);
+        if (feature.isMany()) {
+          List<Object> list = (List<Object>) virtualValues().get(feature);
+          list.addAll((List<Object>) contents);
+        } else {
+          virtualValues().put(feature, contents);
+        }
+
+        virtualValuesLoadedFromWeavingModel.add(feature);
       }
 
       return virtualValues().get(feature);

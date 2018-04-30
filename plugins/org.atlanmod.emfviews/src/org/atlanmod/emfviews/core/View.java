@@ -74,6 +74,7 @@ public class View extends ResourceImpl implements Virtualizer {
   private EList<EObject> virtualContents;
   private Map<String, Resource> modelResources;
   private List<String> contributingModelURIs;
+  private Resource weavingModelResource;
   private WeavingModel weavingModel;
 
   public View() {
@@ -173,7 +174,6 @@ public class View extends ResourceImpl implements Virtualizer {
       // Otherwise, the weaving model should be provided in the eview file
 
       URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
-      Resource weavingModelResource;
       Map<?,?> loadOptions = Collections.EMPTY_MAP;
       if (weavingModelPath.endsWith(".graphdb")) {
         weavingModelURI = BlueprintsURI.createURI(weavingModelURI);
@@ -259,44 +259,41 @@ public class View extends ResourceImpl implements Virtualizer {
     }
   }
 
+  public Object getInitialContentForVirtualAssociation(EObject owner, EStructuralFeature feature) {
+    List<Object> contents = new ArrayList<>();
+
+    // @Correctness: this should work with VirtualConcept as well
+    for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {
+      // We only care about the associations that populate our feature
+      // for the given source
+      if (assoc.getName().equals(feature.getName())) {
+        ConcreteElement elem = (ConcreteConcept) assoc.getSource();
+        EObject source = getVirtual(modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath()));
+
+        if (owner.equals(source)) {
+          // Get the target
+          elem = (ConcreteConcept) assoc.getTarget();
+          EObject target = getVirtual(modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath()));
+
+          // If it's a many feature, add the target to the list
+          if (feature.isMany()) {
+            contents.add(target);
+          } else {
+            return target;
+          }
+        }
+      }
+    }
+
+    return contents;
+  }
+
   @Override
   public EList<EObject> getContents() {
     if (virtualContents == null) {
       List<EObject> contents = new ArrayList<>();
 
-      // Populate the model with values for virtual associations
-      for (VirtualLink link : weavingModel.getVirtualLinks()) {
-        if (link instanceof VirtualAssociation) {
-          VirtualAssociation assoc = (VirtualAssociation) link;
-          // @Correctness: this should work with VirtualConcept as well
-
-          ConcreteElement elem = (ConcreteConcept) assoc.getSource();
-          // Get the NsURI of the metamodel
-
-          String nsURI = elem.getModel().getURI();
-          // Find the corresponding resource
-          Resource model = modelResources.get(nsURI);
-          // Find the referenced element in that resource
-          EObject source = model.getEObject(elem.getPath());
-
-          // Do the same for the target
-          elem = (ConcreteConcept) assoc.getTarget();
-          EObject target = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
-
-          // Find the feature for this virtual association
-          EObject vSource = getVirtual(source);
-          EStructuralFeature feature = vSource.eClass().getEStructuralFeature(assoc.getName());
-
-          // If it's a many feature, add to the list
-          if (feature.isMany()) {
-            @SuppressWarnings("unchecked")
-            List<EObject> list = (List<EObject>) vSource.eGet(feature);
-            list.add(getVirtual(target));
-          } else {
-            vSource.eSet(feature, getVirtual(target));
-          }
-        }
-      }
+      // @Correctness: we could apply view-level filters here
 
       for (Resource r : getContributingModels()) {
         for (EObject o : r.getContents()) {
