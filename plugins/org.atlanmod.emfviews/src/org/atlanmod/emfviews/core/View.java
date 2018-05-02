@@ -17,6 +17,7 @@
 
 package org.atlanmod.emfviews.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -47,7 +48,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
+import cdobackend.CDOBackend;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
 import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
@@ -108,6 +109,14 @@ public class View extends ResourceImpl implements Virtualizer {
     );
   }
 
+  private CDOBackend cdoBackend;
+  private CDOBackend getCDOBackend() {
+    if (cdoBackend == null) {
+      cdoBackend = new CDOBackend();
+    }
+    return cdoBackend;
+  }
+
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
     parse(inputStream);
@@ -145,12 +154,23 @@ public class View extends ResourceImpl implements Virtualizer {
       // @Correctness: matching on file extension is brittle, unless NeoEMF resources
       // always ends with it.
       Map<?,?> loadOptions = Collections.EMPTY_MAP;
+      Resource r;
       if (modelURI.endsWith(".graphdb")) {
         uri = BlueprintsURI.createURI(uri);
         loadOptions = BlueprintsNeo4jOptionsBuilder.newBuilder()
             .softCache().directWriteLongListSupport().asMap();
       }
-      Resource r = virtualResourceSet.createResource(uri);
+
+      // @Correctness: idem
+      if (modelURI.endsWith(".cdo")) {
+        try {
+          r = getCDOBackend().getResource(new File(uri.toFileString()), "res1");
+        } catch (Exception e) {
+          throw new RuntimeException("Exception while loading CDO resource", e);
+        }
+      } else {
+        r = virtualResourceSet.createResource(uri);
+      }
       r.load(loadOptions);
 
       // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
@@ -257,6 +277,11 @@ public class View extends ResourceImpl implements Virtualizer {
     // And the weaving model
     if (weavingModelResource instanceof PersistentResource) {
       ((PersistentResource) weavingModelResource).close();
+    }
+
+    // And the CDO backend
+    if (cdoBackend != null) {
+      cdoBackend.close();
     }
   }
 
