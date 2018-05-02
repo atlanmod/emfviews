@@ -135,11 +135,14 @@ public class VirtualEObject extends DynamicEObjectImpl {
       // now is the time
       if (!virtualValuesLoadedFromWeavingModel.contains(feature)) {
         Object contents = ((View) virtualizer).getInitialContentForVirtualAssociation(this, feature);
-        if (feature.isMany()) {
-          List<Object> list = (List<Object>) virtualValues().get(feature);
-          list.addAll((List<Object>) contents);
-        } else {
-          virtualValues().put(feature, contents);
+
+        if (contents != null) {
+          if (feature.isMany()) {
+            List<Object> list = (List<Object>) virtualValues().get(feature);
+            list.addAll((List<Object>) contents);
+          } else {
+            virtualValues().put(feature, contents);
+          }
         }
 
         virtualValuesLoadedFromWeavingModel.add(feature);

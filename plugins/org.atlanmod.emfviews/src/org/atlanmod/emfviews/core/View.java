@@ -28,6 +28,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import org.atlanmod.emfviews.elements.VirtualEClass;
+import org.atlanmod.emfviews.elements.VirtualEObject;
+import org.atlanmod.emfviews.util.EMFViewsUtil;
+import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
+import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -46,15 +54,6 @@ import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOpti
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
-
-import org.atlanmod.emfviews.elements.VirtualEClass;
-import org.atlanmod.emfviews.elements.VirtualEObject;
-import org.atlanmod.emfviews.util.EMFViewsUtil;
-import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
-import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
-import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
-import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 public class View extends ResourceImpl implements Virtualizer {
 
@@ -263,6 +262,11 @@ public class View extends ResourceImpl implements Virtualizer {
 
   public Object getInitialContentForVirtualAssociation(EObject owner, EStructuralFeature feature) {
     List<Object> contents = new ArrayList<>();
+
+    // If there is no weaving model, there are no contents
+    if (weavingModel == null) {
+      return null;
+    }
 
     // @Correctness: this should work with VirtualConcept as well
     for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {

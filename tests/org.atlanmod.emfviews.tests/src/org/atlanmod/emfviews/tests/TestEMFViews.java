@@ -67,7 +67,7 @@ public class TestEMFViews {
       // with a serialized "expected" result, or at the very least do an
       // exhaustive comparison with the base models. For now, comparing by hand
       // a few select features will do.
-      EList<EObject> l = v.getContents();
+      EList<EObject> l = v.getContents().get(0).eContents();
 
       // Ensure we have the three packages we want
       assertEquals(3, l.size());
@@ -265,7 +265,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/addconcept/viewpoint.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
     // The virtual package takes the WeavingModel name
@@ -282,7 +282,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/addconcept/subconcept.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(2);
     // The virtual package takes the WeavingModel name
@@ -304,7 +304,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/addconcept/superconcept.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(2);
     // The virtual package takes the WeavingModel name
@@ -336,7 +336,7 @@ public class TestEMFViews {
         new Viewpoint(resourceURI("viewpoints/addproperty/viewpoint.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     EObject A = getClassifier(l.get(0), "A").get();
 
     // Check the new property is created on A
@@ -369,7 +369,7 @@ public class TestEMFViews {
         new Viewpoint(resourceURI("viewpoints/addassoc/composition.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     EObject A = getClassifier(l.get(0), "A").get();
     EObject B = getClassifier(l.get(1), "B").get();
 
@@ -390,7 +390,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/addassoc/bidirectional.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     EObject A = getClassifier(l.get(0), "A").get();
     EObject B = getClassifier(l.get(1), "B").get();
 
@@ -419,7 +419,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/synthetic-elements/property-to-newconcept.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
     // It holds our new concept
@@ -435,7 +435,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/synthetic-elements/concept-to-newconcept.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     EObject A = getClassifier(l.get(0), "A").get();
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
@@ -457,7 +457,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/synthetic-elements/assoc-to-newconcept.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     EObject A = getClassifier(l.get(0), "A").get();
     // The virtual package comes after packages from the contributing models
     EObject p = l.get(1);
@@ -479,7 +479,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/filter/blacklist.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     // There is only the A and B packages
     assertEquals(2, l.size());
 
@@ -505,7 +505,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/filter/whitelist.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     // There is only the contentfwk package
     assertEquals(1, l.size());
     EObject p = l.get(0);
@@ -597,7 +597,7 @@ public class TestEMFViews {
     Viewpoint v = new Viewpoint(resourceURI("viewpoints/wildcard/wildcard.eviewpoint"));
     v.load(null);
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getContents().get(0).eContents();
     // There is only the VirtualLinks package
     assertEquals(1, l.size());
     EObject p = l.get(0);
