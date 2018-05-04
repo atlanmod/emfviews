@@ -136,8 +136,17 @@ public class VirtualEObject extends DynamicEObjectImpl {
       if (!virtualValuesLoadedFromWeavingModel.contains(feature)) {
         Object contents = ((View) virtualizer).getInitialContentForVirtualAssociation(this, feature);
 
+        if (contents == null ||
+            (contents instanceof List && ((List) contents).size() == 0)) {
+          // It's possible that the opposite feature contains the contents instead
+          // we fetch them
+          // @Correctness: when should we look into the opposite, in general?
+          EReference opposite = ((EReference) feature).getEOpposite();
+          contents = ((View) virtualizer).getInitialContentForVirtualAssociationOpposite(this, opposite);
+        }
+
         if (contents != null) {
-          if (feature.isMany()) {
+          if (contents instanceof List) {
             List<Object> list = (List<Object>) virtualValues().get(feature);
             list.addAll((List<Object>) contents);
           } else {

@@ -319,6 +319,36 @@ public class View extends ResourceImpl implements Virtualizer {
     return contents;
   }
 
+  public Object getInitialContentForVirtualAssociationOpposite(EObject owner, EStructuralFeature feature) {
+    List<Object> contents = new ArrayList<>();
+
+    // If there is no weaving model, there are no contents
+    if (weavingModel == null) {
+      return null;
+    }
+
+    // @Correctness: this should work with VirtualConcept as well
+    for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {
+      // We only care about the associations that populate our feature
+      // for the given source
+      if (assoc.getName().equals(feature.getName())) {
+        ConcreteElement elem = (ConcreteConcept) assoc.getTarget();
+        EObject target = getVirtual(modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath()));
+
+        if (owner.equals(target)) {
+          // Get the target
+          elem = (ConcreteConcept) assoc.getSource();
+          EObject source = getVirtual(modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath()));
+
+          // If it's a many feature, add the target to the list
+          contents.add(source);
+        }
+      }
+    }
+
+    return contents;
+  }
+
   @Override
   public EList<EObject> getContents() {
     if (virtualContents == null) {
