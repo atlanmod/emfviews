@@ -29,7 +29,7 @@ public class EmfViewsFactory extends ResourceFactoryImpl {
     if (uri.fileExtension().equals("eview")) {
       return new View(uri);
     } else if (uri.fileExtension().equals("eviewpoint")) {
-      return new Viewpoint(uri);
+      return new ViewpointResource(uri);
     } else {
       return null;
     }

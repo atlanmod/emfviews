@@ -101,8 +101,14 @@ public class View extends ResourceImpl implements Virtualizer {
     ResourceSet virtualResourceSet = new ResourceSetImpl();
 
     URI viewpointURI = URI.createURI(viewpointPath).resolve(getURI());
-    viewpoint = new Viewpoint(viewpointURI);
-    viewpoint.load(null);
+    ViewpointResource vpr = new ViewpointResource(viewpointURI);
+    vpr.load(null);
+    if (!vpr.getErrors().isEmpty()) {
+      getErrors().add(new Err("Failed to load viewpoint to the following errors"));
+      getErrors().addAll(vpr.getErrors());
+      return;
+    }
+    viewpoint = vpr.getViewpoint();
 
     // Load contributing metamodels into the virtual resource set,
     // to allow model ressources to be loaded with getResource
@@ -214,6 +220,7 @@ public class View extends ResourceImpl implements Virtualizer {
       throw new IllegalArgumentException("Error in parsing eview file: exactly one of {matching model, weaving model} must be present");
     }
 
+    // @Correctness: make sure we trim every property
     for (String key : p.stringPropertyNames()) {
       switch (key) {
       case EVIEW_VIEWPOINT:
@@ -262,6 +269,36 @@ public class View extends ResourceImpl implements Virtualizer {
     }
 
     return models;
+  }
+
+  class Err implements Diagnostic {
+
+    String msg;
+
+    Err(String msg) {
+      this.msg = msg;
+    }
+
+    @Override
+    public String getMessage() {
+      return msg;
+    }
+
+    @Override
+    public String getLocation() {
+      return getURI().toString();
+    }
+
+    @Override
+    public int getLine() {
+      return 0;
+    }
+
+    @Override
+    public int getColumn() {
+      return 0;
+    }
+
   }
 
 }
