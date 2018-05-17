@@ -43,6 +43,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.atlanmod.emfviews.core.View;
+import org.atlanmod.emfviews.core.ViewResource;
 import org.atlanmod.emfviews.core.Viewpoint;
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
@@ -81,8 +82,7 @@ public class TestVirtualObjects {
     s = (EAttribute) S.getEStructuralFeature("s");
 
     viewpoint = new Viewpoint();
-    view = new View();
-    view.setViewpoint(viewpoint);
+    view = new View(viewpoint);
   }
 
   @After
@@ -749,8 +749,12 @@ public class TestVirtualObjects {
 
   @Test
   public void eResource() {
-    // A VirtualEObject's resource should be the View that holds it
-    assertEquals(view, view.getVirtual(A).eResource());
+    // A VirtualEObject's resource should be the ViewResource that holds its View
+    assertEquals(null, view.getVirtual(A).eResource());
+
+    ViewResource vr = new ViewResource();
+    vr.setView(view);
+    assertEquals(vr, view.getVirtual(A).eResource());
   }
 
   @Test

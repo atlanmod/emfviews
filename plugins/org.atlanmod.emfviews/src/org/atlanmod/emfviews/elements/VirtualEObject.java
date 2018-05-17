@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Virtualizer;
 import org.atlanmod.emfviews.util.LazyEContentsList;
 import org.eclipse.emf.common.util.BasicEList;
@@ -238,13 +239,14 @@ public class VirtualEObject extends DynamicEObjectImpl {
 
   @Override
   public Resource eResource() {
-    // @Correctness: it might be best to add a Resource attribute to a
-    // virtualEObject, or re-use the internalResource field of DynamicEObjectImpl,
-    // as Virtualizers may not necessarily be resources in the future.
-    if (virtualizer instanceof Resource) {
-      return (Resource) virtualizer;
+    // Virtual objects are not contained directly by resources,
+    // but some modeling tools (e.g. OCL) expect them to have one.
+    // We delegate that to the view, which can be held by a resource.
+    if (virtualizer instanceof View) {
+      return ((View) virtualizer).getResource();
+    } else {
+      return null;
     }
-    return null;
   }
 
 }

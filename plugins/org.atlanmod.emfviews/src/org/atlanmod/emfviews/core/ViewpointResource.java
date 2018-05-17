@@ -84,12 +84,12 @@ public class ViewpointResource extends ResourceImpl {
         try {
           weavingModelURI = URI.createURI(uriString);
         } catch (IllegalArgumentException ex) {
-          getErrors().add(new Err(String.format("Weaving model path is an invalid URI: '%s'", uriString)));
+          getErrors().add(new Err("Weaving model path is an invalid URI: '%s'", uriString));
         }
         break;
 
       default:
-        getErrors().add(new Err(String.format("Invalid key in eviewpoint file: '%s'", key)));
+        getErrors().add(new Err("Invalid key in eviewpoint file: '%s'", key));
       }
     }
 
@@ -181,6 +181,10 @@ public class ViewpointResource extends ResourceImpl {
 
     Err(String msg) {
       this.msg = msg;
+    }
+
+    Err(String msg, Object ...args) {
+      this.msg = String.format(msg, args);
     }
 
     @Override

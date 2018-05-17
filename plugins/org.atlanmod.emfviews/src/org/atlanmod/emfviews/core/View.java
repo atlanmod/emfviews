@@ -17,140 +17,55 @@
 
 package org.atlanmod.emfviews.core;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
-import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-public class View extends ResourceImpl implements Virtualizer {
+public class View implements Virtualizer {
 
-  public static final String EVIEW_VIEWPOINT = "viewpoint";
-  public static final String EVIEW_CONTRIBUTING_MODELS = "contributingModels";
-  public static final String EVIEW_MATCHING_MODEL = "matchingModel";
-  public static final String EVIEW_WEAVING_MODEL = "weavingModel";
+  private Viewpoint viewpoint; // holds the metamodel the view needs to conform to
+  private WeavingModel weavingModel; // what virtual links to create
+  private Resource resource; // the resource using this view, if any.  This is used by VirtualEObject.eResource,
+                             // to please some modeling tools (e.g. OCL).
 
-  // Values from the eview file, used for loading/saving
-  private String viewpointPath;
-  private String contributingModelsPaths;
-  private String matchingModelPath;
-  private String weavingModelPath;
-
-  private Viewpoint viewpoint;
-  private Map<EObject, EObject> concreteToVirtual;
-  private EList<EObject> virtualContents;
   private Map<String, Resource> modelResources;
-  private List<String> contributingModelURIs;
+  private List<Resource> contributingModels;
 
-  public View() {
-    super();
-  }
+  private EList<EObject> virtualContents; // cache the results of getVirtualContents
+  private Map<EObject, EObject> concreteToVirtual; // used by the Virtualizer implementation to cache virtual elements
 
-  public View(URI uri) {
-    super(uri);
-  }
-
-  public void setViewpoint(Viewpoint viewpoint) {
+  // A View without models is still useful as a virtualizer
+  public View(Viewpoint viewpoint) {
     this.viewpoint = viewpoint;
   }
 
-  @Override
-  public EObject getVirtual(EObject obj) {
-    if (concreteToVirtual == null) {
-      concreteToVirtual = new HashMap<>();
-    }
+  public View(Viewpoint viewpoint, List<Resource> contributingModels, WeavingModel weavingModel) {
+    this.viewpoint = viewpoint;
+    this.contributingModels = contributingModels;
+    this.weavingModel = weavingModel;
 
-    if (obj == null) {
-      return null;
-    }
-
-    // Idempotent
-    if (obj instanceof VirtualEObject) {
-      return obj;
-    }
-
-    return concreteToVirtual.computeIfAbsent(obj, o ->
-      new VirtualEObject(o, viewpoint.getVirtual(o.eClass()), this)
-    );
+    build();
   }
 
-  @Override
-  protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
-    parse(inputStream);
-
-    ResourceSet virtualResourceSet = new ResourceSetImpl();
-
-    URI viewpointURI = URI.createURI(viewpointPath).resolve(getURI());
-    ViewpointResource vpr = new ViewpointResource(viewpointURI);
-    vpr.load(null);
-    if (!vpr.getErrors().isEmpty()) {
-      getErrors().add(new Err("Failed to load viewpoint to the following errors"));
-      getErrors().addAll(vpr.getErrors());
-      return;
-    }
-    viewpoint = vpr.getViewpoint();
-
-    // Load contributing metamodels into the virtual resource set,
-    // to allow model ressources to be loaded with getResource
-    for (EPackage p : viewpoint.getContributingEPackages()) {
-      virtualResourceSet.getPackageRegistry().put(p.getNsURI(), p);
-    }
-
-    // Load contributing models
-
-    contributingModelURIs = new ArrayList<>();
+  protected void build() {
     modelResources = new HashMap<>();
 
-    for (String modelURI : contributingModelsPaths.split(",")) {
-      URI uri = URI.createURI(modelURI).resolve(getURI());
-      Resource r = virtualResourceSet.getResource(uri, true);
-      if (r != null) {
-        // @Refactor: maybe there's a better way to obtain the URI of the metamodel?
-        String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
-        contributingModelURIs.add(nsURI);
-        modelResources.put(nsURI, r);
-      } else {
-        throw new NullPointerException("No such resource: " + modelURI);
-      }
-    }
-
-    // Get the weaving model from the matching model, if there is one
-    WeavingModel weavingModel;
-
-    if (!matchingModelPath.isEmpty()) {
-      URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
-      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI);
-
-      try {
-        weavingModel = vld.createWeavingModel(getContributingModels());
-      } catch (Exception e) {
-        throw new RuntimeException("Exception while creating weaving model from matching model", e);
-      }
-    } else {
-      // Otherwise, the weaving model should be provided in the eview file
-      URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
-      Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
-      weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
+    // Load contributing models
+    for (Resource r : contributingModels) {
+      String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
+      modelResources.put(nsURI, r);
     }
 
     // Populate the model with values for virtual associations
@@ -184,69 +99,7 @@ public class View extends ResourceImpl implements Virtualizer {
     }
   }
 
-  @Override
-  protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
-    // @Correctness: This rewrites the eview file as it was found.
-    // I think we should rather use the eview file to init the state of the View, and
-    // write from the correct state on save.  This would prevent writing garbage.
-    Properties p = new Properties();
-    p.setProperty(EVIEW_VIEWPOINT, viewpointPath);
-    p.setProperty(EVIEW_CONTRIBUTING_MODELS, contributingModelsPaths);
-    p.setProperty(EVIEW_MATCHING_MODEL, matchingModelPath);
-    p.setProperty(EVIEW_WEAVING_MODEL, weavingModelPath);
-    p.store(outputStream, null);
-  }
-
-  private void parse(InputStream s) throws IOException {
-    Properties p = new Properties();
-    p.load(s);
-
-    // @Correctness: if we did not expose the eview values directly, this wouldn't be needed.
-    matchingModelPath = "";
-
-    // Check all required fields are present
-    // FIXME: Ecore editor silently eats these exceptions (test with empty viewpoint
-    // and see)
-    if (!p.containsKey(EVIEW_VIEWPOINT)) {
-      throw new IllegalArgumentException(String.format("Error in parsing eview file: missing %s field", EVIEW_VIEWPOINT));
-    }
-    if (!p.containsKey(EVIEW_CONTRIBUTING_MODELS)) {
-      throw new IllegalArgumentException(String.format("Error in parsing eview file: missing %s field", EVIEW_CONTRIBUTING_MODELS));
-    }
-
-    // There cannot be a matching model and weaving model specified together, but
-    // at least one of them must be present.
-    if (p.containsKey(EVIEW_MATCHING_MODEL) == p.containsKey(EVIEW_WEAVING_MODEL)) {
-      throw new IllegalArgumentException("Error in parsing eview file: exactly one of {matching model, weaving model} must be present");
-    }
-
-    // @Correctness: make sure we trim every property
-    for (String key : p.stringPropertyNames()) {
-      switch (key) {
-      case EVIEW_VIEWPOINT:
-        viewpointPath = p.getProperty(key, "").trim();
-        break;
-
-      case EVIEW_CONTRIBUTING_MODELS:
-        contributingModelsPaths = p.getProperty(key, "").trim();
-        break;
-
-      case EVIEW_MATCHING_MODEL:
-        matchingModelPath = p.getProperty(key, "").trim();
-        break;
-
-      case EVIEW_WEAVING_MODEL:
-        weavingModelPath = p.getProperty(key, "").trim();
-        break;
-
-      default:
-        throw new IllegalArgumentException(String.format("Invalid key in eview file: '%s'", key));
-      }
-    }
-  }
-
-  @Override
-  public EList<EObject> getContents() {
+  public EList<EObject> getVirtualContents() {
     if (virtualContents == null) {
       List<EObject> contents = new ArrayList<>();
 
@@ -262,43 +115,38 @@ public class View extends ResourceImpl implements Virtualizer {
   }
 
   public List<Resource> getContributingModels() {
-    List<Resource> models = new ArrayList<>(contributingModelURIs.size());
-
-    for (String uri : contributingModelURIs) {
-      models.add(modelResources.get(uri));
-    }
-
-    return models;
+    return contributingModels;
   }
 
-  class Err implements Diagnostic {
+  public void setResource(Resource r) {
+    this.resource = r;
+  }
 
-    String msg;
+  public Resource getResource() {
+    return resource;
+  }
 
-    Err(String msg) {
-      this.msg = msg;
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Implementation of Virtualizer
+
+  @Override
+  public EObject getVirtual(EObject obj) {
+    if (concreteToVirtual == null) {
+      concreteToVirtual = new HashMap<>();
     }
 
-    @Override
-    public String getMessage() {
-      return msg;
+    if (obj == null) {
+      return null;
     }
 
-    @Override
-    public String getLocation() {
-      return getURI().toString();
+    // Idempotent
+    if (obj instanceof VirtualEObject) {
+      return obj;
     }
 
-    @Override
-    public int getLine() {
-      return 0;
-    }
-
-    @Override
-    public int getColumn() {
-      return 0;
-    }
-
+    return concreteToVirtual.computeIfAbsent(obj, o ->
+      new VirtualEObject(o, viewpoint.getVirtual(o.eClass()), this)
+    );
   }
 
 }

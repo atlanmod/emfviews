@@ -31,6 +31,13 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.atlanmod.emfviews.core.View;
+import org.atlanmod.emfviews.core.ViewResource;
+import org.atlanmod.emfviews.core.Viewpoint;
+import org.atlanmod.emfviews.core.ViewpointResource;
+import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+import org.atlanmod.sexp2emf.Sexp2EMF;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -41,14 +48,8 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.junit.Test;
-
-import org.atlanmod.emfviews.core.View;
-import org.atlanmod.emfviews.core.Viewpoint;
-import org.atlanmod.emfviews.core.ViewpointResource;
-import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
-import org.atlanmod.sexp2emf.Sexp2EMF;
 
 public class TestEMFViews {
 
@@ -103,7 +104,7 @@ public class TestEMFViews {
 
     // Then, do the same for models (EView)
     {
-      View v = new View(resourceURI("views/three-model-composition/view.eview"));
+      ViewResource v = new ViewResource(resourceURI("views/three-model-composition/view.eview"));
       v.load(null);
 
       // We have access to all the contents
@@ -144,8 +145,7 @@ public class TestEMFViews {
     // virtual model
 
     // Get the virtual model
-    View v = new View(resourceURI("views/three-model-composition/view.eview"));
-    v.load(null);
+    View v = loadView("views/three-model-composition/view.eview");
 
     // Get the concrete model loaded by the virtual model. We could also load
     // the model ourselves from the resource, but it would have no connection to
@@ -154,7 +154,7 @@ public class TestEMFViews {
 
     // Descend into the contents
     EObject ea = m.getContents().get(0);
-    EObject vea = v.getContents().get(0);
+    EObject vea = v.getVirtualContents().get(0);
 
     // Get an interesting feature in both concrete and virtual models
     EList<EObject> ea_labels = eList(ea, "labels");
@@ -191,10 +191,9 @@ public class TestEMFViews {
     // We should not be able to access a filtered feature in any way.
 
     // Get the view
-    View v = new View(resourceURI("views/three-model-composition/view.eview"));
-    v.load(null);
+    View v = loadView("views/three-model-composition/view.eview");
 
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getVirtualContents();
 
     // Find the Business Architecture instance where there are filtered elements
     EObject vba = l.get(0).eContents().get(1);
@@ -224,13 +223,11 @@ public class TestEMFViews {
     // exists, but its EOpposite link should be null.
 
     // Create the view
-    View v = new View(resourceURI("views/minimal/view.eview"));
-    v.load(null);
-    assertEquals(Collections.EMPTY_LIST, v.getErrors());
+    View v = loadView("views/minimal/view.eview");
 
     // The model has a many ref from A to B, and a single ref from B to A, but
     // the metamodel has filtered the ref in A.
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getVirtualContents();
     EObject a = l.get(0);
 
     // Make sure the ref in A is filtered
@@ -251,11 +248,10 @@ public class TestEMFViews {
     // Creating a virtual association between two minimal models.
 
     // Create the view
-    View v = new View(resourceURI("views/minimal-assoc/view.eview"));
-    v.load(null);
+    View v = loadView("views/minimal-assoc/view.eview");
 
     // Get the virtual model
-    EList<EObject> l = v.getContents();
+    EList<EObject> l = v.getVirtualContents();
 
     // Check it contains attributes from the source models
     EObject A = l.get(0);
@@ -629,6 +625,34 @@ public class TestEMFViews {
     assertEquals(v.getVirtual(P.getEClassifier("B")), VP.getEClassifier("B"));
   }
 
+  @Test
+  public void pureMemoryView() {
+    // We should be able to create a view without creating any file
+
+    // Construct the viewpoint
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' "
+        + ":eClassifiers [(EClass :name 'A')"
+        + "               (EClass :name 'B')])",
+        EcoreFactory.eINSTANCE)[0];
+
+    // Empty weaving model
+    WeavingModel WM = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM')",
+                                                    VirtualLinksFactory.eINSTANCE)[0];
+
+    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P), WM);
+
+    // Construct the view
+    EObject[] model = Sexp2EMF.build("[(A) (B)]", P.getEFactoryInstance());
+    Resource r = new ResourceImpl();
+    r.getContents().addAll(Arrays.asList(model));
+
+    View view = new View(viewpoint, Arrays.asList(r), WM);
+
+    assertEquals(2, view.getVirtualContents().size());
+    assertEquals(view.getVirtual(model[0]), view.getVirtualContents().get(0));
+    assertEquals(view.getVirtual(model[1]), view.getVirtualContents().get(1));
+  }
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Helpers for reducing the boilerplate of calling the reflective EMF API
 
@@ -637,6 +661,13 @@ public class TestEMFViews {
     vr.load(null);
     assertEquals(Collections.EMPTY_LIST, vr.getErrors());
     return vr.getViewpoint();
+  }
+
+  View loadView(String path) throws IOException {
+    ViewResource vr = new ViewResource(resourceURI(path));
+    vr.load(null);
+    assertEquals(Collections.EMPTY_LIST, vr.getErrors());
+    return vr.getView();
   }
 
   Object eGet(EObject o, String featureName) {

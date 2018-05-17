@@ -82,8 +82,7 @@ public class Viewpoint implements EcoreVirtualizer {
   private Map<EObject, EObject> concreteToVirtual;
 
   // A viewpoint without contributing metamodels is still useful as a virtualizer
-  public Viewpoint() {
-  }
+  public Viewpoint() {}
 
   public Viewpoint(List<EPackage> contributingMetamodels) {
     this(contributingMetamodels, null);
