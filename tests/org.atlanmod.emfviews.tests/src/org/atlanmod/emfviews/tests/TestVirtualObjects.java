@@ -47,6 +47,7 @@ import org.atlanmod.emfviews.core.ViewResource;
 import org.atlanmod.emfviews.core.Viewpoint;
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
+import org.atlanmod.emfviews.elements.VirtualEDataType;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
@@ -575,7 +576,7 @@ public class TestVirtualObjects {
 
     assertEquals(0, VA.getESuperTypes().size());
 
-    VA.addVirtualSuperType(VSup);
+    VA.addVirtualSuperType(sup);
     assertEquals(VSup, VA.getESuperTypes().get(0));
   }
 
@@ -679,7 +680,7 @@ public class TestVirtualObjects {
     r.setLowerBound(0);
     VirtualEReference Vr = viewpoint.getVirtual(r);
     VA.addVirtualFeature(Vr);
-    ((InternalEObject) r).eInverseAdd(VA, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
+    ((InternalEObject) r).eInverseAdd((InternalEObject) A, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
                                        EStructuralFeature.class, null);
 
     EReference r2 = EcoreFactory.eINSTANCE.createEReference();
@@ -688,7 +689,7 @@ public class TestVirtualObjects {
     r2.setLowerBound(0);
     VirtualEReference Vr2 = viewpoint.getVirtual(r2);
     VB.addVirtualFeature(Vr2);
-    ((InternalEObject) r2).eInverseAdd(VB, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
+    ((InternalEObject) r2).eInverseAdd((InternalEObject) B, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
                                         EStructuralFeature.class, null);
 
     Vr.setVirtualOpposite(Vr2);
@@ -775,6 +776,13 @@ public class TestVirtualObjects {
 
     // A concrete object should be an instance of its virtual EClass.
     assertTrue(viewpoint.getVirtual(A).isInstance(anA));
+  }
+
+  @Test
+  public void virtualDatatype() {
+    // We can get a virtual package out of a virtualized datatype
+    VirtualEDataType dt = viewpoint.getVirtual(EcorePackage.Literals.ECHARACTER_OBJECT);
+    assertTrue(dt.getEPackage() instanceof VirtualEPackage);
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

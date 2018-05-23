@@ -70,6 +70,7 @@ public class Viewpoint implements EcoreVirtualizer {
   private String rootPackageNsURI = "http://www.atlanmod.org/emfviews/viewpoint";
 
   // Attributes
+  private ResourceSet baseResourceSet; // contains the contributing EPackages
   private ResourceSet virtualResourceSet; // contains the virtualized EPackages
   private VirtualEPackage rootPackage; // contains the virtual contributing packages and the virtual package
   private EPackage virtualPackage; // contains the new concepts
@@ -97,8 +98,10 @@ public class Viewpoint implements EcoreVirtualizer {
 
   // Create the virtual elements and virtual packages.
   protected void build() {
+    baseResourceSet = new ResourceSetImpl();
     virtualResourceSet = new ResourceSetImpl();
-    EPackage.Registry registry = virtualResourceSet.getPackageRegistry();
+    EPackage.Registry baseRegistry = baseResourceSet.getPackageRegistry();
+    EPackage.Registry virtualRegistry = virtualResourceSet.getPackageRegistry();
 
     // All contributing packages are put under a parent virtual package,
     // otherwise OCL will have difficulties finding classifiers
@@ -107,20 +110,24 @@ public class Viewpoint implements EcoreVirtualizer {
     concreteRoot.setNsURI(rootPackageNsURI);
     rootPackage = getVirtual(concreteRoot);
 
-    // Clone each metamodel into our virtual resource set, so that we can add and
+    // Put each metamodel into a resource set, so that we can easily find elements
+    // from it using findEObject.
+    // We also put *virtual* elements in the virtual resource set, so that we can add and
     // remove elements from them without affecting the originals.
     for (EPackage p : contributingPackages) {
+      baseRegistry.put(p.getNsURI(), p);
       VirtualEPackage vp = getVirtual(p);
-      registry.put(p.getNsURI(), vp);
+      virtualRegistry.put(p.getNsURI(), vp);
       // The order of packages in the root package matters. We use the order
       // specified by the contributing models, and the virtual package is last.
       rootPackage.addVirtualPackage(vp);
     }
 
-    // Filter concrete elements
-    applyFilters(registry);
+    // Filter concrete elements (we don't allow filtering of virtual elements, so we can apply filters
+    // before creating those)
+    applyFilters(virtualRegistry);
 
-    // Create all *new* elements first, and set their EMF attribute after to avoid any circular dependencies
+    // Create all *new* elements first, and set their EMF attributes after to avoid any circular dependencies
     syntheticElements = createSyntheticElements();
 
     // The virtualPackage holds all the new concepts, but is created only if
@@ -131,14 +138,14 @@ public class Viewpoint implements EcoreVirtualizer {
       virtualPackage = EcoreFactory.eINSTANCE.createEPackage();
       virtualPackage.setName(name);
       virtualPackage.setNsURI("http://www.atlanmod.org/emfviews/viewpoint/" + name);
-      registry.put(virtualPackage.getNsURI(), virtualPackage);
-      buildNewConcepts(registry);
+      virtualRegistry.put(virtualPackage.getNsURI(), virtualPackage);
+      buildNewConcepts(baseRegistry);
 
       rootPackage.addVirtualPackage(getVirtual(virtualPackage));
     }
 
-    buildNewProperties(registry);
-    buildNewAssociations(registry);
+    buildNewProperties(baseRegistry);
+    buildNewAssociations(baseRegistry);
 
     // @Correctness: the resulting package should be a valid Ecore metamodel.
     // That is not the case currently due to filters.
@@ -294,6 +301,7 @@ public class Viewpoint implements EcoreVirtualizer {
       if (!(target instanceof EClassifier))
         throw EX("Target '%s' of new association '%s' should be an EClassifier", target,
                  a.getName());
+
       ref.setEType((EClassifier) target);
       ref.setLowerBound(a.getLowerBound());
       ref.setUpperBound(a.getUpperBound());
@@ -320,7 +328,6 @@ public class Viewpoint implements EcoreVirtualizer {
       // metamodel, so we can modify it.
       ((InternalEObject) ref).eInverseAdd((InternalEObject) source, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
                                           EStructuralFeature.class, null);
-
     }
   }
 
@@ -331,7 +338,7 @@ public class Viewpoint implements EcoreVirtualizer {
       String modelURI = e.getModel().getURI();
       EObject model = registry.getEPackage(modelURI);
       if (model == null)
-        throw EX("Model '%s' of concrete element cannot be found in package registry", modelURI);
+        throw EX("Model '%s' of concrete element '%s' cannot be found in package registry", modelURI, e.getPath());
 
       String path = e.getPath();
       EObject obj = EMFViewsUtil.findElement(model, path)
@@ -422,11 +429,6 @@ public class Viewpoint implements EcoreVirtualizer {
       return null;
     }
 
-    // Idempotent
-    if (o instanceof VirtualEPackage) {
-      return (VirtualEPackage) o;
-    }
-
     return (VirtualEPackage) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEPackage(o, this));
   }
 
@@ -434,11 +436,6 @@ public class Viewpoint implements EcoreVirtualizer {
   public VirtualEClassifier getVirtual(EClassifier o) {
     if (o == null) {
       return null;
-    }
-
-    // Idempotent
-    if (o instanceof VirtualEClassifier) {
-      return (VirtualEClassifier) o;
     }
 
     if (o instanceof EClass) {
@@ -456,11 +453,6 @@ public class Viewpoint implements EcoreVirtualizer {
       return null;
     }
 
-    // Idempotent
-    if (o instanceof VirtualEClass) {
-      return (VirtualEClass) o;
-    }
-
     return (VirtualEClass) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEClass(o, this));
   }
 
@@ -470,11 +462,6 @@ public class Viewpoint implements EcoreVirtualizer {
       return null;
     }
 
-    // Idempotent
-    if (o instanceof VirtualEDataType) {
-      return (VirtualEDataType) o;
-    }
-
     return (VirtualEDataType) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEDataType(o, this));
   }
 
@@ -482,11 +469,6 @@ public class Viewpoint implements EcoreVirtualizer {
   public VirtualEStructuralFeature getVirtual(EStructuralFeature o) {
     if (o == null) {
       return null;
-    }
-
-    // Idempotent
-    if (o instanceof VirtualEStructuralFeature) {
-      return (VirtualEStructuralFeature) o;
     }
 
     if (o instanceof EAttribute) {
@@ -504,11 +486,6 @@ public class Viewpoint implements EcoreVirtualizer {
       return null;
     }
 
-    // Idempotent
-    if (o instanceof VirtualEAttribute) {
-      return (VirtualEAttribute) o;
-    }
-
     return (VirtualEAttribute) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEAttribute(o, this));
   }
 
@@ -517,11 +494,6 @@ public class Viewpoint implements EcoreVirtualizer {
   public VirtualEReference getVirtual(EReference o) {
     if (o == null) {
       return null;
-    }
-
-    // Idempotent
-    if (o instanceof VirtualEReference) {
-      return (VirtualEReference) o;
     }
 
     return (VirtualEReference) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEReference(o, this));

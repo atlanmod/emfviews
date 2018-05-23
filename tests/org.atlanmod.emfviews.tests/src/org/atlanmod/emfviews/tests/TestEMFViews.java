@@ -41,8 +41,10 @@ import org.atlanmod.sexp2emf.Sexp2EMF;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -54,6 +56,12 @@ import org.junit.Test;
 public class TestEMFViews {
 
   // TODO: test failures
+
+  static final WeavingModel emptyWeavingModel;
+  static {
+      emptyWeavingModel = VirtualLinksFactory.eINSTANCE.createWeavingModel();
+      emptyWeavingModel.setName("empty");
+  };
 
   @Test
   public void threeModelComposition() throws IOException {
@@ -261,6 +269,26 @@ public class TestEMFViews {
 
     // Check it contains the virtual association
     assertEquals(B, eGet(A, "assoc"));
+  }
+
+  @Test
+  public void concreteAssociation() {
+    // An existing association is still reachable in a viewpoint
+
+    // Create the viewpoint
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' "
+        + ":eClassifiers [(EClass :name 'A'"
+        + "                :eStructuralFeatures [(EReference :name 'refToB'"
+        + "                                       :eType @1)])"
+        + "               #1(EClass :name 'B')])",
+        EcoreFactory.eINSTANCE)[0];
+
+    Viewpoint v = new Viewpoint(Arrays.asList(P), emptyWeavingModel);
+
+    // The association in the viewpoint is consistent with the contributing metamodel
+    EPackage VP = v.getRootPackage().getESubpackages().get(0);
+    EReference refToB = (EReference) ((EClass) VP.getEClassifier("A")).getEStructuralFeature("refToB");
+    assertEquals(VP.getEClassifier("B"), refToB.getEType());
   }
 
   @Test
@@ -635,18 +663,14 @@ public class TestEMFViews {
         + "               (EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
 
-    // Empty weaving model
-    WeavingModel WM = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM')",
-                                                    VirtualLinksFactory.eINSTANCE)[0];
-
-    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P), WM);
+    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P), emptyWeavingModel);
 
     // Construct the view
     EObject[] model = Sexp2EMF.build("[(A) (B)]", P.getEFactoryInstance());
     Resource r = new ResourceImpl();
     r.getContents().addAll(Arrays.asList(model));
 
-    View view = new View(viewpoint, Arrays.asList(r), WM);
+    View view = new View(viewpoint, Arrays.asList(r), emptyWeavingModel);
 
     assertEquals(2, view.getVirtualContents().size());
     assertEquals(view.getVirtual(model[0]), view.getVirtualContents().get(0));

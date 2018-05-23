@@ -131,17 +131,12 @@ public class View implements Virtualizer {
 
   @Override
   public EObject getVirtual(EObject obj) {
-    if (concreteToVirtual == null) {
-      concreteToVirtual = new HashMap<>();
-    }
-
     if (obj == null) {
       return null;
     }
 
-    // Idempotent
-    if (obj instanceof VirtualEObject) {
-      return obj;
+    if (concreteToVirtual == null) {
+      concreteToVirtual = new HashMap<>();
     }
 
     return concreteToVirtual.computeIfAbsent(obj, o ->
