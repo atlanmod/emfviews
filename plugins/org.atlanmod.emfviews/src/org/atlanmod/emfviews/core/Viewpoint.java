@@ -196,11 +196,7 @@ public class Viewpoint implements EcoreVirtualizer {
           ((VirtualEClass) feature.getEContainingClass()).filterFeature(feature);
         } else if (o instanceof EClassifier) {
           EClassifier c = (EClassifier) o;
-          // @Correctness: the getVirtual is necessary because EEnum are not virtualized,
-          // and hence their getEPackage result will not be virtualized either.
-          // Maybe we should implement VirtualEClassifier after all?
-          VirtualEPackage p = getVirtual(c.getEPackage());
-          p.filterClassifier(c);
+          ((VirtualEPackage) c.getEPackage()).filterClassifier(c);
         }
       }
     }
