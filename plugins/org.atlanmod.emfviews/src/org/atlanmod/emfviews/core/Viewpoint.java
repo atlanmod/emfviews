@@ -56,6 +56,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -145,6 +146,7 @@ public class Viewpoint implements EcoreVirtualizer {
       virtualPackage = EcoreFactory.eINSTANCE.createEPackage();
       virtualPackage.setName(name);
       virtualPackage.setNsURI("http://www.atlanmod.org/emfviews/viewpoint/" + name);
+      virtualPackage.setNsPrefix("virtualpackage" + name);
       virtualRegistry.put(virtualPackage.getNsURI(), virtualPackage);
       buildNewConcepts(baseRegistry);
 
@@ -401,8 +403,14 @@ public class Viewpoint implements EcoreVirtualizer {
       // Since we inherit from Resource, which has an internal Diagnostic interface, we have to use the fully qualified
       // name here
       org.eclipse.emf.common.util.Diagnostic d = Diagnostician.INSTANCE.validate((EObject) p);
+      // Pretty print the message into an exception for readability
       if ((d.getSeverity() & org.eclipse.emf.common.util.Diagnostic.ERROR) != 0) {
-        throw EX("Ecore validation error: '%s'", d);
+        StringBuilder sb = new StringBuilder();
+        sb.append(d.getMessage() + "\n");
+        for (org.eclipse.emf.common.util.Diagnostic dd : d.getChildren()) {
+          sb.append(dd.getMessage() + "\n");
+        }
+        throw EX("Ecore validation error: '%s'", sb.toString());
       }
     }
   }

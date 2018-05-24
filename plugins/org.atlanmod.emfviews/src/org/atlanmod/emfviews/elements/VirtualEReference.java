@@ -17,13 +17,13 @@
 package org.atlanmod.emfviews.elements;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.EcoreEList;
 
 public class VirtualEReference extends VirtualEStructuralFeature implements EReference {
 
@@ -119,7 +119,9 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
     // If, so, should they be filtered?
 
     // We need this to not throw for the Sample Ecore Editor to work
-    return (EList<EAttribute>) ECollections.EMPTY_ELIST;
+    // See @UnmodifiableEList.
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.EREFERENCE__EKEYS, 0, new Object[] {});
   }
 
 }

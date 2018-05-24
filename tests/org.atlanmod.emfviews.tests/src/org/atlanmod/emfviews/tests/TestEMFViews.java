@@ -285,7 +285,7 @@ public class TestEMFViews {
     // An existing association is still reachable in a viewpoint
 
     // Create the viewpoint
-    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' "
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' :nsPrefix 'P0' "
         + ":eClassifiers [(EClass :name 'A'"
         + "                :eStructuralFeatures [(EReference :name 'refToB'"
         + "                                       :eType @1)])"
@@ -642,7 +642,7 @@ public class TestEMFViews {
     // We should be able to create a viewpoint without creating any file
 
     // Construct the contributing package and weaving model
-    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' "
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' :nsPrefix 'P0' "
         + ":eClassifiers [(EClass :name 'A')"
         + "               (EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
@@ -667,7 +667,7 @@ public class TestEMFViews {
     // We should be able to create a view without creating any file
 
     // Construct the viewpoint
-    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' "
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' :nsPrefix 'P0' "
         + ":eClassifiers [(EClass :name 'A')"
         + "               (EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
@@ -689,7 +689,7 @@ public class TestEMFViews {
   // Helper to stay DRY
   static Object[] createViewpointOnViewpoint() {
     // The first package
-    EPackage P0 = (EPackage) Sexp2EMF.build("(EPackage :name 'P0' :nsURI 'P0' "
+    EPackage P0 = (EPackage) Sexp2EMF.build("(EPackage :name 'P0' :nsURI 'P0' :nsPrefix 'P0' "
         + ":eClassifiers [(EClass :name 'A')])",
         EcoreFactory.eINSTANCE)[0];
 

@@ -39,6 +39,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
+// Note @UnmodifiableElist:
+// We want views to be immutable.  When returning lists, we could use
+// ECollections.unmodifiableEList.  Unfortunately, EMF expects most lists that
+// correspond to features to be castable to EStructuralFeature.Setting.  To comply,
+// we use EcoreEList.UnmodifiableEList instead.
+
 public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperAdapter.Holder, EClassifierExtendedMetaData.Holder {
 
   private List<VirtualEStructuralFeature> virtualFeatures = new ArrayList<>();
@@ -188,7 +194,9 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
       }
     }
 
-    return ECollections.unmodifiableEList(types);
+    // See @UnmodifiableEList
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.ECLASS__ESUPER_TYPES, types.size(), types.toArray());
   }
 
   @Override
@@ -203,7 +211,9 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
     sups.addAll(getESuperTypes());
 
-    return ECollections.unmodifiableEList(new ArrayList<>(sups));
+    // See @UnmodifiableEList.
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.ECLASS__EALL_SUPER_TYPES, sups.size(), sups.toArray());
   }
 
   @Override
@@ -276,9 +286,8 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EStructuralFeature> getEStructuralFeatures() {
-    // The return value must be castable to EStructuralFeature.Setting,
-    // hence why we use an EcoreList.UnmodifiableElist
     List<EStructuralFeature> cs = getVisibleLocalFeatures();
+    // See @UnmodifiableElist
     return new EcoreEList.UnmodifiableEList<>(
         this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
   }
@@ -291,7 +300,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
   @Override
   public EList<EGenericType> getEAllGenericSuperTypes() {
     // @Correctness: get them from the supertypes?
-    return ECollections.emptyEList();
+    return getEGenericSuperTypes();
   }
 
   @Override
@@ -304,7 +313,9 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
       }
     }
 
-    return ECollections.unmodifiableEList(attrs);
+    // See @UnmodifiableElist
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.ECLASS__EATTRIBUTES, attrs.size(), attrs.toArray());
   }
 
   @Override
@@ -317,7 +328,9 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
       }
     }
 
-    return ECollections.unmodifiableEList(attrs);
+    // See @UnmodifiableElist
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.ECLASS__EALL_ATTRIBUTES, attrs.size(), attrs.toArray());
   }
 
   @Override
@@ -330,20 +343,24 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
       }
     }
 
-    return ECollections.unmodifiableEList(refs);
+    // See @UnmodifiableElist
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.ECLASS__EREFERENCES, refs.size(), refs.toArray());
   }
 
   @Override
   public EList<EReference> getEAllReferences() {
-    List<EReference> references = new ArrayList<>();
+    List<EReference> refs = new ArrayList<>();
 
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
       if (f instanceof EReference) {
-        references.add((EReference) f);
+        refs.add((EReference) f);
       }
     }
 
-    return ECollections.unmodifiableEList(references);
+    // See @UnmodifiableElist
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.ECLASS__EALL_REFERENCES, refs.size(), refs.toArray());
   }
 
   @Override
@@ -356,14 +373,15 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
       }
     }
 
-    return ECollections.unmodifiableEList(containments);
+    // See @UnmodifiableElist
+    return new EcoreEList.UnmodifiableEList<>(this,
+        EcorePackage.Literals.ECLASS__EALL_CONTAINMENTS, containments.size(), containments.toArray());
   }
 
   @Override
   public EList<EStructuralFeature> getEAllStructuralFeatures() {
-    // The return value must be castable to EStructuralFeature.Setting,
-    // hence why we use an EcoreList.UnmodifiableElist
     List<EStructuralFeature> cs = getVisibleFeatures();
+    // See @UnmodifiableElist
     return new EcoreEList.UnmodifiableEList<>(
         this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
   }
@@ -376,7 +394,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
   @Override
   public EList<EOperation> getEAllOperations() {
     // @Correctness: get them from the supertypes?
-    return ECollections.emptyEList();
+    return getEOperations();
   }
 
   @Override
