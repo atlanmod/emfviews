@@ -36,6 +36,7 @@ import org.atlanmod.emfviews.core.ViewResource;
 import org.atlanmod.emfviews.core.Viewpoint;
 import org.atlanmod.emfviews.core.ViewpointResource;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.atlanmod.sexp2emf.Sexp2EMF;
 import org.eclipse.emf.common.util.EList;
@@ -52,6 +53,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestEMFViews {
@@ -63,6 +65,12 @@ public class TestEMFViews {
       emptyWeavingModel = VirtualLinksFactory.eINSTANCE.createWeavingModel();
       emptyWeavingModel.setName("empty");
   };
+
+  @BeforeClass
+  public static void setup() {
+    EcorePackage.eINSTANCE.eClass();
+    VirtualLinksPackage.eINSTANCE.eClass();
+  }
 
   @Test
   public void threeModelComposition() throws IOException {
@@ -678,15 +686,12 @@ public class TestEMFViews {
     assertEquals(view.getVirtual(model[1]), view.getVirtualContents().get(1));
   }
 
-  @Test
-  public void viewpointOnViewpoint() {
-    // We can create viewpoints on viewpoints
-
+  // Helper to stay DRY
+  static Object[] createViewpointOnViewpoint() {
     // The first package
     EPackage P0 = (EPackage) Sexp2EMF.build("(EPackage :name 'P0' :nsURI 'P0' "
         + ":eClassifiers [(EClass :name 'A')])",
         EcoreFactory.eINSTANCE)[0];
-    EClass A = (EClass) findClassifier(P0, "A");
 
     // The first viewpoint
     WeavingModel WM1 = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM1' "
@@ -695,8 +700,6 @@ public class TestEMFViews {
         + ":virtualLinks [(VirtualConcept :name 'B' :superConcepts [@1])])",
         VirtualLinksFactory.eINSTANCE)[0];
     Viewpoint v1 = new Viewpoint(Arrays.asList(P0), WM1);
-    EPackage P1 = v1.getRootPackage();
-    EClass B = (EClass) findClassifier(P1, "B");
 
     // The second viewpoint
     WeavingModel WM2 = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM2' "
@@ -704,28 +707,64 @@ public class TestEMFViews {
         + "                      :concreteElements [#1(ConcreteConcept :path 'B')])]"
         + ":virtualLinks [(VirtualConcept :name 'C' :superConcepts [@1])])",
         VirtualLinksFactory.eINSTANCE)[0];
-    Viewpoint v2 = new Viewpoint(P1.getESubpackages(), WM2);
-    EPackage P2 = v2.getRootPackage();
+    Viewpoint v2 = new Viewpoint(v1.getRootPackage().getESubpackages(), WM2);
+
+    return new Object[] {P0, v1, v2};
+  }
+
+  @Test
+  public void viewpointOnViewpoint() {
+    // We can create viewpoints on viewpoints
+
+    Object[] v = createViewpointOnViewpoint();
+    EPackage P2 = ((Viewpoint) v[2]).getRootPackage();
+    EClass A = (EClass) findClassifier(P2, "A");
+    EClass B = (EClass) findClassifier(P2, "B");
     EClass C = (EClass) findClassifier(P2, "C");
 
     // The hierarchy is as follows:
     // P2
-    // |- P0             (from P1)
+    // |- P0             (from v[1])
     // |  `- A
-    // |- virtualPackage (from P1)
+    // |- virtualPackage (from v[1])
     // |  `- B
     // `- virtualPackage
     //    `- C
 
     assertEquals(3, P2.getESubpackages().size());
     assertEquals("P0", P2.getESubpackages().get(0).getName());
-    assertEquals("A", P2.getESubpackages().get(0).getEClassifier("A").getName());
-    assertEquals("B", P2.getESubpackages().get(1).getEClassifier("B").getName());
-    assertEquals("C", P2.getESubpackages().get(2).getEClassifier("C").getName());
+    assertEquals(A, P2.getESubpackages().get(0).getEClassifier("A"));
+    assertEquals(B, P2.getESubpackages().get(1).getEClassifier("B"));
+    assertEquals(C, P2.getESubpackages().get(2).getEClassifier("C"));
 
     // We should have A >: B >: C
-    assertEquals(v1.getVirtual(A), B.getESuperTypes().get(0));
-    assertEquals(v2.getVirtual(B), C.getESuperTypes().get(0));
+    assertEquals(A, B.getESuperTypes().get(0));
+    assertEquals(B, C.getESuperTypes().get(0));
+  }
+
+  @Test
+  public void viewOnView() {
+    // We can create views on views
+
+    Object[] viewpoints = createViewpointOnViewpoint();
+    EPackage P0 = (EPackage) viewpoints[0];
+
+    // Now construct the views
+    EObject[] m0 = Sexp2EMF.build("[(A) (A)]", P0.getEFactoryInstance());
+    Resource r0 = new ResourceImpl();
+    r0.getContents().addAll(Arrays.asList(m0));
+    View v1 = new View((Viewpoint) viewpoints[1], Arrays.asList(r0), emptyWeavingModel);
+
+    // There is no factory in views (yet), so we just wrap the first view
+    ViewResource r1 = new ViewResource();
+    r1.setView(v1);
+    View v2 = new View((Viewpoint) viewpoints[2], Arrays.asList(r1), emptyWeavingModel);
+
+    EList<EObject> contents = v2.getVirtualContents();
+
+    assertEquals(2, contents.size());
+    assertEquals("A", contents.get(0).eClass().getName());
+    assertEquals("A", contents.get(1).eClass().getName());
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
