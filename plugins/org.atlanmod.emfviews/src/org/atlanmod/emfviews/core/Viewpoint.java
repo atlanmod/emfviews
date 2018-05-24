@@ -112,15 +112,22 @@ public class Viewpoint implements EcoreVirtualizer {
 
     // Put each metamodel into a resource set, so that we can easily find elements
     // from it using findEObject.
+    // We have to register all subpackages of contributing packages to allow
+    // findEObject to find a model when looking up only the URI.
+    Iterable<EPackage> allPackages = contributingPackages.stream()
+        .flatMap(p -> EMFViewsUtil.getAllPackages(p).stream())
+        ::iterator;
+    for (EPackage p : allPackages) {
+      baseRegistry.put(p.getNsURI(), p);
+    }
+
     // We also put *virtual* elements in the virtual resource set, so that we can add and
     // remove elements from them without affecting the originals.
     for (EPackage p : contributingPackages) {
-      baseRegistry.put(p.getNsURI(), p);
-      VirtualEPackage vp = getVirtual(p);
-      virtualRegistry.put(p.getNsURI(), vp);
+      virtualRegistry.put(p.getNsURI(), getVirtual(p));
       // The order of packages in the root package matters. We use the order
       // specified by the contributing models, and the virtual package is last.
-      rootPackage.addVirtualPackage(vp);
+      rootPackage.addVirtualPackage(getVirtual(p));
     }
 
     // Filter concrete elements (we don't allow filtering of virtual elements, so we can apply filters

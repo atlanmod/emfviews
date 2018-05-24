@@ -96,4 +96,14 @@ public final class EMFViewsUtil {
     return String.join(".", comps);
   }
 
+  /** Return a list containing `p` and all its subpackages, recursively. */
+  public static List<EPackage> getAllPackages(EPackage p) {
+    List<EPackage> allPackages = new ArrayList<>();
+    allPackages.add(p);
+    for (EPackage sub : p.getESubpackages()) {
+      allPackages.addAll(getAllPackages(sub));
+    }
+    return allPackages;
+  }
+
 }

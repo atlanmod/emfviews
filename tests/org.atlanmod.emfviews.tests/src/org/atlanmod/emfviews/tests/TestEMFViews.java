@@ -42,6 +42,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -677,8 +678,58 @@ public class TestEMFViews {
     assertEquals(view.getVirtual(model[1]), view.getVirtualContents().get(1));
   }
 
+  @Test
+  public void viewpointOnViewpoint() {
+    // We can create viewpoints on viewpoints
+
+    // The first package
+    EPackage P0 = (EPackage) Sexp2EMF.build("(EPackage :name 'P0' :nsURI 'P0' "
+        + ":eClassifiers [(EClass :name 'A')])",
+        EcoreFactory.eINSTANCE)[0];
+    EClass A = (EClass) findClassifier(P0, "A");
+
+    // The first viewpoint
+    WeavingModel WM1 = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM1' "
+        + ":contributingModels [(ContributingModel :URI 'P0'"
+        + "                      :concreteElements [#1(ConcreteConcept :path 'A')])]"
+        + ":virtualLinks [(VirtualConcept :name 'B' :superConcepts [@1])])",
+        VirtualLinksFactory.eINSTANCE)[0];
+    Viewpoint v1 = new Viewpoint(Arrays.asList(P0), WM1);
+    EPackage P1 = v1.getRootPackage();
+    EClass B = (EClass) findClassifier(P1, "B");
+
+    // The second viewpoint
+    WeavingModel WM2 = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM2' "
+        + ":contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/viewpoint/WM1'"
+        + "                      :concreteElements [#1(ConcreteConcept :path 'B')])]"
+        + ":virtualLinks [(VirtualConcept :name 'C' :superConcepts [@1])])",
+        VirtualLinksFactory.eINSTANCE)[0];
+    Viewpoint v2 = new Viewpoint(P1.getESubpackages(), WM2);
+    EPackage P2 = v2.getRootPackage();
+    EClass C = (EClass) findClassifier(P2, "C");
+
+    // The hierarchy is as follows:
+    // P2
+    // |- P0             (from P1)
+    // |  `- A
+    // |- virtualPackage (from P1)
+    // |  `- B
+    // `- virtualPackage
+    //    `- C
+
+    assertEquals(3, P2.getESubpackages().size());
+    assertEquals("P0", P2.getESubpackages().get(0).getName());
+    assertEquals("A", P2.getESubpackages().get(0).getEClassifier("A").getName());
+    assertEquals("B", P2.getESubpackages().get(1).getEClassifier("B").getName());
+    assertEquals("C", P2.getESubpackages().get(2).getEClassifier("C").getName());
+
+    // We should have A >: B >: C
+    assertEquals(v1.getVirtual(A), B.getESuperTypes().get(0));
+    assertEquals(v2.getVirtual(B), C.getESuperTypes().get(0));
+  }
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Helpers for reducing the boilerplate of calling the reflective EMF API
+  // Helpers for dealing with EMF resources and packages
 
   Viewpoint loadViewpoint(String path) throws IOException {
     ViewpointResource vr = new ViewpointResource(resourceURI(path));
@@ -693,6 +744,26 @@ public class TestEMFViews {
     assertEquals(Collections.EMPTY_LIST, vr.getErrors());
     return vr.getView();
   }
+
+  /** Find classifier in `p` or its subpackage */
+  EClassifier findClassifier(EPackage p, String classifierName) {
+    EClassifier c = p.getEClassifier(classifierName);
+    if (c != null) {
+      return c;
+    }
+
+    for (EPackage sub : p.getESubpackages()) {
+      c = findClassifier(sub, classifierName);
+      if (c != null) {
+        return c;
+      }
+    }
+
+    return null;
+  }
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Helpers for reducing the boilerplate of calling the reflective EMF API
 
   Object eGet(EObject o, String featureName) {
     EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
