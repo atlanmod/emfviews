@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.StringJoiner;
 
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
@@ -59,7 +60,16 @@ public class ViewResource extends ResourceImpl {
     if (!vpr.getErrors().isEmpty()) {
       getErrors().add(new Err("Failed to load viewpoint due to the following errors"));
       getErrors().addAll(vpr.getErrors());
-      return null;
+
+      // Because the viewpoint is critical to loading the rest of the view,
+      // we bail with a descriptive exception rather than throwing NPEs around
+      // by returning a null Viewpoint.
+      StringJoiner sj = new StringJoiner("\n");
+      for (Diagnostic err : vpr.getErrors()) {
+        sj.add(err.getMessage());
+      }
+      throw new IllegalStateException("Viewpoint could not be loaded",
+                                      new ViewpointException(sj.toString()));
     } else {
       return vpr.getViewpoint();
     }

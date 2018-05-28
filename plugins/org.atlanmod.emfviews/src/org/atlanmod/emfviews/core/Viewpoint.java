@@ -405,12 +405,12 @@ public class Viewpoint implements EcoreVirtualizer {
       org.eclipse.emf.common.util.Diagnostic d = Diagnostician.INSTANCE.validate((EObject) p);
       // Pretty print the message into an exception for readability
       if ((d.getSeverity() & org.eclipse.emf.common.util.Diagnostic.ERROR) != 0) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(d.getMessage() + "\n");
+        StringJoiner sj = new StringJoiner("\n");
+        sj.add(d.getMessage());
         for (org.eclipse.emf.common.util.Diagnostic dd : d.getChildren()) {
-          sb.append(dd.getMessage() + "\n");
+          sj.add(dd.getMessage());
         }
-        throw EX("Ecore validation error: '%s'", sb.toString());
+        throw EX("Ecore validation error: '%s'", sj.toString());
       }
     }
   }
