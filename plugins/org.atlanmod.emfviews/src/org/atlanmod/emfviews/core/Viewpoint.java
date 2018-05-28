@@ -23,12 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEDataType;
+import org.atlanmod.emfviews.elements.VirtualEEnum;
 import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
 import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
@@ -48,6 +50,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -56,7 +59,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -477,7 +479,20 @@ public class Viewpoint implements EcoreVirtualizer {
       return null;
     }
 
-    return (VirtualEDataType) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEDataType(o, this));
+    if (o instanceof EEnum) {
+      return getVirtual((EEnum) o);
+    } else {
+      return (VirtualEDataType) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEDataType(o, this));
+    }
+  }
+
+  @Override
+  public VirtualEEnum getVirtual(EEnum o) {
+    if (o == null) {
+      return null;
+    }
+
+    return (VirtualEEnum) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEEnum(o, this));
   }
 
   @Override
