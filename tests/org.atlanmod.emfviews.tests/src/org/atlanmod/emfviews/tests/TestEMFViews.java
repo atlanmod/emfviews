@@ -27,9 +27,9 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.StringJoiner;
 
 import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.ViewResource;
@@ -82,6 +82,7 @@ public class TestEMFViews {
     {
       ViewpointResource v = new ViewpointResource(resourceURI("viewpoints/three-model-composition/viewpoint.eviewpoint"));
       v.load(null);
+      assertNoErrors(v);
 
       // We have access to all the contents
       TreeIterator<EObject> it = v.getAllContents();
@@ -773,27 +774,24 @@ public class TestEMFViews {
   Viewpoint loadViewpoint(String path) throws IOException {
     ViewpointResource vr = new ViewpointResource(resourceURI(path));
     vr.load(null);
-
-    if (vr.getErrors().size() > 0) {
-      StringBuilder sb = new StringBuilder();
-      vr.getErrors().forEach(err -> sb.append(err.getMessage() + "\n"));
-      fail(sb.toString());
-    }
-
+    assertNoErrors(vr);
     return vr.getViewpoint();
   }
 
   View loadView(String path) throws IOException {
     ViewResource vr = new ViewResource(resourceURI(path));
     vr.load(null);
-
-    if (vr.getErrors().size() > 0) {
-      StringBuilder sb = new StringBuilder();
-      vr.getErrors().forEach(err -> sb.append(err.getMessage() + "\n"));
-      fail(sb.toString());
-    }
-
+    assertNoErrors(vr);
     return vr.getView();
+  }
+
+  /** Fail if the resource has errors */
+  void assertNoErrors(Resource r) {
+    if (r.getErrors().size() > 0) {
+      StringJoiner sj = new StringJoiner("\n");
+      r.getErrors().forEach(err -> sj.add(err.getMessage()));
+      fail(sj.toString());
+    }
   }
 
   /** Find classifier in `p` or its subpackage */
