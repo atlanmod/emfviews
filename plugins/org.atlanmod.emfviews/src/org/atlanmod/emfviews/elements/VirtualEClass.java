@@ -23,14 +23,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -139,16 +136,6 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   public boolean isFeatureFiltered(EStructuralFeature f) {
     return filteredFeatures.contains(f);
-  }
-
-  @Override
-  public EObject eContainer() {
-    return virtualizer.getVirtual((EPackage) concreteClassifier.eContainer());
-  }
-
-  @Override
-  public EReference eContainmentFeature() {
-    return virtualizer.getVirtual(concreteClassifier.eContainmentFeature());
   }
 
   @Override

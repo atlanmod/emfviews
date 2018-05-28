@@ -21,7 +21,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -78,6 +80,20 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl implements E
   @Override
   public void dynamicUnset(int dynamicFeatureID) {
     throw new UnsupportedOperationException();
+  }
+
+  // @Correctness: these may need to go in a BaseVirtualEObject to avoid
+  // duplication and for all implementing classes to benefit
+  @Override
+  public EObject eContainer() {
+    return virtualizer.getVirtual((EPackage) concreteClassifier.eContainer());
+  }
+
+  @Override
+  public EReference eContainmentFeature() {
+    // We do not want to virtualize this, as the feature is part of the
+    // Ecore metamodel, and not of a viewpoint.
+    return concreteClassifier.eContainmentFeature();
   }
 
   @Override
