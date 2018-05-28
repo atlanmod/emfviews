@@ -48,14 +48,11 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl implements E
     if (feature == EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS) {
       return getEAnnotations();
     }
-    if (feature == EcorePackage.Literals.ECLASSIFIER__ETYPE_PARAMETERS) {
-      return getETypeParameters();
-    }
     if (feature == EcorePackage.Literals.ECLASSIFIER__DEFAULT_VALUE) {
-      return getETypeParameters();
+      return getDefaultValue();
     }
     if (feature == EcorePackage.Literals.ECLASSIFIER__EPACKAGE) {
-      return getETypeParameters();
+      return getEPackage();
     }
     if (feature == EcorePackage.Literals.ECLASSIFIER__ETYPE_PARAMETERS) {
       return getETypeParameters();
