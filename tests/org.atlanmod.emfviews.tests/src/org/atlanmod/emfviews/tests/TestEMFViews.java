@@ -768,6 +768,46 @@ public class TestEMFViews {
     assertEquals("A", contents.get(1).eClass().getName());
   }
 
+  @Test
+  public void virtualClassHasPackage() {
+    // When creating a viewpoint, a virtualClass.ePackage feature
+    // points to the virtualization of its owning package (and vice-versa).
+
+    EPackage P0 = (EPackage) Sexp2EMF.build("(EPackage :name 'P0' :nsURI 'P0' :nsPrefix 'P0' "
+        + ":eClassifiers [(EClass :name 'A')])",
+        EcoreFactory.eINSTANCE)[0];
+
+    Viewpoint v = new Viewpoint(Arrays.asList(P0), emptyWeavingModel);
+    EPackage P1 = v.getRootPackage().getESubpackages().get(0);
+    EClassifier A = P1.getEClassifiers().get(0);
+
+    assertNotNull(A);
+    assertEquals(P1, A.getEPackage());
+    assertEquals(P1, eGet(A, "ePackage"));
+  }
+
+  @Test
+  public void pureVirtualClassHasPackage() {
+    // When creating a viewpoint, a pure virtualClass.ePackage feature
+    // points to the virtualization of its owning package (and vice-versa).
+
+    EPackage P0 = (EPackage) Sexp2EMF.build("(EPackage :name 'P0' :nsURI 'P0' :nsPrefix 'P0' "
+        + ":eClassifiers [(EClass :name 'A')])",
+        EcoreFactory.eINSTANCE)[0];
+
+    WeavingModel WM = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM1' "
+        + ":virtualLinks [(VirtualConcept :name 'B')])",
+        VirtualLinksFactory.eINSTANCE)[0];
+
+    Viewpoint v = new Viewpoint(Arrays.asList(P0), WM);
+    EPackage P1 = v.getRootPackage().getESubpackages().get(1);
+    EClassifier B = P1.getEClassifiers().get(0);
+
+    assertNotNull(B);
+    assertEquals(P1, B.getEPackage());
+    assertEquals(P1, eGet(B, "ePackage"));
+  }
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Helpers for dealing with EMF resources and packages
 
