@@ -25,7 +25,9 @@ import java.util.Set;
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -161,9 +163,49 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
     throw new UnsupportedOperationException();
   }
 
+  // The Ecore metamodel requires an EFactory for each EPackage, so we provide one
+  // but we don't support creating viewpoint objects with it.
+  class VirtualEFactory extends DynamicEObjectImpl implements EFactory {
+
+    @Override
+    public EList<EAnnotation> getEAnnotations() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EAnnotation getEAnnotation(String source) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EPackage getEPackage() {
+      return VirtualEPackage.this;
+    }
+
+    @Override
+    public void setEPackage(EPackage value) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public EObject create(EClass eClass) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Object createFromString(EDataType eDataType, String literalValue) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String convertToString(EDataType eDataType, Object instanceValue) {
+      return instanceValue == null ? null: instanceValue.toString();
+    }
+  }
+
   @Override
   public EFactory getEFactoryInstance() {
-    throw new UnsupportedOperationException();
+    return new VirtualEFactory();
   }
 
   @Override
