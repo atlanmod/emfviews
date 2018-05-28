@@ -773,14 +773,26 @@ public class TestEMFViews {
   Viewpoint loadViewpoint(String path) throws IOException {
     ViewpointResource vr = new ViewpointResource(resourceURI(path));
     vr.load(null);
-    assertEquals(Collections.EMPTY_LIST, vr.getErrors());
+
+    if (vr.getErrors().size() > 0) {
+      StringBuilder sb = new StringBuilder();
+      vr.getErrors().forEach(err -> sb.append(err.getMessage() + "\n"));
+      fail(sb.toString());
+    }
+
     return vr.getViewpoint();
   }
 
   View loadView(String path) throws IOException {
     ViewResource vr = new ViewResource(resourceURI(path));
     vr.load(null);
-    assertEquals(Collections.EMPTY_LIST, vr.getErrors());
+
+    if (vr.getErrors().size() > 0) {
+      StringBuilder sb = new StringBuilder();
+      vr.getErrors().forEach(err -> sb.append(err.getMessage() + "\n"));
+      fail(sb.toString());
+    }
+
     return vr.getView();
   }
 
