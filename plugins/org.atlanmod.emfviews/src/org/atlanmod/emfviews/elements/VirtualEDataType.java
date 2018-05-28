@@ -18,6 +18,7 @@ package org.atlanmod.emfviews.elements;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -50,7 +51,12 @@ public class VirtualEDataType extends VirtualEClassifier implements EDataType {
 
   @Override
   public boolean isInstance(Object object) {
-    throw new UnsupportedOperationException();
+    if (object instanceof EObject) {
+      return ((EObject) object).eClass() == this;
+    } else {
+      // @Correctness: not sure this is all the cases we need to care about
+      return false;
+    }
   }
 
   @Override
