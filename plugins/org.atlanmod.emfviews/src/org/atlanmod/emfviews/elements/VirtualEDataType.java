@@ -18,12 +18,24 @@ package org.atlanmod.emfviews.elements;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
 public class VirtualEDataType extends VirtualEClassifier implements EDataType {
 
   public VirtualEDataType(EDataType concreteDataType, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EDATA_TYPE, concreteDataType, virtualizer);
+  }
+
+  @Override
+  public Object dynamicGet(int dynamicFeatureID) {
+    EStructuralFeature feature = eDynamicFeature(dynamicFeatureID);
+
+    if (feature == EcorePackage.Literals.EDATA_TYPE__SERIALIZABLE) {
+      return isSerializable();
+    }
+
+    return super.dynamicGet(dynamicFeatureID);
   }
 
   @Override
