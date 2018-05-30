@@ -28,8 +28,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 
-public abstract class VirtualEClassifier extends DynamicEObjectImpl implements EClassifier {
+public abstract class VirtualEClassifier extends DynamicEObjectImpl
+    implements EClassifier, BasicExtendedMetaData.EClassifierExtendedMetaData.Holder {
 
   protected EClassifier concreteClassifier;
   protected EcoreVirtualizer virtualizer;
@@ -167,5 +170,15 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl implements E
 
   @Override
   public abstract int getClassifierID();
+
+  @Override
+  public EClassifierExtendedMetaData getExtendedMetaData() {
+    return ((BasicExtendedMetaData.EClassifierExtendedMetaData.Holder) concreteClassifier).getExtendedMetaData();
+  }
+
+  @Override
+  public void setExtendedMetaData(EClassifierExtendedMetaData eClassifierExtendedMetaData) {
+    throw new UnsupportedOperationException();
+  }
 
 }

@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
-public class VirtualEDataType extends VirtualEClassifier implements EDataType {
+public class VirtualEDataType extends VirtualEClassifier implements EDataType, EDataType.Internal {
 
   public VirtualEDataType(EDataType concreteDataType, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EDATA_TYPE, concreteDataType, virtualizer);
@@ -54,13 +54,25 @@ public class VirtualEDataType extends VirtualEClassifier implements EDataType {
     if (object instanceof EObject) {
       return ((EObject) object).eClass() == this;
     } else {
-      // @Correctness: not sure this is all the cases we need to care about
-      return false;
+      return concreteClassifier.isInstance(object);
     }
   }
 
   @Override
   public int getClassifierID() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public ConversionDelegate getConversionDelegate() {
+    // @Correctness: what is a conversion delegate, and do we need to return the
+    // one from the concrete classifier?
+    // Ecore validator needs this.
+    return null;
+  }
+
+  @Override
+  public void setConversionDelegate(ConversionDelegate conversionDelegate) {
     throw new UnsupportedOperationException();
   }
 
