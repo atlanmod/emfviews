@@ -1,0 +1,8 @@
+#+Title: EMF Views Documentation
+
+The EMF Views documentation is split into two manuals.
+
+The [[file:user.org][User Guide]] describes how to install the plugin and how to create views
+interactively or programmatically.
+
+The [[file:developer.org][Developer Guide]] describes the internal architecture of EMF Views.

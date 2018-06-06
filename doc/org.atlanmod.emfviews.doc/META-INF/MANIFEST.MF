@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EMF Views documentation
+Bundle-SymbolicName: org.atlanmod.emfviews.doc;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Atlanmod
+Require-Bundle: org.eclipse.help;bundle-version="3.8.0"

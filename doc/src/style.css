@@ -1,0 +1,22 @@
+#content { max-width: 41rem; margin: auto; }
+.title  { text-align: center; margin-bottom: .2em; }
+p.verse { margin-left: 3%; }
+pre {
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 3px #eee;
+  padding: 8pt;
+  font-family: monospace;
+  overflow: auto;
+  margin: 1.2em;
+}
+pre.src {
+  position: relative;
+  overflow: visible;
+  padding-top: 1.2em;
+}
+.footpara { display: inline; }
+.footdef  { margin-bottom: 1em; }
+.figure { padding: .25rem; }
+.figure p { text-align: center; }
+.figure img { box-shadow: 3px 3px 3px #eee; }
+.linenr { font-size: smaller }

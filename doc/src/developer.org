@@ -1,0 +1,9 @@
+#+Title: Developer Guide
+
+* How EMF Views works
+We create virtual elements that stand-off for each element in the contributing
+models.
+
+See the [[file:user.org::*Glossary][the Glossary]].
+
+Also see [[file:user.org][the user manual]].
