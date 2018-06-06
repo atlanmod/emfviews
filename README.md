@@ -51,9 +51,20 @@ The `examples` folder contains ideas of how to use EMF Views and the DSLs:
 
 Installation
 ------------
-* Import the projects of the "plugins" folder into the workspace
-* Run a "Runtime Eclipse" with the workspace to try the plugins. In the
-  "examples" folder there are several example projects to test the project
+Clone this repository and build the update site locally with
+[Maven](https://maven.apache.org/):
+
+```
+$ git clone https://github.com/atlanmod/emfviews.git
+$ cd emfviews
+$ mvn install
+```
+
+You can then install the plugins by pointing to the generated update site in
+your local m2 repository.
+
+Alternatively, you can import the projects in Eclipse and launch a "Runtime
+Eclipse" with all the plugins from the workspace.
 
 Dependencies
 ------------
