@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
-// Note @UnmodifiableElist:
+// @Note @UnmodifiableElist:
 // We want views to be immutable.  When returning lists, we could use
 // ECollections.unmodifiableEList.  Unfortunately, EMF expects most lists that
 // correspond to features to be castable to EStructuralFeature.Setting.  To comply,
