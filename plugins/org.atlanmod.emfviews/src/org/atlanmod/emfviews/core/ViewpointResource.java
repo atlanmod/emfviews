@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
@@ -37,6 +38,13 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 public class ViewpointResource extends ResourceImpl {
+
+  public static final WeavingModel emptyWeavingModel;
+  static {
+    emptyWeavingModel = VirtualLinksFactory.eINSTANCE.createWeavingModel();
+    emptyWeavingModel.setName("empty");
+  };
+
 
   public static final String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
   public static final String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
@@ -68,6 +76,11 @@ public class ViewpointResource extends ResourceImpl {
     // Parse from eviewpoint file
     Properties p = new Properties();
     p.load(inputStream);
+
+    // Ensure required fields are present
+    if (!p.containsKey(EVIEWPOINT_CONTRIBUTING_METAMODELS)) {
+      getErrors().add(new Err("Error in parsing eviewpoint file: missing %s field", EVIEWPOINT_CONTRIBUTING_METAMODELS));
+    }
 
     for (String key : p.stringPropertyNames()) {
       switch (key) {
@@ -139,6 +152,12 @@ public class ViewpointResource extends ResourceImpl {
 
   // Load and return the weaving model from URI
   private WeavingModel loadWeavingModel() {
+    // If the eviewpoint file does not specify the weaving model,
+    // return an empty one.
+    if (weavingModelURI == null) {
+      return emptyWeavingModel;
+    }
+
     URI uri = weavingModelURI.resolve(getURI());
     Resource r = new ResourceSetImpl().getResource(uri, true);
     EObject wm = r.getContents().get(0);
