@@ -1,34 +1,85 @@
 ;; Use the built-in Org version
 (require 'org)
 (require 'ox)
+(require 'seq)
 
-;; Custom links
+;; We export two versions of the manual: HTML to the EMF Views website, and as
+;; in an Eclipse help plugin.  The website uses the standard HTML org-export
+;; backend.  For Eclipse help, we define a derived backend.
+
+(org-export-define-derived-backend 'eclipse-help 'html)
+
+
+;;; Custom links
+
+;; When we link to stuff from other Eclipse manuals we use a custom `eclipse:'
+;; link type.  The website version will link to help.eclipse.org where all the
+;; official docs are hosted, and the plugin version will open the locally hosted
+;; version.
+
+(org-link-set-parameters "eclipse" :export #'org-eclipse-export)
+
 (defun org-eclipse-export (path description backend)
-  "Create link for export."
-  (format "<a href=\"http://help.eclipse.org/oxygen/nav/34\">%s</a>" description))
+  "Export custom Eclipse links.
 
-(org-link-set-parameters
- "eclipse"
- :export #'org-eclipse-export)
+PATH and DESCRIPTION are the link's path and description.
+BACKEND is the export backend."
+  (format "<a href=\"%s\">%s</a>"
+          ;; For some reason, BACKEND is just 'html, even when the derived
+          ;; 'eclipse-help is used.  Luckily, we can use the variable
+          ;; `org-export-current-backend' to determine which backend is actually
+          ;; in use.
+          (concat (if (eq org-export-current-backend 'eclipse-help)
+                      "/help"
+                    "https://help.eclipse.org/oxygen")
+                  path)
+          description))
 
-;; Export setup
+
+;;; Export setup
+
+;; This publishing functions goes with our dervied backend.  It's the same as
+;; `org-html-publish-to-html', except it uses the 'eclipse-help backend.
+(defun org-eclipse-publish-to-eclipse-help (plist filename pub-dir)
+  "Publish an org file to Eclipse help.
+
+FILENAME is the filename of the Org file to be published.  PLIST
+is the property list for the given project.  PUB-DIR is the
+publishing directory.
+
+Return output file name."
+  (org-publish-org-to 'eclipse-help filename
+		      (concat "." (or (plist-get plist :html-extension)
+				      org-html-extension
+				      "html"))
+		      plist pub-dir))
+
+;; This is a list of orders for `org-publish-all', basically.
 (setq org-publish-project-alist
-      '(("manual"
+      `(("eclipse-manual"
          :base-directory "src/"
          :publishing-directory "org.atlanmod.emfviews.doc/html/"
+         :publishing-function org-eclipse-publish-to-eclipse-help)
+
+        ("online-manual"
+         :base-directory "src/"
+         :publishing-directory "html/"
          :publishing-function org-html-publish-to-html)
 
-        ("images"
-         :base-directory "src/images/"
-         :base-extension "jpg\\|gif\\|png"
-         :publishing-directory "org.atlanmod.emfviews.doc/html/images/"
-         :publishing-function org-publish-attachment)
+        ;; The assets are exported to two separate folders
+        ,@(seq-mapcat (lambda (out-dir)
+                        `(("images"
+                           :base-directory "src/images/"
+                           :base-extension "jpg\\|gif\\|png"
+                           :publishing-directory ,(concat out-dir "images/")
+                           :publishing-function org-publish-attachment)
 
-        ("stylesheet"
-         :base-directory "src/"
-         :base-extension "css"
-         :publishing-directory "org.atlanmod.emfviews.doc/html/"
-         :publishing-function org-publish-attachment))
+                          ("stylesheet"
+                           :base-directory "src/"
+                           :base-extension "css"
+                           :publishing-directory ,out-dir
+                           :publishing-function org-publish-attachment)))
+                      '("org.atlanmod.emfviews.doc/html/" "html/")))
 
       org-export-with-section-numbers nil
       org-html-htmlize-output-type nil    ; no styling of code blocks for now
@@ -39,7 +90,8 @@
       org-html-head-include-default-style nil ; no inline CSS
       org-html-head "<link rel=\"stylesheet\" href=\"style.css\">")
 
-;; For some reason, org-publish will create backup files
+;; For some reason, org-publish will leave backup files around.  We don't want
+;; that.
 (setq make-backup-files nil)
 
 ;; At a later point, we can build the toc.xml from the contents of published
@@ -103,5 +155,7 @@
 
 
 ;; The default cache only cares about whether the source files have changed, but
-;; not if the targets still exist.  Why do you have to reinvent make?
-(org-publish-all)
+;; does not check whether the /targets/ still exist.  So we have to use 'force
+;; to make sure `publish' will in fact publish.  Why did you have to reinvent
+;; make?
+(org-publish-all 'force)
