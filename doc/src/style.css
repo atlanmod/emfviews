@@ -1,22 +1,39 @@
+html { color: #111; font-size: 16px; }
 #content { max-width: 41rem; margin: auto; }
 .title  { text-align: center; margin-bottom: .2em; }
 p.verse { margin-left: 3%; }
+code {
+  font-size: 14px;
+  background: #f5f5f5;
+  border: 1px solid #e4e4e4;
+  border-left: 0;
+  border-right: 0;
+  padding: 1px 2px;
+}
 pre {
+  font-family: monospace;
+  font-size: 14px;
+  margin: 1.5rem 0;
+  padding: 4pt 8pt;
+  border-left: 3px solid #cceae1;
+  box-shadow: 2px 2px 2px #eff4f2;
+}
+.note::before {
+  content: "Note";
+  font-size: 18px;
+  font-style: italic;
+}
+.note {
+  margin: 1.5rem;
+  padding: .25rem 1rem;
+  font-size: 14px;
+  background: #eee;
   border: 1px solid #ccc;
   box-shadow: 3px 3px 3px #eee;
-  padding: 8pt;
-  font-family: monospace;
-  overflow: auto;
-  margin: 1.2em;
-}
-pre.src {
-  position: relative;
-  overflow: visible;
-  padding-top: 1.2em;
 }
 .footpara { display: inline; }
 .footdef  { margin-bottom: 1em; }
-.figure { padding: .25rem; }
+.figure { margin: 1.5rem; }
 .figure p { text-align: center; }
 .figure img { box-shadow: 3px 3px 3px #eee; }
 .linenr { font-size: smaller }
