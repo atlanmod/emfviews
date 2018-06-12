@@ -2,6 +2,7 @@ create view publicationsAndBooks as
 
 select pub.Publication.*,
        pub.Publication join book.Chapter as firstChapter,
+       book.Book.*,
        book.Chapter.title,
 
 from 'http://publication' as pub,
