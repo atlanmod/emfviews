@@ -1,4 +1,4 @@
-#+Title: User Guide
+#+Title: EMF Views User Guide
 #+OPTIONS: ':t
 
 * Overview
@@ -97,12 +97,13 @@ The ~viewpoints~ folder contains two files.  Let us focus on the
 ~publicationsAndBooks.eviewpoint~ file which defines the viewpoint, and is
 defined as:
 
-#+BEGIN_EXAMPLE
-contributingMetamodels=../metamodels/Publication.ecore,../metamodels/Book.ecore
+#+BEGIN_SRC
+contributingMetamodels=../metamodels/Publication.ecore,\
+                       ../metamodels/Book.ecore
 weavingModel=publicationsAndBooks.xmi
-#+END_EXAMPLE
+#+END_SRC
 
-The first line is a list of the /contributing metamodels/.  These are the two
+The first two lines list the /contributing metamodels/.  These are the two
 metamodels we are concerned with.  In this case, we give relative URIs to the
 Ecore files in the ~metamodels~ folder.
 
@@ -112,20 +113,20 @@ pointing to the Ecore files in this case is that EMF Views will load them
 without us having to register the EPackages manually.
 #+END_note
 
-The second line specifies the /weaving model/.  The weaving model describes how
+The third line specifies the /weaving model/.  The weaving model describes how
 the viewpoint is constructed: it contains filters that select or exclude
 elements from the contributing metamodels, and it describes new elements that
 are to be added to the viewpoint.  If you omit the ~weavingModel~ property, no
 elements are filtered or added.
 
-Let's try it now.  Remove or comment ("~#~" begins a line comment) the
+Let's try it now.  Remove or comment (~#~ begins a line comment) the
 ~weavingModel~ line, then save the file.  You have to open the viewpoint in text
-mode (Right click \to With \to Text Editor).
+mode (Right click \to ~Open With~ \to ~Text Editor~).
 
 After you have made the change, you want to open the ~eviewpoint~ file in a
-model editor.  The Sample Ecore Editor and the [[eclipse:/topic/org.eclipse.modisco.infrastructure.doc/mediawiki/model_browser/user.html][MoDisco Model Browser]] should both
-be able to do so.  Right click \to Open With \to Other..., and in the dialog
-select Sample Ecore Editor then click OK:
+model editor.  The Sample Ecore Model Editor and the [[eclipse:/topic/org.eclipse.modisco.infrastructure.doc/mediawiki/model_browser/user.html][MoDisco Model Browser]]
+should both be able to do so.  Right click \to ~Open With~ \to ~Other...~, and
+in the dialog select ~Sample Ecore Model Editor~ then click OK:
 
 [[file:images/editor-select.png]]
 
@@ -141,11 +142,11 @@ from the contributing metamodels.
 Note that the ~Publication~ package comes before ~Book~ because that is the
 order we specified in the ~contributingMetamodels~ line in the ~eviewpoint~ file.
 
-Let's restore the ~weavingModel~ line.  First, close the Sample Ecore Editor view of
-the ~eviewpoint~.  Then, restore or uncomment the ~weavingModel~ line in the
-~eviewpoint~ by opening it with the Text Editor (or reuse the Text Editor tab if
-you had not closed it).  Save the ~eviewpoint~ file, and open it up with the
-Sample Ecore Editor once more.
+Let's restore the ~weavingModel~ line.  First, close the Sample Ecore Model
+Editor view of the ~eviewpoint~.  Then, restore or uncomment the ~weavingModel~
+line in the ~eviewpoint~ by opening it with the Text Editor (or reuse the Text
+Editor tab if you had not closed it).  Save the ~eviewpoint~ file, and open it
+up with the Sample Ecore Model Editor once more.
 
 Here is what you should get now:
 
@@ -165,9 +166,9 @@ create inter-metamodel associations, since they now are part of the same virtual
 metamodel.
 
 If we open the weaving model ~publicationsAndBooks.xmi~ with the Sample Ecore
-Editor, we can see that it contains exactly these two changes.  Here is the
-viewpoint on the left with the weaving model on the right.  The changes made by
-the weaving model to the viewpoint are highlighted:
+Model Editor, we can see that it contains exactly these two changes.  Here is
+the viewpoint on the left with the weaving model on the right.  The changes made
+by the weaving model to the viewpoint are highlighted:
 
 [[file:images/viewpoint-and-weaving.png]]
 
@@ -185,11 +186,11 @@ another look at the file hierarchy:
 In the ~views~ folder, two views are defined: ~allChapters~ and ~firstChapter~.
 Let's focus on ~allChapters~ for now.  If we look inside ~allChapters.eview~:
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC
 contributingModels=../models/publication.xmi,../models/book.xmi
 viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
 matchingModel=allChapters.ecl
-#+END_EXAMPLE
+#+END_SRC
 
 The ~contributingModels~ line point to the model resources which contribute to
 the view.  Note that the order of the contributing models does not have to match
@@ -203,8 +204,8 @@ matching model contains rules that are used by EMF Views to construct a weaving
 model for the view.
 
 #+BEGIN_note
-EMF Views can be extended to use other matching models beyond ECL.  See TODO:
-ADD LINK.
+EMF Views can be extended to use other matching models beyond ECL.  See [[file:developer.org::*Adding%20matching%20models][Adding
+matching models]].
 
 Instead of a matching model, you can specify a weaving model directly in the
 ~eview~ file.  Although the weaving model is usually too tedious to create
@@ -213,7 +214,7 @@ manually, it may be a better option when creating views programmatically.
 
 Let's look at this ECL file now:
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC
 //alias_publication=http://publication
 //alias_book=http://book
 
@@ -227,7 +228,7 @@ with  c : book!Chapter
        and p.author = c.eContainer().authorName;
   }
 }
-#+END_EXAMPLE
+#+END_SRC
 
 It describes a rule to populate the virtual association ~bookChapters~.  It
 considers each publication ~p~ from the (concrete) Publication metamodel against
@@ -246,22 +247,22 @@ Note that for our two particular models which describe the same book, the
 predicate will always return true.  Hence, we could have written the rule
 trivially:
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC
 ...
   compare
   {
     return true;
   }
 }
-#+END_EXAMPLE
+#+END_SRC
 
 But the former version will work with models containing more books and
 publications.
 
 When we open the ~allChapters.eview~ file with the MoDisco Model Browser (Right
-click \to Open With \to Other..., and select MoDisco Model Browser then click
-OK), we can see that the ~bookChapters~ associations allows us to navigate the
-chapters from the Book model:
+click \to ~Open With~ \to ~Other...~, and select MoDisco Model Browser then
+click OK), we can see that the ~bookChapters~ associations allows us to navigate
+the chapters from the Book model:
 
 [[file:images/model-modisco.png]]
 
@@ -272,21 +273,22 @@ Now, we have defined a view that combines the Book and Publication models.  But
 we can define multiple views for the same viewpoint.  Take a look at
 ~firstChapter.eview~:
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC
 contributingModels=../models/publication.xmi,../models/book.xmi
 viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
 matchingModel=firstChapter.ecl
-#+END_EXAMPLE
+#+END_SRC
 
 The only difference with ~allChapters.eview~ is the matching model.  For this
 view, we want only the /first/ chapter of a matching book to be added to the new
 ~bookChapters~ association.  Consequently, in ~firstChapter.ecl~, the predicate
 is:
 
-#+BEGIN_EXAMPLE
+#+NAME: first-chapter-predicate
+#+BEGIN_SRC
 return p.title = c.eContainer().title
    and c = c.eContainer().eContents().first();
-#+END_EXAMPLE
+#+END_SRC
 
 The right-hand part of the condition only matches if the chapter ~c~ is the
 first one of the book it is part of.
@@ -294,16 +296,128 @@ first one of the book it is part of.
 As a result, when we open ~firstChapter.eview~ with the MoDisco Model Browser,
 only one chapter is part of the ~bookChapters~ association:
 
+#+name: first-chapter-view
 [[file:images/view-first-chapter.png]]
 
 And that's it!  We have created one viewpoint combining two metamodels, then we
 created two views combining two models using the same viewpoint.  Note that
 while this method of creating views with ~eviewpoint~ and ~eview~ files is
-adequate for creating small-scale views interactively, EMF Views lets you create
-views with two other methods: programmatically and using VPDL.
+adequate for creating small-scale views interactively, EMF Views offers two
+other methods to create views: programmatically and using VPDL.
 
 In the next two sections, we will show how we can filter other elements in the
 viewpoint, and how we can add new virtual elements.
+
+** Creating a view with VPDL
+*** The VPDL syntax
+VPDL, standing for /ViewPoint Description Language/, is a domain-specific
+language for easing the creation of views and viewpoints when using EMF Views.
+The syntax of VPDL is inspired by SQL's ~SELECT~ statement.
+
+#+BEGIN_note
+The VPDL syntax is still experimental and likely to change in the near future.
+#+END_note
+
+Instead of manually creating ~eviewpoint~ and ~eview~ files, you write a single
+~vpdl~ file which describes the viewpoint and the view at the same time.  Here
+is a VPDL file recreating the ~firstChapter~ view of the previous section:
+
+#+BEGIN_SRC sql
+create view publicationsAndBooks as
+
+select pub.Publication.*,
+       pub.Publication join book.Chapter as firstChapter,
+       book.Book.*,
+       book.Chapter.title,
+
+from 'http://publication' as pub,
+     'http://book' as book,
+
+where 's.title = t.eContainer().title
+   and t = t.eContainer().eContents().first()'
+      for firstChapter
+#+END_SRC
+
+The first line ~create view~ specifies the name of the viewpoint.  This name is
+used for generating the ~eviewpoint~, ~eview~ and ~xmi~ weaving model file.
+
+With the ~select~ clause, you explicitly select the classes and features from
+the contributing metamodels that will appear in the viewpoint.  The ~select~
+clauses essentially specifies the viewpoint's weaving model, albeit in plain
+text.  Here with ~pub.Publication.*~ we say that we want all features of the
+~pub.Publication~ class in the viewpoint, and by selecting only
+~book.Chapter.title~ from ~book.Chapter~, we exclude the ~nbPages~ attribute.
+The ~select~ clause is a whitelist, so if we don't include the ~book.Book.*~
+line for instance, the resulting viewpoint would not let us navigate ~Book~
+instances, since there would be no visible features.
+
+The line:
+
+#+BEGIN_SRC sql
+       pub.Publication join book.Chapter as firstChapter,
+#+END_SRC
+
+tells EMF Views to create a virtual association from ~Publication~ to ~Chapter~
+called ~firstChapter~.  This is the same as the ~bookChapter~ association of the
+previous section.
+
+The ~from~ clause simply maps the namespace URIs of the contributing metamodels
+to aliases used in the ~select~ clause.
+
+Lastly, the ~where~ clause specifies, for each new association, how to match
+elements from contributing models.  This is used to generate the matching model
+as an ECL file.  Here, we use the same predicate as [[first-chapter-predicate][before]], but this time ~s~
+and ~t~ refer respectively to the source (~Publication~) and target (~Chapter~)
+of the association.
+
+*** Using a VPDL file in Eclipse
+
+To use a VPDL file, your project need to be configured as an Xtext project in
+Eclipse.  If you create a new project and add a ~vpdl~ file in it, Eclipse
+should prompt you to configure it as an Xtext project.  Otherwise in the
+outline, Right click on the project \to ~Configure~ \to ~Convert to Xtext
+project~.
+
+Once the project is configured, whenever you save the ~vpdl~ file Xtext should
+generate three files: the ~eviewpoint~, the ~xmi~ weaving model, and the ~ecl~
+matching model.
+
+If you unpack the ~vpdl-tutorial~ example, here is what the file hierarchy looks
+like after we save the ~publicationAndBooks.vpdl~ file:
+
+#+BEGIN_EXAMPLE
+.
+├── src
+│   └── publicationsAndBooks.vpdl
+├── src-gen
+│   ├── publicationsAndBooks.ecl
+│   ├── publicationsAndBooks.eviewpoint
+│   └── publicationsAndBooks.xmi
+└── views
+    └── firstChapter.eview
+#+END_EXAMPLE
+
+All the generated files are in the ~src-gen~ directory.
+
+To create the view however, we still need an ~eview~ file.  VPDL does not create
+one for view (yet).  You just have to point to the generated files, and specify
+the contributing models you want to use.  Here is the definition of
+~firstChapter.eview~:
+
+#+BEGIN_SRC
+viewpoint=../src-gen/publicationsAndBooks.eviewpoint
+contributingModels=../../emfviews-tutorial/models/publication.xmi,\
+                   ../../emfviews-tutorial/models/book.xmi
+matchingModel=../src-gen/publicationsAndBooks.ecl
+weavingModel=publicationAndBooks.xmi
+#+END_SRC
+
+Opening ~firstChapter.eview~ using the MoDisco Model Browser, we get the same
+picture as [[first-chapter-view][before]], the difference being that this time the new association is
+more accurately called ~firstChapter~:
+
+[[file:images/vpdl-view-first-chapter.png]]
+
 
 ** Filtering elements
 
@@ -348,10 +462,10 @@ You need two
 ** Programmatically
 Create a ~new View~ after creating a ~new Viewpoint~.
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC
 Viewpoint viewpoint = new Viewpoint(Arrays.asList(myPackage), emptyWeavingModel);
 View view = new View(viewpoint, Arrays.asList(myModel), emptyWeavingModel);
-#+END_EXAMPLE
+#+END_SRC
 
 You can browse the contents of the viewpoint or view directly.
 

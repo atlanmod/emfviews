@@ -37,3 +37,5 @@ pre {
 .figure p { text-align: center; }
 .figure img { box-shadow: 3px 3px 3px #eee; }
 .linenr { font-size: smaller }
+.org-keyword { font-weight: bold; color: #333; }
+.org-string { color: #1c7164; }
