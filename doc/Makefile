@@ -1,3 +1,3 @@
 .PHONY: all
 all:
-	emacs --quick --batch --load publish.el
+	cask exec emacs --quick --batch --load publish.el

@@ -82,8 +82,9 @@ Return output file name."
                       '("org.atlanmod.emfviews.doc/html/" "html/")))
 
       org-export-with-section-numbers nil
-      org-html-htmlize-output-type nil    ; no styling of code blocks for now
-      org-html-postamble nil              ; no postamble
+      org-html-htmlize-output-type 'css ; export CSS classes of syntax
+                                        ; highlighting, but not any style
+      org-html-postamble nil            ; no postamble
       org-html-doctype "html5"
       org-html-viewport nil                   ; no viewport directive
       org-html-head-include-scripts nil       ; no JS
