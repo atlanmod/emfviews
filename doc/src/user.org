@@ -1,7 +1,7 @@
 #+Title: EMF Views User Guide
 #+OPTIONS: ':t
 
-* Overview
+* Overview and Getting Started
 EMF Views is a tool that enables you to combine and augment several EMF-based
 models in /views/.  These views behave as regular models: you can navigate,
 query and transform views as you would any regular model.  This come in handy
@@ -21,10 +21,91 @@ Views can be created interactively via ~eview~ and ~eviewpoint~ definition
 files, or they can be created programmatically.  EMF Views also includes two
 small languages that ease the definition of views: VPDL and MEL.
 
-* Getting Started
-This section will take you through all the main features of EMF Views.
+*** Getting Started
+[[*Creating a view manually][Creating a view manually]] will section will take you through the main features of
+EMF Views.
 
-** Creating a view
+* User Guide
+** Views
+There are three ways to create views:
+
+1. By writing an ~eview~ file.
+2. By writing a VPDL file.
+3. By using the EMF Views API programmatically.
+
+The ~VPDL~ method is the fastest for interactive creation, although the ~eview~
+approach is more flexible.  Using the API should be preferred when creating
+views from Java code.
+
+*** In Eclipse
+You need two
+
+*** Programmatically
+Create a ~new View~ after creating a ~new Viewpoint~.
+
+#+BEGIN_SRC
+Viewpoint viewpoint = new Viewpoint(Arrays.asList(myPackage), emptyWeavingModel);
+View view = new View(viewpoint, Arrays.asList(myModel), emptyWeavingModel);
+#+END_SRC
+
+You can browse the contents of the viewpoint or view directly.
+
+You also associate them to a resource:
+
+#+BEGIN_SRC java
+ViewpointResource viewpointResource = new ViewpointResource("resourceURI...");
+viewpointResource.setViewpoint(viewpoint);
+
+ViewResource viewResource = new ViewResource("myview.eview");
+viewResource.setView(view);
+viewResource.save(null);
+#+END_SRC
+
+This will save the view to the ~myview.eview~ file.
+
+*** Using a DSL
+Use VPDL to create views and viewpoints.
+
+#+BEGIN_SRC vpdl
+create view full as
+
+select v.ConcreteElement[model, path],
+       v.ConcreteConcept join ecore.EClass as eClass,
+
+from 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0' as v,
+     'http://www.eclipse.org/emf/2002/Ecore' as ecore,
+#+END_SRC
+
+* Weaving models
+Weaving models describe what elements are put into viewpoints and views.
+
+Weaving models contain filters.
+
+** How to create weaving models
+By editing an XMI file.
+
+By using the EMF-generated API.
+
+By using DSLs such as VPDL and MEL which can generate eviewpoint files with
+accompanying weaving models.
+
+** Filtering elements
+
+# by editing the weaving model
+# Filter some classes, bam we don't see them in the view
+
+** Adding new associations
+
+# show we can navigate between the two models with the new links
+
+** VPDL
+# Give a tour of the syntax, couple of showcases
+
+** MEL
+# tour of syntax, couple of showcases
+
+* Tutorials
+** Creating a view manually
 We will create a view linking two related models representing books.
 
 In order to create a view, you need the following:
@@ -371,7 +452,6 @@ and ~t~ refer respectively to the source (~Publication~) and target (~Chapter~)
 of the association.
 
 *** Using a VPDL file in Eclipse
-
 To use a VPDL file, your project need to be configured as an Xtext project in
 Eclipse.  If you create a new project and add a ~vpdl~ file in it, Eclipse
 should prompt you to configure it as an Xtext project.  Otherwise in the
@@ -413,20 +493,10 @@ weavingModel=publicationAndBooks.xmi
 #+END_SRC
 
 Opening ~firstChapter.eview~ using the MoDisco Model Browser, we get the same
-picture as [[first-chapter-view][before]], the difference being that this time the new association is
+result as [[first-chapter-view][before]], the difference being that this time the new association is
 more accurately called ~firstChapter~:
 
 [[file:images/vpdl-view-first-chapter.png]]
-
-
-** Filtering elements
-
-# by editing the weaving model
-# Filter some classes, bam we don't see them in the view
-
-** Adding new associations
-
-# show we can navigate between the two models with the new links
 
 ** Querying a view with OCL
 
@@ -436,74 +506,11 @@ more accurately called ~firstChapter~:
 
 # idem
 
-* Reference
-** Glossary
-- View ::
+* Glossary
+- ECL :: Epsilon Comparison Language
+- OCL :: Object Query Language
+- ATL :: Atlanmod Transformation Language
 - Viewpoint ::
 - Weaving model ::
 - Virtual element ::
 - Contributing model ::
-
-* Creating views
-There are three ways to create views:
-
-1. By writing an ~eview~ file.
-2. By writing a VPDL file.
-3. By using the EMF Views API programmatically.
-
-The ~VPDL~ method is the fastest for interactive creation, although the ~eview~ approach
-is more flexible.  Using the API should be preferred when creating views from
-Java code.
-
-** In Eclipse
-You need two
-
-
-** Programmatically
-Create a ~new View~ after creating a ~new Viewpoint~.
-
-#+BEGIN_SRC
-Viewpoint viewpoint = new Viewpoint(Arrays.asList(myPackage), emptyWeavingModel);
-View view = new View(viewpoint, Arrays.asList(myModel), emptyWeavingModel);
-#+END_SRC
-
-You can browse the contents of the viewpoint or view directly.
-
-You also associate them to a resource:
-
-#+BEGIN_SRC java
-ViewpointResource viewpointResource = new ViewpointResource("resourceURI...");
-viewpointResource.setViewpoint(viewpoint);
-
-ViewResource viewResource = new ViewResource("myview.eview");
-viewResource.setView(view);
-viewResource.save(null);
-#+END_SRC
-
-This will save the view to the ~myview.eview~ file.
-
-** Using a DSL
-Use VPDL to create views and viewpoints.
-
-#+BEGIN_SRC vpdl
-create view full as
-
-select v.ConcreteElement[model, path],
-       v.ConcreteConcept join ecore.EClass as eClass,
-
-from 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0' as v,
-     'http://www.eclipse.org/emf/2002/Ecore' as ecore,
-#+END_SRC
-
-* Creating weaving models
-Weaving models describe what elements are put into viewpoints and views.
-
-Weaving models contain filters.
-
-** How to create weaving models
-By editing an XMI file.
-
-By using the EMF-generated API.
-
-By using DSLs such as VPDL and MEL which can generate eviewpoint files with
-accompanying weaving models.
