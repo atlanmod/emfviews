@@ -33,9 +33,12 @@ pre {
 }
 .footpara { display: inline; }
 .footdef  { margin-bottom: 1em; }
-.figure { margin: 1.5rem; }
+.figure { margin: 2rem; }
 .figure p { text-align: center; }
 .figure img { box-shadow: 3px 3px 3px #eee; }
+.figure .no-shadow { box-shadow: unset; }
 .linenr { font-size: smaller }
 .org-keyword { font-weight: bold; color: #333; }
 .org-string { color: #1c7164; }
+.org-comment, .org-comment-delimiter { color: #84218e; }
+.code-highlighted { background-color: #ffff00; }

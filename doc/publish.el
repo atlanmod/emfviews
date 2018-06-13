@@ -87,7 +87,6 @@ Return output file name."
       org-html-postamble nil            ; no postamble
       org-html-doctype "html5"
       org-html-viewport nil                   ; no viewport directive
-      org-html-head-include-scripts nil       ; no JS
       org-html-head-include-default-style nil ; no inline CSS
       org-html-head "<link rel=\"stylesheet\" href=\"style.css\">")
 

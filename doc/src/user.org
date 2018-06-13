@@ -498,6 +498,130 @@ more accurately called ~firstChapter~:
 
 [[file:images/vpdl-view-first-chapter.png]]
 
+** Creating a view programmatically
+In some situations, you may want to create views without touching the
+filesystem.  EMF Views' API lets you create views purely in memory, without
+creating ~eview~ files or ~vpdl~ files.
+
+Here is a standalone example of creating a minimal view on the ~EcorePackage~
+using the API:
+
+#+BEGIN_SRC java -r
+// 1. Build the viewpoint
+Viewpoint viewpoint = new Viewpoint(Arrays.asList(EcorePackage.eINSTANCE));
+
+// 2. Build the view
+Resource r = new ResourceImpl();
+r.getContents().add(EcorePackage.eINSTANCE);
+View view = new View(viewpoint, Arrays.asList(r));
+
+// 3. Print the names of all EClass instances in the view
+EPackage vEcore = viewpoint.getRootPackage().getESubpackages().get(0);  (ref:vecore)
+EClassifier eClass = vEcore.getEClassifier("EClass");                   (ref:eclass)
+Iterator<EObject> it = view.getVirtualContents().get(0).eAllContents();
+while (it.hasNext()) {
+  EObject o = it.next();
+  if (eClass.isInstance(o)) {
+    System.out.println(o.eGet(o.eClass().getEStructuralFeature("name")));
+  }
+}
+#+END_SRC
+
+To create a ~Viewpoint~, we must pass a list of contributing metamodels as
+instances of ~EPackage~; here we give the ~EcorePackage~ metamodel.  We do not
+provide a weaving model, so a default empty weaving model is used instead.  With
+an empty weaving model, no elements are filtered out from the contributing
+metamodels, and no new elements are added.
+
+Then we build the ~View~ by passing the viewpoint and a list of contributing
+models as instances of ~Resource~.  Here we pass only one model: the
+~EcorePackage~ itself (which conforms to itself, conveniently).
+
+Lastly, we navigate the whole view to find instances of ~EClass~ and print their
+names.  In order to do so, we first [[(vecore)][get a reference]] on the /virtual/ Ecore
+package that's part of the viewpoint, then we [[(eclass)][get a hold]] of its ~EClass~
+classifier.  After that, we grab an iterator to the contents of the view, and we
+use ~eClass.isInstance~ to find instances of ~EClass~ in the view.  When we do
+find one, we print its name using the reflective EMF API via ~eGet~.
+
+Running this snippet will output the names of all EClasses that are part of the
+~EcorePackage~:
+
+#+BEGIN_EXAMPLE
+EAttribute
+EAnnotation
+EClass
+EClassifier
+EDataType
+EEnum
+EEnumLiteral
+EFactory
+EModelElement
+ENamedElement
+EObject
+EOperation
+EPackage
+EParameter
+EReference
+EStructuralFeature
+ETypedElement
+EStringToStringMapEntry
+EGenericType
+ETypeParameter
+#+END_EXAMPLE
+
+*** Caveats
+Note that we /have/ to use the reflective EMF API when navigating views, because
+there is no corresponding generated code.  Furthermore, we cannot use the
+generated code of the ~EcorePackage~ to refer to view elements, because view
+elements conform to the /viewpoint/, which is a different metamodel than
+EcorePackage.
+
+In other words, it would be tempting, but wrong, to navigate the view as
+follows:
+
+#+BEGIN_SRC java
+Iterator<EObject> it = view.getVirtualContents().get(0).eAllContents();
+while (it.hasNext()) {
+  EObject o = it.next();
+  if (o instanceof EClass) {  // this test can never be true
+    ...
+  }
+}
+#+END_SRC
+
+This code will compile, but as view elements may never be instances of the
+generated ~EClass~ interface, the ~if~ branch will in fact never be taken.
+
+Another invalid attempt would be:
+
+#+BEGIN_SRC java
+EClassifier eClass = EcorePackage.eINSTANCE.getEClass();
+Iterator<EObject> it = view.getVirtualContents().get(0).eAllContents();
+while (it.hasNext()) {
+  EObject o = it.next();
+  if (eClass.isInstance(o)) {  // this test can still never be true
+    ...
+  }
+}
+#+END_SRC
+
+# TODO: rewrite with UML?
+
+Still valid Java code, but here again the branch will never be taken.  The
+problem stems from the fact that view elements are not instances of the ~EClass~
+class that's in ~EcorePackage~, but instances of the ~EClass~ class that's in
+the /viewpoint/.  This diagram resumes the situation:
+
+#+ATTR_HTML: :class no-shadow
+[[file:images/three-eclasses.png]]
+
+
+
+*** Creating a weaving model programmatically
+
+# replicate view of the first two preceding sections
+
 ** Querying a view with OCL
 
 # show that it works
