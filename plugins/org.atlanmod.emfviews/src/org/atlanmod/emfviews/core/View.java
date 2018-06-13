@@ -51,6 +51,10 @@ public class View implements Virtualizer {
     this.viewpoint = viewpoint;
   }
 
+  public View(Viewpoint viewpoint, List<Resource> contributingModels) {
+    this(viewpoint, contributingModels, Viewpoint.emptyWeavingModel);
+  }
+
   public View(Viewpoint viewpoint, List<Resource> contributingModels, WeavingModel weavingModel) {
     this.viewpoint = viewpoint;
     this.contributingModels = contributingModels;

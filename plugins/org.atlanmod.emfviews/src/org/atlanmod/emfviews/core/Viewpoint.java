@@ -43,6 +43,7 @@ import org.atlanmod.emfviews.virtuallinks.Filter;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.VirtualConcept;
 import org.atlanmod.emfviews.virtuallinks.VirtualElement;
+import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -64,6 +65,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 
 public class Viewpoint implements EcoreVirtualizer {
+
+  public static final WeavingModel emptyWeavingModel;
+  static {
+    emptyWeavingModel = VirtualLinksFactory.eINSTANCE.createWeavingModel();
+    emptyWeavingModel.setName("empty");
+  };
 
   // Options
   private List<EPackage> contributingPackages; // original, unmodified EPackages
@@ -89,7 +96,7 @@ public class Viewpoint implements EcoreVirtualizer {
   public Viewpoint() {}
 
   public Viewpoint(List<EPackage> contributingMetamodels) {
-    this(contributingMetamodels, null);
+    this(contributingMetamodels, emptyWeavingModel);
   }
 
   public Viewpoint(List<EPackage> contributingMetamodels, WeavingModel weavingModel) {
