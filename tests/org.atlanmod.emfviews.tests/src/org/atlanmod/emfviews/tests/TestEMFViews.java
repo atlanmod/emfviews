@@ -60,12 +60,6 @@ public class TestEMFViews {
 
   // TODO: test failures
 
-  static final WeavingModel emptyWeavingModel;
-  static {
-      emptyWeavingModel = VirtualLinksFactory.eINSTANCE.createWeavingModel();
-      emptyWeavingModel.setName("empty");
-  };
-
   @BeforeClass
   public static void setup() {
     EcorePackage.eINSTANCE.eClass();
@@ -293,7 +287,7 @@ public class TestEMFViews {
         + "               #1(EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
 
-    Viewpoint v = new Viewpoint(Arrays.asList(P), emptyWeavingModel);
+    Viewpoint v = new Viewpoint(Arrays.asList(P), ViewpointResource.emptyWeavingModel);
 
     // The association in the viewpoint is consistent with the contributing metamodel
     EPackage VP = v.getRootPackage().getESubpackages().get(0);
@@ -673,14 +667,14 @@ public class TestEMFViews {
         + "               (EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
 
-    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P), emptyWeavingModel);
+    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P), ViewpointResource.emptyWeavingModel);
 
     // Construct the view
     EObject[] model = Sexp2EMF.build("[(A) (B)]", P.getEFactoryInstance());
     Resource r = new ResourceImpl();
     r.getContents().addAll(Arrays.asList(model));
 
-    View view = new View(viewpoint, Arrays.asList(r), emptyWeavingModel);
+    View view = new View(viewpoint, Arrays.asList(r), ViewpointResource.emptyWeavingModel);
 
     assertEquals(2, view.getVirtualContents().size());
     assertEquals(view.getVirtual(model[0]), view.getVirtualContents().get(0));
@@ -754,12 +748,12 @@ public class TestEMFViews {
     EObject[] m0 = Sexp2EMF.build("[(A) (A)]", P0.getEFactoryInstance());
     Resource r0 = new ResourceImpl();
     r0.getContents().addAll(Arrays.asList(m0));
-    View v1 = new View((Viewpoint) viewpoints[1], Arrays.asList(r0), emptyWeavingModel);
+    View v1 = new View((Viewpoint) viewpoints[1], Arrays.asList(r0), ViewpointResource.emptyWeavingModel);
 
     // There is no factory in views (yet), so we just wrap the first view
     ViewResource r1 = new ViewResource();
     r1.setView(v1);
-    View v2 = new View((Viewpoint) viewpoints[2], Arrays.asList(r1), emptyWeavingModel);
+    View v2 = new View((Viewpoint) viewpoints[2], Arrays.asList(r1), ViewpointResource.emptyWeavingModel);
 
     EList<EObject> contents = v2.getVirtualContents();
 
@@ -777,7 +771,7 @@ public class TestEMFViews {
         + ":eClassifiers [(EClass :name 'A')])",
         EcoreFactory.eINSTANCE)[0];
 
-    Viewpoint v = new Viewpoint(Arrays.asList(P0), emptyWeavingModel);
+    Viewpoint v = new Viewpoint(Arrays.asList(P0), ViewpointResource.emptyWeavingModel);
     EPackage P1 = v.getRootPackage().getESubpackages().get(0);
     EClassifier A = P1.getEClassifiers().get(0);
 
