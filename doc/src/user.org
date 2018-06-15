@@ -503,124 +503,237 @@ In some situations, you may want to create views without touching the
 filesystem.  EMF Views' API lets you create views purely in memory, without
 creating ~eview~ files or ~vpdl~ files.
 
-Here is a standalone example of creating a minimal view on the ~EcorePackage~
+Here is a standalone example of creating a minimal view on the ~UMLPackage~
 using the API:
 
-#+BEGIN_SRC java -r
-// 1. Build the viewpoint
-Viewpoint viewpoint = new Viewpoint(Arrays.asList(EcorePackage.eINSTANCE));
+#+BEGIN_SRC java
+// 1. Create viewpoint
+Viewpoint viewpoint = new Viewpoint(Arrays.asList(UMLPackage.eINSTANCE));
 
-// 2. Build the view
-Resource r = new ResourceImpl();
-r.getContents().add(EcorePackage.eINSTANCE);
-View view = new View(viewpoint, Arrays.asList(r));
+// 2. Create model
+UMLFactory f = UMLFactory.eINSTANCE;
+Component C1 = f.createComponent();
+C1.setName("Comp1");
+Component C2 = f.createComponent();
+C2.setName("Comp2");
 
-// 3. Print the names of all EClass instances in the view
-EPackage vEcore = viewpoint.getRootPackage().getESubpackages().get(0);  (ref:vecore)
-EClassifier eClass = vEcore.getEClassifier("EClass");                   (ref:eclass)
-Iterator<EObject> it = view.getVirtualContents().get(0).eAllContents();
-while (it.hasNext()) {
-  EObject o = it.next();
-  if (eClass.isInstance(o)) {
-    System.out.println(o.eGet(o.eClass().getEStructuralFeature("name")));
-  }
+Resource model = new ResourceImpl();
+model.getContents().addAll(Arrays.asList(C1, C2));
+
+// 3. Create view
+View view = new View(viewpoint, Arrays.asList(model));
+
+// 4. Navigate the view
+for (EObject o : view.getVirtualContents()) {
+  System.out.println(o.eGet(o.eClass().getEStructuralFeature("name")));
 }
 #+END_SRC
 
 To create a ~Viewpoint~, we must pass a list of contributing metamodels as
-instances of ~EPackage~; here we give the ~EcorePackage~ metamodel.  We do not
+instances of ~EPackage~; here we give the ~UMLPackage~ metamodel.  We do not
 provide a weaving model, so a default empty weaving model is used instead.  With
 an empty weaving model, no elements are filtered out from the contributing
 metamodels, and no new elements are added.
 
-Then we build the ~View~ by passing the viewpoint and a list of contributing
-models as instances of ~Resource~.  Here we pass only one model: the
-~EcorePackage~ itself (which conforms to itself, conveniently).
+Then we build the model using the ~UMLFactory~.  We keep it simple for the
+purposes of example: just two ~Component~ instances.  In a realistic situation,
+this model could come from anywhere, as long as we have a resource to provide to
+the ~View~ constructor.
 
-Lastly, we navigate the whole view to find instances of ~EClass~ and print their
-names.  In order to do so, we first [[(vecore)][get a reference]] on the /virtual/ Ecore
-package that's part of the viewpoint, then we [[(eclass)][get a hold]] of its ~EClass~
-classifier.  After that, we grab an iterator to the contents of the view, and we
-use ~eClass.isInstance~ to find instances of ~EClass~ in the view.  When we do
-find one, we print its name using the reflective EMF API via ~eGet~.
+The third step is creating the view by passing the viewpoint and a list of
+contributing models as instances of ~Resource~ to ~View~.  Here we pass the
+model resource we just constructed.  The third optional argument to the ~View~
+constructor is the view weaving model.  As for ~Viewpoint~, an empty weaving
+model is used if unspecified.
 
-Running this snippet will output the names of all EClasses that are part of the
-~EcorePackage~:
+Lastly, we navigate the view to print the name of the components inside it.
+Since we have used empty weaving models, the view is identical in content to the
+model.  Running this snippet will output the names of the two components:
 
 #+BEGIN_EXAMPLE
-EAttribute
-EAnnotation
-EClass
-EClassifier
-EDataType
-EEnum
-EEnumLiteral
-EFactory
-EModelElement
-ENamedElement
-EObject
-EOperation
-EPackage
-EParameter
-EReference
-EStructuralFeature
-ETypedElement
-EStringToStringMapEntry
-EGenericType
-ETypeParameter
+Comp1
+Comp2
 #+END_EXAMPLE
 
 *** Caveats
 Note that we /have/ to use the reflective EMF API when navigating views, because
-there is no corresponding generated code.  Furthermore, we cannot use the
-generated code of the ~EcorePackage~ to refer to view elements, because view
-elements conform to the /viewpoint/, which is a different metamodel than
-EcorePackage.
-
-In other words, it would be tempting, but wrong, to navigate the view as
-follows:
+there is no corresponding generated code.  View elements are always dynamic
+objects.  In other words, it would be tempting, but wrong, to navigate the view
+as follows:
 
 #+BEGIN_SRC java
-Iterator<EObject> it = view.getVirtualContents().get(0).eAllContents();
-while (it.hasNext()) {
-  EObject o = it.next();
-  if (o instanceof EClass) {  // this test can never be true
+for (EObject o : view.getVirtualContents()) {
+  Component c = (Component) o;   // this cast will fail
+  System.out.println(c.getName());
+}
+#+END_SRC
+
+This code will compile, but will raise a ~ClassCastException~ at runtime.  For
+the same reasons, testing for instances with ~instanceof~ will not work:
+
+#+BEGIN_SRC java
+for (EObject o : view.getVirtualContents()) {
+  if (o instanceof Component) {  // this can never be true
     ...
   }
 }
 #+END_SRC
 
-This code will compile, but as view elements may never be instances of the
-generated ~EClass~ interface, the ~if~ branch will in fact never be taken.
-
-Another invalid attempt would be:
+For testing instances, you have to use the reflective API.  But be careful about
+using the metaclasses from /viewpoint/ and not from the original ~UMLPackage~.
+The following is wrong:
 
 #+BEGIN_SRC java
-EClassifier eClass = EcorePackage.eINSTANCE.getEClass();
-Iterator<EObject> it = view.getVirtualContents().get(0).eAllContents();
-while (it.hasNext()) {
-  EObject o = it.next();
-  if (eClass.isInstance(o)) {  // this test can still never be true
+EClassifier comp = UMLPackage.eINSTANCE.getComponent();
+for (EObject o : view.getVirtualContents()) {
+  if (comp.isInstance(o)) {      // this test can still never be true
     ...
   }
 }
 #+END_SRC
 
-# TODO: rewrite with UML?
+The view conforms to the viewpoint, and elements of the viewpoint /refer/ to
+elements from ~UMLPackage~, but they are not equal.  The correct way of finding
+~Component~ instances is by getting the ~Component~ metaclass from the virtual
+~UMLPackage~:
 
-Still valid Java code, but here again the branch will never be taken.  The
-problem stems from the fact that view elements are not instances of the ~EClass~
-class that's in ~EcorePackage~, but instances of the ~EClass~ class that's in
-the /viewpoint/.  This diagram resumes the situation:
-
-#+ATTR_HTML: :class no-shadow
-[[file:images/three-eclasses.png]]
-
-
+#+BEGIN_SRC java
+EPackage vUML = viewpoint.getRootPackage().getESubpackages().get(0);
+EClassifier comp = vUML.getEClassifier("Component");
+for (EObject o : view.getVirtualContents()) {
+  if (comp.isInstance(o)) {
+    ...
+  }
+}
+#+END_SRC
 
 *** Creating a weaving model programmatically
+We have seen how to create viewpoints and views programmatically, but only with
+empty weaving models.  Let's recreate the publications and books view from the
+other tutorials, but this time without creating any ~eview~, ~eviewpoint~ or
+~vpdl~ file.
 
-# replicate view of the first two preceding sections
+For simplicity, we'll assume the Book and Publication metamodels and models are
+already loaded.
+
+#+BEGIN_SRC java
+EPackage Book = ... // load the Book.ecore metamodel
+EPackage Publ = ... // load the Publication.ecore metamodel
+
+Resource book = ... // load the book.xmi model
+Resource publ = ... // load the publication.xmi model
+
+// 1. Build the viewpoint weaving model
+VirtualLinksFactory f = VirtualLinksFactory.eINSTANCE;
+WeavingModel WM1 = f.createWeavingModel();
+WM1.setName("publicationsAndBooks");
+
+ConcreteConcept source;
+{
+  ContributingModel cm = f.createContributingModel();
+  WM1.getContributingModels().add(cm);
+  cm.setURI("http://publication");
+  ConcreteConcept cc = f.createConcreteConcept();
+  cm.getConcreteElements().add(cc);
+  cc.setPath("Publication");
+  source = cc;
+}
+
+ConcreteConcept target;
+ConcreteElement nbPages;
+{
+  ContributingModel cm = f.createContributingModel();
+  WM1.getContributingModels().add(cm);
+  cm.setURI("http://book");
+  ConcreteConcept cc = f.createConcreteConcept();
+  cm.getConcreteElements().add(cc);
+  cc.setPath("Chapter");
+  target = cc;
+  ConcreteElement ce = f.createConcreteElement();
+  cm.getConcreteElements().add(ce);
+  ce.setPath("Chapter.nbPages");
+  nbPages = ce;
+}
+
+{
+  VirtualAssociation va = f.createVirtualAssociation();
+  WM1.getVirtualLinks().add(va);
+  va.setName("bookChapters");
+  va.setUpperBound(-1);
+  va.setSource(source);
+  va.setTarget(target);
+}
+
+{
+  Filter fi = f.createFilter();
+  WM1.getVirtualLinks().add(fi);
+  fi.setName("nbPages");
+  fi.setTarget(nbPages);
+}
+
+// 2. Build the viewpoint
+Viewpoint viewpoint = new Viewpoint(Arrays.asList(Book, Publ), WM1);
+
+// 3. Build the view weaving model
+WeavingModel WM2 = f.createWeavingModel();
+WM2.setName("publicationsAndBooks");
+
+{
+  ContributingModel cm = f.createContributingModel();
+  WM2.getContributingModels().add(cm);
+  cm.setURI("http://publication");
+  ConcreteConcept cc = f.createConcreteConcept();
+  cm.getConcreteElements().add(cc);
+  EObject o = publ.getContents().get(0);
+  cc.setPath(publ.getURIFragment(o));
+  source = cc;
+}
+
+{
+  ContributingModel cm = f.createContributingModel();
+  WM2.getContributingModels().add(cm);
+  cm.setURI("http://book");
+  ConcreteConcept cc = f.createConcreteConcept();
+  cm.getConcreteElements().add(cc);
+  EObject o = book.getContents().get(0).eContents().get(0);
+  cc.setPath(book.getURIFragment(o));
+  target = cc;
+}
+
+{
+  VirtualAssociation va = f.createVirtualAssociation();
+  WM2.getVirtualLinks().add(va);
+  va.setName("bookChapters");
+  va.setSource(source);
+  va.setTarget(target);
+}
+
+// 4. Build the view
+View view = new View(viewpoint, Arrays.asList(book, publ), WM2);
+
+// 5. Navigate the new association in the view
+EObject vpubl = view.getVirtualContents().get(1);
+System.out.println(vpubl.eGet(vpubl.eClass().getEStructuralFeature("title")));
+
+EStructuralFeature assoc = vpubl.eClass().getEStructuralFeature("bookChapters");
+EObject vchapter = ((EList<EObject>) vpubl.eGet(assoc)).get(0);
+System.out.println(
+  vchapter.eGet(vchapter.eClass().getEStructuralFeature("title")));
+#+END_SRC
+
+As you can see, creating weaving model programmatically can be quite tedious,
+but this is the option that gives you the most control.  In a real program, you
+may want to create helper functions that take care of the boilerplate,
+especially when building weaving models for views which can contain many
+elements.  Here, thankfully, we just had to add one chapter to the virtual
+association.
+
+When executing this snippet, we get the following output:
+
+#+BEGIN_EXAMPLE
+ATL in Depth
+Introduction to ATL
+#+END_EXAMPLE
 
 ** Querying a view with OCL
 
