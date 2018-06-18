@@ -103,7 +103,7 @@ public class ViewpointResource extends ResourceImpl {
       viewpoint = new Viewpoint(loadMetamodels(),
                                 loadWeavingModel());
     } catch (Exception ex) {
-      getErrors().add(new Err("Failed to create the viewpoint due to exception: ", ex));
+      getErrors().add(new Err("Failed to create the viewpoint due to exception:\n%s", ex));
       throw ex;
     }
   }
