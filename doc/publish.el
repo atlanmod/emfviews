@@ -70,7 +70,7 @@ Return output file name."
         ,@(seq-mapcat (lambda (out-dir)
                         `(("images"
                            :base-directory "src/images/"
-                           :base-extension "jpg\\|gif\\|png"
+                           :base-extension "jpg\\|gif\\|png\\|svg"
                            :publishing-directory ,(concat out-dir "images/")
                            :publishing-function org-publish-attachment)
 
@@ -93,6 +93,21 @@ Return output file name."
 ;; For some reason, org-publish will leave backup files around.  We don't want
 ;; that.
 (setq make-backup-files nil)
+
+
+;;; HACKS
+
+;; Because any project involving org will include hacks.
+
+;; By default, org will inline SVG images using the <object> tag.  This causes a
+;; lot of headaches, with the only advantage being the ability to target
+;; elements inside the SVG with scripts.  Of course, there is no option for it,
+;; so we override its behavior and just wrap the SVG in an <img> tag.
+(advice-add 'org-html--svg-image :around
+            (lambda (orig-fun source attributes info)
+              (format "<img src=\"%s\" %s/>"
+                      source
+                      (org-html--make-attribute-string attributes))))
 
 ;; At a later point, we can build the toc.xml from the contents of published
 ;; files.  Maybe piggy-backing on org-html-toc is not the best way.

@@ -27,20 +27,241 @@ EMF Views.
 
 * User Guide
 ** Views
+Views are lightweight objects that aggregate several contributing models, and
+allows you to access these models transparently.
+
 There are three ways to create views:
 
-1. By writing an ~eview~ file.
-2. By writing a VPDL file.
-3. By using the EMF Views API programmatically.
+1. by writing an [[*~eview~ and ~eviewpoint~ files][~eview~ (and an ~eviewpoint~) file]];
+2. by writing a [[*VPDL][VPDL file]];
+3. by using the EMF Views API [[*Programmatic API][programmatically]].
 
-The ~VPDL~ method is the fastest for interactive creation, although the ~eview~
+The ~VPDL~ method is the fastest for interactive creation, but the ~eview~
 approach is more flexible.  Using the API should be preferred when creating
 views from Java code.
 
-*** In Eclipse
-You need two
+*** ~eview~ and ~eviewpoint~ files
+The ~eview~ and ~eviewpoint~ files respectively describe views and viewpoints.
 
-*** Programmatically
+In Eclipse, the EMF Views plugin installs parsers for these file extensions
+through the ~org.eclipse.emf.ecore.extension_parser~ extension point, which
+means you are able to open ~eview~ and ~eviewpoint~ files in model editors such
+as the Sample Ecore Model Editor, or the [[eclipse:/topic/org.eclipse.modisco.infrastructure.doc/mediawiki/model_browser/user.html][MoDisco Model Browser]].
+
+The syntax of these files follows the text encoding of ~java.util.Properties~.
+That is, each line is contains a single ~KEY=VALUE~ pair, where both ~KEY~ and
+~VALUE~ are strings:
+
+#+BEGIN_SRC sh
+key1=thisisavalue
+# a pound begins a line comment
+key2=everything to the right of the equals is a value
+# Values can span multiple lines by escaping newlines with a backslash
+key3=value spanning\
+     multiple lines
+#+END_SRC
+
+For ~eviewpoint~ files, there are only two valid keys:
+
+- ~contributingMetamodels~ :: Comma-separated list of URIs to contributing
+     metamodels.  This key is mandatory.
+
+- ~weavingModel~ :: URI for the viewpoint's [[*Weaving models][weaving model]].  This key is
+     optional; if unspecified the viewpoint will be constructed with an empty
+     weaving model.
+
+URIs are built using ~org.eclipse.emf.common.util.URI.createURI~.  This allows
+you to specify files using the ~file~ or ~platform~ schemes.  Without an
+explicit scheme, the file one is the default.  Relative file paths are resolved
+relatively to the location of the ~eviewpoint~ file.
+
+For metamodels, you can specify either the location of an ~ecore~ file with the
+above schemes, or if the URI begin with ~http://~ then that is taken to be the
+namespace URI of the ~EPackage~ and is looked up in the Ecore package registry.
+
+Here is an example of a valid ~eviewpoint~ file:
+
+#+BEGIN_EXAMPLE
+contributingMetamodels=../metamodels/Book.ecore,\
+                       http://www.eclipse.org/uml2/5.0.0/UML
+weavingModel=books-and-uml.xmi
+#+END_EXAMPLE
+
+~eview~ files have 4 valid keys:
+
+- ~viewpoint~ :: URI to the ~eviewpoint~ file.  This key is mandatory.
+- ~contributingModels~ ::  Comma-separated list of URIs to contributing models.
+     This key is mandatory.
+- ~weavingModel~ :: URI to the view's [[*Weaving models][weaving model]].  This key conflicts with
+     ~matchingModel~.
+- ~matchingModel~ :: URI to a supported [[*Matching models][matching model]].  This key conflicts with
+     ~weavingModel~.
+
+Since the purpose of the matching model is to create the weaving model used by
+the view, you must give exactly one of the keys { ~matchingModel~,
+~weavingModel~ }.
+
+All file URIs are resolved relatively to the ~eview~ file's location.
+
+Here is an example of a valid ~eview~ file:
+
+#+BEGIN_EXAMPLE
+viewpoint=../viewpoints/booksAndPub.eviewpoint
+contributingModels=models/book.xmi,../../publication.xmi
+matchingModel=booksAndPub.ecl
+#+END_EXAMPLE
+
+For a step-by-step guide on creating views with ~eview~ files, see [[*Creating a view manually][Creating a
+view manually]].
+
+*** VPDL
+VPDL, standing for /ViewPoint Description Language/, is a domain-specific
+language for easing the creation of views and viewpoints when using EMF Views.
+The syntax of VPDL is inspired by SQL's ~SELECT~ statement.
+
+#+BEGIN_note
+The VPDL syntax is still experimental and likely to change in the near future.
+#+END_note
+
+This is an overview of the structure of a VPDL file:
+
+#+BEGIN_verbatim
+create view /view-name/ as
+
+select /features and new associations/
+
+from /contributing metamodels/
+
+where /ECL matching rules for new associations/
+#+END_verbatim
+
+There are three clauses:
+
+- ~select~ :: Specifies which features from the contributing metamodels to
+     include in the view, and which new associations (if any) to create between
+     models.
+
+     At the very least, you must include one feature must (otherwise the view
+     will be empty and you could use an empty weaving model directly instead of
+     writing a VPDL file).
+
+     To select a feature, you write its dot-separated path:
+
+     #+BEGIN_verbatim
+     /metamodel/ . /class/ . /feature/
+     #+END_verbatim
+
+     where /metamodel/ is the alias given to the metamodel in the ~from~ clause.
+     E.g., ~uml.Component.name~ will include the ~name~ feature of the
+     ~Component~ class in the metamodel called ~uml~.
+
+     You can select multiple features from the same class by using square
+     brackets: ~uml.Component[name, role]~ is equivalent to:
+
+     #+BEGIN_EXAMPLE
+     uml.Component.name,
+     uml.Component.role
+     #+END_EXAMPLE
+
+     Lastly, you can include all features of a class using a wildcard:
+     ~uml.Component.*~.
+
+     New associations are created between two classes with a ~join~ statement:
+
+     #+BEGIN_verbatim
+     /metamodel/ . /class1/ join /metamodel/ . /class2/ as /name/
+     #+END_verbatim
+
+     This will add a virtual association feature named ~name~ in ~class1~ with
+     type ~class2~.  Note that this does not specify /how/ the association will
+     be populated based on model contents.  For that you have to use the ~where~
+     clause.
+
+     This clause is mandatory.
+
+- ~from~ :: Specifies the metamodels contributing to the viewpoint.
+
+     #+BEGIN_verbatim
+     /namespace-uri/ as /alias/
+     #+END_verbatim
+
+     The metamodel are given through their namespace URIs, and are then given an
+     alias which you use in the ~select~ clause.
+
+     This clause is mandatory.
+
+- ~where~ ::  Specifies the rules used for populating new associations by
+     matching model elements.
+
+     The rules are given as strings containing ECL expressions, where the names
+     ~s~ and ~t~ are bound respectively to the source model and target model of
+     the association.
+
+     This clause is optional.
+
+Here is an example of a VPDL file:
+
+#+BEGIN_SRC sql
+create view threeModelComposition as
+
+select
+    togaf.Requirement join reqif.SpecObject as detailedRequirement,
+    togaf.Process join bpmn.Process as detailedProcess,
+
+    togaf.Process.isAutomated,
+    togaf.Requirement[statementOfRequirement, acceptanceCriteria],
+    reqif.SpecObject.type,
+    bpmn.Process[isClosed, isExecutable, processType],
+
+    togaf.Element.name,
+    togaf.EnterpriseArchitecture.architectures,
+    togaf.StrategicArchitecture.strategicElements,
+    togaf.BusinessArchitecture.processes,
+
+    reqif.ReqIFContent.specObjects,
+    reqif.ReqIF.coreContent,
+    reqif.Identifiable[desc, longName],
+
+    bpmn.Definitions[name, rootElements],
+    bpmn.CallableElement.name,
+
+from
+  'http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0' as togaf,
+  'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI' as bpmn,
+  'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd' as reqif,
+
+where 's.name=t.name and s.isAutomated = false' for detailedProcess
+      't.values.exists(v | v.theValue=s.name)' for detailedRequirement
+#+END_SRC
+
+[[https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][The full Xtext grammar]] can be found in the source code, but the following is an
+abridged version:
+
+#+BEGIN_EXAMPLE
+View: 'create view' name 'as' Select From Where?;
+
+Select: 'select' SelectFeature (',' SelectFeature)* ','?;
+SelectFeature: [Metamodel] '.' [ecore::EClass] SelectFeatureRest;
+SelectFeatureRest: '.' Attribute
+  | Relation
+  | '[' Feature (',' Feature)* ','? ']'
+  | AllAttributes;
+Attribute: [ecore::EStructuralFeature];
+Relation: 'join' [Metamodel] '.' [ecore::EClass] 'as' ID;
+Feature: Attribute | Relation;
+AllAttributes: '.*';
+
+From: 'from' Metamodel (',' Metamodel)* ','?;
+Metamodel: STRING 'as' ID;
+
+Where: 'where' Rule+;
+Rule: STRING 'for' [Relation];
+#+END_EXAMPLE
+
+The tutorial [[*Creating a view with VPDL][Creating a view with VPDL]] takes you through creating a VPDL file
+and using it in Eclipse.
+
+*** Programmatic API
 Create a ~new View~ after creating a ~new Viewpoint~.
 
 #+BEGIN_SRC
@@ -63,46 +284,65 @@ viewResource.save(null);
 
 This will save the view to the ~myview.eview~ file.
 
-*** Using a DSL
-Use VPDL to create views and viewpoints.
-
-#+BEGIN_SRC vpdl
-create view full as
-
-select v.ConcreteElement[model, path],
-       v.ConcreteConcept join ecore.EClass as eClass,
-
-from 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0' as v,
-     'http://www.eclipse.org/emf/2002/Ecore' as ecore,
-#+END_SRC
-
-* Weaving models
+** Weaving models
 Weaving models describe what elements are put into viewpoints and views.
 
-Weaving models contain filters.
+#+ATTR_HTML: :class no-shadow
+[[file:images/weavingmodel-metamodel.svg]]
 
-** How to create weaving models
-By editing an XMI file.
+- name
+- whitelist
+- virtualLinks
+- filters
+- contributingModels
 
-By using the EMF-generated API.
+# TODO: describe each weaving model directive (filters, new associations, new
+# elements)
 
-By using DSLs such as VPDL and MEL which can generate eviewpoint files with
-accompanying weaving models.
+** Matching models
+A matching model is a more declarative way to create a weaving model for views.
+Its main purpose is to populate virtual associations based on the contents of
+the contributing model.
 
-** Filtering elements
+By default, EMF Views ca use ECL files to create weaving models.  Such typically
+contain one rule for each virtual association.  Here is an example ECL file
+containing two rules:
 
-# by editing the weaving model
-# Filter some classes, bam we don't see them in the view
+#+BEGIN_EXAMPLE
+//alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
+//alias_bpmn=http://www.omg.org/spec/BPMN/20100524/MODEL-XMI
+//alias_reqif=http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
 
-** Adding new associations
+rule detailedProcess
+match s : ea!Process
+with  t : bpmn!Process
+{
+  compare
+  {
+    return s.name = t.name;
+  }
+}
 
-# show we can navigate between the two models with the new links
+rule detailedRequirement
+match s : ea!Requirement
+with  t : reqif!SpecObject
+{
+  compare
+  {
+    return t.values.exists(v | v.theValue=s.name);
+  }
+}
+#+END_EXAMPLE
 
-** VPDL
-# Give a tour of the syntax, couple of showcases
+*** Adding new matching models
+You can add new matching engines through the
+~org.atlanmod.emfviews.virtuallinks.delegator~ extension point.  It takes a file
+extension (e.g., "ecl") and a class implementing the ~IVrtualLinksDelegate~
+interface, which has a single method:
 
-** MEL
-# tour of syntax, couple of showcases
+#+BEGIN_SRC java
+WeavingModel createWeavingModel(URI linksDslFile, List<Resource> inputModels)
+#+END_SRC
 
 * Tutorials
 ** Creating a view manually
@@ -390,7 +630,7 @@ In the next two sections, we will show how we can filter other elements in the
 viewpoint, and how we can add new virtual elements.
 
 ** Creating a view with VPDL
-*** The VPDL syntax
+*** Writing a VPDL file
 VPDL, standing for /ViewPoint Description Language/, is a domain-specific
 language for easing the creation of views and viewpoints when using EMF Views.
 The syntax of VPDL is inspired by SQL's ~SELECT~ statement.

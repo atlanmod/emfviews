@@ -10,7 +10,7 @@ code {
   border-right: 0;
   padding: 1px 2px;
 }
-pre {
+pre, .verbatim {
   font-family: monospace;
   font-size: 14px;
   margin: 1.5rem 0;
@@ -31,11 +31,14 @@ pre {
   border: 1px solid #ccc;
   box-shadow: 3px 3px 3px #eee;
 }
+dd > p:first-child { margin-top: 0; }
+.verbatim p:first-child { margin-top: 0; }
+.verbatim p:last-child { margin-bottom: 0; }
 .footpara { display: inline; }
 .footdef  { margin-bottom: 1em; }
 .figure { margin: 2rem; }
 .figure p { text-align: center; }
-.figure img { box-shadow: 3px 3px 3px #eee; }
+.figure img { box-shadow: 3px 3px 3px #eee; max-width: 100%; }
 .figure .no-shadow { box-shadow: unset; }
 .linenr { font-size: smaller }
 .org-keyword { font-weight: bold; color: #333; }
