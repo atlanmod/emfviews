@@ -21,6 +21,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public interface IVirtualLinksDelegate {
 
-  public WeavingModel createWeavingModel(URI linksDslFile, List<Resource> inputModels) throws Exception;
+  WeavingModel createWeavingModel(URI linksDslFile, List<Resource> inputModels) throws Exception;
 
 }
