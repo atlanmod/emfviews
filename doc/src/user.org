@@ -34,7 +34,7 @@ There are three ways to create views:
 
 1. by writing an [[*~eview~ and ~eviewpoint~ files][~eview~ (and an ~eviewpoint~) file]];
 2. by writing a [[*VPDL][VPDL file]];
-3. by using the EMF Views API [[*Programmatic API][programmatically]].
+3. by using the EMF Views [[*API][API]].
 
 The ~VPDL~ method is the fastest for interactive creation, but the ~eview~
 approach is more flexible.  Using the API should be preferred when creating
@@ -261,28 +261,40 @@ Rule: STRING 'for' [Relation];
 The tutorial [[*Creating a view with VPDL][Creating a view with VPDL]] takes you through creating a VPDL file
 and using it in Eclipse.
 
-*** Programmatic API
-Create a ~new View~ after creating a ~new Viewpoint~.
-
-#+BEGIN_SRC
-Viewpoint viewpoint = new Viewpoint(Arrays.asList(myPackage), emptyWeavingModel);
-View view = new View(viewpoint, Arrays.asList(myModel), emptyWeavingModel);
-#+END_SRC
-
-You can browse the contents of the viewpoint or view directly.
-
-You also associate them to a resource:
+*** API
+You can construct ~View~ and ~Viewpoint~ classes directly by invoking their
+constructors:
 
 #+BEGIN_SRC java
-ViewpointResource viewpointResource = new ViewpointResource("resourceURI...");
-viewpointResource.setViewpoint(viewpoint);
+Viewpoint(List<EPackage> metamodels)
+Viewpoint(List<EPackage> metamodels, WeavingModel wm)
 
-ViewResource viewResource = new ViewResource("myview.eview");
+View(Viewpoint v, List<Resource> models)
+View(Viewpoint v, List<Resource> models, WeavingModel wm)
+#+END_SRC
+
+If the weaving model argument is not specified, an empty weaving model is used
+instead (see ~Viewpoint.emptyWeavingModel~).
+
+You can browse the contents of the viewpoint using ~Viewpoint.getRootPackage~,
+and the contents of the view using ~View.getVirtualContents~.
+
+Finally, you may also associate these objects to resources, should you want to
+serialize them into files:
+
+#+BEGIN_SRC java
+ViewpointResource vpr = new ViewpointResource("my.eviewpoint");
+vpr.setResource(viewpoint);
+vpr.save(null);
+
+ViewResource vr = new ViewResource("my.eview");
 viewResource.setView(view);
 viewResource.save(null);
 #+END_SRC
 
-This will save the view to the ~myview.eview~ file.
+This will save the viewpoint and views to their corresponding files.
+
+See [[*Creating a view programmatically][Creating a view programmatically]] for a guided example on how to use the API.
 
 ** Weaving models
 Weaving models describe what elements are put into viewpoints and views.
@@ -304,9 +316,9 @@ A matching model is a more declarative way to create a weaving model for views.
 Its main purpose is to populate virtual associations based on the contents of
 the contributing model.
 
-By default, EMF Views ca use ECL files to create weaving models.  Such typically
-contain one rule for each virtual association.  Here is an example ECL file
-containing two rules:
+By default, EMF Views can use ECL files to create weaving models.  Such
+typically contain one rule for each virtual association.  Here is an example ECL
+file containing two rules:
 
 #+BEGIN_EXAMPLE
 //alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
