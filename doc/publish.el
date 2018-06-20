@@ -95,6 +95,46 @@ Return output file name."
 (setq make-backup-files nil)
 
 
+;;; Highlighting for niche languages
+
+;; We define tiny major modes for ECL, VPDL and the like in order to get syntax
+;; highlighting working in the exported output.
+
+(require 'rx)
+
+;; ECL
+(defvar ecl-keywords
+  (seq-map (lambda (key)
+             (rx-to-string `(and bow ,key eow) 'no-group))
+           '("rule" "match" "with" "compare" "return"
+             "and")))
+
+(define-derived-mode ecl-mode prog-mode "ecl"
+  "Epsilon Compare Language mode"
+  (setq font-lock-defaults
+        `(,ecl-keywords nil nil
+                        ((?/ . ". 12")
+                         (?\n . ">")
+                         (?\" . "\"")))))
+
+;; VPDL
+(defvar vpdl-keywords
+  (seq-map (lambda (key)
+             (rx-to-string `(and bow ,key eow) 'no-group))
+           '("create" "view" "as" "select" "join" "for"
+             "select" "from" "where" )))
+
+(define-derived-mode vpdl-mode prog-mode "vpdl"
+  "VPDL mode"
+  (setq font-lock-defaults
+        `(,vpdl-keywords nil nilzp
+                         ((?/ . ". 124")
+                          (?* . ". 23b")
+                          (?\n . ">")
+                          (?\" . "\"")
+                          (?\' . "\"")))))
+
+
 ;;; HACKS
 
 ;; Because any project involving org will include hacks.

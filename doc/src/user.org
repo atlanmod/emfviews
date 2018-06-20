@@ -125,15 +125,15 @@ The VPDL syntax is still experimental and likely to change in the near future.
 
 This is an overview of the structure of a VPDL file:
 
-#+BEGIN_verbatim
-create view /view-name/ as
+#+BEGIN_SRC vpdl
+create view /* view-name */ as
 
-select /features and new associations/
+select // features and new associations
 
-from /contributing metamodels/
+from // contributing metamodels
 
-where /ECL matching rules for new associations/
-#+END_verbatim
+where // ECL matching rules for new associations
+#+END_SRC
 
 There are three clauses:
 
@@ -201,7 +201,7 @@ There are three clauses:
 
 Here is an example of a VPDL file:
 
-#+BEGIN_SRC sql
+#+BEGIN_SRC vpdl
 create view threeModelComposition as
 
 select
@@ -320,7 +320,7 @@ By default, EMF Views can use ECL files to create weaving models.  Such
 typically contain one rule for each virtual association.  Here is an example ECL
 file containing two rules:
 
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC ecl
 //alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
 //alias_bpmn=http://www.omg.org/spec/BPMN/20100524/MODEL-XMI
 //alias_reqif=http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
@@ -341,10 +341,10 @@ with  t : reqif!SpecObject
 {
   compare
   {
-    return t.values.exists(v | v.theValue=s.name);
+    return t.values.exists(v | v.theValue = "s.name");
   }
 }
-#+END_EXAMPLE
+#+END_SRC
 
 *** Adding new matching models
 You can add new matching engines through the
@@ -353,7 +353,8 @@ extension (e.g., "ecl") and a class implementing the ~IVrtualLinksDelegate~
 interface, which has a single method:
 
 #+BEGIN_SRC java
-WeavingModel createWeavingModel(URI linksDslFile, List<Resource> inputModels)
+WeavingModel createWeavingModel(URI linksDslFile,
+                                List<Resource> inputModels)
 #+END_SRC
 
 * Tutorials
@@ -547,7 +548,7 @@ manually, it may be a better option when creating views programmatically.
 
 Let's look at this ECL file now:
 
-#+BEGIN_SRC
+#+BEGIN_SRC ecl
 //alias_publication=http://publication
 //alias_book=http://book
 
@@ -580,7 +581,7 @@ Note that for our two particular models which describe the same book, the
 predicate will always return true.  Hence, we could have written the rule
 trivially:
 
-#+BEGIN_SRC
+#+BEGIN_SRC ecl
 ...
   compare
   {
@@ -618,7 +619,7 @@ view, we want only the /first/ chapter of a matching book to be added to the new
 is:
 
 #+NAME: first-chapter-predicate
-#+BEGIN_SRC
+#+BEGIN_SRC ecl
 return p.title = c.eContainer().title
    and c = c.eContainer().eContents().first();
 #+END_SRC
@@ -736,7 +737,7 @@ one for view (yet).  You just have to point to the generated files, and specify
 the contributing models you want to use.  Here is the definition of
 ~firstChapter.eview~:
 
-#+BEGIN_SRC
+#+BEGIN_SRC sh
 viewpoint=../src-gen/publicationsAndBooks.eviewpoint
 contributingModels=../../emfviews-tutorial/models/publication.xmi,\
                    ../../emfviews-tutorial/models/book.xmi
