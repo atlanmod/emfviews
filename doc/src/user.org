@@ -297,28 +297,114 @@ This will save the viewpoint and views to their corresponding files.
 See [[*Creating a view programmatically][Creating a view programmatically]] for a guided example on how to use the API.
 
 ** Weaving models
-Weaving models describe what elements are put into viewpoints and views.
+Weaving models describe what elements are put into viewpoints and views.  The
+following gives the metamodel of weaving models as a class diagram:
 
 #+ATTR_HTML: :class no-shadow
 [[file:images/weavingmodel-metamodel.svg]]
 
-- name
-- whitelist
-- virtualLinks
-- filters
-- contributingModels
+We following subsections describe the role of each element.  Note that, as
+weaving models can be used at the metamodel and model levels, for building
+viewpoints and views, the following description applies to both levels, even
+though we only use the terms "models" and "views".  For elements that are
+handled differently by viewpoints and views, we make the distinction explicit.
 
-# TODO: describe each weaving model directive (filters, new associations, new
-# elements)
+*** Weaving model
+The ~WeavingModel~ is the root model element.
+
+It contains the contributing models and the virtual links, which are
+modifications made to the models that only appear in the view.
+
+Its ~name~ attribute is used as part of the viewpoint's namespace URI.
+Views do not make use of the ~name~ attribute.
+
+The ~whitelist~ flag changes the meaning of the filtes.  If the ~whitelist~
+flag is false (the default), then the view will include all the elements of
+contributing models, unless they are explicitly filtered out.  If the
+~whitelist~ flag is true, then the view will include no element, unless
+they are explicitly filtered in.
+
+*** Contributing model
+A ~ContributingModel~ is a model included in the view.
+
+The purpose of this class is to hold the concrete elements that are
+targeted by virtual links.
+
+~URI~ always refers to the metamodel namespace URI, both for viewpoint and
+view weaving models.
+
+*** Concrete element
+A ~ConcreteElement~ is an element of a contributing model.
+
+For viewpoints, ~path~ is the fully qualified name to the element (not including
+the metamodel name, since that's already given by its container
+~ContributingModel~).  E.g., ~Component.name~ would point to the ~name~
+attribute of the ~Component~ class in a given metamodel.
+
+For views, ~path~ is the URI returned by ~Resource.getURIFragment~.
+
+A concrete element can further be of two subtypes: ~ConcreteConcept~ and
+~ConcreteAssociation~.  This distinction is useful for virtual links other than
+filters, where for example the opposite to a virtual associations can only be an
+association, not just any element.
+
+*** Virtual link
+~VirtualLink~ is the parent class for all modifications made to the model.
+
+All modifications have a name, which is used for the virtual feature name,
+except for the ~Filter~ class where the name is ignored.
+
+*** Filter
+A ~Filter~, depending on the value of ~WeavingModel.whitelist~, includes or
+excludes an element from the contributing models.
+
+It can only refer to ~ConcreteElements~.
+
+*** Virtual association
+A ~VirtualAssociation~ is an association that exists only in the view.
+
+It has ~source~ and a ~target~, which can be concrete or virtual concepts.
+Thus, you can create virtual associations between one class of a contributing
+metamodel, and a virtual class that only exists in the view.
+
+The ~lowerBound~ and ~upperBound~ properties determine the cardinality of the
+association, just like in Ecore metamodels.  If the ~composition~ flag is true,
+the virtual association is a containment.  A virtual association can have one
+opposite association (virtual or not), given by the ~opposite~ reference.
+
+*** Virtual concept
+A ~VirtualConcept~ is a concept that exists only in the view.
+
+It can subclass or superclass other concepts (virtual or not).
+
+*** Virtual property
+A ~VirtualProperty~ is a property that exists only in the view.
+
+It must attach to a ~parent~ concept (virtual or not).  The ~optional~ flag
+determines whether its cardinality.  The ~type~ attribute describes the
+primitive type of the property.  The following types are supported:
+
+#+BEGIN_EXAMPLE
+boolean
+byte
+char
+double
+float
+int
+long
+short
+Date
+String
+#+END_EXAMPLE
 
 ** Matching models
 A matching model is a more declarative way to create a weaving model for views.
 Its main purpose is to populate virtual associations based on the contents of
 the contributing model.
 
-By default, EMF Views can use ECL files to create weaving models.  Such
-typically contain one rule for each virtual association.  Here is an example ECL
-file containing two rules:
+By default, EMF Views can use ECL files to create weaving models.  Such files
+typically contain one rule for each virtual association.  Here is one ECL file
+with two rules:
 
 #+BEGIN_SRC ecl
 //alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
@@ -349,13 +435,15 @@ with  t : reqif!SpecObject
 *** Adding new matching models
 You can add new matching engines through the
 ~org.atlanmod.emfviews.virtuallinks.delegator~ extension point.  It takes a file
-extension (e.g., "ecl") and a class implementing the ~IVrtualLinksDelegate~
+extension (e.g., "ecl") and a class implementing the ~IVirtualLinksDelegate~
 interface, which has a single method:
 
 #+BEGIN_SRC java
 WeavingModel createWeavingModel(URI linksDslFile,
                                 List<Resource> inputModels)
 #+END_SRC
+
+You can look at [[https://github.com/atlanmod/emfviews/blob/master/plugins/org.atlanmod.emfviews.virtuallinksepsilondelegate/src/org/atlanmod/emfviews/virtuallinksepsilondelegate/EclDelegate.java][~EclDelegate~]] for an example implementation of this interface.
 
 * Tutorials
 ** Creating a view manually
