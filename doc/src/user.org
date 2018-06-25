@@ -32,7 +32,7 @@ allows you to access these models transparently.
 
 There are three ways to create views:
 
-1. by writing an [[*~eview~ and ~eviewpoint~ files][~eview~ (and an ~eviewpoint~) file]];
+1. by writing an [[*eview and eviewpoint files%0A][~eview~ (and an ~eviewpoint~) file]];
 2. by writing a [[*VPDL][VPDL file]];
 3. by using the EMF Views [[*Java API][API]].
 
@@ -40,7 +40,7 @@ The ~VPDL~ method is the fastest for interactive creation, but the ~eview~
 approach is more flexible.  Using the API should be preferred when creating
 views from Java code.
 
-*** ~eview~ and ~eviewpoint~ files
+*** eview and eviewpoint files
 The ~eview~ and ~eviewpoint~ files respectively describe views and viewpoints.
 
 In Eclipse, the EMF Views plugin installs parsers for these file extensions
