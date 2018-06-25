@@ -234,7 +234,7 @@ where 's.name=t.name and s.isAutomated = false' for detailedProcess
       't.values.exists(v | v.theValue=s.name)'  for detailedRequirement
 #+END_SRC
 
-[[https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][The full Xtext grammar]] can be found in the source code, but the following is an
+[[external:https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][The full Xtext grammar]] can be found in the source code, but the following is an
 abridged version:
 
 #+BEGIN_EXAMPLE
@@ -443,7 +443,7 @@ WeavingModel createWeavingModel(URI linksDslFile,
                                 List<Resource> inputModels)
 #+END_SRC
 
-You can look at [[https://github.com/atlanmod/emfviews/blob/master/plugins/org.atlanmod.emfviews.virtuallinksepsilondelegate/src/org/atlanmod/emfviews/virtuallinksepsilondelegate/EclDelegate.java][~EclDelegate~]] for an example implementation of this interface.
+You can look at [[external:https://github.com/atlanmod/emfviews/blob/master/plugins/org.atlanmod.emfviews.virtuallinksepsilondelegate/src/org/atlanmod/emfviews/virtuallinksepsilondelegate/EclDelegate.java][~EclDelegate~]] for an example implementation of this interface.
 
 * Tutorials
 ** Creating a view manually

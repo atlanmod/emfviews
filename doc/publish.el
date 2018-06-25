@@ -17,9 +17,9 @@
 ;; official docs are hosted, and the plugin version will open the locally hosted
 ;; version.
 
-(org-link-set-parameters "eclipse" :export #'org-eclipse-export)
+(org-link-set-parameters "eclipse" :export #'org-eclipse-link-export)
 
-(defun org-eclipse-export (path description backend)
+(defun org-eclipse-link-export (path description backend)
   "Export custom Eclipse links.
 
 PATH and DESCRIPTION are the link's path and description.
@@ -34,6 +34,20 @@ BACKEND is the export backend."
                     "https://help.eclipse.org/oxygen")
                   path)
           description))
+
+;; We also need a custom link for external links: links that go to the web
+;; instead of staying inside the Eclipse help.  In the website export, these
+;; will just work as-is, but through the Eclipse help we need to add the
+;; `target` attribute.
+
+(org-link-set-parameters "external" :export #'org-eclipse-external-link-export)
+
+(defun org-eclipse-external-link-export (path description backend)
+  "Export external links.
+
+PATH and DESCRIPTION are the link's path and description.
+BACKEND is the export backend."
+  (format "<a class=\"external\" href=\"%s\" target=\"_new\">%s</a>" path description))
 
 
 ;;; Export setup
