@@ -1,114 +1,139 @@
 <!DOCTYPE html>
-<!-- saved from url=(0043)http://getbootstrap.com/examples/carousel/# -->
-<html lang="en" ng-app="emfViewsApp"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+    <!-- Begin Jekyll SEO tag v2.4.0 -->
+    <title>EMF Views | Lightweight views for your models</title>
+    <meta name="generator" content="Jekyll v3.7.3" />
+    <meta property="og:title" content="EMF Views" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="Lightweight views for your models" />
+    <meta property="og:description" content="Lightweight views for your models" />
+    <link rel="canonical" href="http://www.atlanmod.org/emfviews/" />
+    <meta property="og:url" content="http://www.atlanmod.org/emfviews/" />
+    <meta property="og:site_name" content="EMF Views" />
+    <script type="application/ld+json">
+      {"name":"EMF Views","description":"Lightweight views for your models","@type":"WebSite","url":"http://www.atlanmod.org/emfviews/","headline":"EMF Views","@context":"http://schema.org"}</script>
+    <!-- End Jekyll SEO tag -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
-    <script src="app/app.js"></script>
-    <script src="app/RouteProvider.js"></script>
-    <script src="app/controllers/controllers.js"></script>
-    <script src="app/controllers/mainCtrl.js"></script>
-    <script src="vendor/video/angular-youtube-embed.min.js"></script>
-    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
-
-    <title>EMF Views</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="./Carousel Template for Bootstrap_files/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <!-- Custom styles for this template -->
-    <link href="http://getbootstrap.com/examples/carousel/carousel.css" rel="stylesheet">
-  <style id="holderjs-style" type="text/css"></style><style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; }[touch-action="scroll"],[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }</style><style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
-.en-markup-crop-options {
-    top: 18px !important;
-    left: 50% !important;
-    margin-left: -90px !important;
-    width: 180px !important;
-    border: 2px rgba(255,255,255,.38) solid !important;
-    border-radius: 4px !important;
-}
-
-.en-markup-crop-options div div:first-of-type {
-    margin-left: 0px !important;
-}
-</style></head>
-<!-- NAVBAR
-================================================== -->
+    <meta name="theme-color" content="#157878">
+    <link rel="stylesheet" href="style.css">
+  </head>
   <body>
-    <div class="navbar-wrapper">
-      <div class="container">
+    <section class="page-header">
+      <h1 class="project-name">EMF Views</h1>
+      <h2 class="project-tagline">Lightweight views for your models</h2>
+      <a href="https://github.com/atlanmod/emfviews" class="btn">Source code</a>
+      <a href="manual/" class="btn">Documentation</a>
+    </section>
 
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#/">EMF Views</a>
-            </div>
-            <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <!--<li class="active"><a href="./Carousel Template for Bootstrap_files/Carousel Template for Bootstrap.htm">Home</a></li>-->
-                <!--<li><a href="#/about">About us</a></li>-->
-                <li><a href="#/documentation">Documentation</a></li>
-                <li><a href="#/examples">Examples</a></li>
-                <li><a href="#/install">Installation</a></li>
-                <li><a href="#/contacts">Contact</a></li>
-                <!--<li class="dropdown">
-                  <a href="./Carousel Template for Bootstrap_files/Carousel Template for Bootstrap.htm" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="./Carousel Template for Bootstrap_files/Carousel Template for Bootstrap.htm">Action</a></li>
-                    <li><a href="./Carousel Template for Bootstrap_files/Carousel Template for Bootstrap.htm">Another action</a></li>
-                    <li><a href="./Carousel Template for Bootstrap_files/Carousel Template for Bootstrap.htm">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Nav header</li>
-                    <li><a href="./Carousel Template for Bootstrap_files/Carousel Template for Bootstrap.htm">Separated link</a></li>
-                    <li><a href="./Carousel Template for Bootstrap_files/Carousel Template for Bootstrap.htm">One more separated link</a></li>
-                  </ul>
-                </li>-->
-              </ul>
-            </div>
-          </div>
-        </div>
+    <section class="main-content">
+      <h2 id="what-is-this-project-about">What is this project about?</h2>
+      <p>Some users only need to see some parts of a model, others have to get the full
+        model extended with data from another model, and others simply access to a
+        combination of information coming from different models. Based on the
+        unquestionable success and usefulness of database views to solve similar
+        problems in databases, EMF Views brings the same concept to the modeling world.</p>
+
+      <h2 id="screencasts">Screencasts</h2>
+      <p>These screencasts provide a smattering of the capabilities of this project.
+        Note that these videos have been recorded with an older version of EMFViews, but
+        they still show the overall principles and capabilities of the approach.</p>
+      <ul>
+        <li><a href="https://youtu.be/TabEjn4Jr4Q">ER 2015 - SQL_EMFViews user perspective</a></li>
+        <li><a href="http://youtu.be/cds_DU_VJcM">SQL-like DSL to EMF Views internals</a></li>
+        <li><a href="https://www.youtube.com/watch?v=KoCiV8fvNj8">EMF Views</a></li>
+        <li><a href="https://www.youtube.com/watch?v=JRjCqyTM2x8">Virtual Views</a></li>
+        <li><a href="https://www.youtube.com/watch?v=Lo4kz6Hx3Kg">Demo EMFViews</a></li>
+      </ul>
+
+      <h2 id="what-can-you-find-in-this-repository">What can you find in this repository?</h2>
+      <p>These are the core plugins:</p>
+
+      <ul>
+        <li><code class="highlighter-rouge">org.atlanmod.emfviews</code>: This is the main component of the tool. It includes the
+          core logic behind viewpoints and views.</li>
+        <li><code class="highlighter-rouge">org.atlanmod.emfviews.virtuallinks</code>: An Ecore-based model of links used to
+          construct viewpoints and views.</li>
+        <li><code class="highlighter-rouge">org.atlanmod.emfviews.virtuallinks.delegator</code>: This package delegates the
+          creation of virtual links to concrete implementations.</li>
+        <li><code class="highlighter-rouge">org.atlanmod.emfviews.virtuallinksepsilondelegate</code>: This project generate
+          virtual links from the Epsilon Comparison Language (ECL).</li>
+      </ul>
+
+      <p>We have also defined two DSLs, VPDL and MEL, which have accompanying Eclipse
+        plugins for edition:</p>
+
+      <ul>
+        <li><code class="highlighter-rouge">org.atlanmod.emfviews.vpdl</code>: ViewPoint Description Language; useful for
+          creating a viewpoint by filtering multiple metamodels, with a syntax inspired
+          by the <code class="highlighter-rouge">SELECT</code> query in SQL.</li>
+        <li><code class="highlighter-rouge">org.atlanmod.emfviews.mel</code>: Metamodel Extension Language; can extend
+          metamodel with new classes, attributes, relations.</li>
+      </ul>
+
+      <p>The <code class="highlighter-rouge">examples</code> folder contains ideas of how to use EMF Views and the DSLs:</p>
+
+      <ul>
+        <li><code class="highlighter-rouge">emfviews-tutorial</code>: Create your first Viewpoint and View.</li>
+        <li><code class="highlighter-rouge">vpdl-tutorial</code>: Define a viewpoint with VPDL.</li>
+      </ul>
+
+      <h2 id="installation">Installation</h2>
+      <p>Clone this repository and build the update site locally with
+        <a href="https://maven.apache.org/">Maven</a>:</p>
+
+      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/atlanmod/emfviews.git
+$ cd emfviews
+$ mvn install</code></pre></div></div>
+
+      <p>You can then install the plugins by pointing to the generated update site in
+        your local m2 repository.</p>
+
+      <p>Alternatively, you can import the projects in Eclipse and launch a “Runtime
+        Eclipse” with all the plugins from the workspace.</p>
+
+      <h2 id="dependencies">Dependencies</h2>
+      <p>Needed to install the following plugins:</p>
+      <ul>
+        <li>ATL</li>
+        <li>Epsilon</li>
+        <li>Xtext</li>
+      </ul>
+
+      <h2 id="who-is-behind-this-project">Who is behind this project?</h2>
+      <p>This is an <a href="http://www.atlanmod.org">Atlanmod</a> project.</p>
+
+      <p>The following people have made significant contributions to the project:</p>
+
+      <ul>
+        <li><a href="https://github.com/fmdkdd" title="fmdkdd">fmdkdd</a> (primary contact)</li>
+        <li><a href="https://github.com/Hugo-Bruneliere" title="Hugo Bruneliere">Hugo Bruneliere</a></li>
+        <li><a href="https://github.com/jokingarcia" title="Jokin Garcia Perez">Jokin Garcia Perez</a>
+          (former contributor)</li>
+        <li><a href="https://github.com/juandavidvillacalle" title="Juan David
+                                                                    Villa Calle">Juan David Villa Calle</a> (former contributor)</li>
+      </ul>
+
+      <h2 id="copyright-information">Copyright information</h2>
+      <p>This program and the accompanying materials are made available under the terms
+        of the Eclipse Public License 2.0 which is available at
+        https://www.eclipse.org/legal/epl-2.0/</p>
+
+      <p>This Source Code may also be made available under the following Secondary
+        Licenses when the conditions for such availability set forth in the Eclipse
+        Public License, v. 2.0 are satisfied: GNU General Public License, version 3
+        which is available at https://www.gnu.org/licenses/gpl-3.0.txt</p>
 
 
-
-      </div>
-    </div>
-
-
-   <div ng-view></div>
-
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/atlanmod/emfviews">emfviews</a> is maintained by <a href="https://github.com/atlanmod">atlanmod</a>.</span>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </section>
 
 
-
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./Carousel Template for Bootstrap_files/jquery.min.js"></script>
-    <script src="./Carousel Template for Bootstrap_files/bootstrap.min.js"></script>
-    <script src="./Carousel Template for Bootstrap_files/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="./Carousel Template for Bootstrap_files/ie10-viewport-bug-workaround.js"></script>
-
-
-<div id="global-zeroclipboard-html-bridge" class="global-zeroclipboard-container" title="" style="position: absolute; left: 0px; top: -9999px; width: 15px; height: 15px; z-index: 999999999;" data-original-title="Copy to clipboard">      <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" id="global-zeroclipboard-flash-bridge" width="100%" height="100%">         <param name="movie" value="/assets/flash/ZeroClipboard.swf?noCache=1409660074862">         <param name="allowScriptAccess" value="sameDomain">         <param name="scale" value="exactfit">         <param name="loop" value="false">         <param name="menu" value="false">         <param name="quality" value="best">         <param name="bgcolor" value="#ffffff">         <param name="wmode" value="transparent">         <param name="flashvars" value="trustedOrigins=getbootstrap.com%2C%2F%2Fgetbootstrap.com%2Chttp%3A%2F%2Fgetbootstrap.com">         <embed src="/assets/flash/ZeroClipboard.swf?noCache=1409660074862" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="100%" height="100%" name="global-zeroclipboard-flash-bridge" allowscriptaccess="sameDomain" allowfullscreen="false" type="application/x-shockwave-flash" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="trustedOrigins=getbootstrap.com%2C%2F%2Fgetbootstrap.com%2Chttp%3A%2F%2Fgetbootstrap.com" scale="exactfit">                </object></div></body></html>
+  </body>
+</html>
