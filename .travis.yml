@@ -5,6 +5,10 @@ jdk: openjdk8
 services:
 - docker
 
+env:
+  global:
+  - ENCRYPTION_LABEL: "b7b263ca9d8b"
+
 install:
   - git clone --depth 1 https://github.com/atlanmod/sexp2emf.git
   - mvn --batch-mode -Dmaven.javadoc.skip=true --file sexp2emf/pom.xml install
@@ -20,3 +24,11 @@ script:
 
   # Then build and test all Java plugins
   - mvn --show-version --batch-mode -Dmaven.javadoc.skip=true integration-test
+
+# The deploy stage runs only for the master branch, only if the build succeeded,
+# and never for pull requests
+deploy:
+  - provider: script
+    script: bash .travis/deploy.sh
+    on:
+      branch: master
