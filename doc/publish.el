@@ -72,6 +72,8 @@ Return output file name."
 (setq org-publish-project-alist
       `(("eclipse-manual"
          :base-directory "src/"
+         :with-toc nil                  ; toc is redundant with the help browser
+         :exclude "index.org"
          :publishing-directory "org.atlanmod.emfviews.doc/html/"
          :publishing-function org-eclipse-publish-to-eclipse-help)
 
