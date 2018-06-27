@@ -47,3 +47,26 @@ dd > p:first-child { margin-top: 0; }
 .org-string { color: #1c7164; }
 .org-comment, .org-comment-delimiter { color: #84218e; }
 .code-highlighted { background-color: #ffff00; }
+
+#table-of-contents ul { padding-left: 1rem; list-style-type: none; }
+#table-of-contents ul ul { font-size: 15px; }
+#table-of-contents ul ul ul { font-size: 14px; }
+
+/* move toc to the left on wide screens */
+@media (min-width: 1500px) {
+  #table-of-contents h2 { display: none; }
+  #table-of-contents {
+    position: fixed;
+    left: calc(50% - 750px);
+    max-width: 350px;
+  }
+
+  /* if the toc cannot fit, change to a non-fixed float */
+  @media (max-height: 700px) {
+    #table-of-contents {
+      position: static;
+      float: left;
+      margin-left: -64.5%;
+    }
+  }
+}
