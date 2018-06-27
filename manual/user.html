@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2018-06-26 Tue 15:58 -->
+<!-- 2018-06-27 Wed 09:41 -->
 <meta charset="utf-8">
 <title>EMF Views User Guide</title>
 <meta name="generator" content="Org mode">
@@ -61,66 +61,66 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5b6302c">Overview and Getting Started</a>
+<li><a href="#org1c1dafb">Overview and Getting Started</a>
 <ul>
-<li><a href="#org12e10be">Getting Started</a></li>
+<li><a href="#org48cfedf">Getting Started</a></li>
 </ul>
 </li>
-<li><a href="#org7d2d5eb">Concepts</a>
+<li><a href="#org97c09ff">Concepts</a>
 <ul>
-<li><a href="#org12b5a91">Views</a>
+<li><a href="#org2be947a">Views</a>
 <ul>
-<li><a href="#org703b24a">eview and eviewpoint files</a></li>
-<li><a href="#org094903e">VPDL</a></li>
-<li><a href="#org6826b72">Java API</a></li>
+<li><a href="#orgb706646">eview and eviewpoint files</a></li>
+<li><a href="#org1fe8091">VPDL</a></li>
+<li><a href="#org36a9efc">Java API</a></li>
 </ul>
 </li>
-<li><a href="#org45ab063">Weaving models</a>
+<li><a href="#org30838b6">Weaving models</a>
 <ul>
-<li><a href="#orgd79274a">Weaving model</a></li>
-<li><a href="#org05706ea">Contributing model</a></li>
-<li><a href="#org998379b">Concrete element</a></li>
-<li><a href="#org6a608c4">Virtual link</a></li>
-<li><a href="#org20bf12b">Filter</a></li>
-<li><a href="#org9606933">Virtual association</a></li>
-<li><a href="#org6925166">Virtual concept</a></li>
-<li><a href="#org795049b">Virtual property</a></li>
+<li><a href="#orgf29046b">Weaving model</a></li>
+<li><a href="#orgb0b8255">Contributing model</a></li>
+<li><a href="#orgaa18efb">Concrete element</a></li>
+<li><a href="#org648355f">Virtual link</a></li>
+<li><a href="#org2d11485">Filter</a></li>
+<li><a href="#orge4eed59">Virtual association</a></li>
+<li><a href="#orgbcf0c1b">Virtual concept</a></li>
+<li><a href="#orgae9c85c">Virtual property</a></li>
 </ul>
 </li>
-<li><a href="#orga28727a">Matching models</a>
+<li><a href="#org30b7e46">Matching models</a>
 <ul>
-<li><a href="#orgf42c127">Adding new matching models</a></li>
+<li><a href="#orgc3d24a7">Adding new matching models</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org59eb765">Tutorials</a>
+<li><a href="#org681bc9b">Tutorials</a>
 <ul>
-<li><a href="#org85f71b5">Creating a view manually</a></li>
-<li><a href="#orgbeebc39">Creating a view with VPDL</a>
+<li><a href="#orgd1e5894">Creating a view manually</a></li>
+<li><a href="#org4682836">Creating a view with VPDL</a>
 <ul>
-<li><a href="#orgc1e964e">Writing a VPDL file</a></li>
-<li><a href="#org2a45248">Using a VPDL file in Eclipse</a></li>
+<li><a href="#org1eb5da7">Writing a VPDL file</a></li>
+<li><a href="#orgdb7b6a3">Using a VPDL file in Eclipse</a></li>
 </ul>
 </li>
-<li><a href="#org573633f">Creating a view programmatically</a>
+<li><a href="#org6ba1845">Creating a view programmatically</a>
 <ul>
-<li><a href="#org8065df6">Caveats</a></li>
-<li><a href="#org099b0f0">Creating a weaving model programmatically</a></li>
+<li><a href="#orged4ab5b">Caveats</a></li>
+<li><a href="#org7ba91d2">Creating a weaving model programmatically</a></li>
 </ul>
 </li>
-<li><a href="#org21b17da">Querying a view with OCL</a></li>
-<li><a href="#orgc2826f7">Transforming a view with ATL</a></li>
+<li><a href="#org3a18bd6">Querying a view with OCL</a></li>
+<li><a href="#org10ef7c9">Transforming a view with ATL</a></li>
 </ul>
 </li>
-<li><a href="#org394b657">Glossary</a></li>
+<li><a href="#orge2869a6">Glossary</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org5b6302c" class="outline-2">
-<h2 id="org5b6302c">Overview and Getting Started</h2>
-<div class="outline-text-2" id="text-org5b6302c">
+<div id="outline-container-org1c1dafb" class="outline-2">
+<h2 id="org1c1dafb">Overview and Getting Started</h2>
+<div class="outline-text-2" id="text-org1c1dafb">
 <p>
 EMF Views is a tool that enables you to combine and augment several EMF-based
 models in <i>views</i>.  These views behave as regular models: you can navigate,
@@ -149,24 +149,24 @@ small languages that ease the definition of views: VPDL and MEL.
 </p>
 </div>
 
-<div id="outline-container-org12e10be" class="outline-3">
-<h3 id="org12e10be">Getting Started</h3>
-<div class="outline-text-3" id="text-org12e10be">
+<div id="outline-container-org48cfedf" class="outline-3">
+<h3 id="org48cfedf">Getting Started</h3>
+<div class="outline-text-3" id="text-org48cfedf">
 <p>
-<a href="#org85f71b5">Creating a view manually</a> will section will take you through the main features of
+<a href="#orgd1e5894">Creating a view manually</a> will section will take you through the main features of
 EMF Views.
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org7d2d5eb" class="outline-2">
-<h2 id="org7d2d5eb">Concepts</h2>
-<div class="outline-text-2" id="text-org7d2d5eb">
+<div id="outline-container-org97c09ff" class="outline-2">
+<h2 id="org97c09ff">Concepts</h2>
+<div class="outline-text-2" id="text-org97c09ff">
 </div>
-<div id="outline-container-org12b5a91" class="outline-3">
-<h3 id="org12b5a91">Views</h3>
-<div class="outline-text-3" id="text-org12b5a91">
+<div id="outline-container-org2be947a" class="outline-3">
+<h3 id="org2be947a">Views</h3>
+<div class="outline-text-3" id="text-org2be947a">
 <p>
 Views are lightweight objects that aggregate several contributing models, and
 allows you to access these models transparently.
@@ -177,9 +177,9 @@ There are three ways to create views:
 </p>
 
 <ol class="org-ol">
-<li>by writing an <a href="#org703b24a"><code>eview</code> (and an <code>eviewpoint</code>) file</a>;</li>
-<li>by writing a <a href="#org094903e">VPDL file</a>;</li>
-<li>by using the EMF Views <a href="#org6826b72">API</a>.</li>
+<li>by writing an <a href="#orgb706646"><code>eview</code> (and an <code>eviewpoint</code>) file</a>;</li>
+<li>by writing a <a href="#org1fe8091">VPDL file</a>;</li>
+<li>by using the EMF Views <a href="#org36a9efc">API</a>.</li>
 </ol>
 
 <p>
@@ -189,9 +189,9 @@ views from Java code.
 </p>
 </div>
 
-<div id="outline-container-org703b24a" class="outline-4">
-<h4 id="org703b24a">eview and eviewpoint files</h4>
-<div class="outline-text-4" id="text-org703b24a">
+<div id="outline-container-orgb706646" class="outline-4">
+<h4 id="orgb706646">eview and eviewpoint files</h4>
+<div class="outline-text-4" id="text-orgb706646">
 <p>
 The <code>eview</code> and <code>eviewpoint</code> files respectively describe views and viewpoints.
 </p>
@@ -227,7 +227,7 @@ For <code>eviewpoint</code> files, there are only two valid properties:
 <dt><code>contributingMetamodels</code></dt><dd>Comma-separated list of URIs to contributing
 metamodels.  This key is mandatory.</dd>
 
-<dt><code>weavingModel</code></dt><dd>URI for the viewpoint&rsquo;s <a href="#org45ab063">weaving model</a>.  This key is
+<dt><code>weavingModel</code></dt><dd>URI for the viewpoint&rsquo;s <a href="#org30838b6">weaving model</a>.  This key is
 optional; if unspecified the viewpoint will be constructed with an empty
 weaving model.</dd>
 </dl>
@@ -268,9 +268,9 @@ UML metamodel through its namespace URI.
 <dt><code>viewpoint</code></dt><dd>URI to the <code>eviewpoint</code> file.  This key is mandatory.</dd>
 <dt><code>contributingModels</code></dt><dd>Comma-separated list of URIs to contributing models.
 This key is mandatory.</dd>
-<dt><code>weavingModel</code></dt><dd>URI to the view&rsquo;s <a href="#org45ab063">weaving model</a>.  This key conflicts with
+<dt><code>weavingModel</code></dt><dd>URI to the view&rsquo;s <a href="#org30838b6">weaving model</a>.  This key conflicts with
 <code>matchingModel</code>.</dd>
-<dt><code>matchingModel</code></dt><dd>URI to a supported <a href="#orga28727a">matching model</a>.  This key conflicts with
+<dt><code>matchingModel</code></dt><dd>URI to a supported <a href="#org30b7e46">matching model</a>.  This key conflicts with
 <code>weavingModel</code>.</dd>
 </dl>
 
@@ -295,15 +295,15 @@ matchingModel=booksAndPub.ecl
 </pre>
 
 <p>
-For a step-by-step guide on creating views with <code>eview</code> files, see <a href="#org85f71b5">Creating a
+For a step-by-step guide on creating views with <code>eview</code> files, see <a href="#orgd1e5894">Creating a
 view manually</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org094903e" class="outline-4">
-<h4 id="org094903e">VPDL</h4>
-<div class="outline-text-4" id="text-org094903e">
+<div id="outline-container-org1fe8091" class="outline-4">
+<h4 id="org1fe8091">VPDL</h4>
+<div class="outline-text-4" id="text-org1fe8091">
 <p>
 VPDL, standing for <i>ViewPoint Description Language</i>, is a domain-specific
 language for easing the creation of views and viewpoints when using EMF Views.
@@ -499,15 +499,15 @@ Rule: STRING 'for' [Relation];
 </pre>
 
 <p>
-The tutorial <a href="#orgbeebc39">Creating a view with VPDL</a> takes you through creating a VPDL file
+The tutorial <a href="#org4682836">Creating a view with VPDL</a> takes you through creating a VPDL file
 and using it in Eclipse.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org6826b72" class="outline-4">
-<h4 id="org6826b72">Java API</h4>
-<div class="outline-text-4" id="text-org6826b72">
+<div id="outline-container-org36a9efc" class="outline-4">
+<h4 id="org36a9efc">Java API</h4>
+<div class="outline-text-4" id="text-org36a9efc">
 <p>
 You can construct <code>View</code> and <code>Viewpoint</code> classes directly by invoking their
 constructors:
@@ -553,15 +553,15 @@ This will save the viewpoint and views to their corresponding files.
 </p>
 
 <p>
-See <a href="#org573633f">Creating a view programmatically</a> for a guided example on how to use the API.
+See <a href="#org6ba1845">Creating a view programmatically</a> for a guided example on how to use the API.
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org45ab063" class="outline-3">
-<h3 id="org45ab063">Weaving models</h3>
-<div class="outline-text-3" id="text-org45ab063">
+<div id="outline-container-org30838b6" class="outline-3">
+<h3 id="org30838b6">Weaving models</h3>
+<div class="outline-text-3" id="text-org30838b6">
 <p>
 Weaving models describe what elements are put into viewpoints and views.  The
 following gives the metamodel of weaving models as a class diagram:
@@ -582,9 +582,9 @@ handled differently by viewpoints and views, we make the distinction explicit.
 </p>
 </div>
 
-<div id="outline-container-orgd79274a" class="outline-4">
-<h4 id="orgd79274a">Weaving model</h4>
-<div class="outline-text-4" id="text-orgd79274a">
+<div id="outline-container-orgf29046b" class="outline-4">
+<h4 id="orgf29046b">Weaving model</h4>
+<div class="outline-text-4" id="text-orgf29046b">
 <p>
 The <code>WeavingModel</code> is the root model element.
 </p>
@@ -609,9 +609,9 @@ they are explicitly filtered in.
 </div>
 </div>
 
-<div id="outline-container-org05706ea" class="outline-4">
-<h4 id="org05706ea">Contributing model</h4>
-<div class="outline-text-4" id="text-org05706ea">
+<div id="outline-container-orgb0b8255" class="outline-4">
+<h4 id="orgb0b8255">Contributing model</h4>
+<div class="outline-text-4" id="text-orgb0b8255">
 <p>
 A <code>ContributingModel</code> is a model included in the view.
 </p>
@@ -628,9 +628,9 @@ view weaving models.
 </div>
 </div>
 
-<div id="outline-container-org998379b" class="outline-4">
-<h4 id="org998379b">Concrete element</h4>
-<div class="outline-text-4" id="text-org998379b">
+<div id="outline-container-orgaa18efb" class="outline-4">
+<h4 id="orgaa18efb">Concrete element</h4>
+<div class="outline-text-4" id="text-orgaa18efb">
 <p>
 A <code>ConcreteElement</code> is an element of a contributing model.
 </p>
@@ -655,9 +655,9 @@ association, not just any element.
 </div>
 </div>
 
-<div id="outline-container-org6a608c4" class="outline-4">
-<h4 id="org6a608c4">Virtual link</h4>
-<div class="outline-text-4" id="text-org6a608c4">
+<div id="outline-container-org648355f" class="outline-4">
+<h4 id="org648355f">Virtual link</h4>
+<div class="outline-text-4" id="text-org648355f">
 <p>
 <code>VirtualLink</code> is the parent class for all modifications made to the model.
 </p>
@@ -669,9 +669,9 @@ except for the <code>Filter</code> class where the name is ignored.
 </div>
 </div>
 
-<div id="outline-container-org20bf12b" class="outline-4">
-<h4 id="org20bf12b">Filter</h4>
-<div class="outline-text-4" id="text-org20bf12b">
+<div id="outline-container-org2d11485" class="outline-4">
+<h4 id="org2d11485">Filter</h4>
+<div class="outline-text-4" id="text-org2d11485">
 <p>
 A <code>Filter</code>, depending on the value of <code>WeavingModel.whitelist</code>, includes or
 excludes an element from the contributing models.
@@ -683,9 +683,9 @@ It can only refer to <code>ConcreteElements</code>.
 </div>
 </div>
 
-<div id="outline-container-org9606933" class="outline-4">
-<h4 id="org9606933">Virtual association</h4>
-<div class="outline-text-4" id="text-org9606933">
+<div id="outline-container-orge4eed59" class="outline-4">
+<h4 id="orge4eed59">Virtual association</h4>
+<div class="outline-text-4" id="text-orge4eed59">
 <p>
 A <code>VirtualAssociation</code> is an association that exists only in the view.
 </p>
@@ -705,9 +705,9 @@ opposite association (virtual or not), given by the <code>opposite</code> refere
 </div>
 </div>
 
-<div id="outline-container-org6925166" class="outline-4">
-<h4 id="org6925166">Virtual concept</h4>
-<div class="outline-text-4" id="text-org6925166">
+<div id="outline-container-orgbcf0c1b" class="outline-4">
+<h4 id="orgbcf0c1b">Virtual concept</h4>
+<div class="outline-text-4" id="text-orgbcf0c1b">
 <p>
 A <code>VirtualConcept</code> is a concept that exists only in the view.
 </p>
@@ -718,9 +718,9 @@ It can subclass or superclass other concepts (virtual or not).
 </div>
 </div>
 
-<div id="outline-container-org795049b" class="outline-4">
-<h4 id="org795049b">Virtual property</h4>
-<div class="outline-text-4" id="text-org795049b">
+<div id="outline-container-orgae9c85c" class="outline-4">
+<h4 id="orgae9c85c">Virtual property</h4>
+<div class="outline-text-4" id="text-orgae9c85c">
 <p>
 A <code>VirtualProperty</code> is a property that exists only in the view.
 </p>
@@ -747,9 +747,9 @@ String
 </div>
 </div>
 
-<div id="outline-container-orga28727a" class="outline-3">
-<h3 id="orga28727a">Matching models</h3>
-<div class="outline-text-3" id="text-orga28727a">
+<div id="outline-container-org30b7e46" class="outline-3">
+<h3 id="org30b7e46">Matching models</h3>
+<div class="outline-text-3" id="text-org30b7e46">
 <p>
 A matching model is a more declarative way to create a weaving model for views.
 Its main purpose is to populate virtual associations based on the contents of
@@ -790,9 +790,9 @@ with two rules:
 </div>
 </div>
 
-<div id="outline-container-orgf42c127" class="outline-4">
-<h4 id="orgf42c127">Adding new matching models</h4>
-<div class="outline-text-4" id="text-orgf42c127">
+<div id="outline-container-orgc3d24a7" class="outline-4">
+<h4 id="orgc3d24a7">Adding new matching models</h4>
+<div class="outline-text-4" id="text-orgc3d24a7">
 <p>
 You can add new matching engines through the
 <code>org.atlanmod.emfviews.virtuallinks.delegator</code> extension point.  It takes a file
@@ -814,13 +814,13 @@ You can look at <a class="external" href="https://github.com/atlanmod/emfviews/b
 </div>
 </div>
 
-<div id="outline-container-org59eb765" class="outline-2">
-<h2 id="org59eb765">Tutorials</h2>
-<div class="outline-text-2" id="text-org59eb765">
+<div id="outline-container-org681bc9b" class="outline-2">
+<h2 id="org681bc9b">Tutorials</h2>
+<div class="outline-text-2" id="text-org681bc9b">
 </div>
-<div id="outline-container-org85f71b5" class="outline-3">
-<h3 id="org85f71b5">Creating a view manually</h3>
-<div class="outline-text-3" id="text-org85f71b5">
+<div id="outline-container-orgd1e5894" class="outline-3">
+<h3 id="orgd1e5894">Creating a view manually</h3>
+<div class="outline-text-3" id="text-orgd1e5894">
 <p>
 We will create a view linking two related models representing books.
 </p>
@@ -1082,7 +1082,7 @@ model for the view.
 
 <div class="note">
 <p>
-EMF Views can be extended to use other matching models beyond ECL.  See <a href="developer.html#orgcbff4a8">Adding
+EMF Views can be extended to use other matching models beyond ECL.  See <a href="developer.html#org9c55ede">Adding
 matching models</a>.
 </p>
 
@@ -1191,7 +1191,7 @@ is:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ecl" id="org4c3134d"><span class="org-keyword">return</span> p.title = c.eContainer().title
+<pre class="src src-ecl" id="org3282460"><span class="org-keyword">return</span> p.title = c.eContainer().title
    <span class="org-keyword">and</span> c = c.eContainer().eContents().first();
 </pre>
 </div>
@@ -1207,7 +1207,7 @@ only one chapter is part of the <code>bookChapters</code> association:
 </p>
 
 
-<div id="org4dda3a1" class="figure">
+<div id="org20c483a" class="figure">
 <p><img src="images/view-first-chapter.png" alt="view-first-chapter.png">
 </p>
 </div>
@@ -1227,13 +1227,13 @@ viewpoint, and how we can add new virtual elements.
 </div>
 </div>
 
-<div id="outline-container-orgbeebc39" class="outline-3">
-<h3 id="orgbeebc39">Creating a view with VPDL</h3>
-<div class="outline-text-3" id="text-orgbeebc39">
+<div id="outline-container-org4682836" class="outline-3">
+<h3 id="org4682836">Creating a view with VPDL</h3>
+<div class="outline-text-3" id="text-org4682836">
 </div>
-<div id="outline-container-orgc1e964e" class="outline-4">
-<h4 id="orgc1e964e">Writing a VPDL file</h4>
-<div class="outline-text-4" id="text-orgc1e964e">
+<div id="outline-container-org1eb5da7" class="outline-4">
+<h4 id="org1eb5da7">Writing a VPDL file</h4>
+<div class="outline-text-4" id="text-org1eb5da7">
 <p>
 VPDL, standing for <i>ViewPoint Description Language</i>, is a domain-specific
 language for easing the creation of views and viewpoints when using EMF Views.
@@ -1310,16 +1310,16 @@ to aliases used in the <code>select</code> clause.
 <p>
 Lastly, the <code>where</code> clause specifies, for each new association, how to match
 elements from contributing models.  This is used to generate the matching model
-as an ECL file.  Here, we use the same predicate as <a href="#org4c3134d">before</a>, but this time <code>s</code>
+as an ECL file.  Here, we use the same predicate as <a href="#org3282460">before</a>, but this time <code>s</code>
 and <code>t</code> refer respectively to the source (<code>Publication</code>) and target (<code>Chapter</code>)
 of the association.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org2a45248" class="outline-4">
-<h4 id="org2a45248">Using a VPDL file in Eclipse</h4>
-<div class="outline-text-4" id="text-org2a45248">
+<div id="outline-container-orgdb7b6a3" class="outline-4">
+<h4 id="orgdb7b6a3">Using a VPDL file in Eclipse</h4>
+<div class="outline-text-4" id="text-orgdb7b6a3">
 <p>
 To use a VPDL file, your project need to be configured as an Xtext project in
 Eclipse.  If you create a new project and add a <code>vpdl</code> file in it, Eclipse
@@ -1373,7 +1373,7 @@ the contributing models you want to use.  Here is the definition of
 
 <p>
 Opening <code>firstChapter.eview</code> using the MoDisco Model Browser, we get the same
-result as <a href="#org4dda3a1">before</a>, the difference being that this time the new association is
+result as <a href="#org20c483a">before</a>, the difference being that this time the new association is
 more accurately called <code>firstChapter</code>:
 </p>
 
@@ -1386,9 +1386,9 @@ more accurately called <code>firstChapter</code>:
 </div>
 </div>
 
-<div id="outline-container-org573633f" class="outline-3">
-<h3 id="org573633f">Creating a view programmatically</h3>
-<div class="outline-text-3" id="text-org573633f">
+<div id="outline-container-org6ba1845" class="outline-3">
+<h3 id="org6ba1845">Creating a view programmatically</h3>
+<div class="outline-text-3" id="text-org6ba1845">
 <p>
 In some situations, you may want to create views without touching the
 filesystem.  EMF Views&rsquo; API lets you create views purely in memory, without
@@ -1459,9 +1459,9 @@ Comp2
 </pre>
 </div>
 
-<div id="outline-container-org8065df6" class="outline-4">
-<h4 id="org8065df6">Caveats</h4>
-<div class="outline-text-4" id="text-org8065df6">
+<div id="outline-container-orged4ab5b" class="outline-4">
+<h4 id="orged4ab5b">Caveats</h4>
+<div class="outline-text-4" id="text-orged4ab5b">
 <p>
 Note that we <i>have</i> to use the reflective EMF API when navigating views, because
 there is no corresponding generated code.  View elements are always dynamic
@@ -1527,9 +1527,9 @@ elements from <code>UMLPackage</code>, but they are not equal.  The correct way 
 </div>
 </div>
 
-<div id="outline-container-org099b0f0" class="outline-4">
-<h4 id="org099b0f0">Creating a weaving model programmatically</h4>
-<div class="outline-text-4" id="text-org099b0f0">
+<div id="outline-container-org7ba91d2" class="outline-4">
+<h4 id="org7ba91d2">Creating a weaving model programmatically</h4>
+<div class="outline-text-4" id="text-org7ba91d2">
 <p>
 We have seen how to create viewpoints and views programmatically, but only with
 empty weaving models.  Let&rsquo;s recreate the publications and books view from the
@@ -1669,22 +1669,22 @@ Introduction to ATL
 </div>
 </div>
 
-<div id="outline-container-org21b17da" class="outline-3">
-<h3 id="org21b17da">Querying a view with OCL</h3>
-<div class="outline-text-3" id="text-org21b17da">
+<div id="outline-container-org3a18bd6" class="outline-3">
+<h3 id="org3a18bd6">Querying a view with OCL</h3>
+<div class="outline-text-3" id="text-org3a18bd6">
 </div>
 </div>
 
-<div id="outline-container-orgc2826f7" class="outline-3">
-<h3 id="orgc2826f7">Transforming a view with ATL</h3>
-<div class="outline-text-3" id="text-orgc2826f7">
+<div id="outline-container-org10ef7c9" class="outline-3">
+<h3 id="org10ef7c9">Transforming a view with ATL</h3>
+<div class="outline-text-3" id="text-org10ef7c9">
 </div>
 </div>
 </div>
 
-<div id="outline-container-org394b657" class="outline-2">
-<h2 id="org394b657">Glossary</h2>
-<div class="outline-text-2" id="text-org394b657">
+<div id="outline-container-orge2869a6" class="outline-2">
+<h2 id="orge2869a6">Glossary</h2>
+<div class="outline-text-2" id="text-orge2869a6">
 <dl class="org-dl">
 <dt>ECL</dt><dd>Epsilon Comparison Language</dd>
 <dt>OCL</dt><dd>Object Query Language</dd>
