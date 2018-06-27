@@ -1083,12 +1083,3 @@ Introduction to ATL
 ** Transforming a view with ATL
 
 # idem
-
-* Glossary
-- ECL :: Epsilon Comparison Language
-- OCL :: Object Query Language
-- ATL :: Atlanmod Transformation Language
-- Viewpoint ::
-- Weaving model ::
-- Virtual element ::
-- Contributing model ::
