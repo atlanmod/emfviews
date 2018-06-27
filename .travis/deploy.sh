@@ -23,7 +23,8 @@ cd ..
 rm -rf out/manual/**/* || exit 0
 
 # Copy built manual to out
-cp -r doc/html out/manual
+# The '/.' copies the html folder *contents*.
+cp -r doc/html/. out/manual
 
 # Now let's go have some fun with the cloned repo
 cd out
