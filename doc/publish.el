@@ -96,6 +96,8 @@ Return output file name."
                       '("org.atlanmod.emfviews.doc/html/" "html/")))
 
       org-export-with-section-numbers nil
+      org-export-time-stamp-file nil    ; timestamp triggers unnecessary builds
+                                        ; on CI
       org-html-htmlize-output-type 'css ; export CSS classes of syntax
                                         ; highlighting, but not any style
       org-html-postamble nil            ; no postamble
@@ -163,6 +165,12 @@ Return output file name."
                       source
                       (org-html--make-attribute-string attributes))))
 
+;; Set the random seed to a constant value.  Org uses `random' to generate
+;; unique identifiers for headlines.  The problem is that these identifiers are
+;; then not stable, and in particular it means the automated build on Travis
+;; will always pick up changes in the output even if the source does not change.
+;; Fixing the seed is a very low-cost fix to get stability back.
+(random "random seed")
 
 
 ;;; TOC builder
