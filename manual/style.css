@@ -87,14 +87,20 @@ dd > p:first-child { margin-top: 0; }
   #table-of-contents {
     position: fixed;
     left: calc(50% - 750px);
+    top: 50px;
     max-width: 350px;
   }
 
-  #table-of-contents::before {
+  #table-of-contents h2 {
+    display: initial;
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+
+  #table-of-contents>h2::after {
     content: "";
     position: absolute;
     height: 1px;
-    top: -1px;
     width: 100%;
     display: block;
     background-image:linear-gradient(120deg, #155799, #159957);
