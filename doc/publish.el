@@ -72,7 +72,6 @@ Return output file name."
 (setq org-publish-project-alist
       `(("eclipse-manual"
          :base-directory "src/"
-         :with-toc nil                  ; toc is redundant with the help browser
          :exclude "index.org"
          :publishing-directory "org.atlanmod.emfviews.doc/html/"
          :publishing-function org-eclipse-publish-to-eclipse-help)
@@ -208,12 +207,14 @@ Return output file name."
 ;; This is the function that gets called when `org-html-toc' does.  We follow
 ;; the same logic, which is to collect all headlines, and build the TOC XML from
 ;; their content.
-(defun org-eclipse-build-toc (depth info &optional scope)
+(defun org-eclipse-build-toc (orig-fun depth info &optional scope)
   "Build a TOC file for Eclipse help."
-  ;; We only care about the eclipse-help backend; especially, we don't want to
-  ;; touch the TOC buffer when exporting to the website otherwise we get
-  ;; duplicates.
-  (when (eq org-export-current-backend 'eclipse-help)
+  ;; For the online manual, we pass through to the original `org-html-toc'.
+  ;; However, for the eclipse-help backend, we want to only generate a toc.xml
+  ;; file, but not the HTML TOC.  So we write to toc-buffer, but return an empty
+  ;; string.
+  (if (eq org-export-current-backend 'html)
+      (funcall orig-fun depth info scope)
     ;; Get headline content
     (let ((toc-entries
 	   (mapcar (lambda (headline)
@@ -260,9 +261,11 @@ Return output file name."
             ;; and the last entry needs to be closed explicitly, as well as any
             ;; remaining parents.
             (insert (concat "/>\n"
-                            (org-html--make-string prev-level "</topic>\n")))))))))
+                            (org-html--make-string prev-level "</topic>\n")))))))
+    ;; No TOC in HTML for eclipse-help
+    ""))
 
-(advice-add 'org-html-toc :before #'org-eclipse-build-toc)
+(advice-add 'org-html-toc :around #'org-eclipse-build-toc)
 
 ;; The default cache only cares about whether the source files have changed, but
 ;; does not check whether the /targets/ still exist.  So we have to use 'force
