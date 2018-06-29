@@ -11,6 +11,8 @@ body { margin: 0 }
   text-align:center;
   background-color:#159957;
   background-image:linear-gradient(120deg, #155799, #159957);
+  position: relative;
+  z-index: 1;
 }
 
 .title ~ * {
@@ -86,5 +88,15 @@ dd > p:first-child { margin-top: 0; }
     position: fixed;
     left: calc(50% - 750px);
     max-width: 350px;
+  }
+
+  #table-of-contents::before {
+    content: "";
+    position: absolute;
+    height: 1px;
+    top: -1px;
+    width: 100%;
+    display: block;
+    background-image:linear-gradient(120deg, #155799, #159957);
   }
 }
