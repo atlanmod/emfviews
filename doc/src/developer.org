@@ -4,12 +4,5 @@
 We create virtual elements that stand-off for each element in the contributing
 models.
 
-See the [[file:user.org::*Glossary][the Glossary]].
-
-Also see [[file:user.org][the user manual]].
-
 # A picture of data coming in and out of the different EMF Views classes
 # (pipeline) would be very handy, as an overview
-
-* Adding matching models
-There's an extension point and an interface to implement.
