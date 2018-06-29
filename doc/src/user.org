@@ -318,7 +318,7 @@ modifications made to the models that only appear in the view.
 Its ~name~ attribute is used as part of the viewpoint's namespace URI.
 Views do not make use of the ~name~ attribute.
 
-The ~whitelist~ flag changes the meaning of the filtes.  If the ~whitelist~
+The ~whitelist~ flag changes the meaning of the filters.  If the ~whitelist~
 flag is false (the default), then the view will include all the elements of
 contributing models, unless they are explicitly filtered out.  If the
 ~whitelist~ flag is true, then the view will include no element, unless
