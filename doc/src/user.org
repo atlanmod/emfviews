@@ -19,10 +19,7 @@ navigate or query the view more naturally.
 
 Views can be created interactively via ~eview~ and ~eviewpoint~ definition
 files, or can be created programmatically.  Moreover, EMF Views currently comes
-with two DSLs that ease the definition of views: VPDL and MEL.
-
-# TODO - Put pointers to the VPDL and MEL sections
-# and generally from Tutorials to Concepts
+with two DSLs that ease the definition of views: [[*VPDL][VPDL]] and MEL.
 
 * Tutorials
 These tutorials will take you through the main features of EMF Views.
@@ -105,6 +102,9 @@ contributingMetamodels=../metamodels/Publication.ecore,\
 weavingModel=publicationsAndBooks.xmi
 #+END_SRC
 
+(See [[*eview and eviewpoint files]] for the full syntax and valid configuration
+keys of ~eviewpoint~ files.)
+
 The first two lines list the /contributing metamodels/.  These are the two
 metamodels we are concerned with.  In this case, we give relative URIs to the
 Ecore files in the ~metamodels~ folder.
@@ -115,7 +115,7 @@ pointing to the Ecore files in this case is that EMF Views will load them
 without us having to register the EPackages manually.
 #+END_note
 
-The third line specifies the /weaving model/.  The weaving model describes how
+The third line specifies the [[*Weaving models][/weaving model/]].  The weaving model describes how
 the viewpoint is constructed: it contains filters that select or exclude
 elements from the contributing metamodels, and it describes new elements that
 are to be added to the viewpoint.  If you omit the ~weavingModel~ property, no
@@ -194,6 +194,9 @@ viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
 matchingModel=allChapters.ecl
 #+END_SRC
 
+(Again, see [[*eview and eviewpoint files]] for a complete description of ~eview~
+files.)
+
 The ~contributingModels~ line point to the model resources which contribute to
 the view.  Note that the order of the contributing models does not have to match
 the order of the ~contributingMetamodels~ line in the ~eviewpoint~ file.
@@ -206,8 +209,8 @@ matching model contains rules that are used by EMF Views to construct a weaving
 model for the view.
 
 #+BEGIN_note
-EMF Views can be extended to use other matching models beyond ECL.  See [[file:developer.org::*Adding%20matching%20models][Adding
-matching models]].
+EMF Views can be extended to use other matching models beyond ECL.  See [[*Adding new matching models][Adding
+new matching models]].
 
 Instead of a matching model, you can specify a weaving model directly in the
 ~eview~ file.  Although the weaving model is usually too tedious to create
@@ -340,6 +343,8 @@ where 's.title = t.eContainer().title
    and t = t.eContainer().eContents().first()'
       for firstChapter
 #+END_SRC
+
+(See [[*VPDL]] for a description of the full syntax.)
 
 The first line ~create view~ specifies the name of the viewpoint.  This name is
 used for generating the ~eviewpoint~, ~eview~ and ~xmi~ weaving model file.
@@ -660,11 +665,15 @@ Introduction to ATL
 
 ** Querying a view with OCL
 
+# TODO: write it!
+
 #+BEGIN_note
 This tutorial still needs to be written.  Come back later!
 #+END_note
 
 ** Transforming a view with ATL
+
+# TODO: write it!
 
 #+BEGIN_note
 This tutorial still needs to be written.  Come back later!
@@ -1079,6 +1088,9 @@ with  t : reqif!SpecObject
   }
 }
 #+END_SRC
+
+# TODO: expand on the first lines, and how the rules are processed by EMF Views
+# add link to ECL syntax for reference
 
 *** Adding new matching models
 You can add new matching engines through the
