@@ -4,23 +4,24 @@
 * Overview and Getting Started
 EMF Views is a tool that enables to combine and refine/augment several EMF-based
 models into /views/.  These views behave as regular models: you can navigate,
-query and transform them as you would do with any regular model.  This comes in handy
-when you want to deal with several related models, for instance.
+query and transform them as you would do with any regular model.  This comes in
+handy when you want to deal with several related models, for instance.
 
 Views can filter any element from its contributing models.  This can be used to
 create views focused on particular aspects of related models.  Filters also
 enable a form of access control: one can create views that hide sensitive
 information coming from one or more models.
 
-Views can also augment the contributing models with new elements, attributes or associations.  
-This is useful for instance when combining related models: you can add
-new associations that link related classes together, allowing you to navigate or
-query the view more naturally.
+Views can also augment the contributing models with new elements, attributes or
+associations.  This is useful for instance when combining related models: you
+can add new associations that link related classes together, allowing you to
+navigate or query the view more naturally.
 
 Views can be created interactively via ~eview~ and ~eviewpoint~ definition
-files, or can be created programmatically.  Moreover, EMF Views currently comes with two
-DSLs that ease the definition of views: VPDL and MEL.
-#TODO - Put pointers to the VPDL and MEL sections
+files, or can be created programmatically.  Moreover, EMF Views currently comes
+with two DSLs that ease the definition of views: VPDL and MEL.
+
+# TODO - Put pointers to the VPDL and MEL sections
 
 ** Getting Started
 [[*Creating a view manually][Creating a view manually]] - This section will take you through the main features of
@@ -28,26 +29,27 @@ EMF Views.
 
 * Concepts
 ** Views
-In EMF Views, views are actually lightweight (virtual) models that can rely on one or several contributing models.
-Thus, they allow you to access to these models in transparently.
+In EMF Views, views are lightweight (virtual) models that can rely on one or
+several contributing models.  Thus, they allow you to access their contributing
+models transparently.
 
-There are three ways to create a same view:
+There are three ways to create a view:
 
-1. By writing an [[*eview and eviewpoint files%0A][~eview~ (and an ~eviewpoint~) file]];
-2. By writing a [[*VPDL][VPDL file]];
+1. By writing an [[*eview and eviewpoint files%0A][~eview~ (and an ~eviewpoint~) file]].
+2. By writing a [[*VPDL][VPDL file]].
 3. By using the EMF Views [[*Java API][API]].
 
 The ~VPDL~ method is the fastest for interactive creation, but the ~eview~
-approach is probably more flexible.  Using the API should be preferred when creating
+approach is more flexible.  Using the API should be preferred when creating
 views from Java code.
 
 *** eview and eviewpoint files
 The ~eview~ and ~eviewpoint~ files respectively describe views and viewpoints.
 
 In Eclipse, the EMF Views plugin installs parsers for these file extensions
-through the ~org.eclipse.emf.ecore.extension_parser~ extension point. This
-means you are able to natively open ~eview~ and ~eviewpoint~ files in standard EMF model editors such
-as the Sample Ecore Model Editor, or the [[eclipse:/topic/org.eclipse.modisco.infrastructure.doc/mediawiki/model_browser/user.html][MoDisco Model Browser]].
+through the ~org.eclipse.emf.ecore.extension_parser~ extension point. This means
+you are able to open ~eview~ and ~eviewpoint~ files in standard EMF model
+editors such as the Sample Ecore Model Editor, or the [[eclipse:/topic/org.eclipse.modisco.infrastructure.doc/mediawiki/model_browser/user.html][MoDisco Model Browser]].
 
 The syntax of these files follows the text encoding of ~java.util.Properties~.
 That is, the file is a list of properties as ~KEY=VALUE~ pairs, where both ~KEY~
@@ -73,8 +75,8 @@ For ~eviewpoint~ files, there are only two valid properties:
 
 URIs are built using ~org.eclipse.emf.common.util.URI.createURI~.  This allows
 you to specify files using the ~file~ or ~platform~ schemes.  Without an
-explicit scheme, the file one is used by default.  Note that relative file paths are resolved
-relatively to the location of the ~eviewpoint~ file.
+explicit scheme, the file one is used by default.  Note that relative file paths
+are resolved relatively to the location of the ~eviewpoint~ file.
 
 For metamodels, you can specify either the location of an ~ecore~ file with the
 above schemes, or if the URI begins with ~http://~ it is taken to be the
@@ -121,7 +123,7 @@ view manually]].
 *** VPDL
 VPDL, standing for /ViewPoint Description Language/, is a domain-specific
 language for easing the creation of views and viewpoints when using EMF Views.
-The syntax of VPDL is freely inspired by the syntax of the SQL's ~SELECT~ statement.
+The syntax of VPDL is inspired by the syntax of the SQL's ~SELECT~ statement.
 
 #+BEGIN_note
 VPDL is still under development and its syntax is likely to evolve in the future.
@@ -173,8 +175,8 @@ There are three clauses:
 
      This will add a virtual association feature named ~name~ in ~class1~ with
      type ~class2~.  Note that this does not specify /how/ the association will
-     be populated based on model contents.  For that, you have to use the ~where~
-     clause.
+     be populated based on model contents.  For that, you have to use the
+     ~where~ clause.
 
      The ~select~ clause is mandatory.  At the very least, you must include one
      feature (otherwise the view will be empty and you could use an empty
@@ -186,7 +188,8 @@ There are three clauses:
      /namespace-uri/ as /alias/
      #+END_verbatim
 
-     The metamodels are given through their namespace URIs, and an alias must be given and used in the ~select~ clause.
+     The metamodels are given through their namespace URIs, and an alias must be
+     given and used in the ~select~ clause.
 
      This clause is mandatory.
 
@@ -235,7 +238,7 @@ where 's.name=t.name and s.isAutomated = false' for detailedProcess
 #+END_SRC
 
 [[external:https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][The full Xtext grammar]] can be found in the source code, but the following is an
-shortened version:
+abridged version:
 
 #+BEGIN_EXAMPLE
 View: 'create view' name 'as' Select From Where?;
@@ -305,9 +308,10 @@ following gives the metamodel of weaving models as a class diagram:
 
 We following subsections describe the role of each element.  Note that, as
 weaving models can be used at the metamodel and model levels for building
-viewpoints and views (respectively), the following description applies to both levels, even
-though we only use the terms "models" and "views".  For elements that are
-handled differently by viewpoints and views, we make the distinction explicit.
+viewpoints and views (respectively), the following description applies to both
+levels, even though we only use the terms "models" and "views".  For elements
+that are handled differently by viewpoints and views, we make the distinction
+explicit.
 
 *** Weaving model
 The ~WeavingModel~ is the root model element.
@@ -315,14 +319,14 @@ The ~WeavingModel~ is the root model element.
 It contains the contributing models and the virtual links, which are
 modifications made to the models that only appear in the view.
 
-Its ~name~ attribute is used as part of the viewpoint's namespace URI.
-Views do not make use of the ~name~ attribute.
+Its ~name~ attribute is used as part of the viewpoint's namespace URI.  Views do
+not make use of the ~name~ attribute.
 
 The ~whitelist~ flag changes the meaning of the filters.  If the ~whitelist~
 flag is false (the default), then the view will include all the elements of
 contributing models, unless they are explicitly filtered out.  If the
-~whitelist~ flag is true, then the view will include no element, unless
-they are explicitly filtered in.
+~whitelist~ flag is true, then the view will include no element, unless they are
+explicitly filtered in.
 
 *** Contributing model
 A ~ContributingModel~ is a model included in the view.
@@ -364,12 +368,12 @@ It can only refer to ~ConcreteElements~.
 A ~VirtualAssociation~ is an association that exists only in the view.
 
 It has ~source~ and a ~target~, which can be concrete or virtual concepts.
-Thus, you can possibly create a virtual association between one class of a contributing
+Thus, you may create a virtual association between one class of a contributing
 metamodel and a virtual class that only exists in the view.
 
 The ~lowerBound~ and ~upperBound~ properties determine the cardinality of the
 association, just like in Ecore metamodels.  If the ~composition~ flag is true,
-the virtual association is a containment one.  A virtual association can have one
+the virtual association is a containment.  A virtual association can have one
 opposite association (virtual or not), given by the ~opposite~ reference.
 
 *** Virtual concept
@@ -381,8 +385,9 @@ It can subclass or superclass other concepts (virtual or not).
 A ~VirtualProperty~ is a property that exists only in the view.
 
 It must attach to a ~parent~ concept (virtual or not).  The ~optional~ flag
-determines its cardinality (1 or 0..1).  The ~type~ attribute describes the
-primitive type of the property.  The following types are supported:
+determines its cardinality (1 if ~false~ and ~0..1~ if true).  The ~type~
+attribute describes the primitive type of the property.  The following types are
+supported:
 
 #+BEGIN_EXAMPLE
 boolean
@@ -402,9 +407,9 @@ A matching model is a more declarative way to create a weaving model for views.
 Its main purpose is to populate virtual associations based on the content of
 the contributing models.
 
-In the current implementation, EMF Views can use ECL files to create weaving models.  Such files
-typically contain one rule for each virtual association.  Here is one ECL file
-with two rules:
+In the current implementation, EMF Views can use ECL files to create weaving
+models.  Such files typically contain one rule for each virtual association.
+Here is one ECL file with two rules:
 
 #+BEGIN_SRC ecl
 //alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
@@ -505,8 +510,8 @@ They both model the same book.  In this example, there is only one
 element for simplicity.  In realistic situation, each model may contain several
 books or publications.  Our view will work the same with any number of elements.
 
-To define the view, we must first define a viewpoint, which acts as a (virtual) metamodel for
-the view.  Let us look at the file hierarchy again:
+To define the view, we must first define a viewpoint, which acts as a (virtual)
+metamodel for the view.  Let us look at the file hierarchy again:
 
 #+BEGIN_EXAMPLE
 ├── viewpoints
@@ -658,8 +663,8 @@ product Publication \times Book.  For each pair ~(p,c)~, if the predicate in
 ~compare~ is true, then the matching elements are part of the association
 ~bookChapters~.
 
-Here, if we have a book and a publication that refer to that same book, then
-we want to add all chapters of this book to the association.  Thus, the predicate
+Here, if we have a book and a publication that refer to the same ouvrage, then
+we want to add all chapters of the book to the association.  Thus, the predicate
 checks that the title of the publication is the same as the book's title, and
 that they both have the same author, since that is all the common information
 between the two metamodels.
@@ -721,10 +726,10 @@ only one chapter is part of the ~bookChapters~ association:
 [[file:images/view-first-chapter.png]]
 
 And that's it!  We have created one viewpoint combining two metamodels, then we
-created two views combining two models using this viewpoint.  Note that
-while this method of creating views with ~eviewpoint~ and ~eview~ files is
-suitable for creating small-scale views interactively (e.g. for development purposes), EMF Views offers two
-other (more user-friendly) methods to create views: programmatically and using VPDL.
+created two views combining two models using this viewpoint.  Note that while
+this method of creating views with ~eviewpoint~ and ~eview~ files is suitable
+for creating small-scale views interactively, EMF Views offers two other methods
+to create views: programmatically and using VPDL.
 
 In the next two sections, we will show how we can filter other elements in the
 viewpoint, and how we can add new virtual elements.
@@ -732,8 +737,9 @@ viewpoint, and how we can add new virtual elements.
 ** Creating a view with VPDL
 *** Writing a VPDL file
 VPDL, standing for /ViewPoint Description Language/, is a domain-specific
-language for easing the specification of viewpoints and the creation of corresponding views using EMF Views.
-The syntax of VPDL is inspired by SQL's ~SELECT~ statement.
+language for easing the specification of viewpoints and the creation of
+corresponding views using EMF Views.  The syntax of VPDL is inspired by SQL's
+~SELECT~ statement.
 
 #+BEGIN_note
 The VPDL syntax is still experimental and likely to change in the near future.
@@ -820,8 +826,8 @@ like after we save the ~publicationAndBooks.vpdl~ file:
 All the generated files are in the ~src-gen~ directory.
 
 To create the view however, we still need an ~eview~ file.  VPDL does not create
-one for a view (yet).  You just have to point to the generated files, and specify
-the contributing models you want to use.  Here is the definition of
+one for a view (yet).  You just have to point to the generated files, and
+specify the contributing models you want to use.  Here is the definition of
 ~firstChapter.eview~:
 
 #+BEGIN_SRC sh
@@ -909,7 +915,8 @@ for (EObject o : view.getVirtualContents()) {
 #+END_SRC
 
 This code will compile, but will raise a ~ClassCastException~ at runtime.  For
-the same reasons, testing for instances with ~instanceof~ will not work with the current version of EMF Views:
+the same reasons, testing for instances with ~instanceof~ will not work with the
+current version of EMF Views:
 
 #+BEGIN_SRC java
 for (EObject o : view.getVirtualContents()) {
