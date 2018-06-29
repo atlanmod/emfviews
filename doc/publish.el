@@ -267,6 +267,16 @@ Return output file name."
 
 (advice-add 'org-html-toc :around #'org-eclipse-build-toc)
 
+;; This is a dirty one... we want the title to appear before the table of
+;; contents.  Turns out that we also don't need the "Table of Contents" text, so
+;; we use that spot!  The HTML export will call `org-html--translate' to get the
+;; localized string, and we return the title of the file instead.
+(advice-add 'org-html--translate :around
+            (lambda (orig-fun s info)
+              (if (string= s "Table of Contents")
+                  (org-export-data (plist-get info :title) info)
+                (funcall orig-fun s info))))
+
 ;; The default cache only cares about whether the source files have changed, but
 ;; does not check whether the /targets/ still exist.  So we have to use 'force
 ;; to make sure `publish' will in fact publish.  Why did you have to reinvent
