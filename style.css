@@ -140,6 +140,7 @@ a:hover { text-decoration:underline }
 .main-content code {
   padding:2px 4px;
   font-size:0.9rem;
+  font-family: "Consolas", monospace;
   color:#4a6571;
   background-color:#f3f6fa;
   border-radius:0.3rem
