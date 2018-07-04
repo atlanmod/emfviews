@@ -31,6 +31,7 @@ import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEDataType;
 import org.atlanmod.emfviews.elements.VirtualEEnum;
+import org.atlanmod.emfviews.elements.VirtualEGenericType;
 import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
 import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
@@ -52,6 +53,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -167,7 +169,7 @@ public class Viewpoint implements EcoreVirtualizer {
 
     // @Correctness: the resulting package should be a valid Ecore metamodel.
     // That is not the case currently due to filters.
-    // validateVirtualResourceSet(virtualResourceSet);
+    validateVirtualResourceSet(virtualResourceSet);
   }
 
   // Apply the given filters to all the packages in the virtual resource set.
@@ -534,6 +536,15 @@ public class Viewpoint implements EcoreVirtualizer {
     }
 
     return (VirtualEReference) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEReference(o, this));
+  }
+
+  @Override
+  public VirtualEGenericType getVirtual(EGenericType o) {
+    if (o == null) {
+      return null;
+    }
+
+    return (VirtualEGenericType) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEGenericType(o, this));
   }
 
 }

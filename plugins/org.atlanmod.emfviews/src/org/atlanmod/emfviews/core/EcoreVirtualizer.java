@@ -21,6 +21,7 @@ import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEDataType;
 import org.atlanmod.emfviews.elements.VirtualEEnum;
+import org.atlanmod.emfviews.elements.VirtualEGenericType;
 import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
 import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
@@ -29,6 +30,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -42,4 +44,5 @@ public interface EcoreVirtualizer {
   VirtualEStructuralFeature getVirtual(EStructuralFeature o);
   VirtualEAttribute getVirtual(EAttribute o);
   VirtualEReference getVirtual(EReference o);
+  VirtualEGenericType getVirtual(EGenericType o);
 }

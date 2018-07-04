@@ -279,7 +279,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public EGenericType getEGenericType() {
-    return concreteFeature.getEGenericType();
+    return virtualizer.getVirtual(concreteFeature.getEGenericType());
   }
 
   @Override
