@@ -54,8 +54,12 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+// Fix the run order since Eclipse is incapable of doing that for the output.
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestEMFViews {
 
   // TODO: test failures

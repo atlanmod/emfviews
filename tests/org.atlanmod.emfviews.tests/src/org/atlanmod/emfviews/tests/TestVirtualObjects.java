@@ -40,7 +40,9 @@ import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.ViewResource;
@@ -53,6 +55,8 @@ import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
 import org.atlanmod.sexp2emf.Sexp2EMF;
 
+//Fix the run order since Eclipse is incapable of doing that for the output.
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestVirtualObjects {
 
   // Create a concrete metamodel before each test instead of one per class,
