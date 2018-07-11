@@ -44,14 +44,6 @@
           <configuration>
             <outputDirectory>xtend-gen</outputDirectory>
           </configuration>
-          <!-- Workaround for https://github.com/eclipse/xtext/issues/1231 -->
-          <dependencies>
-	    <dependency>
-	      <groupId>org.eclipse.platform</groupId>
-	      <artifactId>org.eclipse.equinox.common</artifactId>
-	      <version>3.10.0</version>
-	    </dependency>
-	  </dependencies>
         </plugin>
 
         <!-- (Re)-generate plugins projects from Xtext grammar -->
