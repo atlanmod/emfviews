@@ -5,8 +5,8 @@
       version="0.3.0.qualifier"
       provider-name="Atlanmod">
 
-   <description url="https://github.com/atlanmod/emfviews">
-      Some users only need to see some parts of a model, others have to get the full model extended with data from another model, and others simply access to a combination of information coming from different models. Based on the unquestionable success/usefulness of database views to solve similar problems in databases, EMF Views aims to bring the same concept to the modeling world.
+   <description url="http://www.atlanmod.org/emfviews">
+      Lightweight views for your models
    </description>
 
    <copyright>

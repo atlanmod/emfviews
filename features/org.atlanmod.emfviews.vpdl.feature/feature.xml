@@ -6,7 +6,7 @@
       provider-name="Atlanmod">
 
    <description url="https://github.com/atlanmod/emfviews">
-      A DSL, with a syntax inspired from SQL, for creating views of existing metamodels and models, using EMF Views.
+      A DSL for easing the creation of views.
    </description>
 
    <copyright url="http://www.example.com/copyright">

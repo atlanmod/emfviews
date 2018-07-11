@@ -6,7 +6,7 @@
       provider-name="Atlanmod">
 
    <description url="https://github.com/atlanmod/emfviews">
-      A DSL for extending and combining existing metamodels using EMF Views.
+      A DSL for extending and combining existing metamodels.
    </description>
 
    <copyright>
