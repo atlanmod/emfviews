@@ -24,6 +24,7 @@
     <module>update</module>
     <module>tests</module>
     <module>dsls</module>
+    <module>doc</module>
   </modules>
 
   <repositories>
