@@ -192,10 +192,19 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     // LinkedHashSet preserves the insertion order for stability.
     Set<EClass> sups = new LinkedHashSet<>();
 
-    for (EClass sup : getESuperTypes()) {
-      sups.addAll(sup.getEAllSuperTypes());
+    // We have to take all concrete supertypes into account, and do the
+    // filtering again, otherwise we may miss the case where A <- B <- C
+    // and B is filtered.  We want to maintain A <- C.
+    EClass c = (EClass) concreteClassifier;
+    for (EClass sup : c.getEAllSuperTypes()) {
+      EClass vsup = virtualizer.getVirtual(sup);
+      VirtualEPackage p = (VirtualEPackage) vsup.getEPackage();
+      if (!p.isClassifierFiltered(vsup)) {
+        sups.add(vsup);
+      }
     }
 
+    // This gets us all the virtual super types as well
     sups.addAll(getESuperTypes());
 
     // See @UnmodifiableEList.

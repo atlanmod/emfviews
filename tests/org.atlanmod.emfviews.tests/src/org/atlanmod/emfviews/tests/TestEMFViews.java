@@ -777,7 +777,7 @@ public class TestEMFViews {
 
     Viewpoint v = new Viewpoint(Arrays.asList(P0));
     EPackage P1 = v.getRootPackage().getESubpackages().get(0);
-    EClassifier A = P1.getEClassifiers().get(0);
+    EClassifier A = P1.getEClassifier("A");
 
     assertNotNull(A);
     assertEquals(P1, A.getEPackage());
@@ -799,11 +799,38 @@ public class TestEMFViews {
 
     Viewpoint v = new Viewpoint(Arrays.asList(P0), WM);
     EPackage P1 = v.getRootPackage().getESubpackages().get(1);
-    EClassifier B = P1.getEClassifiers().get(0);
+    EClassifier B = P1.getEClassifier("B");
 
     assertNotNull(B);
     assertEquals(P1, B.getEPackage());
     assertEquals(P1, eGet(B, "ePackage"));
+  }
+
+  @Test
+  public void filterInheritance() {
+    // In an inheritance chain A <- B <- C, filtering B should still
+    // retain the fact that A <- C indirectly.
+
+    EPackage P0 = (EPackage) Sexp2EMF.build(
+      "(EPackage :name 'P0' :nsURI 'P0' :nsPrefix 'P0' "
+    + ":eClassifiers [#A(EClass :name 'A')"
+    + "               #B(EClass :name 'B' :eSuperTypes [@A])"
+    + "               #C(EClass :name 'C' :eSuperTypes [@B])])",
+    EcoreFactory.eINSTANCE)[0];
+
+    WeavingModel WM = (WeavingModel) Sexp2EMF.build(
+      "(WeavingModel :name 'WM1' "
+    + ":contributingModels [(ContributingModel :URI 'P0'"
+    + "                     :concreteElements [#B(ConcreteConcept :path 'B')])] "
+    + ":virtualLinks [(Filter :name 'B' :target @B)])",
+    VirtualLinksFactory.eINSTANCE)[0];
+
+    Viewpoint v = new Viewpoint(Arrays.asList(P0), WM);
+    EPackage P1 = v.getRootPackage().getESubpackages().get(0);
+    EClass A = (EClass) P1.getEClassifier("A");
+    EClass C = (EClass) P1.getEClassifier("C");
+
+    assertEquals(Arrays.asList(A), C.getEAllSuperTypes());
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
