@@ -3,24 +3,40 @@ EMF Views
 
 [![Build Status](https://travis-ci.org/atlanmod/emfviews.svg?branch=master)](https://travis-ci.org/atlanmod/emfviews)
 
-What is this project about?
+What is EMF Views?
 ---------------------------
-Some users only need to see some parts of a model, others have to get the full
-model extended with data from another model, and others simply access to a
-combination of information coming from different models. Based on the
-unquestionable success and usefulness of database views to solve similar
-problems in databases, EMF Views brings the same concept to the modeling world.
+EMF Views is an Eclipse plugin that brings the concept of database views to the
+modeling world.  You can create views that focus on only part of a model, or
+views that combine several models from different metamodels.  Views can be
+navigated, queried, and used as inputs to model transformations.
 
-Screencasts
------------
-These screencasts provide a smattering of the capabilities of this project.
-Note that these videos have been recorded with an older version of EMFViews, but
-they still show the overall principles and capabilities of the approach.
-* [ER 2015 - SQL_EMFViews user perspective](https://youtu.be/TabEjn4Jr4Q)
-* [SQL-like DSL to EMF Views internals](http://youtu.be/cds_DU_VJcM)
-* [EMF Views](https://www.youtube.com/watch?v=KoCiV8fvNj8)
-* [Virtual Views](https://www.youtube.com/watch?v=JRjCqyTM2x8)
-* [Demo EMFViews](https://www.youtube.com/watch?v=Lo4kz6Hx3Kg)
+Installation
+------------
+
+Either use our [update site][], or clone this repository and build the update
+site locally with [Maven](https://maven.apache.org/):
+
+```
+$ git clone https://github.com/atlanmod/emfviews.git
+$ cd emfviews
+$ mvn install
+```
+
+You can then install the plugins by pointing to the generated update site in
+your local m2 repository.
+
+Alternatively, you can import the projects in Eclipse and test them by launching
+a guest Eclipse with all the plugins from the workspace (right-click on the EMF
+Views plugin in the package explorer ▶ Run As ▶ Eclipse Application).
+
+Dependencies
+------------
+If you install the plugins manually, you will need to install the following
+dependencies beforehand:
+
+* [ATL](https://www.eclipse.org/atl/)
+* [Epsilon](https://www.eclipse.org/epsilon/)
+* [Xtext](http://www.eclipse.org/Xtext/)
 
 What can you find in this repository?
 -------------------------------------
@@ -49,33 +65,10 @@ The `examples` folder contains ideas of how to use EMF Views and the DSLs:
 * `emfviews-tutorial`: Create your first Viewpoint and View.
 * `vpdl-tutorial`: Define a viewpoint with VPDL.
 
-Installation
-------------
-Clone this repository and build the update site locally with
-[Maven](https://maven.apache.org/):
-
-```
-$ git clone https://github.com/atlanmod/emfviews.git
-$ cd emfviews
-$ mvn install
-```
-
-You can then install the plugins by pointing to the generated update site in
-your local m2 repository.
-
-Alternatively, you can import the projects in Eclipse and launch a "Runtime
-Eclipse" with all the plugins from the workspace.
-
-Dependencies
-------------
-Needed to install the following plugins:
-* ATL
-* Epsilon
-* Xtext
-
 Who is behind this project?
 ---------------------------
-This is an [Atlanmod](http://www.atlanmod.org) project.
+This is an [Atlanmod](http://www.atlanmod.org) project, the tool platform of the
+[NaoMod](https://naomod.github.io/) research group.
 
 The following people have made significant contributions to the project:
 
@@ -96,3 +89,5 @@ This Source Code may also be made available under the following Secondary
 Licenses when the conditions for such availability set forth in the Eclipse
 Public License, v. 2.0 are satisfied: GNU General Public License, version 3
 which is available at https://www.gnu.org/licenses/gpl-3.0.txt
+
+[update site]: http://atlanmodexp.info.emn.fr:8800/updatesite/snapshot/
