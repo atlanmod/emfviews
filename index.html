@@ -38,81 +38,49 @@
     </section>
 
     <section class="main-content">
-      <h2 id="what-is-this-project-about">What is this project about?</h2>
-      <p>Some users only need to see some parts of a model, others have to get the full
-        model extended with data from another model, and others simply access to a
-        combination of information coming from different models. Based on the
-        unquestionable success and usefulness of database views to solve similar
-        problems in databases, EMF Views brings the same concept to the modeling world.</p>
+      <h2 id="what-is-emf-views">What is EMF Views?</h2>
+      <p>
+        EMF Views is an Eclipse plugin that brings the concept of database views
+        to the modeling world.  You can create views that focus on only part of
+        a model, or views that combine several models from different metamodels.
+        Views can be navigated, queried, and used as inputs to model
+        transformations.
+      </p>
 
       <h2 id="screencasts">Screencasts</h2>
-      <p>These screencasts provide a smattering of the capabilities of this project.
-        Note that these videos have been recorded with an older version of EMFViews, but
-        they still show the overall principles and capabilities of the approach.</p>
+      <p>
+        These screencasts provide a smattering of the capabilities of this
+        project.  Note that these videos have been recorded with an older
+        version of EMF Views, but they still show the overall principles and
+        capabilities of the approach.
+      </p>
       <ul>
         <li><a href="https://youtu.be/TabEjn4Jr4Q">ER 2015 - SQL_EMFViews user perspective</a></li>
         <li><a href="http://youtu.be/cds_DU_VJcM">SQL-like DSL to EMF Views internals</a></li>
         <li><a href="https://www.youtube.com/watch?v=KoCiV8fvNj8">EMF Views</a></li>
         <li><a href="https://www.youtube.com/watch?v=JRjCqyTM2x8">Virtual Views</a></li>
-        <li><a href="https://www.youtube.com/watch?v=Lo4kz6Hx3Kg">Demo EMFViews</a></li>
+        <li><a href="https://www.youtube.com/watch?v=Lo4kz6Hx3Kg">Demo EMF Views</a></li>
       </ul>
 
-      <h2 id="what-can-you-find-in-this-repository">What can you find in this repository?</h2>
-      <p>These are the core plugins:</p>
+      <h2 id="getting-started">Getting Started</h2>
+      <p>
+        Install the latest version of EMF Views with
+        our <a href="http://atlanmodexp.info.emn.fr:8800/updatesite/snapshot/">Eclipse
+        update site</a>.
+      </p>
 
-      <ul>
-        <li><code class="highlighter-rouge">org.atlanmod.emfviews</code>: This is the main component of the tool. It includes the
-          core logic behind viewpoints and views.</li>
-        <li><code class="highlighter-rouge">org.atlanmod.emfviews.virtuallinks</code>: An Ecore-based model of links used to
-          construct viewpoints and views.</li>
-        <li><code class="highlighter-rouge">org.atlanmod.emfviews.virtuallinks.delegator</code>: This package delegates the
-          creation of virtual links to concrete implementations.</li>
-        <li><code class="highlighter-rouge">org.atlanmod.emfviews.virtuallinksepsilondelegate</code>: This project generate
-          virtual links from the Epsilon Comparison Language (ECL).</li>
-      </ul>
-
-      <p>We have also defined two DSLs, VPDL and MEL, which have accompanying Eclipse
-        plugins for edition:</p>
-
-      <ul>
-        <li><code class="highlighter-rouge">org.atlanmod.emfviews.vpdl</code>: ViewPoint Description Language; useful for
-          creating a viewpoint by filtering multiple metamodels, with a syntax inspired
-          by the <code class="highlighter-rouge">SELECT</code> query in SQL.</li>
-        <li><code class="highlighter-rouge">org.atlanmod.emfviews.mel</code>: Metamodel Extension Language; can extend
-          metamodel with new classes, attributes, relations.</li>
-      </ul>
-
-      <p>The <code class="highlighter-rouge">examples</code> folder contains ideas of how to use EMF Views and the DSLs:</p>
-
-      <ul>
-        <li><code class="highlighter-rouge">emfviews-tutorial</code>: Create your first Viewpoint and View.</li>
-        <li><code class="highlighter-rouge">vpdl-tutorial</code>: Define a viewpoint with VPDL.</li>
-      </ul>
-
-      <h2 id="installation">Installation</h2>
-      <p>Clone this repository and build the update site locally with
-        <a href="https://maven.apache.org/">Maven</a>:</p>
-
-      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ git clone https://github.com/atlanmod/emfviews.git
-$ cd emfviews
-$ mvn install</code></pre></div></div>
-
-      <p>You can then install the plugins by pointing to the generated update site in
-        your local m2 repository.</p>
-
-      <p>Alternatively, you can import the projects in Eclipse and launch a “Runtime
-        Eclipse” with all the plugins from the workspace.</p>
-
-      <h2 id="dependencies">Dependencies</h2>
-      <p>Needed to install the following plugins:</p>
-      <ul>
-        <li>ATL</li>
-        <li>Epsilon</li>
-        <li>Xtext</li>
-      </ul>
+      <p>
+        Or, head out to
+        our <a href="https://github.com/atlanmod/emfviews">Github repository</a>
+        for instructions on building from source using Eclipse or Maven.
+      </p>
 
       <h2 id="who-is-behind-this-project">Who is behind this project?</h2>
-      <p>This is an <a href="http://www.atlanmod.org">Atlanmod</a> project.</p>
+      <p>
+        This is an <a href="http://www.atlanmod.org">Atlanmod</a> project, the
+        tool platform of the <a href="https://naomod.github.io/">NaoMod</a>
+        research group.
+      </p>
 
       <p>The following people have made significant contributions to the project:</p>
 
@@ -124,18 +92,6 @@ $ mvn install</code></pre></div></div>
         <li><a href="https://github.com/juandavidvillacalle" title="Juan David
                                                                     Villa Calle">Juan David Villa Calle</a> (former contributor)</li>
       </ul>
-
-      <h2 id="copyright-information">Copyright information</h2>
-      <p>This program and the accompanying materials are made available under the terms
-        of the Eclipse Public License 2.0 which is available at
-        https://www.eclipse.org/legal/epl-2.0/</p>
-
-      <p>This Source Code may also be made available under the following Secondary
-        Licenses when the conditions for such availability set forth in the Eclipse
-        Public License, v. 2.0 are satisfied: GNU General Public License, version 3
-        which is available at https://www.gnu.org/licenses/gpl-3.0.txt</p>
-    </section>
-
 
   </body>
 </html>
