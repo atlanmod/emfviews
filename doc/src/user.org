@@ -664,12 +664,75 @@ Introduction to ATL
 #+END_EXAMPLE
 
 ** Querying a view with OCL
+To query a view interactively, you can use the standard OCL console.  Refer to
+the [[eclipse:/topic/org.eclipse.ocl.doc/help/InteractiveOCL.html][OCL documentation]] on how to bring up the OCL console.  Once you have a
+console open, you can query a view using OCL expressions:
 
-# TODO: write it!
+[[file:images/ocl-query.png]]
 
-#+BEGIN_note
-This tutorial still needs to be written.  Come back later!
-#+END_note
+In this figure, we see the ~allChapters.eview~ view open in the MoDisco Model
+Browser, with the Xtext OCL console on the lower half.  When the ~[Publication]
+ATL in Depth~ object is selected in MoDisco, it becomes the context object
+(~self~) for the OCL console, as indicated by the text ~Xtext OCL for
+'Publication…'~.
+
+In the console, we can see the results of executing the OCL query:
+
+#+BEGIN_EXAMPLE
+self.bookChapters->collect(c | c.title)
+#+END_EXAMPLE
+
+which collects the titles of all the chapters in this publication in an set,
+using the ~bookChapters~ virtual association.
+
+*** Programmatic OCL queries
+You can also use OCL programmatically.  Here is an example of code using the OCL
+Pivot API which the run the same query as above:
+
+#+BEGIN_SRC java
+// Initialize EMF
+Map<String, Object> map = Resource.Factory.Registry.INSTANCE
+  .getExtensionToFactoryMap();
+map.put("xmi", new XMIResourceFactoryImpl());
+map.put("ecore", new EcoreResourceFactoryImpl());
+map.put("eview", new EmfViewsFactory());
+
+// Make sure the weaving model package is loaded
+VirtualLinksPackage.eINSTANCE.eClass();
+
+// Register EclDelegate as handler for ".ecl" weaving models
+VirtualLinksDelegator.register("ecl", new EclDelegate());
+
+// Initialize OCL
+OCL ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+OCLHelper oclHelper = ocl.createOCLHelper();
+
+// Load the view
+Resource view  = new ResourceSetImpl()
+  .getResource(URI.createURI("allChapters.eview"), true);
+view.load(null);
+
+// Set the query context
+EObject root = view.getContents().get(0);
+EObject context = root.eClass();
+oclHelper.setContext(context);
+
+// Create the query
+Query query = ocl.createQuery(
+  oclHelper.createQuery("self.bookChapters->collect(c | c.title)"));
+
+// Evaluate and print result
+System.out.println("Result: " + query.evaluate(root));
+#+END_SRC
+
+Running that program yields:
+
+#+BEGIN_EXAMPLE
+Result: [Introduction to ATL,
+         An Example Transformation,
+         A Couple of Compilers,
+         ATL Harder]
+#+END_EXAMPLE
 
 ** Transforming a view with ATL
 
