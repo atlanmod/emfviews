@@ -57,6 +57,7 @@ public class ViewpointResource extends ResourceImpl {
   // This viewpoint will be replaced if another one is loaded from the URI.
   public void setViewpoint(Viewpoint v) {
     viewpoint = v;
+    viewpoint.setResource(this);
   }
 
   public Viewpoint getViewpoint() {
@@ -100,8 +101,8 @@ public class ViewpointResource extends ResourceImpl {
 
     // Then create the viewpoint
     try {
-      viewpoint = new Viewpoint(loadMetamodels(),
-                                loadWeavingModel());
+      setViewpoint(new Viewpoint(loadMetamodels(),
+                                 loadWeavingModel()));
     } catch (Exception ex) {
       getErrors().add(new Err("Failed to create the viewpoint due to exception:\n%s", ex));
       throw ex;

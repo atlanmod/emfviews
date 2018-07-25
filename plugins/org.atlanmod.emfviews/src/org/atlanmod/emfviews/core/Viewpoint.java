@@ -62,6 +62,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
@@ -86,6 +87,8 @@ public class Viewpoint implements EcoreVirtualizer {
   private ResourceSet virtualResourceSet; // contains the virtualized EPackages
   private VirtualEPackage rootPackage; // contains the virtual contributing packages and the virtual package
   private EPackage virtualPackage; // contains the new concepts
+  private Resource resource; // the resource using this view, if any.  This is used by VirtualEObject.eResource,
+                             // to please some modeling tools (e.g. OCL).
 
   // Map to keep track of the EObject created by each *new* element from the weaving model,
   // in order to be able to use VirtualElement as LinkedElements in findEObject
@@ -436,6 +439,14 @@ public class Viewpoint implements EcoreVirtualizer {
 
   public EPackage getRootPackage() {
     return rootPackage;
+  }
+
+  public void setResource(Resource r) {
+    this.resource = r;
+  }
+
+  public Resource getResource() {
+    return resource;
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
+import org.atlanmod.emfviews.core.Viewpoint;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -515,8 +516,8 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     // @Correctness: this should actually be set as part of the opposite reference
     // of a VirtualEPackage.getContents().add, but in our case we know the virtualizer
     // is the resource.
-    if (virtualizer instanceof Resource) {
-      return (Resource) virtualizer;
+    if (virtualizer instanceof Viewpoint) {
+      return ((Viewpoint) virtualizer).getResource();
     }
     return null;
   }
