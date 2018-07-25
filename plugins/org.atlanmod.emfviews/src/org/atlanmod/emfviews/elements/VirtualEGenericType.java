@@ -88,7 +88,11 @@ public class VirtualEGenericType extends DynamicEObjectImpl implements EGenericT
 
   @Override
   public EClassifier getEClassifier() {
-    return virtualizer.getVirtual(concreteType.getEClassifier());
+    // We don't want to virtualize all classifiers here.  If we virtual raw
+    // data types like EString, OCL will get confused.
+    // @Correctness: but maybe we want to virtualize types that are part of the
+    // package?
+    return concreteType.getEClassifier();
   }
 
   @Override
