@@ -14,6 +14,7 @@
   <properties>
     <mwe2-path>${basedir}/src/org/atlanmod/emfviews/mel/GenerateMel.mwe2</mwe2-path>
     <language-fqn>org.atlanmod.emfviews.mel</language-fqn>
+    <atl.module>MEL2VirtualLinks</atl.module>
   </properties>
 
   <packaging>eclipse-plugin</packaging>
@@ -31,11 +32,10 @@
         <artifactId>xtend-maven-plugin</artifactId>
       </plugin>
 
-      <!-- Disabled until it can build with EMFTVM -->
-      <!-- <plugin> -->
-      <!--   <groupId>org.atlanmod</groupId> -->
-      <!--   <artifactId>atl-maven-plugin</artifactId> -->
-      <!-- </plugin> -->
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-antrun-plugin</artifactId>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

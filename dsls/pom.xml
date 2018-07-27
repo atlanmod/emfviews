@@ -20,7 +20,16 @@
 
   <properties>
     <mwe2-skip-generate>false</mwe2-skip-generate>
+    <atl.version>4.0.0</atl.version>
   </properties>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.eclipse.org</id>
+      <name>ATL Repository</name>
+      <url>https://repo.eclipse.org/content/groups/atl/</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <build>
     <pluginManagement>
@@ -108,19 +117,36 @@
           </dependencies>
         </plugin>
 
-        <!-- Compile ATL files to ASM -->
+        <!-- Compile ATL files to EMFTVM -->
         <plugin>
-          <groupId>org.atlanmod</groupId>
-          <artifactId>atl-maven-plugin</artifactId>
-          <version>0.1.0-SNAPSHOT</version>
-          <executions>
-            <execution>
-              <phase>compile</phase>
-              <goals>
-                <goal>compile</goal>
-              </goals>
-            </execution>
-          </executions>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-antrun-plugin</artifactId>
+	  <executions>
+	    <execution>
+	      <phase>compile</phase>
+	      <goals>
+		<goal>run</goal>
+	      </goals>
+	      <configuration>
+		<tasks>
+		  <taskdef
+		      resource="org/eclipse/m2m/atl/emftvm/ant/antlib.xml"
+		      classpathref="maven.plugin.classpath" />
+		  <emftvm.compile module="${atl.module}"
+				  modulepath="${project.basedir}/transformation/"
+				  outputpath="${project.basedir}/transformation/"
+                                  charset="UTF-8" />
+		</tasks>
+	      </configuration>
+	    </execution>
+	  </executions>
+	  <dependencies>
+	    <dependency>
+	      <groupId>org.eclipse.m2m.atl</groupId>
+	      <artifactId>org.eclipse.m2m.atl.emftvm.ant.standalone</artifactId>
+	      <version>${atl.version}</version>
+	    </dependency>
+	  </dependencies>
         </plugin>
 
         <!-- Clean up these files -->
@@ -151,7 +177,7 @@
               </configuration>
             </execution>
             <execution>
-              <!-- Cleanup ASM files -->
+              <!-- Cleanup EMFTVM files -->
 	      <id>atl-clean</id>
 	      <goals>
 		<goal>clean</goal>
@@ -162,7 +188,7 @@
 		  <fileset>
 		    <directory>${basedir}/</directory>
                     <includes>
-	              <include>**/*.asm</include>
+	              <include>**/*.emftvm</include>
 	            </includes>
 		  </fileset>
                 </filesets>
