@@ -16,10 +16,11 @@
 
 package org.atlanmod.emfviews.elements;
 
-import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
+
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
 public class VirtualEEnum extends VirtualEDataType implements EEnum {
 

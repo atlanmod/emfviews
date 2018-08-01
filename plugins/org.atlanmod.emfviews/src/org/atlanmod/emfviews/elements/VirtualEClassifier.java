@@ -16,7 +16,6 @@
 
 package org.atlanmod.emfviews.elements;
 
-import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
@@ -30,6 +29,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
+
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
 public abstract class VirtualEClassifier extends DynamicEObjectImpl
     implements EClassifier, BasicExtendedMetaData.EClassifierExtendedMetaData.Holder {

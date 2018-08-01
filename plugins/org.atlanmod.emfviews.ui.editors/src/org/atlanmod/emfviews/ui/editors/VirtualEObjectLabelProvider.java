@@ -2,11 +2,6 @@ package org.atlanmod.emfviews.ui.editors;
 
 import java.util.Optional;
 
-import org.atlanmod.emfviews.elements.VirtualEAttribute;
-import org.atlanmod.emfviews.elements.VirtualEClass;
-import org.atlanmod.emfviews.elements.VirtualEObject;
-import org.atlanmod.emfviews.elements.VirtualEReference;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -16,6 +11,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
+
+import org.atlanmod.emfviews.elements.VirtualEClass;
 
 public class VirtualEObjectLabelProvider extends LabelProvider implements IColorProvider {
 

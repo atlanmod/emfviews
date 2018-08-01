@@ -31,14 +31,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.StringJoiner;
 
-import org.atlanmod.emfviews.core.View;
-import org.atlanmod.emfviews.core.ViewResource;
-import org.atlanmod.emfviews.core.Viewpoint;
-import org.atlanmod.emfviews.core.ViewpointResource;
-import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
-import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
-import org.atlanmod.sexp2emf.Sexp2EMF;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -57,6 +49,15 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import org.atlanmod.emfviews.core.View;
+import org.atlanmod.emfviews.core.ViewResource;
+import org.atlanmod.emfviews.core.Viewpoint;
+import org.atlanmod.emfviews.core.ViewpointResource;
+import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
+import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+import org.atlanmod.sexp2emf.Sexp2EMF;
 
 // Fix the run order since Eclipse is incapable of doing that for the output.
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -883,7 +884,9 @@ public class TestEMFViews {
     EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
     // Throw immediately rather than waiting for other objects to complain
     // about the missing feature
-    if (f == null) throw new NullPointerException();
+    if (f == null) {
+      throw new NullPointerException();
+    }
     return o.eGet(f);
   }
 

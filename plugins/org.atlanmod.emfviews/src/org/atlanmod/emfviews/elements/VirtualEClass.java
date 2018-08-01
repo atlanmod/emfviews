@@ -22,8 +22,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.atlanmod.emfviews.core.EcoreVirtualizer;
-import org.atlanmod.emfviews.core.Viewpoint;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -36,6 +34,9 @@ import org.eclipse.emf.ecore.impl.ESuperAdapter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
+
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
+import org.atlanmod.emfviews.core.Viewpoint;
 
 // @Note @UnmodifiableElist:
 // We want views to be immutable.  When returning lists, we could use

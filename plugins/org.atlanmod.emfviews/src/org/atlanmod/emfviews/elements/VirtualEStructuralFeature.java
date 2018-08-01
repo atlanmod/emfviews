@@ -16,7 +16,6 @@
 
 package org.atlanmod.emfviews.elements;
 
-import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -30,6 +29,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EStructuralFeatureExtendedMetaData;
+
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
 public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal, EStructuralFeatureExtendedMetaData.Holder {
 

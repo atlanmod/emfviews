@@ -183,8 +183,9 @@ public class EViewEditor extends EditorPart {
 
   @Override
   public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-    if (!(input instanceof IFileEditorInput))
+    if (!(input instanceof IFileEditorInput)) {
       throw new PartInitException("Invalid Input: Must be IFileEditorInput");
+    }
 
     setSite(site);
     setInput(input);

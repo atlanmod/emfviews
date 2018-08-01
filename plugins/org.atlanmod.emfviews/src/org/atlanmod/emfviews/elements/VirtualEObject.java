@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.atlanmod.emfviews.core.View;
-import org.atlanmod.emfviews.core.Virtualizer;
-import org.atlanmod.emfviews.util.LazyEContentsList;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
@@ -32,6 +29,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.DynamicValueHolder;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
+
+import org.atlanmod.emfviews.core.View;
+import org.atlanmod.emfviews.core.Virtualizer;
+import org.atlanmod.emfviews.util.LazyEContentsList;
 
 public class VirtualEObject extends DynamicEObjectImpl {
 

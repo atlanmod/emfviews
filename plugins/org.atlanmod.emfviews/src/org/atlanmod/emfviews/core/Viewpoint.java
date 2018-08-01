@@ -26,6 +26,26 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.Diagnostician;
+
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
@@ -47,25 +67,6 @@ import org.atlanmod.emfviews.virtuallinks.VirtualElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.Diagnostician;
 
 public class Viewpoint implements EcoreVirtualizer {
 
@@ -277,15 +278,17 @@ public class Viewpoint implements EcoreVirtualizer {
 
       for (Concept e : c.getSuperConcepts()) {
         EObject sup = findEObject(e, registry);
-        if (!(sup instanceof EClass))
+        if (!(sup instanceof EClass)) {
           throw EX("Superconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
+        }
         klass.getESuperTypes().add((EClass) sup);
       }
 
       for (Concept e : c.getSubConcepts()) {
         EObject sub = findEObject(e, registry);
-        if (!(sub instanceof EClass))
+        if (!(sub instanceof EClass)) {
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
+        }
         getVirtual((EClass) sub).addVirtualSuperType(klass);
       }
     }
@@ -294,8 +297,9 @@ public class Viewpoint implements EcoreVirtualizer {
   private void buildNewProperties(EPackage.Registry registry) {
     for (VirtualProperty p : weavingModel.getVirtualProperties()) {
       EObject parent = findEObject(p.getParent(), registry);
-      if (!(parent instanceof EClass))
+      if (!(parent instanceof EClass)) {
         throw EX("Parent of new property '%s' should be an EClass", p.getName());
+      }
       VirtualEClass parentClass = getVirtual((EClass) parent);
 
       String n = p.getName();
@@ -304,10 +308,11 @@ public class Viewpoint implements EcoreVirtualizer {
       attr.setEType(getTypeFromName(p.getType())
           .orElseThrow(() -> EX("Invalid type '%s' for new property '%s'", p.getType(), n)));
       attr.setUpperBound(1);
-      if (p.isOptional())
+      if (p.isOptional()) {
         attr.setLowerBound(0);
-      else
+      } else {
         attr.setLowerBound(1);
+      }
       parentClass.addVirtualFeature(getVirtual(attr));
     }
   }
@@ -321,21 +326,24 @@ public class Viewpoint implements EcoreVirtualizer {
 
       EReference ref = (EReference) syntheticElements.get(a);
       ref.setName(a.getName());
-      if (!(target instanceof EClassifier))
+      if (!(target instanceof EClassifier)) {
         throw EX("Target '%s' of new association '%s' should be an EClassifier", target,
                  a.getName());
+      }
 
       ref.setEType((EClassifier) target);
       ref.setLowerBound(a.getLowerBound());
       ref.setUpperBound(a.getUpperBound());
-      if (!(source instanceof EClass))
+      if (!(source instanceof EClass)) {
         throw EX("Source '%s' of new association '%s' should be an EClass", source, a.getName());
+      }
 
       Association opposite = a.getOpposite();
       if (opposite != null) {
         EObject o = findEObject(opposite, registry);
-        if (!(o instanceof EReference))
+        if (!(o instanceof EReference)) {
           throw EX("Opposite of new association '%s' should be an EReference", a.getName());
+        }
         EReference opp = (EReference) o;
         getVirtual(ref).setVirtualOpposite(getVirtual(opp));
         getVirtual(opp).setVirtualOpposite(getVirtual(ref));
@@ -360,8 +368,9 @@ public class Viewpoint implements EcoreVirtualizer {
 
       String modelURI = e.getModel().getURI();
       EObject model = registry.getEPackage(modelURI);
-      if (model == null)
+      if (model == null) {
         throw EX("Model '%s' of concrete element '%s' cannot be found in package registry", modelURI, e.getPath());
+      }
 
       String path = e.getPath();
       EObject obj = EMFViewsUtil.findElement(model, path)
@@ -371,11 +380,14 @@ public class Viewpoint implements EcoreVirtualizer {
       return obj;
 
     } else if (elem instanceof VirtualElement) {
-      if (!syntheticElements.containsKey(elem))
+      if (!syntheticElements.containsKey(elem)) {
         throw EX("Virtual element for '%s' does not exist or has not been created yet", elem);
+      }
 
       EObject obj = syntheticElements.get(elem);
-      if (obj == null) throw EX("Virtual element for '%s' is null.  This shouldn't happen.", elem);
+      if (obj == null) {
+        throw EX("Virtual element for '%s' is null.  This shouldn't happen.", elem);
+      }
 
       return obj;
 

@@ -6,12 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import org.atlanmod.emfviews.elements.VirtualEObject;
 
 public class LazyEContentsList implements EList<EObject>, InternalEList<EObject> {
 

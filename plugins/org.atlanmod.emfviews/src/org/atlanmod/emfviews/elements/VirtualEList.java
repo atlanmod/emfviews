@@ -18,9 +18,10 @@ package org.atlanmod.emfviews.elements;
 
 import java.util.AbstractList;
 
-import org.atlanmod.emfviews.core.Virtualizer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+
+import org.atlanmod.emfviews.core.Virtualizer;
 
 public class VirtualEList extends AbstractList<EObject> implements EList<EObject> {
 

@@ -22,16 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.atlanmod.emfviews.elements.VirtualEObject;
-import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
-import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
-import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+
+import org.atlanmod.emfviews.elements.VirtualEObject;
+import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
+import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class View implements Virtualizer {
 

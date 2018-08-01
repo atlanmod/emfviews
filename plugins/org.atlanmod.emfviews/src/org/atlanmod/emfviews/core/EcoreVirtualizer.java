@@ -16,15 +16,6 @@
 
 package org.atlanmod.emfviews.core;
 
-import org.atlanmod.emfviews.elements.VirtualEAttribute;
-import org.atlanmod.emfviews.elements.VirtualEClass;
-import org.atlanmod.emfviews.elements.VirtualEClassifier;
-import org.atlanmod.emfviews.elements.VirtualEDataType;
-import org.atlanmod.emfviews.elements.VirtualEEnum;
-import org.atlanmod.emfviews.elements.VirtualEGenericType;
-import org.atlanmod.emfviews.elements.VirtualEPackage;
-import org.atlanmod.emfviews.elements.VirtualEReference;
-import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -34,6 +25,16 @@ import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+
+import org.atlanmod.emfviews.elements.VirtualEAttribute;
+import org.atlanmod.emfviews.elements.VirtualEClass;
+import org.atlanmod.emfviews.elements.VirtualEClassifier;
+import org.atlanmod.emfviews.elements.VirtualEDataType;
+import org.atlanmod.emfviews.elements.VirtualEEnum;
+import org.atlanmod.emfviews.elements.VirtualEGenericType;
+import org.atlanmod.emfviews.elements.VirtualEPackage;
+import org.atlanmod.emfviews.elements.VirtualEReference;
+import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
 
 public interface EcoreVirtualizer {
   VirtualEPackage getVirtual(EPackage o);

@@ -1,6 +1,5 @@
 package org.atlanmod.emfviews.elements;
 
-import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
@@ -8,6 +7,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
 public class VirtualEGenericType extends DynamicEObjectImpl implements EGenericType {
 

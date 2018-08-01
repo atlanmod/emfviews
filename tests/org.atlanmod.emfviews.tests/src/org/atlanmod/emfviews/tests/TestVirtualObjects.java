@@ -798,7 +798,9 @@ public class TestVirtualObjects {
     EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
     // Throw immediately rather than waiting for other objects to complain
     // about the missing feature
-    if (f == null) throw new IllegalArgumentException(String.format("Feature '%s' does not exist on eClass", featureName));
+    if (f == null) {
+      throw new IllegalArgumentException(String.format("Feature '%s' does not exist on eClass", featureName));
+    }
     return o.eGet(f);
   }
 

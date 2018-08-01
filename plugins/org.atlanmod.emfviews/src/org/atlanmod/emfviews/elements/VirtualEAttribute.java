@@ -16,11 +16,12 @@
 
 package org.atlanmod.emfviews.elements;
 
-import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+
+import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
 public class VirtualEAttribute extends VirtualEStructuralFeature implements EAttribute {
 

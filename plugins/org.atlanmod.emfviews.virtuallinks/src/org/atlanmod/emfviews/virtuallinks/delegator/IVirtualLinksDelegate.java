@@ -15,9 +15,10 @@ package org.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.List;
 
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public interface IVirtualLinksDelegate {
 
