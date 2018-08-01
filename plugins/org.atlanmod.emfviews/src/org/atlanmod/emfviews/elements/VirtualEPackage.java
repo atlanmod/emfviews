@@ -35,6 +35,8 @@ import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
+import org.atlanmod.emfviews.core.View;
+import org.atlanmod.emfviews.core.Viewpoint;
 
 public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
@@ -189,7 +191,23 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
     @Override
     public EObject create(EClass eClass) {
-      throw new UnsupportedOperationException();
+      // The MoDisco Browser will create instances in order to determine the icon to use,
+      // so we should avoid throwing here.
+      //
+      // One way to provide sensible values is to instantiate instances of the
+      // concrete EClass and virtualize them.
+      if (!(eClass instanceof VirtualEClass)) {
+        throw new IllegalArgumentException("The class " + eClass.getName() + " is not a valid classifier");
+      }
+
+      EClass concrete = (EClass) ((VirtualEClass) eClass).concreteClassifier;
+
+      // We don't have a hold on the actual view used, but we don't want to pollute it anyway,
+      // so we just use a throwaway.
+      return new VirtualEObject(
+        concrete.getEPackage().getEFactoryInstance().create(concrete),
+        (VirtualEClass) eClass,
+        new View((Viewpoint) virtualizer));
     }
 
     @Override
