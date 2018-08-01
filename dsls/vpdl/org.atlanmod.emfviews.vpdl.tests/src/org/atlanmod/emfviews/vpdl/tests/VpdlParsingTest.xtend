@@ -70,14 +70,11 @@ class VpdlParsingTest {
 
 			from
 			  'http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0' as togaf,
-			  'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI' as bpmn,
-			  'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd' as reqif,
+			  'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'       as bpmn,
+			  'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd'      as reqif,
 
-			where "s.name=t.name and
-			       s.isAutomated = false"
-			      for detailedProcess
-			      "t.values.exists(v | v.theValue=s.name)"
-			      for detailedRequirement
+			where "s.name=t.name and s.isAutomated = false" for detailedProcess,
+			      "t.values.exists(v | v.theValue=s.name)"  for detailedRequirement,
 		''')
 	}
 

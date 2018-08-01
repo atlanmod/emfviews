@@ -44,12 +44,12 @@ Attribute: attribute=[ecore::EStructuralFeature];
 
 Relation: K_JOIN metamodelRight=[Metamodel] '.' classRight=[ecore::EClass] K_AS name=ID;
 
-From: K_FROM metamodels+=Metamodel (','metamodels+=Metamodel)* ','?;
+From: K_FROM metamodels+=Metamodel (',' metamodels+=Metamodel)* ','?;
 
 Metamodel: nsURI=STRING K_AS name=ID;
 
 Where:
-  K_WHERE rules+=Rule+
+  K_WHERE rules+=Rule (',' rules+=Rule)* ','?
 ;
 
 Rule:
