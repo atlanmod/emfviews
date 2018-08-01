@@ -1439,8 +1439,8 @@ Here is an example of a VPDL file:
   <span class="org-string">'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'</span>       <span class="org-keyword">as</span> bpmn,
   <span class="org-string">'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd'</span>      <span class="org-keyword">as</span> reqif,
 
-<span class="org-keyword">where</span> <span class="org-string">'s.name=t.name and s.isAutomated = false'</span> <span class="org-keyword">for</span> detailedProcess
-      <span class="org-string">'t.values.exists(v | v.theValue=s.name)'</span>  <span class="org-keyword">for</span> detailedRequirement
+<span class="org-keyword">where</span> <span class="org-string">'s.name=t.name and s.isAutomated = false'</span> <span class="org-keyword">for</span> detailedProcess,
+      <span class="org-string">'t.values.exists(v | v.theValue=s.name)'</span>  <span class="org-keyword">for</span> detailedRequirement,
 </pre>
 </div>
 
@@ -1466,7 +1466,7 @@ AllAttributes: '.*';
 From: 'from' Metamodel (',' Metamodel)* ','?;
 Metamodel: STRING 'as' ID;
 
-Where: 'where' Rule+;
+Where: 'where' Rule (',' Rule)* ','?;
 Rule: STRING 'for' [Relation];
 </pre>
 
