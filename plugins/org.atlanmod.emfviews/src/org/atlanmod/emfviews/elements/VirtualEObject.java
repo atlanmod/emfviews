@@ -241,6 +241,11 @@ public class VirtualEObject extends DynamicEObjectImpl {
   }
 
   @Override
+  public EReference eContainmentFeature() {
+    return concreteEObject.eContainmentFeature();
+  }
+
+  @Override
   public Resource eResource() {
     // Virtual objects are not contained directly by resources,
     // but some modeling tools (e.g. OCL) expect them to have one.

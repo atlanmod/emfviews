@@ -57,7 +57,9 @@ public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl im
   public EObject eContainer() {
     EObject c = concrete().eContainer();
 
-    if (c instanceof EPackage) {
+    if (c == null) {
+      return null;
+    } else if (c instanceof EPackage) {
       return virtualizer.getVirtual((EPackage) c);
     } else if (c instanceof EClassifier) {
       return virtualizer.getVirtual((EClassifier) c);

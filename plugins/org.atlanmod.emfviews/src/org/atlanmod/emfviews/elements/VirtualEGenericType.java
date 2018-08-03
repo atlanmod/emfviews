@@ -121,7 +121,7 @@ public class VirtualEGenericType extends BaseVirtualElement<EGenericType> implem
 
   @Override
   public boolean isInstance(Object object) {
-    throw new UnsupportedOperationException();
+    return concrete().isInstance(object);
   }
 
 }
