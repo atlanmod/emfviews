@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
-public class VirtualEAttribute extends VirtualEStructuralFeature implements EAttribute {
+public class VirtualEAttribute extends VirtualEStructuralFeature<EAttribute> implements EAttribute {
 
   public VirtualEAttribute(EAttribute concreteAttribute, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EATTRIBUTE, concreteAttribute, virtualizer);
@@ -45,7 +45,7 @@ public class VirtualEAttribute extends VirtualEStructuralFeature implements EAtt
 
   @Override
   public boolean isID() {
-    return ((EAttribute) concreteFeature).isID();
+    return concrete().isID();
   }
 
   @Override
@@ -55,7 +55,7 @@ public class VirtualEAttribute extends VirtualEStructuralFeature implements EAtt
 
   @Override
   public EDataType getEAttributeType() {
-    return ((EAttribute) concreteFeature).getEAttributeType();
+    return concrete().getEAttributeType();
   }
 
 }

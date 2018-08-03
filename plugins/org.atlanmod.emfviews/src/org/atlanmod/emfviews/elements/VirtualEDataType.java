@@ -23,9 +23,9 @@ import org.eclipse.emf.ecore.EcorePackage;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
-public class VirtualEDataType extends VirtualEClassifier implements EDataType, EDataType.Internal {
+public class VirtualEDataType<T extends EDataType> extends VirtualEClassifier<T> implements EDataType, EDataType.Internal {
 
-  public VirtualEDataType(EDataType concreteDataType, EcoreVirtualizer virtualizer) {
+  public VirtualEDataType(T concreteDataType, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EDATA_TYPE, concreteDataType, virtualizer);
   }
 
@@ -42,7 +42,7 @@ public class VirtualEDataType extends VirtualEClassifier implements EDataType, E
 
   @Override
   public boolean isSerializable() {
-    return ((EDataType) concreteClassifier).isSerializable();
+    return concrete().isSerializable();
   }
 
   @Override
@@ -55,7 +55,7 @@ public class VirtualEDataType extends VirtualEClassifier implements EDataType, E
     if (object instanceof EObject) {
       return ((EObject) object).eClass() == this;
     } else {
-      return concreteClassifier.isInstance(object);
+      return concrete().isInstance(object);
     }
   }
 

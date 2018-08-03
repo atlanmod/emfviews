@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
-public class VirtualEEnum extends VirtualEDataType implements EEnum {
+public class VirtualEEnum extends VirtualEDataType<EEnum> implements EEnum {
 
   public VirtualEEnum(EEnum concreteEnum, EcoreVirtualizer virtualizer) {
     super(concreteEnum, virtualizer);
@@ -30,22 +30,22 @@ public class VirtualEEnum extends VirtualEDataType implements EEnum {
 
   @Override
   public EList<EEnumLiteral> getELiterals() {
-    return ((EEnum) concreteClassifier).getELiterals();
+    return concrete().getELiterals();
   }
 
   @Override
   public EEnumLiteral getEEnumLiteral(String name) {
-    return ((EEnum) concreteClassifier).getEEnumLiteral(name);
+    return concrete().getEEnumLiteral(name);
   }
 
   @Override
   public EEnumLiteral getEEnumLiteral(int value) {
-    return ((EEnum) concreteClassifier).getEEnumLiteral(value);
+    return concrete().getEEnumLiteral(value);
   }
 
   @Override
   public EEnumLiteral getEEnumLiteralByLiteral(String literal) {
-    return ((EEnum) concreteClassifier).getEEnumLiteralByLiteral(literal);
+    return concrete().getEEnumLiteralByLiteral(literal);
   }
 
 }

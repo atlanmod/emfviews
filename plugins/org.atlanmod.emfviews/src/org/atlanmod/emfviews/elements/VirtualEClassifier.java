@@ -26,22 +26,16 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
-public abstract class VirtualEClassifier extends DynamicEObjectImpl
+public abstract class VirtualEClassifier<T extends EClassifier> extends BaseVirtualElement<T>
     implements EClassifier, BasicExtendedMetaData.EClassifierExtendedMetaData.Holder {
 
-  protected EClassifier concreteClassifier;
-  protected EcoreVirtualizer virtualizer;
-
-  protected VirtualEClassifier(EClass eClass, EClassifier concreteClassifier, EcoreVirtualizer virtualizer) {
-    super(eClass);
-    this.concreteClassifier = concreteClassifier;
-    this.virtualizer = virtualizer;
+  protected VirtualEClassifier(EClass eClass, T concreteClassifier, EcoreVirtualizer virtualizer) {
+    super(eClass, concreteClassifier, virtualizer);
   }
 
   @Override
@@ -90,19 +84,19 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl
   // duplication and for all implementing classes to benefit
   @Override
   public EObject eContainer() {
-    return virtualizer.getVirtual((EPackage) concreteClassifier.eContainer());
+    return virtualizer.getVirtual((EPackage) concrete().eContainer());
   }
 
   @Override
   public EReference eContainmentFeature() {
     // We do not want to virtualize this, as the feature is part of the
     // Ecore metamodel, and not of a viewpoint.
-    return concreteClassifier.eContainmentFeature();
+    return concrete().eContainmentFeature();
   }
 
   @Override
   public String getName() {
-    return concreteClassifier.getName();
+    return concrete().getName();
   }
 
   @Override
@@ -112,33 +106,33 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl
 
   @Override
   public EList<EAnnotation> getEAnnotations() {
-    return concreteClassifier.getEAnnotations();
+    return concrete().getEAnnotations();
   }
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    return concreteClassifier.getEAnnotation(source);
+    return concrete().getEAnnotation(source);
   }
 
   @Override
   public EList<ETypeParameter> getETypeParameters() {
-    return concreteClassifier.getETypeParameters();
+    return concrete().getETypeParameters();
   }
 
   @Override
   public Object getDefaultValue() {
-    return concreteClassifier.getDefaultValue();
+    return concrete().getDefaultValue();
   }
 
   @Override
   public EPackage getEPackage() {
-    return virtualizer.getVirtual(concreteClassifier.getEPackage());
+    return virtualizer.getVirtual(concrete().getEPackage());
   }
 
 
   @Override
   public Class<?> getInstanceClass() {
-    return concreteClassifier.getInstanceClass();
+    return concrete().getInstanceClass();
   }
 
   @Override
@@ -148,7 +142,7 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl
 
   @Override
   public String getInstanceClassName() {
-    return concreteClassifier.getInstanceClassName();
+    return concrete().getInstanceClassName();
   }
 
   @Override
@@ -158,7 +152,7 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl
 
   @Override
   public String getInstanceTypeName() {
-    return concreteClassifier.getInstanceTypeName();
+    return concrete().getInstanceTypeName();
   }
 
   @Override
@@ -174,7 +168,7 @@ public abstract class VirtualEClassifier extends DynamicEObjectImpl
 
   @Override
   public EClassifierExtendedMetaData getExtendedMetaData() {
-    return ((BasicExtendedMetaData.EClassifierExtendedMetaData.Holder) concreteClassifier).getExtendedMetaData();
+    return ((BasicExtendedMetaData.EClassifierExtendedMetaData.Holder) concrete()).getExtendedMetaData();
   }
 
   @Override

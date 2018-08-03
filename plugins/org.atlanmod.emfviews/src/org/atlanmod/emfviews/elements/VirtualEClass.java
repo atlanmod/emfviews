@@ -31,12 +31,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.ESuperAdapter;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
-import org.atlanmod.emfviews.core.Viewpoint;
 
 // @Note @UnmodifiableElist:
 // We want views to be immutable.  When returning lists, we could use
@@ -44,9 +42,10 @@ import org.atlanmod.emfviews.core.Viewpoint;
 // correspond to features to be castable to EStructuralFeature.Setting.  To comply,
 // we use EcoreEList.UnmodifiableEList instead.
 
-public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperAdapter.Holder, EClassifierExtendedMetaData.Holder {
+public class VirtualEClass extends VirtualEClassifier<EClass>
+    implements EClass, ESuperAdapter.Holder, EClassifierExtendedMetaData.Holder {
 
-  private List<VirtualEStructuralFeature> virtualFeatures = new ArrayList<>();
+  private List<VirtualEStructuralFeature<?>> virtualFeatures = new ArrayList<>();
   private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
   private List<EClass> virtualSuperTypes = new ArrayList<>();
 
@@ -54,7 +53,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     super(EcorePackage.Literals.ECLASS, concreteEClass, virtualizer);
   }
 
-  public void addVirtualFeature(VirtualEStructuralFeature f) {
+  public void addVirtualFeature(VirtualEStructuralFeature<?> f) {
     virtualFeatures.add(f);
   }
 
@@ -142,7 +141,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public boolean isAbstract() {
-    return ((EClass) concreteClassifier).isAbstract();
+    return concrete().isAbstract();
   }
 
   @Override
@@ -152,7 +151,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public boolean isInterface() {
-    return ((EClass) concreteClassifier).isInterface();
+    return concrete().isInterface();
   }
 
   @Override
@@ -169,7 +168,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     // so we can query it only once.
     VirtualEPackage vpackage = (VirtualEPackage) getEPackage();
 
-    for (EClass c : ((EClass) concreteClassifier).getESuperTypes()) {
+    for (EClass c : concrete().getESuperTypes()) {
       EClass vc = virtualizer.getVirtual(c);
       if (!vpackage.isClassifierFiltered(vc)) {
         types.add(vc);
@@ -197,7 +196,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     // We have to take all concrete supertypes into account, and do the
     // filtering again, otherwise we may miss the case where A <- B <- C
     // and B is filtered.  We want to maintain A <- C.
-    EClass c = (EClass) concreteClassifier;
+    EClass c = concrete();
     for (EClass sup : c.getEAllSuperTypes()) {
       EClass vsup = virtualizer.getVirtual(sup);
       VirtualEPackage p = (VirtualEPackage) vsup.getEPackage();
@@ -216,7 +215,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EAttribute getEIDAttribute() {
-    return virtualizer.getVirtual(((EClass) concreteClassifier).getEIDAttribute());
+    return virtualizer.getVirtual(concrete().getEIDAttribute());
   }
 
   protected List<EStructuralFeature> getAllFeatures() {
@@ -230,12 +229,12 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     }
 
     // Add all features from the concrete class
-    for (EStructuralFeature f : ((EClass) concreteClassifier).getEStructuralFeatures()) {
+    for (EStructuralFeature f : concrete().getEStructuralFeatures()) {
       elems.add(virtualizer.getVirtual(f));
     }
 
     // Add virtual feature at the end
-    for (VirtualEStructuralFeature f : virtualFeatures) {
+    for (VirtualEStructuralFeature<?> f : virtualFeatures) {
       elems.add(f);
     }
 
@@ -246,12 +245,12 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     List<EStructuralFeature> elems = new ArrayList<>();
 
     // Add all features from the concrete class
-    for (EStructuralFeature f : ((EClass) concreteClassifier).getEStructuralFeatures()) {
+    for (EStructuralFeature f : concrete().getEStructuralFeatures()) {
       elems.add(virtualizer.getVirtual(f));
     }
 
     // Add virtual feature at the end
-    for (VirtualEStructuralFeature f : virtualFeatures) {
+    for (VirtualEStructuralFeature<?> f : virtualFeatures) {
       elems.add(f);
     }
 
@@ -292,7 +291,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EGenericType> getEGenericSuperTypes() {
-    return ((EClass) concreteClassifier).getEGenericSuperTypes();
+    return concrete().getEGenericSuperTypes();
   }
 
   @Override
@@ -386,7 +385,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EList<EOperation> getEOperations() {
-    return ((EClass) concreteClassifier).getEOperations();
+    return concrete().getEOperations();
   }
 
   @Override
@@ -400,11 +399,11 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     if (someClass instanceof VirtualEClass) {
       VirtualEClass c = (VirtualEClass) someClass;
 
-      return c.concreteClassifier == this.concreteClassifier
+      return c.concrete() == this.concrete()
           || c.virtualSuperTypes.contains(this)
           || c.getEAllSuperTypes().contains(this);
     } else {
-      return ((EClass) concreteClassifier).isSuperTypeOf(someClass);
+      return concrete().isSuperTypeOf(someClass);
     }
   }
 
@@ -455,7 +454,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public EGenericType getFeatureType(EStructuralFeature feature) {
-    return ((EClass) concreteClassifier).getFeatureType(feature);
+    return concrete().getFeatureType(feature);
   }
 
   @Override
@@ -465,13 +464,13 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
 
   @Override
   public ESuperAdapter getESuperAdapter() {
-    return ((ESuperAdapter.Holder) concreteClassifier).getESuperAdapter();
+    return ((ESuperAdapter.Holder) concrete()).getESuperAdapter();
   }
 
   @Override
   public boolean isFrozen() {
     // @Correctness: not sure whether we should delegate this, or just return false
-    return ((ESuperAdapter.Holder) concreteClassifier).isFrozen();
+    return ((ESuperAdapter.Holder) concrete()).isFrozen();
   }
 
   // Not sure what this is useful for, but the Sample ECore editor seems to use it
@@ -492,7 +491,7 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
     if (object instanceof VirtualEObject) {
       return isSuperTypeOf(((VirtualEObject) object).eClass());
     } else {
-      return concreteClassifier.isInstance(object);
+      return concrete().isInstance(object);
     }
   }
 
@@ -506,21 +505,8 @@ public class VirtualEClass extends VirtualEClassifier implements EClass, ESuperA
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("VirtualEClass of ");
-    sb.append(concreteClassifier.toString());
+    sb.append(concrete().toString());
     return sb.toString();
-  }
-
-  @Override
-  public Resource eResource() {
-    // @Refactor: this belongs to a BaseVirtualEObject of some kind
-    // since this is duplicated in VirtualEObject.
-    // @Correctness: this should actually be set as part of the opposite reference
-    // of a VirtualEPackage.getContents().add, but in our case we know the virtualizer
-    // is the resource.
-    if (virtualizer instanceof Viewpoint) {
-      return ((Viewpoint) virtualizer).getResource();
-    }
-    return null;
   }
 
 }

@@ -22,25 +22,19 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EStructuralFeatureExtendedMetaData;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
-public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl implements EStructuralFeature.Internal, EStructuralFeatureExtendedMetaData.Holder {
+public abstract class VirtualEStructuralFeature<T extends EStructuralFeature> extends BaseVirtualElement<T>
+    implements EStructuralFeature.Internal, EStructuralFeatureExtendedMetaData.Holder {
 
-  protected EStructuralFeature concreteFeature;
-  protected EcoreVirtualizer virtualizer;
-
-  protected VirtualEStructuralFeature(EClass eClass, EStructuralFeature concreteFeature, EcoreVirtualizer virtualizer) {
-    super(eClass);
-    this.concreteFeature = concreteFeature;
-    this.virtualizer = virtualizer;
+  protected VirtualEStructuralFeature(EClass eClass, T concreteFeature, EcoreVirtualizer virtualizer) {
+    super(eClass, concreteFeature, virtualizer);
   }
 
   @Override
@@ -116,16 +110,6 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
   }
 
   @Override
-  public EObject eContainer() {
-    return virtualizer.getVirtual((EClass) concreteFeature.eContainer());
-  }
-
-  @Override
-  public EReference eContainmentFeature() {
-    return virtualizer.getVirtual(concreteFeature.eContainmentFeature());
-  }
-
-  @Override
   protected DynamicValueHolder eSettings() {
     // This override avoids the creation of the eSettings object that we do not use
     return this;
@@ -133,7 +117,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isTransient() {
-    return concreteFeature.isTransient();
+    return concrete().isTransient();
   }
 
   @Override
@@ -143,7 +127,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isVolatile() {
-    return concreteFeature.isVolatile();
+    return concrete().isVolatile();
   }
 
   @Override
@@ -153,7 +137,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isChangeable() {
-    return concreteFeature.isChangeable();
+    return concrete().isChangeable();
   }
 
   @Override
@@ -163,7 +147,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public String getDefaultValueLiteral() {
-    return concreteFeature.getDefaultValueLiteral();
+    return concrete().getDefaultValueLiteral();
   }
 
   @Override
@@ -173,7 +157,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public Object getDefaultValue() {
-    return concreteFeature.getDefaultValue();
+    return concrete().getDefaultValue();
   }
 
   @Override
@@ -183,7 +167,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isUnsettable() {
-    return concreteFeature.isUnsettable();
+    return concrete().isUnsettable();
   }
 
   @Override
@@ -193,7 +177,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isDerived() {
-    return concreteFeature.isDerived();
+    return concrete().isDerived();
   }
 
   @Override
@@ -203,7 +187,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public EClass getEContainingClass() {
-    return virtualizer.getVirtual(concreteFeature.getEContainingClass());
+    return virtualizer.getVirtual(concrete().getEContainingClass());
   }
 
   @Override
@@ -215,12 +199,12 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public Class<?> getContainerClass() {
-    return concreteFeature.getContainerClass();
+    return concrete().getContainerClass();
   }
 
   @Override
   public boolean isOrdered() {
-    return concreteFeature.isOrdered();
+    return concrete().isOrdered();
   }
 
   @Override
@@ -230,7 +214,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isUnique() {
-    return concreteFeature.isUnique();
+    return concrete().isUnique();
   }
 
   @Override
@@ -240,7 +224,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public int getLowerBound() {
-    return concreteFeature.getLowerBound();
+    return concrete().getLowerBound();
   }
 
   @Override
@@ -250,7 +234,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public int getUpperBound() {
-    return concreteFeature.getUpperBound();
+    return concrete().getUpperBound();
   }
 
   @Override
@@ -260,17 +244,17 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isMany() {
-    return concreteFeature.isMany();
+    return concrete().isMany();
   }
 
   @Override
   public boolean isRequired() {
-    return concreteFeature.isRequired();
+    return concrete().isRequired();
   }
 
   @Override
   public EClassifier getEType() {
-    return virtualizer.getVirtual(concreteFeature.getEType());
+    return virtualizer.getVirtual(concrete().getEType());
   }
 
   @Override
@@ -280,7 +264,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public EGenericType getEGenericType() {
-    return virtualizer.getVirtual(concreteFeature.getEGenericType());
+    return virtualizer.getVirtual(concrete().getEGenericType());
   }
 
   @Override
@@ -290,7 +274,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public String getName() {
-    return concreteFeature.getName();
+    return concrete().getName();
   }
 
   @Override
@@ -300,12 +284,12 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public EList<EAnnotation> getEAnnotations() {
-    return concreteFeature.getEAnnotations();
+    return concrete().getEAnnotations();
   }
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    return concreteFeature.getEAnnotation(source);
+    return concrete().getEAnnotation(source);
   }
 
   static class DumbSettingDelegate implements SettingDelegate {
@@ -369,7 +353,7 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isFeatureMap() {
-    return ((EStructuralFeature.Internal) concreteFeature).isFeatureMap();
+    return ((EStructuralFeature.Internal) concrete()).isFeatureMap();
   }
 
   @Override
@@ -400,12 +384,12 @@ public abstract class VirtualEStructuralFeature extends DynamicEObjectImpl imple
 
   @Override
   public boolean isContainment() {
-    return ((EStructuralFeature.Internal) concreteFeature).isContainment();
+    return ((EStructuralFeature.Internal) concrete()).isContainment();
   }
 
   @Override
   public EReference getEOpposite() {
-    return virtualizer.getVirtual(((EStructuralFeature.Internal) concreteFeature).getEOpposite());
+    return virtualizer.getVirtual(((EStructuralFeature.Internal) concrete()).getEOpposite());
   }
 
   // Not sure what this is useful for, but the Sample ECore editor seems to use it

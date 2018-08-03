@@ -223,8 +223,10 @@ public class VirtualEObject extends DynamicEObjectImpl {
       return concreteEObject.eIsSet(concreteFeature);
     } else {
       // If not, then it's a virtual feature.
-      // @Correctness: No idea what to return
-      throw new UnsupportedOperationException();
+      // @Correctness: we should keep track of set virtual features to return
+      // the correct answer.  We cannot throw Unsupported, as that confuses
+      // callers.
+      return false;
     }
   }
 
@@ -245,9 +247,8 @@ public class VirtualEObject extends DynamicEObjectImpl {
     // We delegate that to the view, which can be held by a resource.
     if (virtualizer instanceof View) {
       return ((View) virtualizer).getResource();
-    } else {
-      return null;
     }
+    return null;
   }
 
 }

@@ -38,11 +38,11 @@ import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
 
 public interface EcoreVirtualizer {
   VirtualEPackage getVirtual(EPackage o);
-  VirtualEClassifier getVirtual(EClassifier o);
+  VirtualEClassifier<?> getVirtual(EClassifier o);
   VirtualEClass getVirtual(EClass o);
-  VirtualEDataType getVirtual(EDataType o);
+  VirtualEDataType<?> getVirtual(EDataType o);
   VirtualEEnum getVirtual(EEnum o);
-  VirtualEStructuralFeature getVirtual(EStructuralFeature o);
+  VirtualEStructuralFeature<?> getVirtual(EStructuralFeature o);
   VirtualEAttribute getVirtual(EAttribute o);
   VirtualEReference getVirtual(EReference o);
   VirtualEGenericType getVirtual(EGenericType o);

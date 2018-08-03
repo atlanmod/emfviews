@@ -38,19 +38,15 @@ import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Viewpoint;
 
-public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
+public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPackage {
 
-  private EPackage concreteEPackage;
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
   private List<VirtualEPackage> virtualPackages = new ArrayList<>();
   private VirtualEPackage virtualSuperPackage;
   private Set<EClassifier> filteredClassifiers = new HashSet<>();
-  private EcoreVirtualizer virtualizer;
 
   public VirtualEPackage(EPackage concreteEPackage, EcoreVirtualizer virtualizer) {
-    super(EcorePackage.Literals.EPACKAGE);
-    this.concreteEPackage = concreteEPackage;
-    this.virtualizer = virtualizer;
+    super(EcorePackage.Literals.EPACKAGE, concreteEPackage, virtualizer);
   }
 
   // @Correctness: should we accept VirtualClassifier (a supertype) as well?
@@ -126,7 +122,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public String getName() {
-    return concreteEPackage.getName();
+    return concrete().getName();
   }
 
   @Override
@@ -136,18 +132,18 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public EList<EAnnotation> getEAnnotations() {
-    return concreteEPackage.getEAnnotations();
+    return concrete().getEAnnotations();
   }
 
   @Override
   public EAnnotation getEAnnotation(String source) {
     // @Correctness: we don't virtualize annotations.  Should we?
-    return concreteEPackage.getEAnnotation(source);
+    return concrete().getEAnnotation(source);
   }
 
   @Override
   public String getNsURI() {
-    return concreteEPackage.getNsURI();
+    return concrete().getNsURI();
   }
 
   @Override
@@ -157,7 +153,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
 
   @Override
   public String getNsPrefix() {
-    return concreteEPackage.getNsPrefix();
+    return concrete().getNsPrefix();
   }
 
   @Override
@@ -200,7 +196,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
         throw new IllegalArgumentException("The class " + eClass.getName() + " is not a valid classifier");
       }
 
-      EClass concrete = (EClass) ((VirtualEClass) eClass).concreteClassifier;
+      EClass concrete = ((VirtualEClass) eClass).concrete();
 
       // We don't have a hold on the actual view used, but we don't want to pollute it anyway,
       // so we just use a throwaway.
@@ -235,7 +231,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   protected List<EClassifier> getAllClassifiers() {
     List<EClassifier> elems = new ArrayList<>();
 
-    for (EClassifier f : concreteEPackage.getEClassifiers()) {
+    for (EClassifier f : concrete().getEClassifiers()) {
       elems.add(virtualizer.getVirtual(f));
     }
 
@@ -272,7 +268,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
   public EList<EPackage> getESubpackages() {
     List<EPackage> subs = new ArrayList<>();
 
-    for (EPackage p : concreteEPackage.getESubpackages()) {
+    for (EPackage p : concrete().getESubpackages()) {
       subs.add(virtualizer.getVirtual(p));
     }
 
@@ -291,7 +287,7 @@ public class VirtualEPackage extends DynamicEObjectImpl implements EPackage {
       return virtualSuperPackage;
     }
 
-    EPackage sup = concreteEPackage.getESuperPackage();
+    EPackage sup = concrete().getESuperPackage();
     return sup != null ? virtualizer.getVirtual(sup) : null;
   }
 

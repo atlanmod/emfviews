@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
-public class VirtualEReference extends VirtualEStructuralFeature implements EReference {
+public class VirtualEReference extends VirtualEStructuralFeature<EReference> implements EReference {
 
   private EReference virtualOpposite;
 
@@ -62,12 +62,12 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
 
   @Override
   public boolean isResolveProxies() {
-    return ((EReference) concreteFeature).isResolveProxies();
+    return concrete().isResolveProxies();
   }
 
   @Override
   public boolean isContainer() {
-    return ((EReference) concreteFeature).isContainer();
+    return concrete().isContainer();
   }
 
   @Override
@@ -96,7 +96,7 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
     if (virtualOpposite != null) {
       opposite = virtualOpposite;
     } else {
-      opposite = virtualizer.getVirtual(((EReference) concreteFeature).getEOpposite());
+      opposite = virtualizer.getVirtual(concrete().getEOpposite());
     }
 
     if (opposite != null) {
@@ -111,7 +111,7 @@ public class VirtualEReference extends VirtualEStructuralFeature implements ERef
 
   @Override
   public EClass getEReferenceType() {
-    return virtualizer.getVirtual(((EReference) concreteFeature).getEReferenceType());
+    return virtualizer.getVirtual(concrete().getEReferenceType());
   }
 
   @Override

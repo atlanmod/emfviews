@@ -1,24 +1,42 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Armines
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the Eclipse
+ * Public License, v. 2.0 are satisfied: GNU General Public License, version 3
+ * which is available at https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Contributors:
+ *   fmdkdd - initial API and implementation
+ *******************************************************************************/
+
 package org.atlanmod.emfviews.elements;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
-public class VirtualEGenericType extends DynamicEObjectImpl implements EGenericType {
-
-  private EGenericType concreteType;
-  private EcoreVirtualizer virtualizer;
+public class VirtualEGenericType extends BaseVirtualElement<EGenericType> implements EGenericType {
 
   public VirtualEGenericType(EGenericType concreteType, EcoreVirtualizer virtualizer) {
-    super(EcorePackage.Literals.EGENERIC_TYPE);
-    this.concreteType = concreteType;
-    this.virtualizer = virtualizer;
+    super(EcorePackage.Literals.EGENERIC_TYPE, concreteType, virtualizer);
+  }
+
+  @Override
+  public EReference eContainmentFeature() {
+    // We don't want to serialize this, as it would confuse the Ecore
+    // validator which expects literals of the EcorePackage.
+    return concrete().eContainmentFeature();
   }
 
   @Override
@@ -49,7 +67,7 @@ public class VirtualEGenericType extends DynamicEObjectImpl implements EGenericT
 
   @Override
   public EGenericType getEUpperBound() {
-    return concreteType.getEUpperBound();
+    return concrete().getEUpperBound();
   }
 
   @Override
@@ -59,17 +77,17 @@ public class VirtualEGenericType extends DynamicEObjectImpl implements EGenericT
 
   @Override
   public EList<EGenericType> getETypeArguments() {
-    return concreteType.getETypeArguments();
+    return concrete().getETypeArguments();
   }
 
   @Override
   public EClassifier getERawType() {
-    return concreteType.getERawType();
+    return concrete().getERawType();
   }
 
   @Override
   public EGenericType getELowerBound() {
-    return concreteType.getELowerBound();
+    return concrete().getELowerBound();
   }
 
   @Override
@@ -79,7 +97,7 @@ public class VirtualEGenericType extends DynamicEObjectImpl implements EGenericT
 
   @Override
   public ETypeParameter getETypeParameter() {
-    return concreteType.getETypeParameter();
+    return concrete().getETypeParameter();
   }
 
   @Override
@@ -93,7 +111,7 @@ public class VirtualEGenericType extends DynamicEObjectImpl implements EGenericT
     // data types like EString, OCL will get confused.
     // @Correctness: but maybe we want to virtualize types that are part of the
     // package?
-    return concreteType.getEClassifier();
+    return concrete().getEClassifier();
   }
 
   @Override

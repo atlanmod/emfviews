@@ -482,7 +482,7 @@ public class Viewpoint implements EcoreVirtualizer {
   }
 
   @Override
-  public VirtualEClassifier getVirtual(EClassifier o) {
+  public VirtualEClassifier<?> getVirtual(EClassifier o) {
     if (o == null) {
       return null;
     }
@@ -506,7 +506,7 @@ public class Viewpoint implements EcoreVirtualizer {
   }
 
   @Override
-  public VirtualEDataType getVirtual(EDataType o) {
+  public VirtualEDataType<?> getVirtual(EDataType o) {
     if (o == null) {
       return null;
     }
@@ -514,7 +514,7 @@ public class Viewpoint implements EcoreVirtualizer {
     if (o instanceof EEnum) {
       return getVirtual((EEnum) o);
     } else {
-      return (VirtualEDataType) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEDataType(o, this));
+      return (VirtualEDataType<?>) concreteToVirtual().computeIfAbsent(o, obj -> new VirtualEDataType<>(o, this));
     }
   }
 
@@ -528,7 +528,7 @@ public class Viewpoint implements EcoreVirtualizer {
   }
 
   @Override
-  public VirtualEStructuralFeature getVirtual(EStructuralFeature o) {
+  public VirtualEStructuralFeature<?> getVirtual(EStructuralFeature o) {
     if (o == null) {
       return null;
     }
