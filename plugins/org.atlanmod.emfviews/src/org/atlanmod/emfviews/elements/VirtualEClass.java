@@ -30,6 +30,8 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.impl.ESuperAdapter;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
@@ -378,9 +380,35 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
   @Override
   public EList<EStructuralFeature> getEAllStructuralFeatures() {
     List<EStructuralFeature> cs = getVisibleFeatures();
-    // See @UnmodifiableElist
-    return new EcoreEList.UnmodifiableEList<>(
+    // ECrossReferenceList expects this method to be castable to EClassImpl.FeatureSubsetSupplier.
+    return new FeatureSupplierList<>(
         this, EcorePackage.Literals.ECLASS__ESTRUCTURAL_FEATURES, cs.size(), cs.toArray());
+  }
+
+  class FeatureSupplierList<E> extends EcoreEList.UnmodifiableEList<E> implements EClassImpl.FeatureSubsetSupplier {
+    private static final long serialVersionUID = 1L;
+
+    public FeatureSupplierList(InternalEObject owner, EStructuralFeature eStructuralFeature,
+                               int size, Object[] data) {
+      super(owner, eStructuralFeature, size, data);
+    }
+
+    @Override
+    public EStructuralFeature[] containments() {
+      return getEAllContainments().toArray(new EStructuralFeature[0]);
+    }
+
+    @Override
+    public EStructuralFeature[] crossReferences() {
+      // @Correctness: blatantly incorrect, but this quells down an exception for
+      // the Sample Ecore Editor
+      return new EStructuralFeature[] {};
+    }
+
+    @Override
+    public EStructuralFeature[] features() {
+      return (EStructuralFeature[]) data;
+    }
   }
 
   @Override
