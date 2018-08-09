@@ -18,7 +18,6 @@ package org.atlanmod.emfviews.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -157,50 +156,62 @@ public class TestEMFViews {
   }
 
   @Test
-  public void viewUpdate() throws IOException {
-    // When modifying a contributing model, the change should propagate to the
-    // virtual model
+  public void viewMaintenanceAttribute() throws IOException {
+    // If a contributing model attribute is updated, the change is reflected in the view
 
-    // Get the virtual model
-    View v = loadView("views/three-model-composition/view.eview");
+    View v = loadView("views/minimal-assoc/view.eview");
+    EList<EObject> l = v.getVirtualContents();
+    EObject vB = l.get(1);
+    Resource BM = v.getContributingModels().get(1);
+    EObject B = BM.getContents().get(0);
 
-    // Get the concrete model loaded by the virtual model. We could also load
-    // the model ourselves from the resource, but it would have no connection to
-    // the model used by the view.
-    Resource m = v.getContributingModels().get(0);
+    assertEquals(42, eGet(B, "b"));
+    assertEquals(42, eGet(vB, "b"));
 
-    // Descend into the contents
-    EObject ea = m.getContents().get(0);
-    EObject vea = v.getVirtualContents().get(0);
+    eSet(B, "b", 2);
 
-    // Get an interesting feature in both concrete and virtual models
-    EList<EObject> ea_labels = eList(ea, "labels");
-    EList<EObject> vea_labels = eList(vea, "labels");
+    assertEquals(2, eGet(B, "b"));
+    assertEquals(2, eGet(vB, "b"));
+  }
 
-    // Make sure there is at least one label
-    assertTrue(ea_labels.size() > 0);
+  @Test
+  public void viewMaintenanceReference() {
+    // If an element is removed from a contributing model reference,
+    // the change is reflected in the view
 
-    // Make sure the virtual values are equal to the concrete values
+    // Construct the viewpoint
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' :nsPrefix 'P0' "
+        + ":eClassifiers [(EClass :name 'A'"
+        + "                       :eStructuralFeatures [(EReference :name 'manyB'"
+        + "                                                         :upperBound -1"
+        + "                                                         :eType @B)])"
+        + "               #B(EClass :name 'B')])",
+        EcoreFactory.eINSTANCE)[0];
 
-    // Save the feature to avoid searching it in the loop. We cannot use the
-    // same feature for both since the virtual model might have added/filtered
-    // features, so the indices might not be the same.
-    EStructuralFeature label_ft = ea_labels.get(0).eClass().getEStructuralFeature("name");
-    EStructuralFeature vlabel_ft = vea_labels.get(0).eClass().getEStructuralFeature("name");
+    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P));
 
-    for (int i = 0; i < ea_labels.size(); ++i) {
-      EObject l = ea_labels.get(i);
-      EObject vl = vea_labels.get(i);
-      assertEquals(l.eGet(label_ft), vl.eGet(vlabel_ft));
-    }
+    // Construct the view
+    EObject[] model = Sexp2EMF.build("[(A :manyB [@B1 @B2])"
+                                   + " #B1(B) #B2(B)]",
+                                   P.getEFactoryInstance());
+    Resource r = new ResourceImpl();
+    r.getContents().addAll(Arrays.asList(model));
+    View view = new View(viewpoint, Arrays.asList(r));
 
-    // Now change the concrete value (after making sure we are changing it)
-    assertNotEquals("foo", ea_labels.get(0).eGet(label_ft));
-    assertNotEquals("foo", vea_labels.get(0).eGet(vlabel_ft));
-    ea_labels.get(0).eSet(label_ft, "foo");
+    EObject A = model[0];
+    EObject B1 = model[1];
+    EObject B2 = model[2];
+    EObject vA = view.getVirtualContents().get(0);
+    EObject vB1 = view.getVirtualContents().get(1);
+    EObject vB2 = view.getVirtualContents().get(2);
 
-    // Make sure it's reflected in the virtual model
-    assertEquals("foo", vea_labels.get(0).eGet(vlabel_ft));
+    assertEquals(Arrays.asList(B1, B2), eGet(A, "manyB"));
+    assertEquals(Arrays.asList(vB1, vB2), eGet(vA, "manyB"));
+
+    ((EList<EObject>) eGet(A, "manyB")).remove(1);
+
+    assertEquals(Arrays.asList(B1), eGet(A, "manyB"));
+    assertEquals(Arrays.asList(vB1), eGet(vA, "manyB"));
   }
 
   @Test
@@ -888,6 +899,14 @@ public class TestEMFViews {
       throw new NullPointerException();
     }
     return o.eGet(f);
+  }
+
+  void eSet(EObject o, String featureName, Object value) {
+    EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
+    if (f == null) {
+      throw new NullPointerException();
+    }
+    o.eSet(f, value);
   }
 
   Optional<EObject> getClassifier(EObject o, String classifierName) {
