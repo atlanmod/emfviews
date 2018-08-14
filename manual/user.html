@@ -1445,30 +1445,16 @@ Here is an example of a VPDL file:
 </div>
 
 <p>
-<a class="external" href="https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext" target="_new">The full Xtext grammar</a> can be found in the source code, but the following is an
-abridged version:
+The following diagram outlines the VPDL grammar; <a class="external" href="https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext" target="_new">the full Xtext grammar</a> can be
+found in the source code.
 </p>
 
-<pre class="example">
-View: 'create view' name 'as' Select From Where?;
 
-Select: 'select' SelectFeature (',' SelectFeature)* ','?;
-SelectFeature: [Metamodel] '.' [ecore::EClass] SelectFeatureRest;
-SelectFeatureRest: '.' Attribute
-  | Relation
-  | '[' Feature (',' Feature)* ','? ']'
-  | AllAttributes;
-Attribute: [ecore::EStructuralFeature];
-Relation: 'join' [Metamodel] '.' [ecore::EClass] 'as' ID;
-Feature: Attribute | Relation;
-AllAttributes: '.*';
+<div class="figure">
+<p><img src="images/vpdl-grammar.svg" class="no-shadow"/>
+</p>
+</div>
 
-From: 'from' Metamodel (',' Metamodel)* ','?;
-Metamodel: STRING 'as' ID;
-
-Where: 'where' Rule (',' Rule)* ','?;
-Rule: STRING 'for' [Relation];
-</pre>
 
 <p>
 The tutorial <a href="#orgc0e03cf">Creating a view with VPDL</a> takes you through creating a VPDL file
