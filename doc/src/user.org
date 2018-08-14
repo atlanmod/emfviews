@@ -952,29 +952,12 @@ where 's.name=t.name and s.isAutomated = false' for detailedProcess,
       't.values.exists(v | v.theValue=s.name)'  for detailedRequirement,
 #+END_SRC
 
-[[external:https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][The full Xtext grammar]] can be found in the source code, but the following is an
-abridged version:
+The following diagram outlines the VPDL grammar; [[external:https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][the full Xtext grammar]] can be
+found in the source code.
 
-#+BEGIN_EXAMPLE
-View: 'create view' name 'as' Select From Where?;
+#+ATTR_HTML: :class no-shadow
+[[file:images/vpdl-grammar.svg]]
 
-Select: 'select' SelectFeature (',' SelectFeature)* ','?;
-SelectFeature: [Metamodel] '.' [ecore::EClass] SelectFeatureRest;
-SelectFeatureRest: '.' Attribute
-  | Relation
-  | '[' Feature (',' Feature)* ','? ']'
-  | AllAttributes;
-Attribute: [ecore::EStructuralFeature];
-Relation: 'join' [Metamodel] '.' [ecore::EClass] 'as' ID;
-Feature: Attribute | Relation;
-AllAttributes: '.*';
-
-From: 'from' Metamodel (',' Metamodel)* ','?;
-Metamodel: STRING 'as' ID;
-
-Where: 'where' Rule (',' Rule)* ','?;
-Rule: STRING 'for' [Relation];
-#+END_EXAMPLE
 
 The tutorial [[*Creating a view with VPDL][Creating a view with VPDL]] takes you through creating a VPDL file
 and using it in Eclipse.
