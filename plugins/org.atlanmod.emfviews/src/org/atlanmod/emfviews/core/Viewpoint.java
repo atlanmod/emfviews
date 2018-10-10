@@ -94,12 +94,21 @@ public class Viewpoint implements EcoreVirtualizer {
     /** Prefix for the namespace URI of the root package in the viewpoint. */
     public String rootPackageNsURIPrefix = "http://www.atlanmod.org/emfviews/viewpoint";
 
-    /** Namespace prefix of the virtual package in the viewpoint.
-     * The virtual package contains new concepts, if any. */
+    /**
+     * Namespace prefix of the virtual package in the viewpoint. The virtual
+     * package contains new concepts, if any.
+     */
     public String virtualPackageNsPrefix = "virtualpackage";
 
     /** Whether to save this viewpoint in the viewpoint registry. */
     public boolean saveInRegistry = false;
+
+    /**
+     * Whether to validate the resulting metamodel using the Ecore
+     * diagnostician. Views will still work with an invalid viewpoint, but some
+     * modeling tools might not deal with it correctly.
+     */
+    public boolean strictEcore = false;
 
     // These build default rootPackage names and namespace URIs by concatenating
     // the weaving model to the option prefixes.
@@ -217,9 +226,11 @@ public class Viewpoint implements EcoreVirtualizer {
     buildNewProperties(baseRegistry);
     buildNewAssociations(baseRegistry);
 
-    // @Correctness: the resulting package should be a valid Ecore metamodel.
-    // That is not the case currently due to filters.
-    //validateVirtualResourceSet(virtualResourceSet);
+    // The resulting package should be a valid Ecore metamodel. That is not the
+    // case currently due to filters, so validation is opt-in.
+    if (options.strictEcore) {
+      validateVirtualResourceSet(virtualResourceSet);
+    }
 
     // Register the viewpoint in the viewpoint registry. This allows views to load
     // viewpoints from the registry instead of creating them anew in a resource.
