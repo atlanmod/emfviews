@@ -39,8 +39,11 @@ import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class ViewpointResource extends ResourceImpl {
 
+  // Valid fields for an eviewpoint file
   public static final String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
   public static final String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
+  public static final String EVIEWPOINT_ROOTPKG_NSURI = "rootPackageNsURI";
+  public static final String EVIEWPOINT_SAVE_IN_REGISTRY = "saveInRegistry";
 
   private List<String> contributingMetamodelsPaths;
   private URI weavingModelURI;
@@ -56,7 +59,7 @@ public class ViewpointResource extends ResourceImpl {
   }
 
   // This viewpoint will be replaced if another one is loaded from the URI.
-  public void setViewpoint(Viewpoint v) {
+  private void setViewpoint(Viewpoint v) {
     viewpoint = v;
     viewpoint.setResource(this);
   }
@@ -66,7 +69,7 @@ public class ViewpointResource extends ResourceImpl {
   }
 
   @Override
-  protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
+  protected void doLoad(InputStream inputStream, Map<?, ?> _options) throws IOException {
     // Parse from eviewpoint file
     Properties p = new Properties();
     p.load(inputStream);
@@ -75,6 +78,8 @@ public class ViewpointResource extends ResourceImpl {
     if (!p.containsKey(EVIEWPOINT_CONTRIBUTING_METAMODELS)) {
       getErrors().add(new Err("Error in parsing eviewpoint file: missing %s field", EVIEWPOINT_CONTRIBUTING_METAMODELS));
     }
+
+    Viewpoint.Options options = new Viewpoint.Options();
 
     for (String key : p.stringPropertyNames()) {
       switch (key) {
@@ -95,6 +100,15 @@ public class ViewpointResource extends ResourceImpl {
         }
         break;
 
+      // Parse options
+      case EVIEWPOINT_ROOTPKG_NSURI:
+        options.rootPackageNsURIPrefix = p.getProperty(key).trim();
+        break;
+
+      case EVIEWPOINT_SAVE_IN_REGISTRY:
+        options.saveInRegistry = true;
+        break;
+
       default:
         getErrors().add(new Err("Invalid key in eviewpoint file: '%s'", key));
       }
@@ -103,7 +117,8 @@ public class ViewpointResource extends ResourceImpl {
     // Then create the viewpoint
     try {
       setViewpoint(new Viewpoint(loadMetamodels(),
-                                 loadWeavingModel()));
+                                 loadWeavingModel(),
+                                 options));
     } catch (Exception ex) {
       getErrors().add(new Err("Failed to create the viewpoint due to exception:\n%s", ex));
       throw ex;

@@ -76,12 +76,50 @@ public class Viewpoint implements EcoreVirtualizer {
     emptyWeavingModel.setName("empty");
   };
 
+  /**
+   * Keep track of created Viewpoints.
+   *
+   * Used to ensure that one eviewpoint resource does not end up having
+   * multiple viewpoints associated to it, in contexts where one need to
+   * provide a model (View) and metamodel (Viewpoint) separately (e.g.,
+   * EGL template launchers).
+   */
+  public static final Map<String, Viewpoint> registry = new HashMap<>();
+
   // Options
+  static class Options {
+    /** Prefix for the root package in the viewpoint. */
+    public String rootPackageNamePrefix = "viewpoint";
+
+    /** Prefix for the namespace URI of the root package in the viewpoint. */
+    public String rootPackageNsURIPrefix = "http://www.atlanmod.org/emfviews/viewpoint";
+
+    /** Namespace prefix of the virtual package in the viewpoint.
+     * The virtual package contains new concepts, if any. */
+    public String virtualPackageNsPrefix = "virtualpackage";
+
+    /** Whether to save this viewpoint in the viewpoint registry. */
+    public boolean saveInRegistry = false;
+
+    // These build default rootPackage names and namespace URIs by concatenating
+    // the weaving model to the option prefixes.
+    public String rootPackageName(String name) {
+      return rootPackageNamePrefix + name;
+    }
+
+    public String rootPackageNsURI(String name) {
+      return rootPackageNsURIPrefix + "/" + name;
+    }
+
+    public String virtualPackageNsURI(String name) {
+      return rootPackageNsURI(name) + "/virtual";
+    }
+  }
+
   private List<EPackage> contributingPackages; // original, unmodified EPackages
   private WeavingModel weavingModel; // how to modify the EPackages
 
-  private String rootPackageName = "viewpoint";
-  private String rootPackageNsURI = "http://www.atlanmod.org/emfviews/viewpoint";
+  private static final Options defaultOptions = new Options();
 
   // Attributes
   private ResourceSet baseResourceSet; // contains the contributing EPackages
@@ -106,14 +144,22 @@ public class Viewpoint implements EcoreVirtualizer {
   }
 
   public Viewpoint(List<EPackage> contributingMetamodels, WeavingModel weavingModel) {
+    this(contributingMetamodels, weavingModel, null);
+  }
+
+  public Viewpoint(List<EPackage> contributingMetamodels, WeavingModel weavingModel, Options options) {
     this.contributingPackages = contributingMetamodels;
     this.weavingModel = weavingModel;
 
-    build();
+    if (options != null) {
+      build(options);
+    } else {
+      build(defaultOptions);
+    }
   }
 
   // Create the virtual elements and virtual packages.
-  protected void build() {
+  protected void build(Options options) {
     baseResourceSet = new ResourceSetImpl();
     virtualResourceSet = new ResourceSetImpl();
     EPackage.Registry baseRegistry = baseResourceSet.getPackageRegistry();
@@ -122,8 +168,9 @@ public class Viewpoint implements EcoreVirtualizer {
     // All contributing packages are put under a parent virtual package,
     // otherwise OCL will have difficulties finding classifiers
     EPackage concreteRoot = EcoreFactory.eINSTANCE.createEPackage();
-    concreteRoot.setName(rootPackageName);
-    concreteRoot.setNsURI(rootPackageNsURI);
+    String name = weavingModel.getName();
+    concreteRoot.setName(options.rootPackageName(name));
+    concreteRoot.setNsURI(options.rootPackageNsURI(name));
     rootPackage = getVirtual(concreteRoot);
 
     // Put each metamodel into a resource set, so that we can easily find elements
@@ -157,11 +204,10 @@ public class Viewpoint implements EcoreVirtualizer {
     // we have some concepts to put in it
     List<VirtualConcept> concepts = weavingModel.getVirtualConcepts();
     if (!concepts.isEmpty()) {
-      String name = weavingModel.getName();
       virtualPackage = EcoreFactory.eINSTANCE.createEPackage();
       virtualPackage.setName(name);
-      virtualPackage.setNsURI("http://www.atlanmod.org/emfviews/viewpoint/" + name);
-      virtualPackage.setNsPrefix("virtualpackage" + name);
+      virtualPackage.setNsURI(options.virtualPackageNsURI(name));
+      virtualPackage.setNsPrefix(options.virtualPackageNsPrefix);
       virtualRegistry.put(virtualPackage.getNsURI(), virtualPackage);
       buildNewConcepts(baseRegistry);
 
@@ -173,7 +219,13 @@ public class Viewpoint implements EcoreVirtualizer {
 
     // @Correctness: the resulting package should be a valid Ecore metamodel.
     // That is not the case currently due to filters.
-    validateVirtualResourceSet(virtualResourceSet);
+    //validateVirtualResourceSet(virtualResourceSet);
+
+    // Register the viewpoint in the viewpoint registry. This allows views to load
+    // viewpoints from the registry instead of creating them anew in a resource.
+    if (options.saveInRegistry) {
+      registry.put(rootPackage.getNsURI(), this);
+    }
   }
 
   // Apply the given filters to all the packages in the virtual resource set.

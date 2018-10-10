@@ -158,7 +158,7 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
 
   @Override
   public void setNsPrefix(String value) {
-    throw new UnsupportedOperationException();
+    // No-op to please EGL.
   }
 
   // The Ecore metamodel requires an EFactory for each EPackage, so we provide one

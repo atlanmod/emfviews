@@ -714,7 +714,7 @@ public class TestEMFViews {
 
     // The second viewpoint
     WeavingModel WM2 = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM2' "
-        + ":contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/viewpoint/WM1'"
+        + ":contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/viewpoint/WM1/virtual'"
         + "                      :concreteElements [#1(ConcreteConcept :path 'B')])]"
         + ":virtualLinks [(VirtualConcept :name 'C' :superConcepts [@1])])",
         VirtualLinksFactory.eINSTANCE)[0];
