@@ -155,8 +155,12 @@ public class ViewResource extends ResourceImpl {
     Properties p = new Properties();
     p.setProperty(EVIEW_VIEWPOINT, viewpointPath);
     p.setProperty(EVIEW_CONTRIBUTING_MODELS, contributingModelsPaths);
-    p.setProperty(EVIEW_MATCHING_MODEL, matchingModelPath);
-    p.setProperty(EVIEW_WEAVING_MODEL, weavingModelPath);
+    if (matchingModelPath != null) {
+      p.setProperty(EVIEW_MATCHING_MODEL, matchingModelPath);
+    }
+    if (weavingModelPath != null) {
+      p.setProperty(EVIEW_WEAVING_MODEL, weavingModelPath);
+    }
     p.store(outputStream, null);
   }
 
