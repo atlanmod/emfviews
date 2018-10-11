@@ -1,0 +1,57 @@
+<head>
+  <meta charset="utf-8">
+  <link href="assets/style.css" rel="stylesheet">
+</head>
+
+<h1>Petstore Traceability Demo</h1>
+
+<main>
+
+<section>
+ <img src="assets/reqif.png">
+ <h2>Requirements</h2>
+ <ul>
+[% for (r in SpecObject.allInstances().sortBy(r | r.values[0].theValue)) { %]
+  <li data-to="[%=r.components.collect(c | c.name).concat("::")%]"><span class="name">[%=r.values[0].theValue%]</span></li>
+[% } %]
+ </ul>
+</section>
+
+<section>
+ <img src="assets/uml.png">
+ <h2>Components</h2>
+ <ul>
+[% for (c in Component.allInstances().sortBy(c | c.name)) { %]
+  <li
+    data-from="[%=c.requirements.collect(r | r.values[0].theValue).concat("::")%]" 
+    data-to="[%=c.javaPackages.collect(p | p.ownedElements.includingAll(p.closure(it | it.ownedPackages).ownedElements)).flatten().collect(c | c.name).concat("::")%]"><span class="name">[%=c.name%]</span></li>
+[% } %]
+  </li>
+</section>
+
+<section>
+ <img src="assets/java.png">
+ <h2>Java Classes</h2>
+ <ul>
+[% for (c in ClassDeclaration.allInstances().select(c | c.closure(it | it.package).exists(p | p.name = "petstore")).sortBy(c | c.name)) { %]
+  <li
+    data-from="[%=c.closure(it | it.package).select(p | p.component.isDefined()).collect(p | p.component.name).concat("::")%]"
+    data-to="[%=c.traces.collect(t | t.message).concat("::")%]"><span class="name">[%=c.name%]</span></li>
+[% } %]
+ </ul>
+</section>
+
+<section>
+ <img src="assets/log.png">
+ <h2>Traces</h2>
+ <ul>
+[% for (l in Log.allInstances().sortBy(l | l.message)) { %]
+  <li data-from="[%=l.javaClass.name%]">[% if (l.exceptions.size() > 0) { %]<span class="except">[%=l.exceptions.size()%]</span>[% } %]<span class="name">[%=l.message%]</span></li>
+[% } %]
+ </ul>
+</section>
+
+</main>
+
+<script src="assets/jquery.min.js"></script>
+<script src="assets/graph.js"></script>

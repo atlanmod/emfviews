@@ -1,0 +1,3 @@
+viewpoint=chain.eviewpoint
+contributingModels=../models/requirements.reqif,../models/components.uml,../models/PetStore_java.xmi,../models/log.xmi
+matchingModel=chain.ecl

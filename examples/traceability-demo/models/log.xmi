@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace:Trace
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:trace="http://trace">
+  <logs message="CaptchaValidateFilter:doFilter()"
+      source="CaptchaValidateFilter.doFilter"
+      level="INFO">
+    <exceptions
+        message="ServletException"/>
+  </logs>
+  <logs message="ZOOM - Lat and long  - 2 - 47.21 - 5.27"
+      source="MapBean.mapItems"
+      level="FINE"/>
+  <logs message="Setting proxy to 212.0.18.42:8000.  Make sure server.policy is updated to allow setting System Properties"
+      source="MapBean.lookUpAddress"
+      level="INFO"/>
+  <logs message="A 'proxyHost' and 'proxyPort' isn't set as a web.xml context-param.  A proxy server may be necessary to reach the open internet."
+      source="MapBean.lookUpAddress"
+      level="INFO"/>
+  <logs message="No addresses for location - 128.12 42.01"
+      source="MapBean.lookUpAddress"
+      level="INFO"/>
+  <logs message="Matched 6 locations, taking the first one"
+      source="MapBean.lookUpAddress"
+      level="INFO"/>
+  <logs message="geocoder.lookup.exception"
+      source="MapBean.lookUpAddress"
+      level="WARNING">
+    <exceptions
+        message="GeocoderLookupException"/>
+  </logs>
+  <logs message="image_does_not_exist lib/petstore/banana.jpg"
+      source="ImageAction.service"
+      level="SEVERE"/>
+  <logs message="search.string Brazilian cat"
+      source="SearchIndex.query"
+      level="INFO"/>
+  <logs message="search.results 0"
+      source="SearchIndex.query"
+      level="INFO"/>
+</trace:Trace>

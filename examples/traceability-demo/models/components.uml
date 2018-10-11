@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ezRJQB4ZEeimxaqxxOlH4A" name="components">
+  <packagedElement xmi:type="uml:Component" xmi:id="_feWtoB4ZEeimxaqxxOlH4A" name="Model">
+    <packagedElement xmi:type="uml:Usage" xmi:id="_rEVpICOGEei_4cw9e9cViw" client="_feWtoB4ZEeimxaqxxOlH4A" supplier="_ulQ5kCODEei_4cw9e9cViw"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Component" xmi:id="_gUedUB4ZEeimxaqxxOlH4A" name="Controller">
+    <packagedElement xmi:type="uml:Usage" xmi:id="_yaJOgCOFEei_4cw9e9cViw" client="_gUedUB4ZEeimxaqxxOlH4A" supplier="_PR6ggCOFEei_4cw9e9cViw"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_S53pMCOGEei_4cw9e9cViw" client="_gUedUB4ZEeimxaqxxOlH4A" supplier="_Q67swCOFEei_4cw9e9cViw"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_qRWtACOGEei_4cw9e9cViw" client="_gUedUB4ZEeimxaqxxOlH4A" supplier="_feWtoB4ZEeimxaqxxOlH4A"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Component" xmi:id="_ulQ5kCODEei_4cw9e9cViw" name="View">
+    <packagedElement xmi:type="uml:Usage" xmi:id="_LVQBMCOGEei_4cw9e9cViw" client="_ulQ5kCODEei_4cw9e9cViw" supplier="_QNuogCOFEei_4cw9e9cViw"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_aP_iMCOGEei_4cw9e9cViw" client="_ulQ5kCODEei_4cw9e9cViw" supplier="_R3NHwCOFEei_4cw9e9cViw"/>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_so5zMCOGEei_4cw9e9cViw" client="_ulQ5kCODEei_4cw9e9cViw" supplier="_gUedUB4ZEeimxaqxxOlH4A"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Component" xmi:id="_PR6ggCOFEei_4cw9e9cViw" name="Captcha"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_QNuogCOFEei_4cw9e9cViw" name="MapViewer"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_Q67swCOFEei_4cw9e9cViw" name="Proxy"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_R3NHwCOFEei_4cw9e9cViw" name="Search"/>
+</uml:Model>

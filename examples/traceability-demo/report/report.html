@@ -1,0 +1,197 @@
+<head>
+  <meta charset="utf-8">
+  <link href="assets/style.css" rel="stylesheet">
+</head>
+
+<h1>Petstore Traceability Demo</h1>
+
+<main>
+
+<section>
+ <img src="assets/reqif.png">
+ <h2>Requirements</h2>
+ <ul>
+  <li data-to="Controller"><span class="name">Controller extracts data</span></li>
+  <li data-to="Controller"><span class="name">Controller filter requests</span></li>
+  <li data-to="Controller"><span class="name">Controller invokes command to request</span></li>
+  <li data-to="Controller"><span class="name">Controller map requests to commands</span></li>
+  <li data-to="Controller::Captcha"><span class="name">Controller validates captchas</span></li>
+  <li data-to="Model"><span class="name">Model retrieves data from database</span></li>
+  <li data-to="View"><span class="name">View determines the page to display</span></li>
+  <li data-to="View"><span class="name">View formats the page to display</span></li>
+ </ul>
+</section>
+
+<section>
+ <img src="assets/uml.png">
+ <h2>Components</h2>
+ <ul>
+  <li
+    data-from="Controller validates captchas" 
+    data-to="CaptchaSingleton::SimpleCaptcha::RandomString::BlueFilter"><span class="name">Captcha</span></li>
+  <li
+    data-from="Controller filter requests::Controller validates captchas::Controller extracts data::Controller map requests to commands::Controller invokes command to request" 
+    data-to="ControllerAction::ControllerServlet::AutocompleteBean::EntryFilter::AddressBean::FileUploadBean::CaptchaValidateFilter::CatalogXmlAction::CaptchaAction::ImageAction::TagXmlAction::DefaultControllerAction"><span class="name">Controller</span></li>
+  <li
+    data-from="" 
+    data-to="MapBean::MapMarker::MapPoint"><span class="name">MapViewer</span></li>
+  <li
+    data-from="Model retrieves data from database" 
+    data-to="SellerContactInfo::Tag::Address::FileUploadResponse::Category::RatingBean::PayPalBean::ZipLocation::Item::Product::CatalogFacade::SelectItem"><span class="name">Model</span></li>
+  <li
+    data-from="" 
+    data-to="GeoPoint::GeoCoder"><span class="name">Proxy</span></li>
+  <li
+    data-from="" 
+    data-to="Indexer::IndexDocument::SearchBean::UpdateIndex::HTMLParser::SQLParser::SearchIndex::Hits::Searcher::Searchable::IndexSearcher::Query"><span class="name">Search</span></li>
+  <li
+    data-from="View formats the page to display::View determines the page to display" 
+    data-to=""><span class="name">View</span></li>
+  </li>
+</section>
+
+<section>
+ <img src="assets/java.png">
+ <h2>Java Classes</h2>
+ <ul>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">Address</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">AddressBean</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">AutocompleteBean</span></li>
+  <li
+    data-from="Captcha"
+    data-to=""><span class="name">BlueFilter</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">CaptchaAction</span></li>
+  <li
+    data-from="Captcha"
+    data-to=""><span class="name">CaptchaSingleton</span></li>
+  <li
+    data-from="Controller"
+    data-to="CaptchaValidateFilter:doFilter()"><span class="name">CaptchaValidateFilter</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">CatalogFacade</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">CatalogXmlAction</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">Category</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">ControllerServlet</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">DefaultControllerAction</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">EntryFilter</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">FileUploadBean</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">FileUploadResponse</span></li>
+  <li
+    data-from="Proxy"
+    data-to=""><span class="name">GeoCoder</span></li>
+  <li
+    data-from="Proxy"
+    data-to=""><span class="name">GeoPoint</span></li>
+  <li
+    data-from="Search"
+    data-to=""><span class="name">HTMLParser</span></li>
+  <li
+    data-from="Controller"
+    data-to="image_does_not_exist lib/petstore/banana.jpg"><span class="name">ImageAction</span></li>
+  <li
+    data-from=""
+    data-to=""><span class="name">ImageScaler</span></li>
+  <li
+    data-from="Search"
+    data-to=""><span class="name">IndexDocument</span></li>
+  <li
+    data-from="Search"
+    data-to=""><span class="name">Indexer</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">Item</span></li>
+  <li
+    data-from="MapViewer"
+    data-to="ZOOM - Lat and long  - 2 - 47.21 - 5.27::Setting proxy to 212.0.18.42:8000.  Make sure server.policy is updated to allow setting System Properties::A 'proxyHost' and 'proxyPort' isn't set as a web.xml context-param.  A proxy server may be necessary to reach the open internet.::No addresses for location - 128.12 42.01::Matched 6 locations, taking the first one::geocoder.lookup.exception"><span class="name">MapBean</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">PayPalBean</span></li>
+  <li
+    data-from=""
+    data-to=""><span class="name">PetstoreConstants</span></li>
+  <li
+    data-from=""
+    data-to=""><span class="name">PetstoreUtil</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">Product</span></li>
+  <li
+    data-from="Captcha"
+    data-to=""><span class="name">RandomString</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">RatingBean</span></li>
+  <li
+    data-from="Search"
+    data-to=""><span class="name">SQLParser</span></li>
+  <li
+    data-from="Search"
+    data-to=""><span class="name">SearchBean</span></li>
+  <li
+    data-from="Search"
+    data-to="search.string Brazilian cat::search.results 0"><span class="name">SearchIndex</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">SellerContactInfo</span></li>
+  <li
+    data-from="Captcha"
+    data-to=""><span class="name">SimpleCaptcha</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">Tag</span></li>
+  <li
+    data-from="Controller"
+    data-to=""><span class="name">TagXmlAction</span></li>
+  <li
+    data-from="Search"
+    data-to=""><span class="name">UpdateIndex</span></li>
+  <li
+    data-from="Model"
+    data-to=""><span class="name">ZipLocation</span></li>
+ </ul>
+</section>
+
+<section>
+ <img src="assets/log.png">
+ <h2>Traces</h2>
+ <ul>
+  <li data-from="MapBean"><span class="name">A 'proxyHost' and 'proxyPort' isn't set as a web.xml context-param.  A proxy server may be necessary to reach the open internet.</span></li>
+  <li data-from="CaptchaValidateFilter"><span class="except">1</span><span class="name">CaptchaValidateFilter:doFilter()</span></li>
+  <li data-from="MapBean"><span class="name">Matched 6 locations, taking the first one</span></li>
+  <li data-from="MapBean"><span class="name">No addresses for location - 128.12 42.01</span></li>
+  <li data-from="MapBean"><span class="name">Setting proxy to 212.0.18.42:8000.  Make sure server.policy is updated to allow setting System Properties</span></li>
+  <li data-from="MapBean"><span class="name">ZOOM - Lat and long  - 2 - 47.21 - 5.27</span></li>
+  <li data-from="MapBean"><span class="except">1</span><span class="name">geocoder.lookup.exception</span></li>
+  <li data-from="ImageAction"><span class="name">image_does_not_exist lib/petstore/banana.jpg</span></li>
+  <li data-from="SearchIndex"><span class="name">search.results 0</span></li>
+  <li data-from="SearchIndex"><span class="name">search.string Brazilian cat</span></li>
+ </ul>
+</section>
+
+</main>
+
+<script src="assets/jquery.min.js"></script>
+<script src="assets/graph.js"></script>

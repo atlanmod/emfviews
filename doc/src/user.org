@@ -865,7 +865,7 @@ And if we open that file in a web browser, here is the result:
 Generating an HTML page from a model can make for more pleasant reports.  With
 the right amount of CSS and JavaScript, you can even have build interactive
 visualizations from your views.  See the ~traceability-demo~ in the examples
-folder for a more involved example.
+folder for a more involved usage of templates.
 
 * Concepts
 ** Views

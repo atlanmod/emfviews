@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0" name="test">
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="javaClass" source="//@contributingModels.1/@concreteElements.0" target="//@contributingModels.3/@concreteElements.1" upperBound="1" opposite="//@virtualLinks.1"/>
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="traces" source="//@contributingModels.3/@concreteElements.1" target="//@contributingModels.1/@concreteElements.0" upperBound="-1" opposite="//@virtualLinks.0"/>
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="component" source="//@contributingModels.3/@concreteElements.0" target="//@contributingModels.2/@concreteElements.0" upperBound="1" opposite="//@virtualLinks.3"/>
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="javaPackages" source="//@contributingModels.2/@concreteElements.0" target="//@contributingModels.3/@concreteElements.0" upperBound="-1" opposite="//@virtualLinks.2"/>
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="requirements" source="//@contributingModels.2/@concreteElements.0" target="//@contributingModels.0/@concreteElements.0" upperBound="-1" opposite="//@virtualLinks.5"/>
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="components" source="//@contributingModels.0/@concreteElements.0" target="//@contributingModels.2/@concreteElements.0" upperBound="-1" opposite="//@virtualLinks.4"/>
+  <contributingModels URI="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="SpecObject"/>
+  </contributingModels>
+  <contributingModels URI="http://trace">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Log"/>
+  </contributingModels>
+  <contributingModels URI="http://www.eclipse.org/uml2/5.0.0/UML">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Component"/>
+  </contributingModels>
+  <contributingModels URI="http://www.eclipse.org/MoDisco/Java/0.2.incubation/java">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Package"/>
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="ClassDeclaration"/>
+  </contributingModels>
+</virtualLinks:WeavingModel>
