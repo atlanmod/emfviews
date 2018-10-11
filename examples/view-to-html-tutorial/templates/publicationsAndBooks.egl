@@ -1,0 +1,11 @@
+[% for (p in Publication.allInstances()) { %]
+<p>
+  <i>[%=p.title%]</i>, [%=p.author%], [%=p.publisher%] ([%=p.year%])<br>
+  Contents:
+  <ol>arst
+  [% for (c in p.bookChapters) { %]
+    <li>[%=c.title%]</li>
+  [% } %]
+  </ol>
+</p>
+[% } %]

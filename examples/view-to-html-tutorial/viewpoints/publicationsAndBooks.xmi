@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<virtualLinks:WeavingModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:virtualLinks="http://www.atlanmod.org/emfviews/virtuallinks/0.3.0"
+                           name="publicationsAndBooks">
+
+  <virtualLinks xsi:type="virtualLinks:VirtualAssociation" name="bookChapters" upperBound="-1"
+                source="//@contributingModels.0/@concreteElements.0"
+                target="//@contributingModels.1/@concreteElements.0"/>
+
+  <virtualLinks xsi:type="virtualLinks:Filter" name="nbPages"
+                target="//@contributingModels.1/@concreteElements.1"/>
+
+  <contributingModels URI="http://publication">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Publication"/>
+  </contributingModels>
+
+  <contributingModels URI="http://book">
+    <concreteElements xsi:type="virtualLinks:ConcreteConcept" path="Chapter"/>
+    <concreteElements path="Chapter.nbPages"/>
+  </contributingModels>
+
+</virtualLinks:WeavingModel>

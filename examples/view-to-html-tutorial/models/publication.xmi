@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Publication:Publication xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                         xmlns:Publication="http://publication"
+                         title="ATL in Depth"
+                         author="A. Tlanmod"
+                         publisher="Willy"
+                         year="2022">
+
+</Publication:Publication>

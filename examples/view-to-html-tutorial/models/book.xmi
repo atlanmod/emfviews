@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Book:Book xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+           xmlns:Book="http://book"
+           title="ATL in Depth"
+           authorName="A. Tlanmod">
+
+  <chapters title="Introduction to ATL" nbPages="12"/>
+  <chapters title="An Example Transformation" nbPages="22"/>
+  <chapters title="A Couple of Compilers" nbPages="57"/>
+  <chapters title="ATL Harder" nbPages="18"/>
+</Book:Book>

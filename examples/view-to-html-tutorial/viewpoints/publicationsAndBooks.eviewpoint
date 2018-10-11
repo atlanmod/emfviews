@@ -1,0 +1,4 @@
+contributingMetamodels=../metamodels/Publication.ecore,\
+                       ../metamodels/Book.ecore
+weavingModel=publicationsAndBooks.xmi
+saveInRegistry

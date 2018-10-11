@@ -735,12 +735,132 @@ Result: [Introduction to ATL,
 #+END_EXAMPLE
 
 ** Transforming a view with ATL
+As views appear as regular EMF models to EMF-compatible tools, you can use a view
+as an input to a model-to-model transformation, or to a model-to-text one (see
+the [[*Creating an HTML report from a view][next tutorial]]).
 
 # TODO: write it!
 
 #+BEGIN_note
 This tutorial still needs to be written.  Come back later!
 #+END_note
+
+** Creating an HTML report from a view
+To create an HTML report from a view, we will use the [[https://www.eclipse.org/epsilon/doc/egl/][Epsilon Generation
+Language]].
+
+In the ~view-to-html-tutorial~, you can find the following files:
+
+#+BEGIN_EXAMPLE
+.
+├── metamodels
+│   ├── Book.ecore
+│   └── Publication.ecore
+├── models
+│   ├── book.xmi
+│   └── publication.xmi
+├── templates
+│   ├── publicationsAndBooks.egl
+│   └── publicationsAndBooks.launch
+├── viewpoints
+│   ├── publicationsAndBooks.eviewpoint
+│   └── publicationsAndBooks.xmi
+└── views
+    ├── allChapters.ecl
+    └── allChapters.eview
+#+END_EXAMPLE
+
+These are the same files from the ~emfviews-tutorial~, except there's a new
+~templates~ folder that contains an EGL file and a launch configuration.
+
+The EGL file is rather straightforward:
+
+#+BEGIN_SRC html
+[% for (p in Publication.allInstances()) { %]
+<p>
+  <i>[%=p.title%]</i>, [%=p.author%], [%=p.publisher%] ([%=p.year%])<br>
+  Contents:
+  <ol>
+  [% for (c in p.bookChapters) { %]
+    <li>[%=c.title%]</li>
+  [% } %]
+  </ol>
+</p>
+[% } %]
+#+END_SRC
+
+(Refer to the [[https://www.eclipse.org/epsilon/doc/egl/][EGL documentation]] for the language syntax and examples.)
+
+This example goes through all publications in the view, and for each it lists
+all its attribute and all its chapters.
+
+To execute this template, we need a launch configuration.  One is provided in
+the ~templates~ folder; you should be able to import it.  Otherwise, you can
+create a new ~EGL Generator~ launch configuration, and configure it as follows:
+
+[[file:images/egl-launch-config1.png]]
+
+[[file:images/egl-launch-config2.png]]
+
+The important part is to use the ~eview~ file as ~Model file~, and the
+~eviewpoint~ file as ~Metamodels~.  The configurator may add the namespace URI
+of the viewpoint in the ~Metamodels~ list when you add the ~eview~ file.  You
+should remove it, and point to the ~eviewpoint~ file instead.
+
+#+BEGIN_note
+You can also run the EGL template programmatically.  Refer to the [[https://www.eclipse.org/epsilon/doc/articles/code-generation-tutorial-egl/][Epsilon
+documentation]] for examples on how to do that.
+#+END_note
+
+Before we can run this configuration, we need to make a minor change to the
+~eviewpoint~ file.  We add the ~saveInRegistry~ option:
+
+#+BEGIN_SRC
+contributingMetamodels=../metamodels/Publication.ecore,\
+                       ../metamodels/Book.ecore
+weavingModel=publicationsAndBooks.xmi
+saveInRegistry
+#+END_SRC
+
+The reason this is necessary is because EGL will load the ~eview~ and
+~eviewpoint~ resources separately, and we need the view to find the created
+viewpoint at runtime.  When opening views in model editors, this option is not
+necessary since the view will take care of instantiating the viewpoint directly.
+
+#+BEGIN_note
+Refer to the [[*eview and eviewpoint files][~saveInRegistry~ option documentation]] for more details.
+#+END_note
+
+Once this is taken care of, we can finally execute the EGL template on our
+view.  After a few seconds, the console should output the line:
+
+#+BEGIN_EXAMPLE
+Output generated to /view-to-html-tutorial/templates/out.html
+#+END_EXAMPLE
+
+The generated HTML should look like this:
+
+#+BEGIN_SRC html
+<p>
+  <i>ATL in Depth</i>, A. Tlanmod, Willy (2022)<br>
+  Contents:
+  <ol>arst
+    <li>Introduction to ATL</li>
+    <li>An Example Transformation</li>
+    <li>A Couple of Compilers</li>
+    <li>ATL Harder</li>
+  </ol>
+</p>
+#+END_SRC
+
+And if we open that file in a web browser, here is the result:
+
+[[file:images/egl-result.png]]
+
+Generating an HTML page from a model can make for more pleasant reports.  With
+the right amount of CSS and JavaScript, you can even have build interactive
+visualizations from your views.  See the ~traceability-demo~ in the examples
+folder for a more involved example.
 
 * Concepts
 ** Views
@@ -832,8 +952,8 @@ contributingModels=models/book.xmi,../../publication.xmi
 matchingModel=booksAndPub.ecl
 #+END_EXAMPLE
 
-For a step-by-step guide on creating views with ~eview~ files, see [[*Creating a view manually][Creating a
-view manually]].
+For a step-by-step guide on creating views with ~eview~ files, see [[*Creating a
+view manually][Creating a view manually]].
 
 *** VPDL
 VPDL, standing for /ViewPoint Description Language/, is a domain-specific
