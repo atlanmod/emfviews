@@ -1106,8 +1106,8 @@ Its main purpose is to populate virtual associations based on the content of
 the contributing models.
 
 In the current implementation, EMF Views can use ECL files to create weaving
-models.  Such files typically contain one rule for each virtual association.
-Here is one ECL file with two rules:
+models.  Such files contain one rule for each virtual association.  Here is one
+ECL file with two rules:
 
 #+BEGIN_SRC ecl
 //alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
@@ -1135,8 +1135,25 @@ with  t : reqif!SpecObject
 }
 #+END_SRC
 
-# TODO: expand on the first lines, and how the rules are processed by EMF Views
-# add link to ECL syntax for reference
+The first three lines are required to map package names used in the ECL file to
+actual Ecore packages through their namespace URI.
+
+See the [[https://www.eclipse.org/epsilon/doc/ecl/][ECL documentation]] for a full syntactic account of the language.
+
+Each rule is then used to match the two models it refers to.  If the predicate
+inside the ~compare~ clause is true for two model elements, then a virtual
+association (of the same as the rule's) will contain an entry for these two
+elements in the created weaving model.
+
+Here for example the rule ~detailedProcess~ will match whenever a model element
+of the ~ea!Process~ class and a model of the ~bpmn!Process~ class both have the
+exact same name.  These classes belong respectively to the TOGAF 'content
+framework' and BPMN metamodels, as specified by the ~alias_ea~ and ~alias_bpmn~
+lines in the header.  If two elements match, the resulting weaving model will
+contain an entry in the virtual association ~detailedProcess~ from the source
+element (an ~ea!Process~) to the target element (a ~bpmn!Process~).
+
+This virtual association is then used to populate the view by the ~View~ class.
 
 *** Adding new matching models
 You can add new matching engines through the

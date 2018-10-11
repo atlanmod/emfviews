@@ -6,3 +6,8 @@ models.
 
 # A picture of data coming in and out of the different EMF Views classes
 # (pipeline) would be very handy, as an overview
+
+# TODO: How the project is structured
+
+# TODO: How the manual is built
+# Org-mode exported to HTML and Eclipse help
