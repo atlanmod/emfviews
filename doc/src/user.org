@@ -899,7 +899,7 @@ key3=value spanning\
      multiple lines
 #+END_SRC
 
-For ~eviewpoint~ files, there are only two valid properties:
+For ~eviewpoint~ files, these are the accepted properties:
 
 - ~contributingMetamodels~ :: Comma-separated list of URIs to contributing
      metamodels.  This key is mandatory.
@@ -907,6 +907,25 @@ For ~eviewpoint~ files, there are only two valid properties:
 - ~weavingModel~ :: URI for the viewpoint's [[*Weaving models][weaving model]].  This key is
      optional; if unspecified, the viewpoint will be constructed with an empty
      weaving model.
+
+- ~saveInRegistry~ :: (Optional).  If this property is present, the viewpoint
+     created from the ~eviewpoint~ file will be saved in an internal registry,
+     using the ~eviewpoint~ file location as a key.  This means that ~eview~
+     files pointing to the viewpoint will now attempt to load it from the
+     registry.  This is necessary for EMF-based tools that expect a model and a
+     metamodel separately (e.g., EGL).
+
+     The value of this property is ignored.
+
+- ~strictEcore~ :: (Optional).  If this property is present, the metamodel
+     generated in the viewpoint will be checked with the Ecore diagnostician.
+     Views will usually work even if the viewpoint is an invalid Ecore
+     metamodel, but some modeling tools may be stricter.  If this option is
+     enabled, and the viewpoint has errors, loading the viewpoint as a resource
+     will produce an exception and the list of diagnostics will be attached to
+     the resource.
+
+     The value of this property is ignored.
 
 URIs are built using ~org.eclipse.emf.common.util.URI.createURI~.  This allows
 you to specify files using the ~file~ or ~platform~ schemes.  Without an
