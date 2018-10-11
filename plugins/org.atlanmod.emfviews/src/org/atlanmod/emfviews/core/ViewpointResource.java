@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -44,6 +45,20 @@ public class ViewpointResource extends ResourceImpl {
   public static final String EVIEWPOINT_WEAVING_MODEL = "weavingModel";
   public static final String EVIEWPOINT_ROOTPKG_NSURI = "rootPackageNsURI";
   public static final String EVIEWPOINT_SAVE_IN_REGISTRY = "saveInRegistry";
+
+  /**
+   * Keep track of created Viewpoints.
+   *
+   * Used to ensure that one eviewpoint resource does not end up having
+   * multiple viewpoints associated to it, in contexts where one need to
+   * provide a model (View) and metamodel (Viewpoint) separately (e.g.,
+   * EGL template launchers).
+   *
+   * We keep track of viewpoints in ViewpointResource because we use the
+   * resource URI as key, to let views find the viewpoint associated with a
+   * given file path.
+   */
+  public static final Map<String, Viewpoint> registry = new HashMap<>();
 
   private List<String> contributingMetamodelsPaths;
   private URI weavingModelURI;
@@ -119,6 +134,12 @@ public class ViewpointResource extends ResourceImpl {
       setViewpoint(new Viewpoint(loadMetamodels(),
                                  loadWeavingModel(),
                                  options));
+      // Register the viewpoint in the viewpoint registry. This allows views to
+      // load viewpoints from the registry instead of creating them anew in a
+      // resource.
+      if(options.saveInRegistry) {
+        registry.put(getURI().toString(), viewpoint);
+      }
     } catch (Exception ex) {
       getErrors().add(new Err("Failed to create the viewpoint due to exception:\n%s", ex));
       throw ex;

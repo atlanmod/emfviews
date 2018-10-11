@@ -55,21 +55,15 @@ public class ViewResource extends ResourceImpl {
   }
 
   private Viewpoint loadViewpoint() throws IOException {
-    // If the viewpoint is given as an URI, then look up the global registry.
-    if (viewpointPath.startsWith("http://")) {
-      Viewpoint v = Viewpoint.registry.get(viewpointPath);
-      if (v == null) {
-        getErrors().add(new Err("No viewpoint found in the global package registry with URI '%s'", viewpointPath));
+    URI uri = URI.createURI(viewpointPath).resolve(getURI());
 
-        // We bail, see below.
-        throw new IllegalStateException("Viewpoint could not be loaded");
-      } else {
-        return v;
-      }
+    // First look up the viewpoint registry using the resolved URI
+    Viewpoint v = ViewpointResource.registry.get(uri.toString());
+    if (v != null) {
+      return v;
     }
 
-    // Otherwise, we load a viewpoint resource and return its viewpoint
-    URI uri = URI.createURI(viewpointPath).resolve(getURI());
+    // Otherwise, load a viewpoint resource and return its viewpoint
     ViewpointResource vpr = new ViewpointResource(uri);
     vpr.load(null);
     if (!vpr.getErrors().isEmpty()) {

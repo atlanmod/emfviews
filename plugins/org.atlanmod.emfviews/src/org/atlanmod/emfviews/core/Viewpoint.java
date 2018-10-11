@@ -76,16 +76,6 @@ public class Viewpoint implements EcoreVirtualizer {
     emptyWeavingModel.setName("empty");
   };
 
-  /**
-   * Keep track of created Viewpoints.
-   *
-   * Used to ensure that one eviewpoint resource does not end up having
-   * multiple viewpoints associated to it, in contexts where one need to
-   * provide a model (View) and metamodel (Viewpoint) separately (e.g.,
-   * EGL template launchers).
-   */
-  public static final Map<String, Viewpoint> registry = new HashMap<>();
-
   // Options
   static class Options {
     /** Prefix for the root package in the viewpoint. */
@@ -230,12 +220,6 @@ public class Viewpoint implements EcoreVirtualizer {
     // case currently due to filters, so validation is opt-in.
     if (options.strictEcore) {
       validateVirtualResourceSet(virtualResourceSet);
-    }
-
-    // Register the viewpoint in the viewpoint registry. This allows views to load
-    // viewpoints from the registry instead of creating them anew in a resource.
-    if (options.saveInRegistry) {
-      registry.put(rootPackage.getNsURI(), this);
     }
   }
 
