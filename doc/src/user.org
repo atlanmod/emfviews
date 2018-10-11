@@ -430,6 +430,11 @@ In some situations, you may want to create views without touching the
 filesystem.  The EMF Views API lets you create views purely in memory, without
 creating ~eview~ files or ~vpdl~ files.
 
+#+BEGIN_note
+The folder ~examples/programmatic-view-tutorial~ contains the full source code
+for this section.
+#+END_note
+
 Here is a standalone example of creating a minimal view on the ~UMLPackage~
 using the API:
 
