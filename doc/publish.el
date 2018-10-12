@@ -1,3 +1,16 @@
+;;; publish.el --- Org tweaks for EMF Views manual
+
+;;; Commentary:
+
+;; This file contains all our tweaks made to the default org-mode exporter, in
+;; order to built the EMF Views manual.  It contains the configuration, but also
+;; custom extensions and hacks to get the output that we want.
+;;
+;; Generating the XML TOC for the Eclis help version of the manual is especially
+;; gnarly, but the rest is rather tame.
+
+;;; Code:
+
 ;; Use the built-in Org version
 (require 'org)
 (require 'ox)
@@ -199,7 +212,7 @@ Return output file name."
 ;; Then, we build the TOC.  This starts with the header.  Since we will write
 ;; the TOC as the org file are exported, we need to put the header before
 ;; publishing, and write the footer after publishing is done.  We could probably
-;; use hook to properly plug into that but... this works.
+;; use a hook to properly plug into that but... this works.
 (with-current-buffer toc-buffer
   (insert "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
           "<toc label=\"EMF Views Documentation\">\n"))
