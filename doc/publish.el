@@ -20,7 +20,8 @@
 ;; in an Eclipse help plugin.  The website uses the standard HTML org-export
 ;; backend.  For Eclipse help, we define a derived backend.
 
-(org-export-define-derived-backend 'eclipse-help 'html)
+(org-export-define-derived-backend 'eclipse-help 'html
+  :translate-alist '((link . org-eclipse-external-link-export)))
 
 
 ;;; Custom links
@@ -48,19 +49,25 @@ BACKEND is the export backend."
                   path)
           description))
 
-;; We also need a custom link for external links: links that go to the web
+;; We also need a custom behavior for external links: links that go to the web
 ;; instead of staying inside the Eclipse help.  In the website export, these
 ;; will just work as-is, but through the Eclipse help we need to add the
-;; `target` attribute.
+;; `target=new` attribute, since we want them to open in a proper web browser.
+(defun org-eclipse-external-link-export (link desc info)
+  "Export external LINK to HTML.
 
-(org-link-set-parameters "external" :export #'org-eclipse-external-link-export)
-
-(defun org-eclipse-external-link-export (path description backend)
-  "Export external links.
-
-PATH and DESCRIPTION are the link's path and description.
-BACKEND is the export backend."
-  (format "<a class=\"external\" href=\"%s\" target=\"_new\">%s</a>" path description))
+DESC is the description part of the link.  INFO is the contextual
+information."
+  (let ((type (org-element-property :type link))
+        (path (org-element-property :path link)))
+    (if (member type '("http" "https"))
+        (format "<a class=\"external\" href=\"%s\" target=\"_new\">%s</a>"
+                (org-html-encode-plain-text
+                 (url-encode-url (org-link-unescape
+                                  (concat type ":" path))))
+                desc)
+      ;; If it's not an external link, fallback to default treatment
+      (org-export-with-backend 'html link desc info))))
 
 
 ;;; Export setup
