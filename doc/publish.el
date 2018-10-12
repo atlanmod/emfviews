@@ -15,6 +15,7 @@
 (require 'org)
 (require 'ox)
 (require 'seq)
+(require 'subr-x)
 
 ;; We export two versions of the manual: HTML to the EMF Views website, and as
 ;; in an Eclipse help plugin.  The website uses the standard HTML org-export
@@ -68,6 +69,86 @@ information."
                 desc)
       ;; If it's not an external link, fallback to default treatment
       (org-export-with-backend 'html link desc info))))
+
+
+;;; Generating CUSTOM_ID slugs
+
+;; We want headlines to have stable and readable identifiers, so we can use them
+;; to link to part of the documentation.  Org by default will use random UUIDs,
+;; and these are neither readable nor stable.
+
+;; First, making them stable.  This set the random seed to a constant value.
+;; Org uses `random' to generate unique identifiers for headlines.  The problem
+;; is that these identifiers are then not stable, and in particular it means the
+;; automated build on Travis will always pick up changes in the output even if
+;; the source does not change.  Fixing the seed is a very low-cost fix to get
+;; stability back.
+(random "random seed")
+
+;; Now, to make them readable.  We want identifiers to be standard slugs created
+;; from the headline title.  This can be done with the following function.
+
+(defun slugify (title)
+  "Create a slug from TITLE.
+
+See https://gist.github.com/mathewbyrne/1280286"
+  (replace-regexp-in-string
+   "\-\-+" "-"
+   (replace-regexp-in-string
+    "[^[:alnum:]_-]" ""
+    (replace-regexp-in-string
+     "&" "and"
+     (replace-regexp-in-string
+      "\s+" "-"
+      (replace-regexp-in-string
+       "<.+?>" " "
+       (downcase (string-trim title))))))))
+
+;; To make Org use slugs instead of generated ids, we can make use of the
+;; CUSTOM_ID property.  If a headline has a CUSTOM_ID set, its value will be
+;; used when exporting instead of the generated ids.  Problem: we don't want to
+;; slugify the document manually.  So we do it just before Org starts parsing
+;; our document.
+
+(add-hook 'org-export-before-parsing-hook #'org-eclipse-add-slug-custom-id)
+
+(defun org-eclipse-add-slug-custom-id (backend)
+  "Add a slug to each headline that doesn't have a CUSTOM_ID.
+
+BACKEND is the export backend."
+  (org-map-entries
+   (lambda ()
+     (unless (org-entry-get nil "CUSTOM_ID")
+       (org-entry-put nil "CUSTOM_ID"
+                      (slugify (nth 4 (org-heading-components))))))))
+
+;; Finally, we also want the headlines to be links, so we can just click on them
+;; to obtain an easily shareable link to that location.  So we redefine
+;; `org-html-headline' for our needs.
+
+(defun org-html-headline (headline contents info)
+  "Transcode a HEADLINE element from Org to HTML.
+CONTENTS holds the contents of the headline.  INFO is a plist
+holding contextual information."
+  (unless (org-element-property :footnote-section-p headline)
+    (let* ((level (+ (org-export-get-relative-level headline info)
+                     (1- (plist-get info :html-toplevel-hlevel))))
+           (todo (and (plist-get info :with-todo-keywords)
+                      (let ((todo (org-element-property :todo-keyword headline)))
+                        (and todo (org-export-data todo info)))))
+           (todo-type (and todo (org-element-property :todo-type headline)))
+           (priority (and (plist-get info :with-priority)
+                          (org-element-property :priority headline)))
+           (text (org-export-data (org-element-property :title headline) info))
+           (tags (and (plist-get info :with-tags)
+                      (org-export-get-tags headline info)))
+           (full-text (funcall (plist-get info :html-format-headline-function)
+                               todo todo-type priority text tags info))
+           (contents (or contents ""))
+	   (id (org-element-property :CUSTOM_ID headline)))
+      ;; Standard headline.  Export it as a section.
+      (format "\n<h%d id=\"%s\"><a href=\"#%s\">%s</a></h%d>\n%s"
+              level id id full-text level contents))))
 
 
 ;;; Export setup
@@ -186,12 +267,97 @@ Return output file name."
                       source
                       (org-html--make-attribute-string attributes))))
 
-;; Set the random seed to a constant value.  Org uses `random' to generate
-;; unique identifiers for headlines.  The problem is that these identifiers are
-;; then not stable, and in particular it means the automated build on Travis
-;; will always pick up changes in the output even if the source does not change.
-;; Fixing the seed is a very low-cost fix to get stability back.
-(random "random seed")
+;; By default Org will wrap section in divs, used only for org-infojs.  We don't
+;; use infojs, so we might as well discard the divs.  Less work for the browser.
+(defun org-html-section (section contents info)
+  "Return CONTENTS.
+
+SECTION and INFO are ignored."
+  contents)
+
+;; Override the definition org `org-html-template' because we need the title to
+;; appear before the <div id="contents">.  That's heavy handed, but, hey it
+;; works.
+(defun org-html-template (contents info)
+  "Return complete document string after HTML conversion.
+CONTENTS is the transcoded contents string.  INFO is a plist
+holding export options."
+  (concat
+   (when (and (not (org-html-html5-p info)) (org-html-xhtml-p info))
+     (let* ((xml-declaration (plist-get info :html-xml-declaration))
+	    (decl (or (and (stringp xml-declaration) xml-declaration)
+		      (cdr (assoc (plist-get info :html-extension)
+				  xml-declaration))
+		      (cdr (assoc "html" xml-declaration))
+		      "")))
+       (when (not (or (not decl) (string= "" decl)))
+	 (format "%s\n"
+		 (format decl
+			 (or (and org-html-coding-system
+				  (fboundp 'coding-system-get)
+				  (coding-system-get org-html-coding-system 'mime-charset))
+			     "iso-8859-1"))))))
+   (org-html-doctype info)
+   "\n"
+   (concat "<html"
+	   (cond ((org-html-xhtml-p info)
+		  (format
+		   " xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"%s\" xml:lang=\"%s\""
+		   (plist-get info :language) (plist-get info :language)))
+		 ((org-html-html5-p info)
+		  (format " lang=\"%s\"" (plist-get info :language))))
+	   ">\n")
+   "<head>\n"
+   (org-html--build-meta-info info)
+   (org-html--build-head info)
+   (org-html--build-mathjax-config info)
+   "</head>\n"
+   "<body>\n"
+   (let ((link-up (org-trim (plist-get info :html-link-up)))
+	 (link-home (org-trim (plist-get info :html-link-home))))
+     (unless (and (string= link-up "") (string= link-home ""))
+       (format (plist-get info :html-home/up-format)
+	       (or link-up link-home)
+	       (or link-home link-up))))
+   ;; Preamble.
+   (org-html--build-pre/postamble 'preamble info)
+   ;; Document title.
+   (when (plist-get info :with-title)
+     (let ((title (and (plist-get info :with-title)
+		       (plist-get info :title)))
+	   (subtitle (plist-get info :subtitle))
+	   (html5-fancy (org-html--html5-fancy-p info)))
+       (when title
+	 (format
+	  (if html5-fancy
+	      "<header>\n<h1 class=\"title\">%s</h1>\n%s</header>"
+	    "<h1 class=\"title\">%s%s</h1>\n")
+	  (org-export-data title info)
+	  (if subtitle
+	      (format
+	       (if html5-fancy
+		   "<p class=\"subtitle\">%s</p>\n"
+		 (concat "\n" (org-html-close-tag "br" nil info) "\n"
+			 "<span class=\"subtitle\">%s</span>\n"))
+	       (org-export-data subtitle info))
+	    "")))))
+   ;; Document contents.
+   (let ((div (assq 'content (plist-get info :html-divs))))
+     (format "<%s id=\"%s\">\n" (nth 1 div) (nth 2 div)))
+   contents
+   (format "</%s>\n" (nth 1 (assq 'content (plist-get info :html-divs))))
+   ;; Postamble.
+   (org-html--build-pre/postamble 'postamble info)
+   ;; Possibly use the Klipse library live code blocks.
+   (if (plist-get info :html-klipsify-src)
+       (concat "<script>" (plist-get info :html-klipse-selection-script)
+	       "</script><script src=\""
+	       org-html-klipse-js
+	       "\"></script><link rel=\"stylesheet\" type=\"text/css\" href=\""
+	       org-html-klipse-css "\"/>"))
+   ;; Closing document.
+   "</body>\n</html>"))
+
 
 
 ;;; TOC builder
