@@ -1,5 +1,5 @@
 html { color: #2c3234; font-size: 16px; font-family: sans-serif; }
-/* #content { max-width: 41rem; margin: auto; } */
+#content { max-width: 41rem; margin: auto; }
 body { margin: 0 }
 
 .title {
@@ -15,17 +15,15 @@ body { margin: 0 }
   z-index: 1;
 }
 
-.title ~ * {
-  max-width: 41rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 h2, h3, h4 {
   font-weight:normal;
   color:#159957;
   margin-top:2rem;
   margin-bottom:1rem;
+}
+
+h2 a, h3 a, h4 a {
+  color:#159957;
 }
 
 h2 { font-size: 1.8rem; }
