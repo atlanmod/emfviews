@@ -54,5 +54,11 @@ chmod 600 ../.travis/deploy-key
 eval `ssh-agent -s`
 ssh-add ../.travis/deploy-key
 
+# Git LFS will fail with "You must have push access to verify locks" here.
+# Since for the deployment we don't actually touch the LFS, the workaround is
+# just to remove the pre-push hook that triggers LFS.
+# See https://github.com/git-lfs/git-lfs/issues/2284
+rm .git/hooks/pre-push
+
 # Now that we're all set up, we can push.
 git push $SSH_REPO $TARGET_BRANCH
