@@ -68,16 +68,71 @@ import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
+/**
+ * Metamodel for a view.
+ *
+ * The Viewpoint's role is to use the WeavingModel instructions to create the
+ * virtual metamodel used by views.
+ *
+ * A Viewpoint is created from the contributing metamodels, given as EPackages,
+ * and a WeavingModel.  The virtual metamodel result is the root package (see
+ * getRootPackage), which contains virtual classes from the contributing
+ * metamodels and potentially new classes depending on instructions of the
+ * WeavingModel.
+ *
+ * A Viewpoint is usually created through a ViewpointResource which represents
+ * an '.eviewpoint' file.  But the Viewpoint class is standalone, and is able to
+ * create a virtual metamodel without an associated resource.
+ */
 public class Viewpoint implements EcoreVirtualizer {
+  /*
+   * The meat of the work is done in `build`, which uses various private
+   * functions to handle different steps of the metamodel creation.
+   *
+   * The later part of the file contains an implementation of EcoreVirtualizer,
+   * which is straightforward.
+   */
 
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Internal state
+
+  private ResourceSet baseResourceSet;    // contains the contributing EPackages
+  private ResourceSet virtualResourceSet; // contains the virtualized EPackages
+  private VirtualEPackage rootPackage; // contains the virtual contributing packages and the virtual package
+  private EPackage virtualPackage;     // contains the new concepts
+  private Resource resource; // the resource using this view, if any.  This is
+                             // used by VirtualEObject.eResource, to please some
+                             // modeling tools (e.g. OCL).
+
+  /** Map to keep track of the EObjects created by each *new* element from the
+   * weaving model, in order to be able to use VirtualElement as LinkedElements
+   * in findEObject. */
+  private Map<VirtualElement, EObject> syntheticElements;
+
+  /** Used by the Virtualizer implementation to cache virtual elements */
+  private Map<EObject, EObject> concreteToVirtual;
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Constructors
+
+  /**
+   * Singleton instance of a weaving model with no instructions.  Used for
+   * 'eviewpoint' files that do not specify a weaving model, and for testing.
+   */
   public static final WeavingModel emptyWeavingModel;
   static {
     emptyWeavingModel = VirtualLinksFactory.eINSTANCE.createWeavingModel();
     emptyWeavingModel.setName("empty");
   };
 
-  // Options
+  /**
+   * Viewpoint Options.  A POJO that can be passed as argument to the Viewpoint
+   * constructor to override some defaults.
+   */
   static class Options {
+
     /** Prefix for the root package in the viewpoint. */
     public String rootPackageNamePrefix = "viewpoint";
 
@@ -115,37 +170,36 @@ public class Viewpoint implements EcoreVirtualizer {
     }
   }
 
-  private List<EPackage> contributingPackages; // original, unmodified EPackages
-  private WeavingModel weavingModel; // how to modify the EPackages
-
+  // Singleton used as fallback when no options are provided
   private static final Options defaultOptions = new Options();
 
-  // Attributes
-  private ResourceSet baseResourceSet; // contains the contributing EPackages
-  private ResourceSet virtualResourceSet; // contains the virtualized EPackages
-  private VirtualEPackage rootPackage; // contains the virtual contributing packages and the virtual package
-  private EPackage virtualPackage; // contains the new concepts
-  private Resource resource; // the resource using this view, if any.  This is used by VirtualEObject.eResource,
-                             // to please some modeling tools (e.g. OCL).
+  private List<EPackage> contributingPackages; // original, unmodified EPackages
+  private WeavingModel weavingModel;           // how to modify the EPackages
 
-  // Map to keep track of the EObject created by each *new* element from the weaving model,
-  // in order to be able to use VirtualElement as LinkedElements in findEObject
-  private Map<VirtualElement, EObject> syntheticElements;
 
-  // Used by the Virtualizer implementation to cache virtual elements
-  private Map<EObject, EObject> concreteToVirtual;
-
-  // A viewpoint without contributing metamodels is still useful as a virtualizer
+  /** A viewpoint without contributing metamodels is still useful as a virtualizer */
   public Viewpoint() {}
 
+  /**
+   * Construct a Viewpoint from a list of contributing metamodels, an empty
+   * weaving model, and the default options.
+   */
   public Viewpoint(List<EPackage> contributingMetamodels) {
     this(contributingMetamodels, emptyWeavingModel);
   }
 
+  /**
+   * Construct a Viewpoint from a list of contributing metamodels, a
+   * WeavingModel, and the default options.
+   */
   public Viewpoint(List<EPackage> contributingMetamodels, WeavingModel weavingModel) {
     this(contributingMetamodels, weavingModel, null);
   }
 
+  /**
+   * Construct a Viewpoint from a list of contributing metamodels, a
+   * WeavingModel, and provided Options.
+   */
   public Viewpoint(List<EPackage> contributingMetamodels, WeavingModel weavingModel, Options options) {
     this.contributingPackages = contributingMetamodels;
     this.weavingModel = weavingModel;
@@ -157,7 +211,52 @@ public class Viewpoint implements EcoreVirtualizer {
     }
   }
 
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Public API
+
+  /**
+   * Return the root package of the virtual metamodel.  The root package should
+   * contain the virtualized contributing metamodels as subpackages, and
+   * eventually a new virtual package to hold the new classifiers.
+   */
+  public EPackage getRootPackage() {
+    return rootPackage;
+  }
+
+  /**
+   * Return the (unvirtualized) contributing metamodels given as input to this
+   * Viewpoint.
+   */
+  public List<EPackage> getContributingEPackages() {
+    return contributingPackages;
+  }
+
+  /**
+   * Associate r as resource to this viewpoint.  Mainly useful for serializing a
+   * Viewpoint created without a resource, by attaching a ViewpointResource
+   * pointing to a file on disk.
+   */
+  public void setResource(Resource r) {
+    this.resource = r;
+  }
+
+  /**
+   * Return the resource attached to this viewpoint.
+   */
+  public Resource getResource() {
+    return resource;
+  }
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Constructing the virtual metamodel
+
   // Create the virtual elements and virtual packages.
+  //
+  // First we virtualize the contributing packages in the virtual package, then
+  // we apply filters (by setting the 'filtered' flag in the object's owner),
+  // then we create all the new objects as instructed by the weaving model.
   protected void build(Options options) {
     baseResourceSet = new ResourceSetImpl();
     virtualResourceSet = new ResourceSetImpl();
@@ -409,7 +508,17 @@ public class Viewpoint implements EcoreVirtualizer {
     }
   }
 
+  /**
+   * Helper function to find the EObject referenced to in a weaving model
+   * Element.
+   *
+   * One thing to note is that we always return an EObject that has not been
+   * virtualized yet, so be sure to call getVirtual on the result if the object
+   * is to be added to the virtual metamodel.
+   */
   private EObject findEObject(Element elem, EPackage.Registry registry) {
+    // If it's a ConcreteElement, we are looking for an EObject from the
+    // contributing metamodels.
     if (elem instanceof ConcreteElement) {
       ConcreteElement e = (ConcreteElement) elem;
 
@@ -426,7 +535,9 @@ public class Viewpoint implements EcoreVirtualizer {
 
       return obj;
 
-    } else if (elem instanceof VirtualElement) {
+    }
+    // If it's a VirtualElement, then we need to look in the synthetic elements map.
+    else if (elem instanceof VirtualElement) {
       if (!syntheticElements.containsKey(elem)) {
         throw EX("Virtual element for '%s' does not exist or has not been created yet", elem);
       }
@@ -443,6 +554,8 @@ public class Viewpoint implements EcoreVirtualizer {
     }
   }
 
+  // This maps the datatype strings of the weaving model to the actual Ecore
+  // datatype.
   private Optional<EClassifier> getTypeFromName(String name) {
     switch (name) {
     case "boolean":
@@ -473,8 +586,8 @@ public class Viewpoint implements EcoreVirtualizer {
 
   private void validateVirtualResourceSet(ResourceSet r) {
     for (Object p : r.getPackageRegistry().values()) {
-      // Since we inherit from Resource, which has an internal Diagnostic interface, we have to use the fully qualified
-      // name here
+      // Since we inherit from Resource, which has an internal Diagnostic
+      // interface, we have to use the fully qualified name here
       org.eclipse.emf.common.util.Diagnostic d = Diagnostician.INSTANCE.validate((EObject) p);
       // Pretty print the message into an exception for readability
       if ((d.getSeverity() & org.eclipse.emf.common.util.Diagnostic.ERROR) != 0) {
@@ -488,31 +601,23 @@ public class Viewpoint implements EcoreVirtualizer {
     }
   }
 
+  // Shortcut method to create an exception
   static private ViewpointException EX(String msg, Object... args) {
     return new ViewpointException(msg, args);
   }
 
-  public List<EPackage> getContributingEPackages() {
-    return contributingPackages;
-  }
-
-  public EPackage getRootPackage() {
-    return rootPackage;
-  }
-
-  public void setResource(Resource r) {
-    this.resource = r;
-  }
-
-  public Resource getResource() {
-    return resource;
-  }
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Implementation of Virtualizer
+  // Implementation of EcoreVirtualizer
+  //
+  // Straightforward.  For each class of object from Ecore, we project a
+  // concrete EObject into its virtual counterpart, and we save projected
+  // objects into a map to ensure two projections of the same object yield the
+  // same virtual object.
+  //
+  // The rest is boilerplate because the Java type system is poor.
 
-  // Lazy constructor
   protected Map<EObject, EObject> concreteToVirtual() {
+    // Lazy constructor
     if (concreteToVirtual == null) {
       concreteToVirtual = new HashMap<>();
     }

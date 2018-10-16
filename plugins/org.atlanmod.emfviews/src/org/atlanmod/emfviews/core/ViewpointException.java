@@ -16,6 +16,9 @@
 
 package org.atlanmod.emfviews.core;
 
+/**
+ * Helper class to create a runtime exception specific to Viewpoint.
+ */
 @SuppressWarnings("serial")
 public class ViewpointException extends RuntimeException {
 
