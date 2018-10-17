@@ -32,8 +32,9 @@ public final class EMFViewsUtil {
   private EMFViewsUtil() {}
 
   /**
-   * Find and return the element that matches the path. Path is a dot-separated list of names describing the full
-   * hierarchy of the target element from the root object, not including the root object itself. E.g.,
+   * Find and return the element that matches the path. Path is a dot-separated
+   * list of names describing the full hierarchy of the target element from the
+   * root object, not including the root object itself. E.g.,
    *
    * "className.attributeName"
    *
@@ -78,8 +79,11 @@ public final class EMFViewsUtil {
     return Optional.ofNullable(o);
   }
 
-  // Returns the path to the EObject, such that
-  // findElement(o.eContainer(), getEObjectPath(o)) == o
+  /**
+   * Return the path to the EObject, such that:
+   *
+   *   findElement(o.eContainer(), getEObjectPath(o)) == o
+   */
   public static String getEObjectPath(EObject o) {
     List<String> comps = new ArrayList<>();
 

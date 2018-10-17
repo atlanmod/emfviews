@@ -14,7 +14,17 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.atlanmod.emfviews.elements.VirtualEObject;
 
+/**
+ * A list of contents that delays the projection into virtual object of its
+ * contents until they are accessed.
+ *
+ * This class is used in VirtualEObject to avoid virtualizing all contents up
+ * front.
+ */
 public class LazyEContentsList implements EList<EObject>, InternalEList<EObject> {
+  // @Correctness: only the essential EList methods are implemented.  This is
+  // enough to make VirtualEObject work in most cases, but surely we should take
+  // a look at the remaining methods.
 
   private VirtualEObject owner;
 
