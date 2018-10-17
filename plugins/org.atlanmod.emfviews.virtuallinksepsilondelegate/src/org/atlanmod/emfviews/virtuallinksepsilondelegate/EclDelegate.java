@@ -50,6 +50,22 @@ import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 
+/**
+ * Create a weaving model from an ECL file and input models.
+ *
+ * An ECL file contains multiple rules which are used to find matches between
+ * two elements of two metamodels.  In EMF Views, we use ECL files as a
+ * declarative way to build a weaving model.  Any time two elements match a
+ * rule, we create a VirtualAssociation between them.  This association will be
+ * used by the View to populate a virtual reference associated to the ECL rule.
+ *
+ * The role of the EclDelegate is to create the weaving model for the view by
+ * using ECL to execute the rules.
+ *
+ * EclDelegate is the default implementation of IVirtualLinksDelegate provided
+ * by EMF Views, but other means of creating weaving models could be used by
+ * implementing this interface.
+ */
 public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
