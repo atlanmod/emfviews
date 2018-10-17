@@ -1,4 +1,4 @@
-/*******************************************************************************
+2/*******************************************************************************
  * Copyright (c) 2017, 2018 Armines
  *
  * This program and the accompanying materials are made available under the
@@ -34,28 +34,61 @@ import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
+/**
+ * A virtual model conforming to a Viewpoint.
+ *
+ * The role of the View class is to build and hold a virtual model, from a
+ * viewpoint (the metamodel), multiple contributing models, and build
+ * instructions (a WeavingModel).  After a View is created, the contents of the
+ * virtual model can be obtained with getVirtualContents.
+ *
+ * A View is usually constructed indirectly from a ViewResource, but it can be
+ * instantiated without one.
+ */
 public class View implements Virtualizer {
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Internal state
+
+  private List<Resource> contributingModels; // the contributing models
+  // @Note: Ideally, we don't want Resources here, just the root EObjects.  But
+  // the WeavingModel uses resource-specific ID to locate objects, and hence we
+  // use Resource.getEObject to get them back.
 
   private Viewpoint viewpoint; // holds the metamodel the view needs to conform to
   private WeavingModel weavingModel; // what virtual links to create
-  private Resource resource; // the resource using this view, if any.  This is used by VirtualEObject.eResource,
-                             // to please some modeling tools (e.g. OCL).
 
-  private Map<String, Resource> modelResources;
-  private List<Resource> contributingModels;
+  private Resource resource; // the resource using this view, if any.  This is
+                             // used by VirtualEObject.eResource, to please some
+                             // modeling tools (e.g. OCL).
 
   private EList<EObject> virtualContents; // cache the results of getVirtualContents
-  private Map<EObject, EObject> concreteToVirtual; // used by the Virtualizer implementation to cache virtual elements
+  private Map<EObject, EObject> concreteToVirtual; // used by the Virtualizer implementation to cache
+                                                   // virtual elements
 
-  // A View without models is still useful as a virtualizer
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Public API
+
+  /**
+   * Construct a View without any contributing models and an empty weaving
+   * model.  This is still useful just to access the Virtualizer implementation,
+   * especially for tests.
+   */
   public View(Viewpoint viewpoint) {
     this.viewpoint = viewpoint;
   }
 
+  /**
+   * Construct a View with a list of contributing models and an empty weaving
+   * model.
+   */
   public View(Viewpoint viewpoint, List<Resource> contributingModels) {
     this(viewpoint, contributingModels, Viewpoint.emptyWeavingModel);
   }
 
+  /**
+   * Construct a View with a list of contributing models and a WeavingModel.
+   */
   public View(Viewpoint viewpoint, List<Resource> contributingModels, WeavingModel weavingModel) {
     this.viewpoint = viewpoint;
     this.contributingModels = contributingModels;
@@ -64,8 +97,54 @@ public class View implements Virtualizer {
     build();
   }
 
+  /**
+   * The contents of the virtual model.
+   */
+  public EList<EObject> getVirtualContents() {
+    if (virtualContents == null) {
+      List<EObject> contents = new ArrayList<>();
+
+      for (Resource r : getContributingModels()) {
+        for (EObject o : r.getContents()) {
+          contents.add(getVirtual(o));
+        }
+      }
+
+      virtualContents = ECollections.unmodifiableEList(contents);
+    }
+    return virtualContents;
+  }
+
+  /**
+   * The contributing models given as constructor argument.
+   */
+  public List<Resource> getContributingModels() {
+    return contributingModels;
+  }
+
+  /**
+   * Associate this View with the Resource r.
+   *
+   * Useful to serialize a View into an 'eview' file through a  ViewResource.
+   */
+  public void setResource(Resource r) {
+    this.resource = r;
+  }
+
+  /**
+   * The Resource associated to this View, if any.
+   */
+  public Resource getResource() {
+    return resource;
+  }
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Constructing the virtual model
+
+  // Go through the WeavingModel instructions and build the virtual model.
   protected void build() {
-    modelResources = new HashMap<>();
+    Map<String, Resource> modelResources = new HashMap<>();
 
     // Load contributing models
     for (Resource r : contributingModels) {
@@ -104,35 +183,12 @@ public class View implements Virtualizer {
     }
   }
 
-  public EList<EObject> getVirtualContents() {
-    if (virtualContents == null) {
-      List<EObject> contents = new ArrayList<>();
-
-      for (Resource r : getContributingModels()) {
-        for (EObject o : r.getContents()) {
-          contents.add(getVirtual(o));
-        }
-      }
-
-      virtualContents = ECollections.unmodifiableEList(contents);
-    }
-    return virtualContents;
-  }
-
-  public List<Resource> getContributingModels() {
-    return contributingModels;
-  }
-
-  public void setResource(Resource r) {
-    this.resource = r;
-  }
-
-  public Resource getResource() {
-    return resource;
-  }
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Implementation of Virtualizer
+  //
+  // Similar reasoning to the implementation of EcoreVirtualizer in Viewpoint,
+  // but this time there is only one class to implement.
 
   @Override
   public EObject getVirtual(EObject obj) {
