@@ -47,9 +47,14 @@ import org.atlanmod.emfviews.core.EcoreVirtualizer;
 public class VirtualEClass extends VirtualEClassifier<EClass>
     implements EClass, ESuperAdapter.Holder, EClassifierExtendedMetaData.Holder {
 
+  // Features that exist only on the virtual class, not the concrete one.
   private List<VirtualEStructuralFeature<?>> virtualFeatures = new ArrayList<>();
-  private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
+
+  // Supertypes that exist only on the virtual class, not the concrete one.
   private List<EClass> virtualSuperTypes = new ArrayList<>();
+
+  // Features from the concrete class that should not appear on the virtual one.
+  private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
 
   public VirtualEClass(EClass concreteEClass, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.ECLASS, concreteEClass, virtualizer);

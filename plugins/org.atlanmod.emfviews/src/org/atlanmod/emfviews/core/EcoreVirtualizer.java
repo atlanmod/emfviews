@@ -36,7 +36,18 @@ import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
 import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
 
+/**
+ * A set of methods to project an Ecore class to its virtual counterpart.
+ */
 public interface EcoreVirtualizer {
+  // This could have been included directly into Viewpoint since it's the only
+  // implementation, but having the interface is useful to decouple the virtual
+  // elements from the viewpoint.
+
+  // We used to only have Virtualizer, but having the more specific methods of
+  // EcoreVirtualizer gives us type safety when dealing with metamodel elements,
+  // and saves us from casting EObject into EPackage, EClass, etc.
+
   VirtualEPackage getVirtual(EPackage o);
   VirtualEClassifier<?> getVirtual(EClassifier o);
   VirtualEClass getVirtual(EClass o);

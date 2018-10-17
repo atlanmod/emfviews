@@ -80,13 +80,6 @@ public abstract class VirtualEClassifier<T extends EClassifier> extends BaseVirt
     throw new UnsupportedOperationException();
   }
 
-  // @Correctness: these may need to go in a BaseVirtualEObject to avoid
-  // duplication and for all implementing classes to benefit
-  @Override
-  public EObject eContainer() {
-    return virtualizer.getVirtual((EPackage) concrete().eContainer());
-  }
-
   @Override
   public EReference eContainmentFeature() {
     // We do not want to virtualize this, as the feature is part of the

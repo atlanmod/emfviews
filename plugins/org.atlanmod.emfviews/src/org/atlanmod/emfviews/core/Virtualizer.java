@@ -18,6 +18,9 @@ package org.atlanmod.emfviews.core;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * Projects an EObject to a virtual model element.
+ */
 public interface Virtualizer {
   EObject getVirtual(EObject o);
 }

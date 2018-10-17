@@ -34,12 +34,29 @@ import org.atlanmod.emfviews.core.Viewpoint;
  *
  * Contains a concrete EObject and an EcoreVirtualizer, and implements
  * EObject methods so subclasses don't have to.
+ *
+ * All virtual elements work the same way: we inherit from the interface
+ * (EClass, EPackage, EReference, ...) and implement the methods by delegating
+ * to the concrete object, and eventually virtualize some results.  The point is
+ * to ensure values given by the concrete elements are projected into their
+ * virtual counterparts (using the Virtualizer or EcoreVirtualizer), so that
+ * browsing the virtual model should only yield virtual elements, and never
+ * concrete ones.  (Although there are exceptions, e.g. when going to the
+ * metametalevel or when returning primitive types.)
+ *
+ * In addition, virtual elements can hide classes or features through filters,
+ * or even have new, virtual-only features (see VirtualEPackage or VirtualEClass).
  */
 public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl implements EObject {
 
   private T concreteObject;
   protected EcoreVirtualizer virtualizer;
 
+  /**
+   * Construct a virtual element as a proxy to a concrete object whose metaclass
+   * is eClass, and using virtualizer to project other concrete elements into
+   * virtual ones.
+   */
   public BaseVirtualElement(EClass eClass, T concrete, EcoreVirtualizer virtualizer) {
     super(eClass);
     this.concreteObject = concrete;

@@ -34,20 +34,35 @@ import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Virtualizer;
 import org.atlanmod.emfviews.util.LazyEContentsList;
 
+/**
+ * A virtual proxy to an EObject.
+ *
+ * A VirtualEObject is part of a View, and created by a Virtualizer.  A
+ * VirtualEObject is similar to other virtual elements in its intent, but
+ * instead of overriding many generated method, the VirtualEObject intercepts
+ * them reflexively through dynamicGet and dynamicSet.
+ */
 public class VirtualEObject extends DynamicEObjectImpl {
 
   private EObject concreteEObject;
 
-  // Using a map here as using feature ID as keys for virtual values is unreliable
-  // when filters come into play.
+  // Using a map here as using feature ID as keys for virtual values is
+  // unreliable when filters come into play.
   //
-  // e.g., class A with feature 'a', 'b', 'c'.  Delete feature 'b', add feature 'd'.
-  // With feature ID, the mapping is: 'a': 0, 'c': 1, 'd': 2, so the virtual value associated to 'b'
-  // is now associated to 'c'.  With a map we keep track of all structural features, filtered or not.
+  // e.g., class A with feature 'a', 'b', 'c'.  Delete feature 'b', add feature
+  // 'd'.
+  //
+  // With feature ID, the mapping is: 'a': 0, 'c': 1, 'd': 2, so the virtual
+  // value associated to 'b' is now associated to 'c'.  With a map we keep track
+  // of all structural features, filtered or not.
   private Map<EStructuralFeature, Object> virtualValues;
 
   private Virtualizer virtualizer;
 
+  /**
+   * Create a virtual counterpart to concreteEObject, having virtualEClass as
+   * metaclass, and using virtualizer to project other model elements.
+   */
   public VirtualEObject(EObject concreteEObject, VirtualEClass virtualEClass, Virtualizer virtualizer) {
     this.concreteEObject = concreteEObject;
     this.virtualizer = virtualizer;
@@ -66,6 +81,9 @@ public class VirtualEObject extends DynamicEObjectImpl {
   @Override
   public EList<EObject> eContents() {
     if (cachedContents == null) {
+      // The lazy contents list saves us from virtualizing every contained
+      // object prematurely, and thus paying the overhead of virtualization on
+      // potentially large objects even when they are never in fact accessed.
       cachedContents = new LazyEContentsList(this);
     }
 
