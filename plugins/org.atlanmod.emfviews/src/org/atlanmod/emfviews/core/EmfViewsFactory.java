@@ -24,6 +24,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
 public class EmfViewsFactory extends ResourceFactoryImpl {
 
+  // TODO: Split into two factories, one for eview and one for eviewpoint.
+
   @Override
   public Resource createResource(URI uri) {
     if (uri.fileExtension().equals("eview")) {

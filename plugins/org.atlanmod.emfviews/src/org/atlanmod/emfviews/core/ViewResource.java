@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2017, 2018 Armines
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * This Source Code may also be made available under the following Secondary
+ * Licenses when the conditions for such availability set forth in the Eclipse
+ * Public License, v. 2.0 are satisfied: GNU General Public License, version 3
+ * which is available at https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * Contributors:
+ *   fmdkdd - initial API and implementation
+ *******************************************************************************/
+
 package org.atlanmod.emfviews.core;
 
 import java.io.IOException;
@@ -22,8 +38,20 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
+/**
+ * A Resource that can load or save a View through an 'eview' file.
+ *
+ * An 'eview' file is a property (key=value) file that describes a View.  The
+ * role of the ViewResource is to parse the 'eview' file and create a
+ * corresponding View when loading the resource, and to serialize the View
+ * information into the 'eview' file when saving the resource.
+ *
+ * A ViewResource is usually created by associating 'eview' file extension to
+ * the EmfViewsFactory.
+ */
 public class ViewResource extends ResourceImpl {
 
+  // Valid fields for an eview file
   public static final String EVIEW_VIEWPOINT = "viewpoint";
   public static final String EVIEW_CONTRIBUTING_MODELS = "contributingModels";
   public static final String EVIEW_MATCHING_MODEL = "matchingModel";
@@ -35,7 +63,11 @@ public class ViewResource extends ResourceImpl {
   private String matchingModelPath;
   private String weavingModelPath;
 
-  private View view;
+  private View view; // the constructed view
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Public API
 
   public ViewResource() {
     super();
@@ -45,14 +77,23 @@ public class ViewResource extends ResourceImpl {
     super(uri);
   }
 
-  public void setView(View view) {
-    this.view = view;
-    view.setResource(this);
+  @Override
+  public EList<EObject> getContents() {
+    if (view != null) {
+      return view.getVirtualContents();
+    } else {
+      return ECollections.emptyEList();
+    }
   }
 
+  /** The view associated with this resource, if any. */
   public View getView() {
     return view;
   }
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Loading/saving the 'eview' file
 
   private Viewpoint loadViewpoint() throws IOException {
     URI uri = URI.createURI(viewpointPath).resolve(getURI());
@@ -128,6 +169,11 @@ public class ViewResource extends ResourceImpl {
     return weavingModel;
   }
 
+  private void setView(View view) {
+    this.view = view;
+    view.setResource(this);
+  }
+
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
     parse(inputStream);
@@ -140,6 +186,9 @@ public class ViewResource extends ResourceImpl {
     try {
       setView(new View(viewpoint, contributingModels, weavingModel));
     } catch (Exception e) {
+      // If we failed, add the exception to the resource errors, as this way
+      // resource browsers can show multiple errors at once rather than barfing
+      // on just one exception.
       getErrors().add(new Err(e.toString()));
     }
   }
@@ -212,15 +261,7 @@ public class ViewResource extends ResourceImpl {
     }
   }
 
-  @Override
-  public EList<EObject> getContents() {
-    if (view != null) {
-      return view.getVirtualContents();
-    } else {
-      return ECollections.emptyEList();
-    }
-  }
-
+  // Helper class to create Diagnostic for resource errors.
   class Err implements Diagnostic {
 
     String msg;
