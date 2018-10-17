@@ -91,6 +91,14 @@ public class ViewResource extends ResourceImpl {
     return view;
   }
 
+  /** Associate a view to this resource. */
+  public void setView(View view) {
+    // Cannot be private because it is used for creating purely in-memory views
+    // (see TestEMFViews.viewOnView)
+    this.view = view;
+    view.setResource(this);
+  }
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Loading/saving the 'eview' file
@@ -167,11 +175,6 @@ public class ViewResource extends ResourceImpl {
     }
 
     return weavingModel;
-  }
-
-  private void setView(View view) {
-    this.view = view;
-    view.setResource(this);
   }
 
   @Override
