@@ -86,8 +86,8 @@ examples ending with `-tutorial` are documented in [the manual][].
 Who is behind this project?
 ---------------------------
 
-This is an [Atlanmod](http://www.atlanmod.org) project, the tool platform of the
-[NaoMod](https://naomod.github.io/) research group.
+This is an [Atlanmod](https://www.atlanmod.org) project, the tool platform of
+the [NaoMod](https://naomod.github.io/) research group.
 
 The following people have made significant contributions to the project:
 
