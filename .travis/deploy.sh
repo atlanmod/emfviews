@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Deploy the built EMF Views manual by committing on top of the gh-pages branch,
+# preserving history.
+#
+# Ok so in theory we should just be able to use the Travis baked-in deployment
+# to pages: https://docs.travis-ci.com/user/deployment/pages/
+#
+# But it is insecure.  If you follow it, you will generate a Github access token
+# (with wide permissions for *other* repositories), and this token can be
+# accessed by collaborators.
+#
+# Instead, we follow this gist:
+# https://gist.github.com/domenic/ec8b0fc8ab45f39403dd
+#
+# which generates a deployment key pair that can only be used to push for the
+# emfviews repository.
+
 set -e # Exit with nonzero exit code if anything fails
 
 SOURCE_BRANCH="master"

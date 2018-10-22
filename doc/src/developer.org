@@ -7,10 +7,260 @@ models.
 # A picture of data coming in and out of the different EMF Views classes
 # (pipeline) would be very handy, as an overview
 
-# TODO: How the project is structured
+# TODO: We require sexp2emf, don't we?
 
-# TODO: How the manual is built
-# Org-mode exported to HTML and Eclipse help
+# TODO: fuzzy links to other files use the built-in Org ids instead of the
+# custom slugs
 
+* Hacking on EMF Views
+** Overview
+EMF Views is first and foremost an Eclipse plugin (or rather, a suite of Eclipse
+plugins).  Its purpose is to let users to build views from EMF-based models.
+The core plugin provides the logic for creating these views, and the other
+plugins provide extra conveniences: DSLs for creating views easily, an
+experimental viewer, extension facilities, etc.
 
-# TODO: CI setup for testing and gh-pages deployment
+Most of the critical code thus resides in the core plugin
+(~org.atlanmod.emfviews~), and in the Ecore-generated virtual links model.
+However, we also have an extensive manual and examples.
+
+*** Repository hierarchy
+If we take a look into the EMF Views repository, here is what we will see:
+
+#+BEGIN_EXAMPLE
+.
+├── doc
+│   ├── org.atlanmod.emfviews.doc
+│   └── src
+├── dsls
+│   ├── mel
+│   └── vpdl
+├── examples
+│   ├── emfviews-tutorial
+│   ├── programmatic-view-tutorial
+│   ├── traceability-demo
+│   ├── view-to-html-tutorial
+│   └── vpdl-tutorial
+├── features
+│   ├── org.atlanmod.emfviews.feature
+│   ├── org.atlanmod.emfviews.mel.feature
+│   └── org.atlanmod.emfviews.vpdl.feature
+├── plugins
+│   ├── org.atlanmod.emfviews
+│   ├── org.atlanmod.emfviews.ui.editors
+│   ├── org.atlanmod.emfviews.virtuallinks
+│   └── org.atlanmod.emfviews.virtuallinksepsilondelegate
+├── tests
+│   └── org.atlanmod.emfviews.tests
+└── update
+#+END_EXAMPLE
+
+In order, we have:
+
+- The *doc* folder which contains the Org source for the EMF Views manual and
+  the Eclipse help plugin.  See the section [[*Building the manual][The manual]].
+
+- The *dsls* folder contains the Xtext-based projects for our two languages that
+  help build views, as well as their tests.  See [[*VPDL and MEL][VPDL and MEL]].
+
+- The *examples* folder contains the source code and models for the tutorials
+  and demos.  The tutorials are documented in [[file:user.org::*Tutorials][the user manual]].
+
+- The *features* folder contains the Eclipse features for the update site.
+  There is one feature for the core plugin, and one per DSL.  An Eclipse feature
+  is just a group of plugins, to simplify installation and dependency
+  management.
+
+- The *plugins* folder contains the core plugins, namely ~org.atlanmod.emfviews~
+  and the virtual links model which is generated from Ecore.  The ECL delegate
+  plugin (see [[file:user.org::*Adding%20new%20matching%20models][Adding new matching models]]) is used to create views from an ECL
+  file.  There is also an experimental views browser in
+  ~org.atlanmod.emfviews.ui.editors~.
+
+- The *tests* folder contains the tests for the core plugins.  These tests are
+  run by our [[*Maven build overview][Maven build]] and on our [[*Continuous integration][continuous integration]].
+
+- Finally, the *update* folder contains the update site configuration.  An
+  Eclipse update site is just a bunch of JARs and XML description files.  This
+  is a convenient way for users to install multiple plugins from the same
+  vendor.  Our update site simply regroups all the features.
+
+** Building and running the project manually
+See the [[https://github.com/atlanmod/emfviews#development-setup][Development setup]] instructions in the README.
+
+While you can use Maven to build and run the tests, most of the interesting
+functionality of the plugins comes from actually using it in an Eclipse
+application, in concert with other EMF-based tools like the Sample Ecore Editor,
+the [[eclipse:/topic/org.eclipse.modisco.infrastructure.doc/mediawiki/model_browser/user.html][MoDisco Model Browser]] or [[eclipse:/topic/org.eclipse.m2m.atl.doc/guide/concepts/ATL%2520Concepts.html][ATL]].
+
+We thus recommend that you import the projects in Eclipse.  You can then run
+another Eclipse instance with the plugins loaded; if you use a debug instance
+(Debug As \to Eclise Application) instead, you will be able to tweak the code
+while the client instance is running, which can make for a more pleasing
+development experience.
+
+*** Maven build overview
+The Maven build is there mostly for our [[*Continuous integration][continuous integration]], since it's
+about the only sane way to build Eclipse plugins in batch.
+
+The way it is setup, we have a ~pom.xml~ file at the root which declares a bunch
+of modules:
+
+#+BEGIN_SRC xml
+<modules>
+  <module>plugins</module>
+  <module>features</module>
+  <module>update</module>
+  <module>tests</module>
+  <module>dsls</module>
+  <module>doc</module>
+</modules>
+#+END_SRC
+
+In each module, you will find another ~pom.xml~ file with its own modules, etc.
+The leaves of this tree are the actual plugins, which use the ~eclipse-plugin~
+packaging:
+
+#+BEGIN_SRC xml
+<packaging>eclipse-plugin</packaging>
+#+END_SRC
+
+Invoking ~mvn install~ (or any other target) in the root directory will make use
+of all the ~pom.xml~ files.
+
+The plugins are built using [[https://www.eclipse.org/tycho/][Tycho]], a Maven extension for building Eclipse
+plugins.  The benefit of Tycho is that it is pulling the plugin dependencies
+from the ~plugin.xml~ files, so we don't have to duplicate our list of
+dependencies.  Most of the Tycho configuration is in the root ~pom.xml~ and
+shouldn't need much tweaking.
+
+The most likely source of adjustment is in bumping the top-level dependencies.
+You can easily find them at the top of the root ~pom.xml~:
+
+#+BEGIN_SRC xml
+<properties>
+  <tycho-version>1.1.0</tycho-version>
+  <eclipse-oxygen>
+    http://download.eclipse.org/releases/oxygen/201712201001
+  </eclipse-oxygen>
+  <eclipse-epsilon>
+    http://download.eclipse.org/epsilon/updates/
+  </eclipse-epsilon>
+  <xtext-version>2.14.0</xtext-version>
+</properties>
+#+END_SRC
+
+Should you require a more recent version of Eclipse, or Xtext, this is where to
+change it.
+
+The Maven builds runs with JUnit, as running them in Eclipse would do.  Note
+that running all the tests require additional dependencies, as stated by the
+~pom.xml~ of ~org.atlanmod.emfviews.tests~:
+
+#+BEGIN_SRC xml
+<repositories>
+  <repository>
+    <id>obeo-bpmn2</id>
+    <layout>p2</layout>
+    <url>
+https://s3-eu-west-1.amazonaws.com/obeo-bpmndesigner-releases/3.5.0/repository/
+    </url>
+  </repository>
+
+  <repository>
+    <id>eclipse-reqif</id>
+    <layout>p2</layout>
+    <url>http://download.eclipse.org/rmf/updates/releases/0.13.0/</url>
+  </repository>
+</repositories>
+#+END_SRC
+
+Building the DSLs using Maven required more pipework, which [[*Maven build of Xtext DSLs][see]].
+
+** VPDL and MEL
+VPDL and MEL are two domain-specific languages (DSLs) that are used to simplify
+the creation of views, or more precisely, the creation of a view weaving model
+(virtual links).  For more on how to use these DSLs, see the [[file:user.org::*VPDL][user manual]].
+
+We have developed these DSLs with [[https://www.eclipse.org/Xtext/][Xtext]], which conveniently generates a parser
+and an editor plugin with auto-completion and error reporting directly from a
+source grammar.  Here are the [[https://github.com/atlanmod/emfviews/blob/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][VPDL]] and [[https://github.com/atlanmod/emfviews/blob/master/dsls/mel/org.atlanmod.emfviews.mel/src/org/atlanmod/emfviews/mel/Mel.xtext][MEL]] grammars.
+
+Xtext grammars are essentially BNF-based, but instead of giving you parse trees,
+they give you graphs as EMF models.
+
+We then turn a parsed graph into a virtual links model using an ATL
+transformation.  This is done by the extending the ~AbstractGenerator~ class.
+We also create ~eview~ and ~eviewpoint~ files, accordingly.  See [[https://github.com/atlanmod/emfviews/blob/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/generator/VpdlGenerator.xtend][VpdlGenerator]]
+and [[https://github.com/atlanmod/emfviews/blob/master/dsls/mel/org.atlanmod.emfviews.mel/src/org/atlanmod/emfviews/mel/generator/MelGenerator.xtend][MelGenerator]] for how this is done.  Note that these are ~.xtend~ files:
+this is a Java-like language, but more dynamic, and well-suited for creating
+templates.  These get compiled to Java files, and the use of Xtend is
+transparent to the end-user.
+
+We also enhance the validation and auto-completion of these DSLs by extending
+the ~AbstractScopeProvider~ of Xtext.  In VPDL for instance, we want to make
+sure only valid classes or attributes are used, with respect to the declared
+metamodels.  This is done in [[https://github.com/atlanmod/emfviews/blob/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/scoping/VpdlScopeProvider.xtend][VpdlScopeProvider]]; see [[https://github.com/atlanmod/emfviews/blob/master/dsls/mel/org.atlanmod.emfviews.mel/src/org/atlanmod/emfviews/mel/scoping/MelScopeProvider.xtend][MelScopeProvider]] for MEL.
+
+*** Maven build of Xtext DSLs
+Build the DSLs using Maven is more involved than simply using Tycho.  We need
+to:
+
+1. Add a goal to regenerate the plugins from the Xtext grammar.
+2. Compile the Xtend files to Java.
+3. Compile the ATL transformations to EMFTVM bytecode.
+4. Cleanup these files for the ~clean~ goal.
+
+The first two tasks are documented, and we can use the ~xtend-maven-plugin~ for
+the first one, and the ~exec-maven-plugin~ for the second.  Generating the
+plugins from the grammar can take a while though, and usually you don't want to
+do it unless the grammar has been changed.  You can skip this step by passing
+~-Dmwe2-skip-generate=true~ to ~mvn~.
+
+Running ATL EMFTVM in Maven is possible only since ATL 4.0, but it works well.
+
+Cleaning up generated files is verbose, but straightforward.  See the [[https://github.com/atlanmod/emfviews/blob/master/dsls/pom.xml][pom.xml]]
+for details.
+
+** Building the manual
+The EMF Views manual is what you are reading right now.  There are two versions
+of it: the online HTML version published [[https://www.atlanmod.org/emfviews/manual/][here]], and the Eclipes Help version,
+published as an Eclipse help plugin (~org.atlanmod.emfviews.doc~) and available
+from the Help \to Contents menu inside Eclipse if you have the plugin installed.
+Both versions are identical in content, but the Eclipse plugin is easy to access
+offline.
+
+See [[https://github.com/atlanmod/emfviews#building-the-manual][Building the manual]] in the README for basic build instructions.
+
+The manual is written in [[https://orgmode.org/][Org]].  The syntax is akin to Markdown, but Org provides
+a very convenient and customizable export to HTML.  In this respect, it is
+closer to [[http://www.sphinx-doc.org/][Sphinx]], but the Org syntax is more sensible, and we can customize the
+whole pipeline in Emacs Lisp instead of Python.
+
+The manual is built simply by invoking ~make~, which in turn invokes ~emacs~ to
+build both versions.  All the setup for the HTML export is done in the single
+~doc/publish.el~ file, which is well commented.
+
+Note that as the ~org.atlanmod.emfviews.doc~ plugin is part of the update site,
+if you want to build the update site manually with ~mvn install~, you should
+first build the manual.  You shouldn't need to build the update site manually
+though, as it is built automatically by our [[*Continuous integration][continuous integration]].
+
+** Continuous integration
+We use [[https://travis-ci.org/][Travis]] to run our tests after each commit.  This is done using the [[*Maven build overview][Maven
+build]].  See the [[https://github.com/atlanmod/emfviews/blob/master/.travis.yml][Travis configuration file]] for details.
+
+After each successful build on the ~master~ branch, we also build the manual and
+deploy it on the [[https://www.atlanmod.org/emfviews/][EMF Views website]], on the ~gh-pages~ branch.  The way we do
+this is more involved than what is suggested by the Travis documentation, with
+good reasons documented in [[https://github.com/atlanmod/emfviews/blob/master/.travis/deploy.sh][the deploy script]].
+
+Technically building the online manual could be a separate Travis job, but since
+we need the manual to build the ~org.atlanmod.emfviews.doc~ plugin, it's better
+to build it only once.
+
+#+BEGIN_note
+On success, we should deploy snapshots of the update site to
+updates.atlanmod.org.  This is not currently the case due to issues with finding
+a hosting server.
+#+END_note

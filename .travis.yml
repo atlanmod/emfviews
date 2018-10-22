@@ -7,6 +7,7 @@ services:
 
 env:
   global:
+  # Used by the .travis/deploy.sh script
   - ENCRYPTION_LABEL: "b7b263ca9d8b"
 
 install:
@@ -15,7 +16,8 @@ install:
 
 script:
   # Build the manual before mvn, because this also populates the emfviews.doc
-  # plugin
+  # plugin.
+  # Pull a docker image with Emacs and Cask for convenience.
   - docker run --volume "$TRAVIS_BUILD_DIR"/doc:/emfviews-doc
                --workdir /emfviews-doc
                flycheck/emacs-cask:26.1
@@ -25,7 +27,7 @@ script:
   - mvn --show-version --batch-mode -Dmaven.javadoc.skip=true integration-test
 
 # The deploy stage runs only for the master branch, only if the build succeeded,
-# and never for pull requests
+# and never for pull requests.
 deploy:
   - provider: script
     skip_cleanup: true
