@@ -11,3 +11,6 @@ models.
 
 # TODO: How the manual is built
 # Org-mode exported to HTML and Eclipse help
+
+
+# TODO: CI setup for testing and gh-pages deployment

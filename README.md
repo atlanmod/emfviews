@@ -50,6 +50,24 @@ Then you can test them by launching a guest Eclipse with all the plugins from
 the workspace (right-click on the EMF Views plugin in the package explorer ▶ Run
 As ▶ Eclipse Application).
 
+Building the manual
+-------------------
+
+The EMF Views manual is available [online][documentation], and in the Eclipse
+Help if you have the EMF Views plugin installed.
+
+The manual is written in [Org][].  To build the manual locally, you need
+[Emacs][], [Cask][] and [make][].  Then, in the `doc` folder:
+
+```
+$ cask install
+$ make
+```
+
+The first line installs the dependencies, and the second builds both the HTML
+standalone and the Eclipse help plugin versions.  The `doc/html` contains the
+standalone HTML manual, which you can browse locally.
+
 What can you find in this repository?
 -------------------------------------
 
@@ -113,3 +131,8 @@ which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 [update site]: http://atlanmodexp.info.emn.fr:8800/updatesite/snapshot/
 [user manual]: https://www.atlanmod.org/emfviews/manual/user.html
 [the manual]: https://www.atlanmod.org/emfviews/manual/user.html#tutorials
+[documentation]: https://www.atlanmod.org/emfviews/manual/
+[Org]: https://orgmode.org/
+[Emacs]: https://www.gnu.org/software/emacs/
+[Cask]: https://github.com/cask/cask/
+[make]: https://www.gnu.org/software/make/
