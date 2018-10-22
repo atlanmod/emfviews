@@ -73,10 +73,15 @@ plugins for edition:
 * `org.atlanmod.emfviews.mel`: Metamodel Extension Language; can extend
   metamodel with new classes, attributes, relations.
 
-The `examples` folder contains ideas of how to use EMF Views and the DSLs:
+The `examples` folder contains ideas of how to use EMF Views and the DSLs.  The
+examples ending with `-tutorial` are documented in [the manual][].
 
 * `emfviews-tutorial`: Create your first Viewpoint and View.
 * `vpdl-tutorial`: Define a viewpoint with VPDL.
+* `view-to-html-tutorial`: Use a view as input to an EGL template.
+* `traceability-demo`: A view encompassing four models from the design time to
+  the runtime of a Java project.  Navigating between the four models is made
+  easier with an interactive HTML report generated from the view.
 
 Who is behind this project?
 ---------------------------
@@ -107,3 +112,4 @@ which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 
 [update site]: http://atlanmodexp.info.emn.fr:8800/updatesite/snapshot/
 [user manual]: https://www.atlanmod.org/emfviews/manual/user.html
+[the manual]: http://www.atlanmod.org/emfviews/manual/user.html#tutorials
