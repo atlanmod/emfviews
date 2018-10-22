@@ -533,7 +533,7 @@ is:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ecl" id="orgc5714fd"><span class="org-keyword">return</span> p.title = c.eContainer().title
+<pre class="src src-ecl" id="org7a55635"><span class="org-keyword">return</span> p.title = c.eContainer().title
    <span class="org-keyword">and</span> c = c.eContainer().eContents().first();
 </pre>
 </div>
@@ -549,7 +549,7 @@ only one chapter is part of the <code>bookChapters</code> association:
 </p>
 
 
-<div id="org6022f42" class="figure">
+<div id="org4faf004" class="figure">
 <p><img src="images/view-first-chapter.png" alt="view-first-chapter.png">
 </p>
 </div>
@@ -652,7 +652,7 @@ to aliases used in the <code>select</code> clause.
 <p>
 Lastly, the <code>where</code> clause specifies, for each new association, how to match
 elements from contributing models in the view.  This is used to generate the matching model
-as an ECL file.  Here, we use the same predicate as <a href="#orgc5714fd">before</a>, but this time <code>s</code>
+as an ECL file.  Here, we use the same predicate as <a href="#org7a55635">before</a>, but this time <code>s</code>
 and <code>t</code> refer respectively to the source (<code>Publication</code>) and target (<code>Chapter</code>)
 of the association.
 </p>
@@ -712,7 +712,7 @@ specify the contributing models you want to use.  Here is the definition of
 
 <p>
 Opening <code>firstChapter.eview</code> using the MoDisco Model Browser, we get the same
-result as <a href="#org6022f42">before</a>, the difference being that this time the new association is
+result as <a href="#org4faf004">before</a>, the difference being that this time the new association is
 more accurately called <code>firstChapter</code>:
 </p>
 
