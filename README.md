@@ -112,4 +112,4 @@ which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 
 [update site]: http://atlanmodexp.info.emn.fr:8800/updatesite/snapshot/
 [user manual]: https://www.atlanmod.org/emfviews/manual/user.html
-[the manual]: http://www.atlanmod.org/emfviews/manual/user.html#tutorials
+[the manual]: https://www.atlanmod.org/emfviews/manual/user.html#tutorials
