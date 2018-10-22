@@ -106,4 +106,4 @@ Public License, v. 2.0 are satisfied: GNU General Public License, version 3
 which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 
 [update site]: http://atlanmodexp.info.emn.fr:8800/updatesite/snapshot/
-[tutorials]: https://www.atlanmod.org/emfviews/manual/user.html
+[user manual]: https://www.atlanmod.org/emfviews/manual/user.html
