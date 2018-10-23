@@ -24,6 +24,7 @@
 (org-export-define-derived-backend 'eclipse-help 'html
   :translate-alist '((link . org-eclipse-external-link-export)))
 
+
 
 ;;; Custom links
 
@@ -69,6 +70,7 @@ information."
                 desc)
       ;; If it's not an external link, fallback to default treatment
       (org-export-with-backend 'html link desc info))))
+
 
 
 ;;; Generating CUSTOM_ID slugs
@@ -150,6 +152,20 @@ holding contextual information."
       (format "\n<h%d id=\"%s\"><a href=\"#%s\">%s</a></h%d>\n%s"
               level id id full-text level contents))))
 
+;; Oh one more thing.  Org by default will use UUID references for fuzzy links
+;; to other files.  We don't want that, we want to use the custom ID instead.
+;; This is the way to do it.
+(advice-add 'org-publish-resolve-external-link :around
+            (lambda (orig-fun search file)
+              ;; If it's a headline, we can use the custom ID.
+              (and (eq (string-to-char search) ?*)
+                   ;; We know what the custom ID will look like: it will be
+                   ;; slugified.  So we don't even have to look into the target
+                   ;; file!  We don't need to get rid of the prefix '*' either
+                   ;; since they will be discarded by `slugify'.
+                   (slugify (org-link-unescape search)))))
+
+
 
 ;;; Export setup
 
@@ -212,6 +228,7 @@ Return output file name."
 ;; that.
 (setq make-backup-files nil)
 
+
 
 ;;; Highlighting for niche languages
 
@@ -251,6 +268,7 @@ Return output file name."
                           (?\n . ">")
                           (?\" . "\"")
                           (?\' . "\"")))))
+
 
 
 ;;; HACKS
@@ -478,3 +496,5 @@ holding export options."
     (indent-region (point-min) (point-max)))
   (write-region nil nil toc-file)
   (message "Wrote TOC file %s" toc-file))
+
+;;; publish.el ends here

@@ -9,9 +9,6 @@ models.
 
 # TODO: We require sexp2emf, don't we?
 
-# TODO: fuzzy links to other files use the built-in Org ids instead of the
-# custom slugs
-
 * Hacking on EMF Views
 ** Overview
 EMF Views is first and foremost an Eclipse plugin (or rather, a suite of Eclipse
@@ -64,7 +61,7 @@ In order, we have:
   help build views, as well as their tests.  See [[*VPDL and MEL][VPDL and MEL]].
 
 - The *examples* folder contains the source code and models for the tutorials
-  and demos.  The tutorials are documented in [[file:user.org::#tutorials][the user manual]].
+  and demos.  The tutorials are documented in [[file:user.org::*Tutorials][the user manual]].
 
 - The *features* folder contains the Eclipse features for the update site.
   There is one feature for the core plugin, and one per DSL.  An Eclipse feature
@@ -73,7 +70,7 @@ In order, we have:
 
 - The *plugins* folder contains the core plugins, namely ~org.atlanmod.emfviews~
   and the virtual links model which is generated from Ecore.  The ECL delegate
-  plugin (see [[file:user.org::#adding-new-matching-models][Adding new matching models]]) is used to create views from an ECL
+  plugin (see [[file:user.org::*Adding%20new%20matching%20models][Adding new matching models]]) is used to create views from an ECL
   file.  There is also an experimental views browser in
   ~org.atlanmod.emfviews.ui.editors~.
 
@@ -180,7 +177,7 @@ Building the DSLs using Maven required more pipework, which [[*Maven build of Xt
 ** VPDL and MEL
 VPDL and MEL are two domain-specific languages (DSLs) that are used to simplify
 the creation of views, or more precisely, the creation of a view weaving model
-(virtual links).  For more on how to use these DSLs, see the [[file:user.org::#vpdl][user manual]].
+(virtual links).  For more on how to use these DSLs, see the [[file:user.org::*VPDL][user manual]].
 
 We have developed these DSLs with [[https://www.eclipse.org/Xtext/][Xtext]], which conveniently generates a parser
 and an editor plugin with auto-completion and error reporting directly from a
