@@ -38,7 +38,32 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
+/**
+ * An EMF resource representing an 'eviewpoint' file.
+ *
+ * An 'eviewpoint' file is a simply a property (key=value) file which describes
+ * a viewpoint.
+ *
+ * This resource can be used either to load an existing 'eviewpoint' file and
+ * obtain a Viewpoint, or to serialize an existing Viewpoint.
+ */
 public class ViewpointResource extends ResourceImpl {
+  /*
+   * All this code used to be part of Viewpoint, which also extended
+   * ResourceImpl, but separating the two lets us create Viewpoint objects from
+   * Java with a clean API, without having to use the weird EMF resource
+   * ceremony.
+   */
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Internal state
+
+  private List<String> contributingMetamodelsPaths; // paths to contributing metamodels
+  private URI weavingModelURI;                      // path to the weaving model
+  private Viewpoint viewpoint;                      // created viewpoint
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Public API
 
   // Valid fields for an eviewpoint file
   public static final String EVIEWPOINT_CONTRIBUTING_METAMODELS = "contributingMetamodels";
@@ -60,10 +85,6 @@ public class ViewpointResource extends ResourceImpl {
    */
   public static final Map<String, Viewpoint> registry = new HashMap<>();
 
-  private List<String> contributingMetamodelsPaths;
-  private URI weavingModelURI;
-
-  private Viewpoint viewpoint;
 
   public ViewpointResource() {
     super();
@@ -73,15 +94,24 @@ public class ViewpointResource extends ResourceImpl {
     super(uri);
   }
 
-  // This viewpoint will be replaced if another one is loaded from the URI.
-  private void setViewpoint(Viewpoint v) {
-    viewpoint = v;
-    viewpoint.setResource(this);
+  @Override
+  public EList<EObject> getContents() {
+    if (viewpoint != null) {
+      return ECollections.unmodifiableEList(Arrays.asList(viewpoint.getRootPackage()));
+    } else {
+      return ECollections.emptyEList();
+    }
   }
 
+  /** The viewpoint associated to this resource, if any. */
   public Viewpoint getViewpoint() {
     return viewpoint;
   }
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Loading/saving the 'eviewpoint' file
+
+
 
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> _options) throws IOException {
@@ -216,15 +246,7 @@ public class ViewpointResource extends ResourceImpl {
     p.store(outputStream, null);
   }
 
-  @Override
-  public EList<EObject> getContents() {
-    if (viewpoint != null) {
-      return ECollections.unmodifiableEList(Arrays.asList(viewpoint.getRootPackage()));
-    } else {
-      return ECollections.emptyEList();
-    }
-  }
-
+  // Helper class to create Diagnostic for resource errors.
   class Err implements Diagnostic {
 
     String msg;
@@ -257,6 +279,12 @@ public class ViewpointResource extends ResourceImpl {
       return 0;
     }
 
+  }
+
+  // This viewpoint will be replaced if another one is loaded from the URI.
+  private void setViewpoint(Viewpoint v) {
+    viewpoint = v;
+    viewpoint.setResource(this);
   }
 
 }
