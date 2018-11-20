@@ -190,7 +190,7 @@ public class ViewpointResource extends ResourceImpl {
         p = EPackage.Registry.INSTANCE.getEPackage(uri.toString());
       }
       // If it's an Ecore file, then get the EPackage from the resource
-      else if (uri.fileExtension().equals("ecore")) {
+      else {
         Resource r = new ResourceSetImpl().getResource(uri, true);
         EPackage pack = (EPackage) r.getContents().get(0);
         // @Assumption: the Ecore contains only one EPackage we care about
