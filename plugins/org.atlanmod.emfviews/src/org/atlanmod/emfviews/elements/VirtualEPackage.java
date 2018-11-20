@@ -33,12 +33,15 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EPackageExtendedMetaData;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Viewpoint;
 
-public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPackage {
+public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPackage,
+  BasicExtendedMetaData.EPackageExtendedMetaData.Holder {
 
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
   private List<VirtualEPackage> virtualPackages = new ArrayList<>();
@@ -299,6 +302,16 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
       }
     }
     return null;
+  }
+
+  @Override
+  public EPackageExtendedMetaData getExtendedMetaData() {
+    return ((BasicExtendedMetaData.EPackageExtendedMetaData.Holder) concrete()).getExtendedMetaData();
+  }
+
+  @Override
+  public void setExtendedMetaData(EPackageExtendedMetaData ePackageExtendedMetaData) {
+    throw new UnsupportedOperationException();
   }
 
 }
