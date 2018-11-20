@@ -167,11 +167,13 @@ public class ViewResource extends ResourceImpl {
       } catch (Exception e) {
         getErrors().add(new Err("Exception while creating weaving model from matching model: %s", e.toString()));
       }
-    } else {
+    } else if (weavingModelPath != null) {
       // Otherwise, the weaving model should be provided in the eview file
       URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
       Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
       weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
+    } else {
+      weavingModel = Viewpoint.emptyWeavingModel;
     }
 
     return weavingModel;
@@ -236,8 +238,8 @@ public class ViewResource extends ResourceImpl {
 
     // There cannot be a matching model and weaving model specified together, but
     // at least one of them must be present.
-    if (p.containsKey(EVIEW_MATCHING_MODEL) == p.containsKey(EVIEW_WEAVING_MODEL)) {
-      getErrors().add(new Err("Error in parsing eview file: exactly one of {matching model, weaving model} must be present"));
+    if (p.containsKey(EVIEW_MATCHING_MODEL) && p.containsKey(EVIEW_WEAVING_MODEL)) {
+      getErrors().add(new Err("Error in parsing eview file: the keys {matching model, weaving model} are exclusive"));
     }
 
     for (String key : p.stringPropertyNames()) {
