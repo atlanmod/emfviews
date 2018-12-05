@@ -14,11 +14,11 @@ Installation
 ------------
 
 The simplest option is to add our [update site][] to Eclipse, and to install the
-EMF Views feature from there.  To get started, see our [user manual][] for
-tutorials.
+EMF Views feature from there.  To get started, see our [user manual][].
 
 Alternatively, you can clone this repository and build the update site locally
-with [Maven](https://maven.apache.org/):
+with [Maven](https://maven.apache.org/).  First install
+[sexp2emf](https://github.com/atlanmod/sexp2emf), then:
 
 ```
 $ git clone https://github.com/atlanmod/emfviews.git
