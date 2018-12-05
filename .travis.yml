@@ -24,7 +24,7 @@ script:
                /bin/bash -c "cask install && make"
 
   # Then build and test all Java plugins
-  - mvn --show-version --batch-mode -Dmaven.javadoc.skip=true integration-test
+  - mvn --show-version --batch-mode -Dmaven.javadoc.skip=true -P update-site integration-test
 
 # The deploy stage runs only for the master branch, only if the build succeeded,
 # and never for pull requests.

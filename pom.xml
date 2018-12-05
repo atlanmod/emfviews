@@ -20,12 +20,20 @@
 
   <modules>
     <module>plugins</module>
-    <module>features</module>
-    <module>update</module>
     <module>tests</module>
     <module>dsls</module>
-    <module>doc</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>update-site</id>
+      <modules>
+        <module>doc</module>
+        <module>features</module>
+        <module>update</module>
+      </modules>
+    </profile>
+  </profiles>
 
   <repositories>
     <repository>
