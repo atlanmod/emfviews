@@ -47,6 +47,10 @@ dependencies installed for all the plugins to build:
 * [Xtext](http://www.eclipse.org/Xtext/)
 * [sexp2emf](https://github.com/atlanmod/sexp2emf) (for running the tests)
 
+Before building you'll need to generate the Xtext artifacts (right-click the
+[Mel.xtext][] and [Vpdl.xtext][] grammars in the Eclipse explorer ▶ Run As ▶
+Generate Xtext Artifacts).
+
 Then you can test them by launching a guest Eclipse with all the plugins from
 the workspace (right-click on the EMF Views plugin in the package explorer ▶ Run
 As ▶ Eclipse Application).
@@ -137,3 +141,5 @@ which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 [Emacs]: https://www.gnu.org/software/emacs/
 [Cask]: https://github.com/cask/cask/
 [make]: https://www.gnu.org/software/make/
+[Mel.xtext]: https://github.com/atlanmod/emfviews/blob/master/dsls/mel/org.atlanmod.emfviews.mel/src/org/atlanmod/emfviews/mel/Mel.xtext
+[Vpdl.xtext]: https://github.com/atlanmod/emfviews/blob/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext
