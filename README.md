@@ -73,6 +73,17 @@ The first line installs the dependencies, and the second builds both the HTML
 standalone and the Eclipse help plugin versions.  The `doc/html` contains the
 standalone HTML manual, which you can browse locally.
 
+Building the update site
+------------------------
+
+You can build the Eclipse update site locally using Maven.  For that, you need
+to [Build the manual][#building-the-manual] first.  Then, use the `update-site`
+profile:
+
+```sh
+$ mvn -P update-site package
+```
+
 What can you find in this repository?
 -------------------------------------
 
