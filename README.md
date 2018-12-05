@@ -77,7 +77,7 @@ Building the update site
 ------------------------
 
 You can build the Eclipse update site locally using Maven.  For that, you need
-to [Build the manual][#building-the-manual] first.  Then, use the `update-site`
+to [Build the manual](#building-the-manual) first.  Then, use the `update-site`
 profile:
 
 ```sh
