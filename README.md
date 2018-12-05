@@ -45,6 +45,7 @@ dependencies installed for all the plugins to build:
 * [ATL](https://www.eclipse.org/atl/)
 * [Epsilon](https://www.eclipse.org/epsilon/)
 * [Xtext](http://www.eclipse.org/Xtext/)
+* [sexp2emf](https://github.com/atlanmod/sexp2emf) (for running the tests)
 
 Then you can test them by launching a guest Eclipse with all the plugins from
 the workspace (right-click on the EMF Views plugin in the package explorer ▶ Run
