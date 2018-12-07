@@ -305,11 +305,12 @@ version(s), and exceptions or additional permissions here}.&quot;
    </license>
 
    <requires>
-      <import plugin="org.eclipse.xtext" version="2.13.0" match="compatible"/>
-      <import plugin="org.eclipse.xtext.xbase" version="2.13.0" match="compatible"/>
       <import plugin="org.atlanmod.emfviews.virtuallinks" version="0.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.m2m.atl.core.emf" version="3.8.0" match="compatible"/>
-      <import plugin="org.eclipse.m2m.atl.engine.emfvm" version="3.8.0" match="compatible"/>
+      <import plugin="org.eclipse.m2m.atl.emftvm" version="3.8.0"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.14.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.14.0" match="greaterOrEqual"/>
+      <import plugin="org.antlr.runtime" version="3.2.0" match="perfect"/>
+      <import plugin="org.apache.log4j"/>
       <import plugin="org.atlanmod.emfviews.mel" version="0.3.0" match="greaterOrEqual"/>
       <import plugin="org.atlanmod.emfviews.mel.ide" version="0.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtext.ui" version="2.13.0" match="compatible"/>
@@ -318,8 +319,14 @@ version(s), and exceptions or additional permissions here}.&quot;
       <import plugin="org.eclipse.compare" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.xtext.builder" version="2.13.0" match="compatible"/>
       <import plugin="org.eclipse.xtext.xbase.lib" version="2.13.0" match="compatible"/>
-      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.xtext.ide" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext" version="2.14.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.xbase" version="2.14.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.14.0" match="compatible"/>
+      <import plugin="org.eclipse.xtext.util" version="2.14.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.common" version="2.14.0" match="compatible"/>
    </requires>
 
    <plugin
