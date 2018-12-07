@@ -33,7 +33,7 @@ rm -rf $OUT_DIR/emfviews/**/* || exit 0
 
 # Copy built update site to out
 # The '/.' copies the 'repository' folder *contents*.
-cp -r update/target/repository/. $OUT_DIR/emfviews
+cp -r update/target/repository/. $OUT_DIR/emfviews/snapshot
 
 # Now let's go have some fun with the cloned repo
 cd $OUT_DIR
