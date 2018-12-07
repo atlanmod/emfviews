@@ -12,14 +12,14 @@ TARGET_BRANCH="master"
 COMMIT_AUTHOR_EMAIL="deploy@travis.org"
 REPO='https://github.com/atlanmod/updates'
 OUT_DIR="out-updates"
-ENCRYPTION_LABEL="df66d3698759"
+ENCRYPTION_LABEL="b7b263ca9d8b"
 
 # Save some useful information
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 SHA=`git rev-parse --verify HEAD`
 TARGET_BRANCH_TEMP="master-temp"
 
-echo Deploying manual to $REPO on branch $TARGET_BRANCH ...
+echo Deploying update site to $REPO on branch $TARGET_BRANCH ...
 
 # Clone the existing target branch for this repo into out/
 # Always create a new orphan branch
