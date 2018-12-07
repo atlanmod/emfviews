@@ -1,3 +1,3 @@
 #!/bin/bash
 
-bash ./deploy-manual.sh && bash ./deploy-update-site.sh
+bash .travis/deploy-manual.sh && bash .travis/deploy-update-site.sh
