@@ -26,10 +26,12 @@ echo Deploying update site to $REPO on branch $TARGET_BRANCH ...
 git clone $REPO $OUT_DIR
 cd $OUT_DIR
 git checkout --orphan $TARGET_BRANCH_TEMP
+# Unstage everything, otherwise we'll keep the same files
+git rm --cached '*'
 cd ..
 
 # Clean out existing contents
-rm -rf $OUT_DIR/emfviews/**/* || exit 0
+rm -rf $OUT_DIR/emfviews/** || exit 0
 
 # Copy built update site to out
 # The '/.' copies the 'repository' folder *contents*.
