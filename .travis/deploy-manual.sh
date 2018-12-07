@@ -21,6 +21,7 @@ set -e # Exit with nonzero exit code if anything fails
 TARGET_BRANCH="gh-pages"
 COMMIT_AUTHOR_EMAIL="deploy@travis.org"
 OUT_DIR="out-emfviews"
+ENCRYPTION_LABEL="b7b263ca9d8b"
 
 # Save some useful information
 REPO=`git config remote.origin.url`

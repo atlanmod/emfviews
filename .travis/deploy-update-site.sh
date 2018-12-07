@@ -12,6 +12,7 @@ TARGET_BRANCH="master"
 COMMIT_AUTHOR_EMAIL="deploy@travis.org"
 REPO='https://github.com/atlanmod/updates'
 OUT_DIR="out-updates"
+ENCRYPTION_LABEL="df66d3698759"
 
 # Save some useful information
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
