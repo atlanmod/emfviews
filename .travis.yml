@@ -7,8 +7,8 @@ services:
 
 env:
   global:
-  # Used by the .travis/deploy.sh script
-  - ENCRYPTION_LABEL: "b7b263ca9d8b"
+  # Used by the .travis/deploy-* scripts
+  - ENCRYPTION_LABEL: "df66d3698759"
 
 install:
   - git clone --depth 1 https://github.com/atlanmod/sexp2emf.git
