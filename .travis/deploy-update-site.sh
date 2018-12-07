@@ -67,7 +67,7 @@ ssh-add ../.travis/deploy-key-updates
 # Since for the deployment we don't actually touch the LFS, the workaround is
 # just to remove the pre-push hook that triggers LFS.
 # See https://github.com/git-lfs/git-lfs/issues/2284
-rm .git/hooks/pre-push
+rm --force .git/hooks/pre-push
 
 # Now that we're all set up, we can push.  Using `--force` to ensure we erase
 # history on the remote branch.

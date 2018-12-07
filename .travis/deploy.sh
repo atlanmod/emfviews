@@ -10,10 +10,10 @@ fold_end() {
   echo -e "\ntravis_fold:end:$1\r"
 }
 
-fold_start deploy.1 "Deploy manual"
+fold_start deploy.manual "Deploy manual"
 bash .travis/deploy-manual.sh
-fold_end deploy.1
+fold_end deploy.manual
 
-fold_start deploy.2 "Deploy update site"
+fold_start deploy.updates "Deploy update site"
 bash .travis/deploy-update-site.sh
-fold_end deploy.2
+fold_end deploy.updates
