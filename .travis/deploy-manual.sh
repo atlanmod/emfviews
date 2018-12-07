@@ -20,29 +20,32 @@ set -e # Exit with nonzero exit code if anything fails
 
 TARGET_BRANCH="gh-pages"
 COMMIT_AUTHOR_EMAIL="deploy@travis.org"
+OUT_DIR="out-emfviews"
 
 # Save some useful information
 REPO=`git config remote.origin.url`
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 SHA=`git rev-parse --verify HEAD`
 
+echo Deploying manual to $REPO on branch $TARGET_BRANCH ...
+
 # Clone the existing gh-pages for this repo into out/
 # Create a new empty branch if gh-pages doesn't exist yet (should only happen on
 # first deploy)
-git clone $REPO out
-cd out
+git clone $REPO $OUT_DIR
+cd $OUT_DIR
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 cd ..
 
 # Clean out existing contents
-rm -rf out/manual/**/* || exit 0
+rm -rf $OUT_DIR/manual/**/* || exit 0
 
 # Copy built manual to out
 # The '/.' copies the html folder *contents*.
-cp -r doc/html/. out/manual
+cp -r doc/html/. $OUT_DIR/manual
 
 # Now let's go have some fun with the cloned repo
-cd out
+cd $OUT_DIR
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 

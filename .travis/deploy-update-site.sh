@@ -11,28 +11,31 @@ set -e # Exit with nonzero exit code if anything fails
 TARGET_BRANCH="master"
 COMMIT_AUTHOR_EMAIL="deploy@travis.org"
 REPO='https://github.com/atlanmod/updates'
+OUT_DIR="out-updates"
 
 # Save some useful information
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 SHA=`git rev-parse --verify HEAD`
 TARGET_BRANCH_TEMP="master-temp"
 
+echo Deploying manual to $REPO on branch $TARGET_BRANCH ...
+
 # Clone the existing target branch for this repo into out/
 # Always create a new orphan branch
-git clone $REPO out
-cd out
+git clone $REPO $OUT_DIR
+cd $OUT_DIR
 git checkout --orphan $TARGET_BRANCH_TEMP
 cd ..
 
 # Clean out existing contents
-rm -rf out/emfviews/**/* || exit 0
+rm -rf $OUT_DIR/emfviews/**/* || exit 0
 
 # Copy built update site to out
 # The '/.' copies the 'repository' folder *contents*.
-cp -r update/target/repository/. out/emfviews
+cp -r update/target/repository/. $OUT_DIR/emfviews
 
 # Now let's go have some fun with the cloned repo
-cd out
+cd $OUT_DIR
 git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
