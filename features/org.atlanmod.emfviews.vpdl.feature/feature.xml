@@ -324,7 +324,7 @@ version(s), and exceptions or additional permissions here}.&quot;
       <import plugin="org.eclipse.xtext.util"/>
       <import plugin="org.eclipse.emf.common"/>
       <import plugin="org.eclipse.xtend.lib" version="2.14.0" match="greaterOrEqual"/>
-      <import plugin="org.antlr.runtime" version="3.2.0" match="perfect"/>
+      <import plugin="org.antlr.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
    </requires>
