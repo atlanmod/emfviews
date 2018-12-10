@@ -61,6 +61,19 @@ pre, .verbatim {
   border: 1px solid #d0d5d7;
   box-shadow: 3px 3px 3px #eee;
 }
+.important::before {
+  content: "Important";
+  font-size: 18px;
+  font-weight: bold;
+}
+.important {
+  margin: 1.5rem;
+  padding: .25rem 1rem;
+  font-size: 14px;
+  background: #f3e1e1;
+  border: 1px solid #e18080;
+  box-shadow: 3px 3px 3px #edc8c8;
+}
 dd > p:first-child { margin-top: 0; }
 .verbatim p:first-child { margin-top: 0; }
 .verbatim p:last-child { margin-bottom: 0; }
