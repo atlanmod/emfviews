@@ -260,3 +260,90 @@ the same job.
 On success, we also deploy the built update site to [[https://github.com/atlanmod/updates][atlanmod/updates]], on the
 ~master~ branch.  The latest snapshot is thus always up to date, and can be
 installed in Eclipse directly.
+
+*** Rerolling the deployment keys
+In order for Travis to push to our repositories, we generate repo-specific
+deployment keys.  We keep the (encrypted) private keys in the repo, and add the
+public keys to the repositories where Travis must deploy.
+
+#+BEGIN_important
+Be careful about never committing the private deployment keys to the repository,
+or leaking them anywhere.  These grant push access to the deployment
+repositories, and not to a specific branch!
+
+In the event the deployment keys were leaked, *unauthorize* these keys from the
+depolyment repositories via the Github interface immediately.  Then, reroll new
+deployment keys following this procedure.
+#+END_important
+
+These are the steps to generate the deployment key to the [[https://github.com/atlanmod/emfviews][atlanmod/emfviews]]
+repository and for the [[https://github.com/atlanmod/updates][atlanmod/updates]] repository.  You usually want to reroll
+both keys because of the way the Travis client handles file encryption.
+
+1. Generate SSH key pairs using the email address configured in the deployment
+   scripts:
+
+   #+BEGIN_EXAMPLE
+   ssh-keygen -t rsa -b 4096 -C "deploy@travis.org"
+   #+END_EXAMPLE
+
+   (Be sure to strengthen the security as years go by.)
+
+   When prompted for a name, input ~deploy-key-manual~.  Leave the password empty
+   (press ENTER twice at the prompt).
+
+   This created a private key ~deploy-key-manual~ and a public key
+   ~deploy-key-manual.pub~ in the current directory.
+
+2. Do the same to create a ~deploy-key-updates~ key pair.
+
+3. Encrypt the private keys using the [[https://github.com/travis-ci/travis.rb][Travis client]].  For the first key:
+
+   #+BEGIN_EXAMPLE
+   travis encrypt-file -p deploy-key-manual
+   #+END_EXAMPLE
+
+   The ~-p~ flag tells the client to print the key/iv to the command line.  We
+   need to re-use these values for encrypting the second key:
+
+   #+BEGIN_EXAMPLE
+   travis encrypt-file -p --key <KEY> --iv <IV> deploy-key-updates
+   #+END_EXAMPLE
+
+   Replace ~<KEY>~ and ~<IV>~ by the corresponding values given by the first
+   ~encrypt-file~ call.
+
+   #+BEGIN_note
+   If you do not reuse the same key/iv values for the second encryption, the
+   Travis client will use random values and will overwrite them in the
+   configuration of your repository, leading to one of the two private key to be
+   undecypherable.  Always use the same key/iv pair for encrypting both keys.
+   #+END_note
+
+4. The Travis client should have updated the environment variables for the
+   emfviews repository automatically.  If not, [[https://travis-ci.org/atlanmod/emfviews/settings][add them there]].
+
+   You should have two environment variables of the form:
+
+   #+BEGIN_EXAMPLE
+   encrypted_LABEL_key
+   encrypted_LABEL_iv
+   #+END_EXAMPLE
+
+   Check that the ~LABEL~ matches the one used in the ~.travis/deploy.sh~ file.
+
+5. Authorize the public deploy keys on Github.
+
+   Go to [[https://github.com/atlanmod/emfviews/settings/keys][atlanmod/emfviews key settings]] and paste the contents of the
+   ~deploy-key-manual.pub~ file here.  Call it ~Travis deploy key~ and be sure to
+   check ~Allow write access~.
+
+   Do the same for [[https://github.com/atlanmod/updates/settings/keys][atlanmod/updates]].
+
+6. Commit ~deploy-key-manual.enc~ and ~deploy-key-updates.enc~ to the
+   repository and push.
+
+   If all went well, you should have deployed successfully to atlanmod/updates.
+
+7. Delete the private keys ~deploy-key-manual~ and ~deploy-key-updates~.  You
+   don't need them anymore.  If you need access, just reroll new keys.
