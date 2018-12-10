@@ -411,26 +411,24 @@ build</a>.  See the <a href="https://github.com/atlanmod/emfviews/blob/master/.t
 </p>
 
 <p>
-After each successful build on the <code>master</code> branch, we also build the manual and
+After each successful build on the <code>master</code> branch, we build the manual and
 deploy it on the <a href="https://www.atlanmod.org/emfviews/">EMF Views website</a>, on the <code>gh-pages</code> branch.  The way we do
 this is more involved than what is suggested by the Travis documentation, with
-good reasons documented in <a href="https://github.com/atlanmod/emfviews/blob/master/.travis/deploy.sh">the deploy script</a>.
+good reasons documented in <a href="https://github.com/atlanmod/emfviews/blob/master/.travis/safe-deploy.sh">the deploy script</a>.
 </p>
 
 <p>
-Technically building the online manual could be a separate Travis job, but since
-we need the manual to build the <code>org.atlanmod.emfviews.doc</code> plugin, it's better
-to build it only once.
+Technically, building the online manual could be a separate Travis job, but
+since we need the manual to build the <code>org.atlanmod.emfviews.doc</code> plugin, and
+the doc plugin is used for the update site, we might as well do everything in
+the same job.
 </p>
 
-<div class="note">
 <p>
-On success, we should deploy snapshots of the update site to
-updates.atlanmod.org.  This is not currently the case due to issues with finding
-a hosting server.
+On success, we also deploy the built update site to <a href="https://github.com/atlanmod/updates">atlanmod/updates</a>, on the
+<code>master</code> branch.  The latest snapshot is thus always up to date, and can be
+installed in Eclipse directly.
 </p>
-
-</div>
 </div>
 </body>
 </html>
