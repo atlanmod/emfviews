@@ -247,17 +247,16 @@ though, as it is built automatically by our [[*Continuous integration][continuou
 We use [[https://travis-ci.org/][Travis]] to run our tests after each commit.  This is done using the [[*Maven build overview][Maven
 build]].  See the [[https://github.com/atlanmod/emfviews/blob/master/.travis.yml][Travis configuration file]] for details.
 
-After each successful build on the ~master~ branch, we also build the manual and
+After each successful build on the ~master~ branch, we build the manual and
 deploy it on the [[https://www.atlanmod.org/emfviews/][EMF Views website]], on the ~gh-pages~ branch.  The way we do
 this is more involved than what is suggested by the Travis documentation, with
-good reasons documented in [[https://github.com/atlanmod/emfviews/blob/master/.travis/deploy.sh][the deploy script]].
+good reasons documented in [[https://github.com/atlanmod/emfviews/blob/master/.travis/safe-deploy.sh][the deploy script]].
 
-Technically building the online manual could be a separate Travis job, but since
-we need the manual to build the ~org.atlanmod.emfviews.doc~ plugin, it's better
-to build it only once.
+Technically, building the online manual could be a separate Travis job, but
+since we need the manual to build the ~org.atlanmod.emfviews.doc~ plugin, and
+the doc plugin is used for the update site, we might as well do everything in
+the same job.
 
-#+BEGIN_note
-On success, we should deploy snapshots of the update site to
-updates.atlanmod.org.  This is not currently the case due to issues with finding
-a hosting server.
-#+END_note
+On success, we also deploy the built update site to [[https://github.com/atlanmod/updates][atlanmod/updates]], on the
+~master~ branch.  The latest snapshot is thus always up to date, and can be
+installed in Eclipse directly.
