@@ -144,7 +144,7 @@ Licenses when the conditions for such availability set forth in the Eclipse
 Public License, v. 2.0 are satisfied: GNU General Public License, version 3
 which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 
-[update site]: http://atlanmodexp.info.emn.fr:8800/updatesite/snapshot/
+[update site]: https://www.atlanmod.org/updates/emfviews/snapshot
 [user manual]: https://www.atlanmod.org/emfviews/manual/user.html
 [the manual]: https://www.atlanmod.org/emfviews/manual/user.html#tutorials
 [documentation]: https://www.atlanmod.org/emfviews/manual/
