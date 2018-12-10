@@ -2,6 +2,7 @@
 
 set -e # Exit with nonzero exit code if anything fails
 
+# These add nice folds in the Travis log
 fold_start() {
   echo -e "travis_fold:start:$1\033[33;1m$2\033[0m"
 }
