@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Deploy the built EMF Views manual by committing on top of the gh-pages branch,
-# preserving history.
+# preserving history because the gh-pages branch also contains other part of the
+# website which are not updated by hand.  Besides, the generated HTML is small.
 
 DEPLOY_REPO=`git config remote.origin.url`
 TARGET_BRANCH="gh-pages"
@@ -14,3 +15,5 @@ OUT_DIR="out-manual"
 ENCRYPTION_LABEL="b7b263ca9d8b"
 COMMIT_AUTHOR_NAME="Travis CI"
 COMMIT_AUTHOR_EMAIL="deploy@travis.org"
+
+bash safe-deploy.sh
