@@ -11,6 +11,10 @@ fold_end() {
   echo -e "\ntravis_fold:end:$1\r"
 }
 
+export ENCRYPTION_LABEL="b7b263ca9d8b"
+export COMMIT_AUTHOR_NAME="Travis CI"
+export COMMIT_AUTHOR_EMAIL="deploy@travis.org"
+
 fold_start deploy.manual "Deploy manual"
 bash .travis/deploy-manual.sh
 fold_end deploy.manual
