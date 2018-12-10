@@ -5,16 +5,16 @@
 # history because we don't need more than one snapshot build on the update
 # site, and we don't want to pollute the repo history with old JARs.
 
-DEPLOY_REPO='https://github.com/atlanmod/updates'
-TARGET_BRANCH="master"
-KEEP_HISTORY=false
-SRC_FOLDER="update/target/repository"
-DEST_FOLDER="emfviews/snapshot"
-DEPLOY_KEY="deploy-key-updates"
+export DEPLOY_REPO='https://github.com/atlanmod/updates'
+export TARGET_BRANCH="master"
+export KEEP_HISTORY=false
+export SRC_FOLDER="update/target/repository"
+export DEST_FOLDER="emfviews/snapshot"
+export DEPLOY_KEY="deploy-key-updates"
 
-OUT_DIR="out-updates"
-ENCRYPTION_LABEL="b7b263ca9d8b"
-COMMIT_AUTHOR_NAME="Travis CI"
-COMMIT_AUTHOR_EMAIL="deploy@travis.org"
+export OUT_DIR="out-updates"
+export ENCRYPTION_LABEL="b7b263ca9d8b"
+export COMMIT_AUTHOR_NAME="Travis CI"
+export COMMIT_AUTHOR_EMAIL="deploy@travis.org"
 
-bash safe-deploy.sh
+bash .travis/safe-deploy.sh

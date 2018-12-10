@@ -4,16 +4,16 @@
 # preserving history because the gh-pages branch also contains other part of the
 # website which are not updated by hand.  Besides, the generated HTML is small.
 
-DEPLOY_REPO=`git config remote.origin.url`
-TARGET_BRANCH="gh-pages"
-KEEP_HISTORY=true
-SRC_FOLDER="doc/html"
-DEST_FOLDER="manual"
-DEPLOY_KEY="deploy-key-manual"
+export DEPLOY_REPO=`git config remote.origin.url`
+export TARGET_BRANCH="gh-pages"
+export KEEP_HISTORY=true
+export SRC_FOLDER="doc/html"
+export DEST_FOLDER="manual"
+export DEPLOY_KEY="deploy-key-manual"
 
-OUT_DIR="out-manual"
-ENCRYPTION_LABEL="b7b263ca9d8b"
-COMMIT_AUTHOR_NAME="Travis CI"
-COMMIT_AUTHOR_EMAIL="deploy@travis.org"
+export OUT_DIR="out-manual"
+export ENCRYPTION_LABEL="b7b263ca9d8b"
+export COMMIT_AUTHOR_NAME="Travis CI"
+export COMMIT_AUTHOR_EMAIL="deploy@travis.org"
 
-bash safe-deploy.sh
+bash .travis/safe-deploy.sh
