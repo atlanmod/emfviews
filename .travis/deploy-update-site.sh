@@ -14,4 +14,9 @@ export DEPLOY_KEY="deploy-key-updates"
 
 export OUT_DIR="out-updates"
 
+# Add an index.html that instructs users browing the update site URL in a
+# browser to use it in Eclipse instead.
+
+cp update/target/static/* ${DEST_FOLDER}/
+
 bash .travis/safe-deploy.sh

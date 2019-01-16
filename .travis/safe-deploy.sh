@@ -88,7 +88,7 @@ cd ..
 # Clean out existing contents
 rm -rf ${OUT_DIR}/${DEST_FOLDER} || exit 0
 
-# Reeplace with fresh contents
+# Replace with fresh contents
 cp -r ${SRC_FOLDER} ${OUT_DIR}/${DEST_FOLDER}
 
 # Now let's go have some fun with the cloned repo
