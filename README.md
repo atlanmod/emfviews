@@ -1,6 +1,6 @@
 <h1>
-  <img src="logo-small.png" alt="Logo" style="vertical-align: middle">
-  <span style="vertical-align: middle">EMF Views</span>
+  <img src="logo.png" alt="Logo" width="25">
+  EMF Views
 </h1>
 
 [![Build Status](https://travis-ci.org/atlanmod/emfviews.svg?branch=master)](https://travis-ci.org/atlanmod/emfviews)
