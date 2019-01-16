@@ -1,4 +1,4 @@
-EMF Views
+[![Logo](logo-small.png)] EMF Views
 =========
 
 [![Build Status](https://travis-ci.org/atlanmod/emfviews.svg?branch=master)](https://travis-ci.org/atlanmod/emfviews)
