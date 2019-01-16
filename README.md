@@ -1,5 +1,7 @@
-![Logo](logo-small.png) EMF Views
-=========
+<h1>
+  <img src="logo-small.png" alt="Logo" style="vertical-align: middle">
+  <span style="vertical-align: middle">EMF Views</span>
+</h1>
 
 [![Build Status](https://travis-ci.org/atlanmod/emfviews.svg?branch=master)](https://travis-ci.org/atlanmod/emfviews)
 ![License](https://img.shields.io/badge/license-EPL%202.0%20%2F%20GPL%203.0-blue.svg)
