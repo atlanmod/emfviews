@@ -32,6 +32,7 @@ import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
+import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 /**
@@ -150,6 +151,28 @@ public class View implements Virtualizer {
     for (Resource r : contributingModels) {
       String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
       modelResources.put(nsURI, r);
+    }
+
+    // Populate virtual properties
+    for (VirtualProperty prop : weavingModel.getVirtualProperties()) {
+      // @Correctness: this should work with VirtualConcept as well
+
+      // The property is added to some object
+      ConcreteConcept elem = (ConcreteConcept) prop.getParent();
+      // Get the NsURI of the metamodel
+      String nsURI = elem.getModel().getURI();
+      // Find the corresponding resource
+      Resource model = modelResources.get(nsURI);
+      // Find the referenced element in that resource
+      EObject owner = model.getEObject(elem.getPath());
+      // Get its virtual counterpart
+      EObject vOwner = getVirtual(owner);
+
+      // Get the feature by name
+      EStructuralFeature feature = vOwner.eClass().getEStructuralFeature(prop.getName());
+
+      // Then set its value
+      vOwner.eSet(feature, prop.getType());
     }
 
     // Populate the model with values for virtual associations
