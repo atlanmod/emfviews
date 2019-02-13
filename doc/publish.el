@@ -208,7 +208,7 @@ Return output file name."
 
                           ("stylesheet"
                            :base-directory "src/"
-                           :base-extension "css"
+                           :base-extension "css\\|js"
                            :publishing-directory ,out-dir
                            :publishing-function org-publish-attachment)))
                       '("org.atlanmod.emfviews.doc/html/" "html/")))
@@ -222,7 +222,8 @@ Return output file name."
       org-html-doctype "html5"
       org-html-viewport nil                   ; no viewport directive
       org-html-head-include-default-style nil ; no inline CSS
-      org-html-head "<link rel=\"stylesheet\" href=\"style.css\">")
+      org-html-head "<link rel=\"stylesheet\" href=\"style.css\">
+<script src=\"scroll.js\"></script>")
 
 ;; For some reason, org-publish will leave backup files around.  We don't want
 ;; that.

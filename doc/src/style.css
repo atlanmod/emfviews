@@ -96,6 +96,7 @@ dd > p:first-child { margin-top: 0; }
 #table-of-contents ul { padding-left: 1rem; list-style-type: none; }
 #table-of-contents ul ul { font-size: 15px; }
 #table-of-contents ul ul ul { font-size: 14px; }
+#table-of-contents .selected { background-color: #45e39433; }
 
 /* move toc to the left on wide screens */
 @media (min-width: 1500px) {
