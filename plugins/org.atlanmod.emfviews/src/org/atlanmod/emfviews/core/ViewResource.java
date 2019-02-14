@@ -16,6 +16,7 @@
 
 package org.atlanmod.emfviews.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,6 +26,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringJoiner;
 
+import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
+
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -141,9 +149,32 @@ public class ViewResource extends ResourceImpl {
       virtualResourceSet.getPackageRegistry().put(p.getNsURI(), p);
     }
 
+    // @Correctness: we shouldn't directly depend on NeoEMF for that
+    // The initialization can be done programmatically, but how to
+    // do it when opening a view with a graphical editor?
+    PersistenceBackendFactoryRegistry.register(BlueprintsURI.SCHEME,
+                                               BlueprintsPersistenceBackendFactory.getInstance());
+    virtualResourceSet.getResourceFactoryRegistry()
+      .getProtocolToFactoryMap()
+      .put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
+
     List<Resource> contributingModels = new ArrayList<>();
     for (String modelPath : contributingModelsPaths.split(",")) {
       URI uri = URI.createURI(modelPath).resolve(getURI());
+
+      // @Correctness: matching on file extension is brittle, but we don't have
+      // a fool-proof way to detect NeoEMF resources
+      if (modelPath.endsWith(".graphdb")) {
+        if (uri.isPlatform()) {
+          // Convert to a file URI since Blueprints does not support platform URI
+          File f = ResourcesPlugin.getWorkspace().getRoot()
+            .getFile(new Path(uri.toPlatformString(true))).getLocation().toFile();
+          uri = BlueprintsURI.createFileURI(f);
+        } else {
+          uri = BlueprintsURI.createURI(uri);
+        }
+      }
+
       Resource r = virtualResourceSet.getResource(uri, true);
       if (r != null) {
         contributingModels.add(r);
