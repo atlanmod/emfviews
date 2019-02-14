@@ -53,6 +53,12 @@
       <layout>p2</layout>
       <url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext-version}/</url>
     </repository>
+
+    <repository>
+      <id>neoemf</id>
+      <layout>p2</layout>
+      <url>file://${neoemf}/plugins/eclipse/update/target/repository/</url>
+    </repository>
   </repositories>
 
   <build>
