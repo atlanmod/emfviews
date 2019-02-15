@@ -12,23 +12,28 @@ import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual Property</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual
+ * Property</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualPropertyImpl#getParent <em>Parent</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualPropertyImpl#getType <em>Type</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualPropertyImpl#isOptional <em>Optional</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualPropertyImpl#getParent
+ * <em>Parent</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualPropertyImpl#getType
+ * <em>Type</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualPropertyImpl#isOptional
+ * <em>Optional</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualPropertyImpl#getQuery
+ * <em>Query</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualProperty {
   /**
-   * The cached value of the '{@link #getParent() <em>Parent</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
-   * -->
+   * The cached value of the '{@link #getParent() <em>Parent</em>}' reference.
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getParent()
    * @generated
@@ -37,8 +42,8 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
   protected Concept parent;
 
   /**
-   * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-   * -->
+   * The default value of the '{@link #getType() <em>Type</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getType()
    * @generated
@@ -47,7 +52,8 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
   protected static final String TYPE_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The cached value of the '{@link #getType() <em>Type</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getType()
    * @generated
@@ -56,8 +62,8 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
   protected String type = TYPE_EDEFAULT;
 
   /**
-   * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The default value of the '{@link #isOptional() <em>Optional</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #isOptional()
    * @generated
@@ -66,14 +72,34 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
   protected static final boolean OPTIONAL_EDEFAULT = false;
 
   /**
-   * The cached value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The cached value of the '{@link #isOptional() <em>Optional</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #isOptional()
    * @generated
    * @ordered
    */
   protected boolean optional = OPTIONAL_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @see #getQuery()
+   * @generated
+   * @ordered
+   */
+  protected static final String QUERY_EDEFAULT = "";
+
+  /**
+   * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @see #getQuery()
+   * @generated
+   * @ordered
+   */
+  protected String query = QUERY_EDEFAULT;
 
   /**
    * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -107,8 +133,7 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
       if (parent != oldParent) {
         if (eNotificationRequired()) {
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                                        VirtualLinksPackage.VIRTUAL_PROPERTY__PARENT, oldParent,
-                                        parent));
+            VirtualLinksPackage.VIRTUAL_PROPERTY__PARENT, oldParent, parent));
         }
       }
     }
@@ -135,8 +160,7 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
     parent = newParent;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_PROPERTY__PARENT, oldParent,
-                                    parent));
+        VirtualLinksPackage.VIRTUAL_PROPERTY__PARENT, oldParent, parent));
     }
   }
 
@@ -161,7 +185,7 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
     type = newType;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_PROPERTY__TYPE, oldType, type));
+        VirtualLinksPackage.VIRTUAL_PROPERTY__TYPE, oldType, type));
     }
   }
 
@@ -186,8 +210,32 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
     optional = newOptional;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_PROPERTY__OPTIONAL, oldOptional,
-                                    optional));
+        VirtualLinksPackage.VIRTUAL_PROPERTY__OPTIONAL, oldOptional, optional));
+    }
+  }
+
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @generated
+   */
+  @Override
+  public String getQuery() {
+    return query;
+  }
+
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @generated
+   */
+  @Override
+  public void setQuery(String newQuery) {
+    String oldQuery = query;
+    query = newQuery;
+    if (eNotificationRequired()) {
+      eNotify(new ENotificationImpl(this, Notification.SET,
+        VirtualLinksPackage.VIRTUAL_PROPERTY__QUERY, oldQuery, query));
     }
   }
 
@@ -208,6 +256,8 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
       return getType();
     case VirtualLinksPackage.VIRTUAL_PROPERTY__OPTIONAL:
       return isOptional();
+    case VirtualLinksPackage.VIRTUAL_PROPERTY__QUERY:
+      return getQuery();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -228,6 +278,9 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
       return;
     case VirtualLinksPackage.VIRTUAL_PROPERTY__OPTIONAL:
       setOptional((Boolean) newValue);
+      return;
+    case VirtualLinksPackage.VIRTUAL_PROPERTY__QUERY:
+      setQuery((String) newValue);
       return;
     }
     super.eSet(featureID, newValue);
@@ -250,6 +303,9 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
     case VirtualLinksPackage.VIRTUAL_PROPERTY__OPTIONAL:
       setOptional(OPTIONAL_EDEFAULT);
       return;
+    case VirtualLinksPackage.VIRTUAL_PROPERTY__QUERY:
+      setQuery(QUERY_EDEFAULT);
+      return;
     }
     super.eUnset(featureID);
   }
@@ -268,6 +324,8 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
       return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
     case VirtualLinksPackage.VIRTUAL_PROPERTY__OPTIONAL:
       return optional != OPTIONAL_EDEFAULT;
+    case VirtualLinksPackage.VIRTUAL_PROPERTY__QUERY:
+      return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
     }
     return super.eIsSet(featureID);
   }
@@ -283,11 +341,13 @@ public class VirtualPropertyImpl extends VirtualLinkImpl implements VirtualPrope
       return super.toString();
     }
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (type: ");
     result.append(type);
     result.append(", optional: ");
     result.append(optional);
+    result.append(", query: ");
+    result.append(query);
     result.append(')');
     return result.toString();
   }

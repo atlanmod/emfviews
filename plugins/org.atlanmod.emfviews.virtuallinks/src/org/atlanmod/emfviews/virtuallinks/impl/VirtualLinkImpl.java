@@ -11,20 +11,22 @@ import org.atlanmod.emfviews.virtuallinks.VirtualLink;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual Link</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual
+ * Link</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualLinkImpl#getName
+ * <em>Name</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container implements VirtualLink {
   /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-   * -->
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getName()
    * @generated
@@ -33,7 +35,8 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container imple
   protected static final String NAME_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getName()
    * @generated
@@ -80,8 +83,8 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container imple
     String oldName = name;
     name = newName;
     if (eNotificationRequired()) {
-      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.VIRTUAL_LINK__NAME,
-                                    oldName, name));
+      eNotify(new ENotificationImpl(this, Notification.SET,
+        VirtualLinksPackage.VIRTUAL_LINK__NAME, oldName, name));
     }
   }
 
@@ -154,7 +157,7 @@ public abstract class VirtualLinkImpl extends MinimalEObjectImpl.Container imple
       return super.toString();
     }
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (name: ");
     result.append(name);
     result.append(')');

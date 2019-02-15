@@ -9,7 +9,8 @@ import org.atlanmod.emfviews.virtuallinks.Element;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Element</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Element</b></em>'. <!-- end-user-doc -->
  *
  * @generated
  */

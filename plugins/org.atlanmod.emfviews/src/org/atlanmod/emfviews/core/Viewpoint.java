@@ -248,6 +248,13 @@ public class Viewpoint implements EcoreVirtualizer {
     return resource;
   }
 
+  /**
+   * Return the weaving model given to the constructor.
+   */
+  public WeavingModel getWeavingModel() {
+    return weavingModel;
+  }
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Constructing the virtual metamodel

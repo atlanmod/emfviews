@@ -21,20 +21,22 @@ import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
  *
  * @generated
  */
 public class VirtualLinksFactoryImpl extends EFactoryImpl implements VirtualLinksFactory {
   /**
-   * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
    *
    * @generated
    */
   public static VirtualLinksFactory init() {
     try {
       VirtualLinksFactory theVirtualLinksFactory =
-          (VirtualLinksFactory) EPackage.Registry.INSTANCE.getEFactory(VirtualLinksPackage.eNS_URI);
+        (VirtualLinksFactory) EPackage.Registry.INSTANCE.getEFactory(VirtualLinksPackage.eNS_URI);
       if (theVirtualLinksFactory != null) {
         return theVirtualLinksFactory;
       }
@@ -45,7 +47,8 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl implements VirtualLink
   }
 
   /**
-   * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Creates an instance of the factory. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
    *
    * @generated
    */
@@ -80,8 +83,8 @@ public class VirtualLinksFactoryImpl extends EFactoryImpl implements VirtualLink
     case VirtualLinksPackage.CONCRETE_ASSOCIATION:
       return createConcreteAssociation();
     default:
-      throw new IllegalArgumentException("The class '" + eClass.getName()
-          + "' is not a valid classifier");
+      throw new IllegalArgumentException(
+        "The class '" + eClass.getName() + "' is not a valid classifier");
     }
   }
 

@@ -13,19 +13,22 @@ import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual Association</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual
+ * Association</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getSource <em>Source</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getTarget <em>Target</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getLowerBound <em>Lower
- * Bound</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getUpperBound <em>Upper
- * Bound</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getOpposite <em>Opposite</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getSource
+ * <em>Source</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getTarget
+ * <em>Target</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getLowerBound
+ * <em>Lower Bound</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getUpperBound
+ * <em>Upper Bound</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#getOpposite
+ * <em>Opposite</em>}</li>
  * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualAssociationImpl#isComposition
  * <em>Composition</em>}</li>
  * </ul>
@@ -34,8 +37,8 @@ import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
  */
 public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAssociation {
   /**
-   * The cached value of the '{@link #getSource() <em>Source</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
-   * -->
+   * The cached value of the '{@link #getSource() <em>Source</em>}' reference.
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getSource()
    * @generated
@@ -44,8 +47,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected Concept source;
 
   /**
-   * The cached value of the '{@link #getTarget() <em>Target</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
-   * -->
+   * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getTarget()
    * @generated
@@ -54,8 +57,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected Concept target;
 
   /**
-   * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The default value of the '{@link #getLowerBound() <em>Lower Bound</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getLowerBound()
    * @generated
@@ -64,8 +67,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected static final int LOWER_BOUND_EDEFAULT = 0;
 
   /**
-   * The cached value of the '{@link #getLowerBound() <em>Lower Bound</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The cached value of the '{@link #getLowerBound() <em>Lower Bound</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getLowerBound()
    * @generated
@@ -74,8 +77,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected int lowerBound = LOWER_BOUND_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The default value of the '{@link #getUpperBound() <em>Upper Bound</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getUpperBound()
    * @generated
@@ -84,8 +87,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected static final int UPPER_BOUND_EDEFAULT = 0;
 
   /**
-   * The cached value of the '{@link #getUpperBound() <em>Upper Bound</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The cached value of the '{@link #getUpperBound() <em>Upper Bound</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getUpperBound()
    * @generated
@@ -94,8 +97,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected int upperBound = UPPER_BOUND_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getOpposite() <em>Opposite</em>}' reference. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The cached value of the '{@link #getOpposite() <em>Opposite</em>}'
+   * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getOpposite()
    * @generated
@@ -104,8 +107,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected Association opposite;
 
   /**
-   * The default value of the '{@link #isComposition() <em>Composition</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The default value of the '{@link #isComposition() <em>Composition</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #isComposition()
    * @generated
@@ -114,8 +117,8 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
   protected static final boolean COMPOSITION_EDEFAULT = false;
 
   /**
-   * The cached value of the '{@link #isComposition() <em>Composition</em>}' attribute. <!-- begin-user-doc --> <!--
-   * end-user-doc -->
+   * The cached value of the '{@link #isComposition() <em>Composition</em>}'
+   * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #isComposition()
    * @generated
@@ -155,8 +158,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
       if (source != oldSource) {
         if (eNotificationRequired()) {
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                                        VirtualLinksPackage.VIRTUAL_ASSOCIATION__SOURCE, oldSource,
-                                        source));
+            VirtualLinksPackage.VIRTUAL_ASSOCIATION__SOURCE, oldSource, source));
         }
       }
     }
@@ -183,8 +185,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
     source = newSource;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_ASSOCIATION__SOURCE, oldSource,
-                                    source));
+        VirtualLinksPackage.VIRTUAL_ASSOCIATION__SOURCE, oldSource, source));
     }
   }
 
@@ -201,8 +202,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
       if (target != oldTarget) {
         if (eNotificationRequired()) {
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                                        VirtualLinksPackage.VIRTUAL_ASSOCIATION__TARGET, oldTarget,
-                                        target));
+            VirtualLinksPackage.VIRTUAL_ASSOCIATION__TARGET, oldTarget, target));
         }
       }
     }
@@ -229,8 +229,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
     target = newTarget;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_ASSOCIATION__TARGET, oldTarget,
-                                    target));
+        VirtualLinksPackage.VIRTUAL_ASSOCIATION__TARGET, oldTarget, target));
     }
   }
 
@@ -255,8 +254,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
     lowerBound = newLowerBound;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_ASSOCIATION__LOWER_BOUND,
-                                    oldLowerBound, lowerBound));
+        VirtualLinksPackage.VIRTUAL_ASSOCIATION__LOWER_BOUND, oldLowerBound, lowerBound));
     }
   }
 
@@ -281,8 +279,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
     upperBound = newUpperBound;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_ASSOCIATION__UPPER_BOUND,
-                                    oldUpperBound, upperBound));
+        VirtualLinksPackage.VIRTUAL_ASSOCIATION__UPPER_BOUND, oldUpperBound, upperBound));
     }
   }
 
@@ -299,8 +296,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
       if (opposite != oldOpposite) {
         if (eNotificationRequired()) {
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                                        VirtualLinksPackage.VIRTUAL_ASSOCIATION__OPPOSITE,
-                                        oldOpposite, opposite));
+            VirtualLinksPackage.VIRTUAL_ASSOCIATION__OPPOSITE, oldOpposite, opposite));
         }
       }
     }
@@ -327,8 +323,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
     opposite = newOpposite;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_ASSOCIATION__OPPOSITE, oldOpposite,
-                                    opposite));
+        VirtualLinksPackage.VIRTUAL_ASSOCIATION__OPPOSITE, oldOpposite, opposite));
     }
   }
 
@@ -353,8 +348,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
     composition = newComposition;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.VIRTUAL_ASSOCIATION__COMPOSITION,
-                                    oldComposition, composition));
+        VirtualLinksPackage.VIRTUAL_ASSOCIATION__COMPOSITION, oldComposition, composition));
     }
   }
 
@@ -486,7 +480,7 @@ public class VirtualAssociationImpl extends VirtualLinkImpl implements VirtualAs
       return super.toString();
     }
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (lowerBound: ");
     result.append(lowerBound);
     result.append(", upperBound: ");

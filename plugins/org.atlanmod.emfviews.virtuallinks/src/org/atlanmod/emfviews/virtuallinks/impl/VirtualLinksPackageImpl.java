@@ -26,7 +26,8 @@ import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
  *
  * @generated
  */
@@ -130,11 +131,13 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
   private EClass virtualElementEClass = null;
 
   /**
-   * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
-   * EPackage.Registry} by the package package URI value.
+   * Creates an instance of the model <b>Package</b>, registered with
+   * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+   * package package URI value.
    * <p>
-   * Note: the correct way to create the package is via the static factory method {@link #init init()}, which also
-   * performs initialization of the package, or returns the registered package, if one already exists. <!--
+   * Note: the correct way to create the package is via the static factory
+   * method {@link #init init()}, which also performs initialization of the
+   * package, or returns the registered package, if one already exists. <!--
    * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see org.eclipse.emf.ecore.EPackage.Registry
@@ -154,12 +157,13 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
   private static boolean isInited = false;
 
   /**
-   * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-   *
+   * Creates, registers, and initializes the <b>Package</b> for this model, and
+   * for any others upon which it depends.
    * <p>
-   * This method is used to initialize {@link VirtualLinksPackage#eINSTANCE} when that field is accessed. Clients should
-   * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
-   * --> <!-- end-user-doc -->
+   * This method is used to initialize {@link VirtualLinksPackage#eINSTANCE}
+   * when that field is accessed. Clients should not invoke it directly.
+   * Instead, they should simply access that field to obtain the package. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #eNS_URI
    * @see #createPackageContents()
@@ -169,15 +173,14 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
   public static VirtualLinksPackage init() {
     if (isInited) {
       return (VirtualLinksPackage) EPackage.Registry.INSTANCE
-          .getEPackage(VirtualLinksPackage.eNS_URI);
+        .getEPackage(VirtualLinksPackage.eNS_URI);
     }
 
     // Obtain or create and register package
+    Object registeredVirtualLinksPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
     VirtualLinksPackageImpl theVirtualLinksPackage =
-        (VirtualLinksPackageImpl) (EPackage.Registry.INSTANCE
-            .get(eNS_URI) instanceof VirtualLinksPackageImpl
-                ? EPackage.Registry.INSTANCE.get(eNS_URI)
-                : new VirtualLinksPackageImpl());
+      registeredVirtualLinksPackage instanceof VirtualLinksPackageImpl
+        ? (VirtualLinksPackageImpl) registeredVirtualLinksPackage : new VirtualLinksPackageImpl();
 
     isInited = true;
 
@@ -383,6 +386,16 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
   @Override
   public EAttribute getVirtualProperty_Optional() {
     return (EAttribute) virtualPropertyEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @generated
+   */
+  @Override
+  public EAttribute getVirtualProperty_Query() {
+    return (EAttribute) virtualPropertyEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -613,8 +626,9 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
   private boolean isCreated = false;
 
   /**
-   * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but its
-   * first. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Creates the meta-model objects for the package. This method is guarded to
+   * have no affect on any invocation but its first. <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    *
    * @generated
    */
@@ -647,6 +661,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     createEReference(virtualPropertyEClass, VIRTUAL_PROPERTY__PARENT);
     createEAttribute(virtualPropertyEClass, VIRTUAL_PROPERTY__TYPE);
     createEAttribute(virtualPropertyEClass, VIRTUAL_PROPERTY__OPTIONAL);
+    createEAttribute(virtualPropertyEClass, VIRTUAL_PROPERTY__QUERY);
 
     virtualAssociationEClass = createEClass(VIRTUAL_ASSOCIATION);
     createEReference(virtualAssociationEClass, VIRTUAL_ASSOCIATION__SOURCE);
@@ -688,8 +703,9 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
   private boolean isInitialized = false;
 
   /**
-   * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any
-   * invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Complete the initialization of the package and its meta-model. This method
+   * is guarded to have no affect on any invocation but its first. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @generated
    */
@@ -729,138 +745,132 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
 
     // Initialize classes, features, and operations; add parameters
     initEClass(weavingModelEClass, WeavingModel.class, "WeavingModel", !IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
+      IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getWeavingModel_Name(), ecorePackage.getEString(), "name", null, 1, 1,
-                   WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_VirtualLinks(), this.getVirtualLink(), null, "virtualLinks",
-                   null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+      null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+      !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_ContributingModels(), this.getContributingModel(), null,
-                   "contributingModels", null, 0, -1, WeavingModel.class, !IS_TRANSIENT,
-                   !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
-                   IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      "contributingModels", null, 0, -1, WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE,
+      IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+      IS_ORDERED);
     initEAttribute(getWeavingModel_Whitelist(), ecorePackage.getEBoolean(), "whitelist", null, 0, 1,
-                   WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      WeavingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_VirtualConcepts(), this.getVirtualConcept(), null,
-                   "virtualConcepts", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE,
-                   !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
-                   IS_DERIVED, IS_ORDERED);
+      "virtualConcepts", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
+      !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_VirtualProperties(), this.getVirtualProperty(), null,
-                   "virtualProperties", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE,
-                   !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
-                   IS_DERIVED, IS_ORDERED);
+      "virtualProperties", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE,
+      !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED,
+      IS_ORDERED);
     initEReference(getWeavingModel_VirtualAssociations(), this.getVirtualAssociation(), null,
-                   "virtualAssociations", null, 0, -1, WeavingModel.class, IS_TRANSIENT,
-                   IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
-                   IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+      "virtualAssociations", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE,
+      !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED,
+      IS_ORDERED);
     initEReference(getWeavingModel_VirtualElements(), this.getVirtualElement(), null,
-                   "virtualElements", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE,
-                   !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
-                   IS_DERIVED, IS_ORDERED);
+      "virtualElements", null, 0, -1, WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
+      !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEReference(getWeavingModel_Filters(), this.getFilter(), null, "filters", null, 0, -1,
-                   WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
-                   IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+      WeavingModel.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
     initEClass(virtualLinkEClass, VirtualLink.class, "VirtualLink", IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
+      IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVirtualLink_Name(), ecorePackage.getEString(), "name", null, 1, 1,
-                   VirtualLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                   !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      VirtualLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(virtualConceptEClass, VirtualConcept.class, "VirtualConcept", !IS_ABSTRACT,
-               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVirtualConcept_SuperConcepts(), this.getConcept(), null, "superConcepts",
-                   null, 0, -1, VirtualConcept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+      null, 0, -1, VirtualConcept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVirtualConcept_SubConcepts(), this.getConcept(), null, "subConcepts", null, 0,
-                   -1, VirtualConcept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+      -1, VirtualConcept.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(virtualPropertyEClass, VirtualProperty.class, "VirtualProperty", !IS_ABSTRACT,
-               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVirtualProperty_Parent(), this.getConcept(), null, "parent", null, 1, 1,
-                   VirtualProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                   IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      VirtualProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getVirtualProperty_Type(), ecorePackage.getEString(), "type", null, 1, 1,
-                   VirtualProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      VirtualProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getVirtualProperty_Optional(), ecorePackage.getEBoolean(), "optional", null, 0,
-                   1, VirtualProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      1, VirtualProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getVirtualProperty_Query(), ecorePackage.getEString(), "query", "", 0, 1,
+      VirtualProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(virtualAssociationEClass, VirtualAssociation.class, "VirtualAssociation",
-               !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVirtualAssociation_Source(), this.getConcept(), null, "source", null, 1, 1,
-                   VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+      VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVirtualAssociation_Target(), this.getConcept(), null, "target", null, 1, 1,
-                   VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+      VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getVirtualAssociation_LowerBound(), ecorePackage.getEInt(), "lowerBound", null,
-                   1, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+      1, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+      !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
     initEAttribute(getVirtualAssociation_UpperBound(), ecorePackage.getEInt(), "upperBound", null,
-                   1, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+      1, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+      !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
     initEReference(getVirtualAssociation_Opposite(), this.getAssociation(), null, "opposite", null,
-                   0, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   !IS_ORDERED);
+      0, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+      IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
     initEAttribute(getVirtualAssociation_Composition(), ecorePackage.getEBoolean(), "composition",
-                   null, 0, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      null, 0, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+      !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(filterEClass, Filter.class, "Filter", !IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
+      IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFilter_Target(), this.getConcreteElement(), null, "target", null, 1, 1,
-                   Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                   IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      Filter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(contributingModelEClass, ContributingModel.class, "ContributingModel", !IS_ABSTRACT,
-               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getContributingModel_URI(), ecorePackage.getEString(), "URI", null, 1, 1,
-                   ContributingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      ContributingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getContributingModel_ConcreteElements(), this.getConcreteElement(),
-                   this.getConcreteElement_Model(), "concreteElements", null, 0, -1,
-                   ContributingModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
-                   IS_ORDERED);
+      this.getConcreteElement_Model(), "concreteElements", null, 0, -1, ContributingModel.class,
+      !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(concreteElementEClass, ConcreteElement.class, "ConcreteElement", !IS_ABSTRACT,
-               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getConcreteElement_Model(), this.getContributingModel(),
-                   this.getContributingModel_ConcreteElements(), "model", null, 1, 1,
-                   ConcreteElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                   !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      this.getContributingModel_ConcreteElements(), "model", null, 1, 1, ConcreteElement.class,
+      !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+      !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getConcreteElement_Path(), ecorePackage.getEString(), "path", null, 1, 1,
-                   ConcreteElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                   !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+      ConcreteElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(conceptEClass, Concept.class, "Concept", IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
+      IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(associationEClass, Association.class, "Association", IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
+      IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(concreteConceptEClass, ConcreteConcept.class, "ConcreteConcept", !IS_ABSTRACT,
-               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(concreteAssociationEClass, ConcreteAssociation.class, "ConcreteAssociation",
-               !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(elementEClass, Element.class, "Element", IS_ABSTRACT, !IS_INTERFACE,
-               IS_GENERATED_INSTANCE_CLASS);
+      IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(virtualElementEClass, VirtualElement.class, "VirtualElement", IS_ABSTRACT,
-               !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+      !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

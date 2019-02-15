@@ -19,23 +19,25 @@ import org.atlanmod.emfviews.virtuallinks.ContributingModel;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Contributing Model</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Contributing Model</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ContributingModelImpl#getURI <em>URI</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ContributingModelImpl#getConcreteElements <em>Concrete
- * Elements</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ContributingModelImpl#getURI
+ * <em>URI</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ContributingModelImpl#getConcreteElements
+ * <em>Concrete Elements</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ContributingModelImpl extends MinimalEObjectImpl.Container
-    implements ContributingModel {
+  implements ContributingModel {
   /**
-   * The default value of the '{@link #getURI() <em>URI</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The default value of the '{@link #getURI() <em>URI</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getURI()
    * @generated
@@ -44,7 +46,8 @@ public class ContributingModelImpl extends MinimalEObjectImpl.Container
   protected static final String URI_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getURI() <em>URI</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The cached value of the '{@link #getURI() <em>URI</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getURI()
    * @generated
@@ -53,8 +56,9 @@ public class ContributingModelImpl extends MinimalEObjectImpl.Container
   protected String uri = URI_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getConcreteElements() <em>Concrete Elements</em>}' containment reference list.
-   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The cached value of the '{@link #getConcreteElements() <em>Concrete
+   * Elements</em>}' containment reference list. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
    *
    * @see #getConcreteElements()
    * @generated
@@ -102,7 +106,7 @@ public class ContributingModelImpl extends MinimalEObjectImpl.Container
     uri = newURI;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.CONTRIBUTING_MODEL__URI, oldURI, uri));
+        VirtualLinksPackage.CONTRIBUTING_MODEL__URI, oldURI, uri));
     }
   }
 
@@ -114,10 +118,9 @@ public class ContributingModelImpl extends MinimalEObjectImpl.Container
   @Override
   public EList<ConcreteElement> getConcreteElements() {
     if (concreteElements == null) {
-      concreteElements =
-          new EObjectContainmentWithInverseEList<>(ConcreteElement.class, this,
-                                                                  VirtualLinksPackage.CONTRIBUTING_MODEL__CONCRETE_ELEMENTS,
-                                                                  VirtualLinksPackage.CONCRETE_ELEMENT__MODEL);
+      concreteElements = new EObjectContainmentWithInverseEList<>(
+        ConcreteElement.class, this, VirtualLinksPackage.CONTRIBUTING_MODEL__CONCRETE_ELEMENTS,
+        VirtualLinksPackage.CONCRETE_ELEMENT__MODEL);
     }
     return concreteElements;
   }
@@ -134,7 +137,7 @@ public class ContributingModelImpl extends MinimalEObjectImpl.Container
     switch (featureID) {
     case VirtualLinksPackage.CONTRIBUTING_MODEL__CONCRETE_ELEMENTS:
       return ((InternalEList<InternalEObject>) (InternalEList<?>) getConcreteElements())
-          .basicAdd(otherEnd, msgs);
+        .basicAdd(otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
   }
@@ -235,7 +238,7 @@ public class ContributingModelImpl extends MinimalEObjectImpl.Container
       return super.toString();
     }
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (URI: ");
     result.append(uri);
     result.append(')');

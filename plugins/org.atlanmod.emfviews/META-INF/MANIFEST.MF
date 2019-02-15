@@ -8,4 +8,6 @@ Export-Package: org.atlanmod.emfviews.core,
  org.atlanmod.emfviews.elements
 Bundle-Vendor: Atlanmod
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="[2.13.0,3.0.0)",
- org.atlanmod.emfviews.virtuallinks;bundle-version="0.3.0"
+ org.atlanmod.emfviews.virtuallinks;bundle-version="0.3.0",
+ org.eclipse.ocl;bundle-version="3.9.0",
+ org.eclipse.ocl.ecore;bundle-version="3.9.0"

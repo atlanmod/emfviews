@@ -14,22 +14,24 @@ import org.atlanmod.emfviews.virtuallinks.ContributingModel;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Concrete Element</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Concrete Element</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ConcreteElementImpl#getModel <em>Model</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ConcreteElementImpl#getPath <em>Path</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ConcreteElementImpl#getModel
+ * <em>Model</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.ConcreteElementImpl#getPath
+ * <em>Path</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConcreteElementImpl extends ElementImpl implements ConcreteElement {
   /**
-   * The default value of the '{@link #getPath() <em>Path</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-   * -->
+   * The default value of the '{@link #getPath() <em>Path</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getPath()
    * @generated
@@ -38,7 +40,8 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
   protected static final String PATH_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getPath() <em>Path</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The cached value of the '{@link #getPath() <em>Path</em>}' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getPath()
    * @generated
@@ -85,7 +88,7 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
    */
   public NotificationChain basicSetModel(ContributingModel newModel, NotificationChain msgs) {
     msgs = eBasicSetContainer((InternalEObject) newModel,
-                              VirtualLinksPackage.CONCRETE_ELEMENT__MODEL, msgs);
+      VirtualLinksPackage.CONCRETE_ELEMENT__MODEL, msgs);
     return msgs;
   }
 
@@ -97,8 +100,8 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
   @Override
   public void setModel(ContributingModel newModel) {
     if (newModel != eInternalContainer()
-        || (eContainerFeatureID() != VirtualLinksPackage.CONCRETE_ELEMENT__MODEL
-            && newModel != null)) {
+      || (eContainerFeatureID() != VirtualLinksPackage.CONCRETE_ELEMENT__MODEL
+        && newModel != null)) {
       if (EcoreUtil.isAncestor(this, newModel)) {
         throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
       }
@@ -107,9 +110,8 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
         msgs = eBasicRemoveFromContainer(msgs);
       }
       if (newModel != null) {
-        msgs = ((InternalEObject) newModel)
-            .eInverseAdd(this, VirtualLinksPackage.CONTRIBUTING_MODEL__CONCRETE_ELEMENTS,
-                         ContributingModel.class, msgs);
+        msgs = ((InternalEObject) newModel).eInverseAdd(this,
+          VirtualLinksPackage.CONTRIBUTING_MODEL__CONCRETE_ELEMENTS, ContributingModel.class, msgs);
       }
       msgs = basicSetModel(newModel, msgs);
       if (msgs != null) {
@@ -117,8 +119,7 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
       }
     } else if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.CONCRETE_ELEMENT__MODEL, newModel,
-                                    newModel));
+        VirtualLinksPackage.CONCRETE_ELEMENT__MODEL, newModel, newModel));
     }
   }
 
@@ -143,7 +144,7 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
     path = newPath;
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET,
-                                    VirtualLinksPackage.CONCRETE_ELEMENT__PATH, oldPath, path));
+        VirtualLinksPackage.CONCRETE_ELEMENT__PATH, oldPath, path));
     }
   }
 
@@ -189,9 +190,8 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
   public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
     switch (eContainerFeatureID()) {
     case VirtualLinksPackage.CONCRETE_ELEMENT__MODEL:
-      return eInternalContainer()
-          .eInverseRemove(this, VirtualLinksPackage.CONTRIBUTING_MODEL__CONCRETE_ELEMENTS,
-                          ContributingModel.class, msgs);
+      return eInternalContainer().eInverseRemove(this,
+        VirtualLinksPackage.CONTRIBUTING_MODEL__CONCRETE_ELEMENTS, ContributingModel.class, msgs);
     }
     return super.eBasicRemoveFromContainerFeature(msgs);
   }
@@ -275,7 +275,7 @@ public class ConcreteElementImpl extends ElementImpl implements ConcreteElement 
       return super.toString();
     }
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (path: ");
     result.append(path);
     result.append(')');

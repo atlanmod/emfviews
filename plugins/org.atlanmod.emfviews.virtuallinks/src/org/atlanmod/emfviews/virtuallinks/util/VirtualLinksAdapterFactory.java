@@ -24,8 +24,9 @@ import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 /**
- * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
- * method for each class of the model. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
+ * an adapter <code>createXXX</code> method for each class of the model. <!--
+ * end-user-doc -->
  *
  * @see org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage
  * @generated
@@ -39,7 +40,8 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   protected static VirtualLinksPackage modelPackage;
 
   /**
-   * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!--
+   * end-user-doc -->
    *
    * @generated
    */
@@ -50,9 +52,10 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc --> This implementation
-   * returns <code>true</code> if the object is either the model's package or is an instance object of the model. <!--
-   * end-user-doc -->
+   * Returns whether this factory is applicable for the type of the object. <!--
+   * begin-user-doc --> This implementation returns <code>true</code> if the
+   * object is either the model's package or is an instance object of the model.
+   * <!-- end-user-doc -->
    *
    * @return whether this factory is applicable for the type of the object.
    * @generated
@@ -69,7 +72,8 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * The switch that delegates to the <code>createXXX</code> methods. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
    *
    * @generated
    */
@@ -151,7 +155,8 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   };
 
   /**
-   * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Creates an adapter for the <code>target</code>. <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    *
    * @param target the object to adapt.
    * @return the adapter for the <code>target</code>.
@@ -163,9 +168,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.WeavingModel
-   * <em>Weaving Model</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.WeavingModel <em>Weaving
+   * Model</em>}'. <!-- begin-user-doc --> This default implementation returns
+   * null so that we can easily ignore cases; it's useful to ignore a case when
+   * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.WeavingModel
@@ -176,9 +183,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.VirtualLink
-   * <em>Virtual Link</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualLink <em>Virtual
+   * Link</em>}'. <!-- begin-user-doc --> This default implementation returns
+   * null so that we can easily ignore cases; it's useful to ignore a case when
+   * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.VirtualLink
@@ -189,9 +198,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.VirtualConcept
-   * <em>Virtual Concept</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualConcept <em>Virtual
+   * Concept</em>}'. <!-- begin-user-doc --> This default implementation returns
+   * null so that we can easily ignore cases; it's useful to ignore a case when
+   * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.VirtualConcept
@@ -202,9 +213,12 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.VirtualProperty
-   * <em>Virtual Property</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualProperty <em>Virtual
+   * Property</em>}'. <!-- begin-user-doc --> This default implementation
+   * returns null so that we can easily ignore cases; it's useful to ignore a
+   * case when inheritance will catch all the cases anyway. <!-- end-user-doc
+   * -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.VirtualProperty
@@ -215,10 +229,12 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation
-   * <em>Virtual Association</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-   * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-   * end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation <em>Virtual
+   * Association</em>}'. <!-- begin-user-doc --> This default implementation
+   * returns null so that we can easily ignore cases; it's useful to ignore a
+   * case when inheritance will catch all the cases anyway. <!-- end-user-doc
+   * -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.VirtualAssociation
@@ -229,9 +245,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.Filter
-   * <em>Filter</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-   * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.Filter <em>Filter</em>}'. <!--
+   * begin-user-doc --> This default implementation returns null so that we can
+   * easily ignore cases; it's useful to ignore a case when inheritance will
+   * catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.Filter
@@ -242,9 +260,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.ContributingModel
-   * <em>Contributing Model</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-   * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.ContributingModel
+   * <em>Contributing Model</em>}'. <!-- begin-user-doc --> This default
+   * implementation returns null so that we can easily ignore cases; it's useful
+   * to ignore a case when inheritance will catch all the cases anyway. <!--
    * end-user-doc -->
    *
    * @return the new adapter.
@@ -256,9 +276,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.ConcreteElement
-   * <em>Concrete Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.ConcreteElement <em>Concrete
+   * Element</em>}'. <!-- begin-user-doc --> This default implementation returns
+   * null so that we can easily ignore cases; it's useful to ignore a case when
+   * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.ConcreteElement
@@ -269,9 +291,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.Concept
-   * <em>Concept</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-   * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.Concept <em>Concept</em>}'. <!--
+   * begin-user-doc --> This default implementation returns null so that we can
+   * easily ignore cases; it's useful to ignore a case when inheritance will
+   * catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.Concept
@@ -282,9 +306,12 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.Association
-   * <em>Association</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.Association
+   * <em>Association</em>}'. <!-- begin-user-doc --> This default implementation
+   * returns null so that we can easily ignore cases; it's useful to ignore a
+   * case when inheritance will catch all the cases anyway. <!-- end-user-doc
+   * -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.Association
@@ -295,9 +322,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.ConcreteConcept
-   * <em>Concrete Concept</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.ConcreteConcept <em>Concrete
+   * Concept</em>}'. <!-- begin-user-doc --> This default implementation returns
+   * null so that we can easily ignore cases; it's useful to ignore a case when
+   * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.ConcreteConcept
@@ -308,10 +337,12 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.ConcreteAssociation
-   * <em>Concrete Association</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-   * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-   * end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.ConcreteAssociation <em>Concrete
+   * Association</em>}'. <!-- begin-user-doc --> This default implementation
+   * returns null so that we can easily ignore cases; it's useful to ignore a
+   * case when inheritance will catch all the cases anyway. <!-- end-user-doc
+   * -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.ConcreteAssociation
@@ -322,9 +353,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.Element
-   * <em>Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-   * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.Element <em>Element</em>}'. <!--
+   * begin-user-doc --> This default implementation returns null so that we can
+   * easily ignore cases; it's useful to ignore a case when inheritance will
+   * catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.Element
@@ -335,9 +368,11 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.atlanmod.emfviews.virtuallinks.VirtualElement
-   * <em>Virtual Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-   * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+   * Creates a new adapter for an object of class
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualElement <em>Virtual
+   * Element</em>}'. <!-- begin-user-doc --> This default implementation returns
+   * null so that we can easily ignore cases; it's useful to ignore a case when
+   * inheritance will catch all the cases anyway. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @see org.atlanmod.emfviews.virtuallinks.VirtualElement
@@ -348,8 +383,8 @@ public class VirtualLinksAdapterFactory extends AdapterFactoryImpl {
   }
 
   /**
-   * Creates a new adapter for the default case. <!-- begin-user-doc --> This default implementation returns null. <!--
-   * end-user-doc -->
+   * Creates a new adapter for the default case. <!-- begin-user-doc --> This
+   * default implementation returns null. <!-- end-user-doc -->
    *
    * @return the new adapter.
    * @generated

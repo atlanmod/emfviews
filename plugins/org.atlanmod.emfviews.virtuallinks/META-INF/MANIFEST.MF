@@ -1,20 +1,27 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: EMF Views VirtualLinks
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.atlanmod.emfviews.virtuallinks;singleton:=true
+Automatic-Module-Name: org.atlanmod.emfviews.virtuallinks
 Bundle-Version: 0.3.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: Atlanmod
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.atlanmod.emfviews.virtuallinks;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
- org.atlanmod.emfviews.virtuallinks.delegator;uses:="org.eclipse.emf.common.util",
+Export-Package: org.atlanmod.emfviews.virtuallinks;
+  uses:="org.eclipse.emf.ecore,
+   org.eclipse.emf.common.util",
+ org.atlanmod.emfviews.virtuallinks.delegator;
+  uses:="org.eclipse.emf.common.util",
  org.atlanmod.emfviews.virtuallinks.impl;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.ecore.impl,
    org.eclipse.emf.common.util,
    org.atlanmod.emfviews.virtuallinks,
-   org.eclipse.emf.common.notify"
+   org.eclipse.emf.common.notify",
+ org.atlanmod.emfviews.virtuallinks.util
 Require-Bundle: org.eclipse.core.resources;bundle-version="[3.12.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.12.0,4.0.0)",
  org.eclipse.emf.ecore;bundle-version="[2.13.0,3.0.0)";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;bundle-version="[2.13.0,3.0.0)"
+Bundle-ActivationPolicy: lazy

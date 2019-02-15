@@ -13,23 +13,25 @@ import org.atlanmod.emfviews.virtuallinks.VirtualConcept;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual Concept</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Virtual
+ * Concept</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualConceptImpl#getSuperConcepts <em>Super
- * Concepts</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualConceptImpl#getSubConcepts <em>Sub Concepts</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualConceptImpl#getSuperConcepts
+ * <em>Super Concepts</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.VirtualConceptImpl#getSubConcepts
+ * <em>Sub Concepts</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class VirtualConceptImpl extends VirtualLinkImpl implements VirtualConcept {
   /**
-   * The cached value of the '{@link #getSuperConcepts() <em>Super Concepts</em>}' reference list. <!-- begin-user-doc
-   * --> <!-- end-user-doc -->
+   * The cached value of the '{@link #getSuperConcepts() <em>Super
+   * Concepts</em>}' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+   * -->
    *
    * @see #getSuperConcepts()
    * @generated
@@ -38,8 +40,8 @@ public class VirtualConceptImpl extends VirtualLinkImpl implements VirtualConcep
   protected EList<Concept> superConcepts;
 
   /**
-   * The cached value of the '{@link #getSubConcepts() <em>Sub Concepts</em>}' reference list. <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
+   * The cached value of the '{@link #getSubConcepts() <em>Sub Concepts</em>}'
+   * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getSubConcepts()
    * @generated
@@ -74,9 +76,8 @@ public class VirtualConceptImpl extends VirtualLinkImpl implements VirtualConcep
   @Override
   public EList<Concept> getSuperConcepts() {
     if (superConcepts == null) {
-      superConcepts =
-          new EObjectResolvingEList<>(Concept.class, this,
-                                             VirtualLinksPackage.VIRTUAL_CONCEPT__SUPER_CONCEPTS);
+      superConcepts = new EObjectResolvingEList<>(Concept.class, this,
+        VirtualLinksPackage.VIRTUAL_CONCEPT__SUPER_CONCEPTS);
     }
     return superConcepts;
   }
@@ -89,9 +90,8 @@ public class VirtualConceptImpl extends VirtualLinkImpl implements VirtualConcep
   @Override
   public EList<Concept> getSubConcepts() {
     if (subConcepts == null) {
-      subConcepts =
-          new EObjectResolvingEList<>(Concept.class, this,
-                                             VirtualLinksPackage.VIRTUAL_CONCEPT__SUB_CONCEPTS);
+      subConcepts = new EObjectResolvingEList<>(Concept.class, this,
+        VirtualLinksPackage.VIRTUAL_CONCEPT__SUB_CONCEPTS);
     }
     return subConcepts;
   }

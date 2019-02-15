@@ -3,19 +3,24 @@
 package org.atlanmod.emfviews.virtuallinks;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Virtual Association</b></em>'. <!-- end-user-doc
- * -->
- *
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Virtual
+ * Association</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getSource <em>Source</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getTarget <em>Target</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getLowerBound <em>Lower Bound</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getUpperBound <em>Upper Bound</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getOpposite <em>Opposite</em>}</li>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#isComposition <em>Composition</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getSource
+ * <em>Source</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getTarget
+ * <em>Target</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getLowerBound
+ * <em>Lower Bound</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getUpperBound
+ * <em>Upper Bound</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getOpposite
+ * <em>Opposite</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#isComposition
+ * <em>Composition</em>}</li>
  * </ul>
  *
  * @see org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualAssociation()
@@ -24,9 +29,11 @@ package org.atlanmod.emfviews.virtuallinks;
  */
 public interface VirtualAssociation extends VirtualLink, VirtualElement, Association {
   /**
-   * Returns the value of the '<em><b>Source</b></em>' reference. <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Source</b></em>' reference. <!--
+   * begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Source</em>' reference isn't clear, there really should be more of a description here...
+   * If the meaning of the '<em>Source</em>' reference isn't clear, there really
+   * should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
    *
@@ -39,7 +46,8 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   Concept getSource();
 
   /**
-   * Sets the value of the '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getSource
+   * Sets the value of the
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getSource
    * <em>Source</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @param value the new value of the '<em>Source</em>' reference.
@@ -49,9 +57,11 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   void setSource(Concept value);
 
   /**
-   * Returns the value of the '<em><b>Target</b></em>' reference. <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Target</b></em>' reference. <!--
+   * begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Target</em>' reference isn't clear, there really should be more of a description here...
+   * If the meaning of the '<em>Target</em>' reference isn't clear, there really
+   * should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
    *
@@ -64,7 +74,8 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   Concept getTarget();
 
   /**
-   * Sets the value of the '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getTarget
+   * Sets the value of the
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getTarget
    * <em>Target</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @param value the new value of the '<em>Target</em>' reference.
@@ -74,10 +85,11 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   void setTarget(Concept value);
 
   /**
-   * Returns the value of the '<em><b>Lower Bound</b></em>' attribute. <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Lower Bound</b></em>' attribute. <!--
+   * begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Lower Bound</em>' attribute isn't clear, there really should be more of a description
-   * here...
+   * If the meaning of the '<em>Lower Bound</em>' attribute isn't clear, there
+   * really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
    *
@@ -90,8 +102,10 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   int getLowerBound();
 
   /**
-   * Sets the value of the '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getLowerBound <em>Lower
-   * Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Sets the value of the
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getLowerBound
+   * <em>Lower Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+   * -->
    *
    * @param value the new value of the '<em>Lower Bound</em>' attribute.
    * @see #getLowerBound()
@@ -100,10 +114,11 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   void setLowerBound(int value);
 
   /**
-   * Returns the value of the '<em><b>Upper Bound</b></em>' attribute. <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Upper Bound</b></em>' attribute. <!--
+   * begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Upper Bound</em>' attribute isn't clear, there really should be more of a description
-   * here...
+   * If the meaning of the '<em>Upper Bound</em>' attribute isn't clear, there
+   * really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
    *
@@ -116,8 +131,10 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   int getUpperBound();
 
   /**
-   * Sets the value of the '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getUpperBound <em>Upper
-   * Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Sets the value of the
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getUpperBound
+   * <em>Upper Bound</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+   * -->
    *
    * @param value the new value of the '<em>Upper Bound</em>' attribute.
    * @see #getUpperBound()
@@ -126,10 +143,11 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   void setUpperBound(int value);
 
   /**
-   * Returns the value of the '<em><b>Opposite</b></em>' reference. <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Opposite</b></em>' reference. <!--
+   * begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Opposite</em>' reference isn't clear, there really should be more of a description
-   * here...
+   * If the meaning of the '<em>Opposite</em>' reference isn't clear, there
+   * really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
    *
@@ -142,8 +160,10 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   Association getOpposite();
 
   /**
-   * Sets the value of the '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getOpposite
-   * <em>Opposite</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Sets the value of the
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getOpposite
+   * <em>Opposite</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
+   * -->
    *
    * @param value the new value of the '<em>Opposite</em>' reference.
    * @see #getOpposite()
@@ -152,10 +172,11 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   void setOpposite(Association value);
 
   /**
-   * Returns the value of the '<em><b>Composition</b></em>' attribute. <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Composition</b></em>' attribute. <!--
+   * begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Composition</em>' attribute isn't clear, there really should be more of a description
-   * here...
+   * If the meaning of the '<em>Composition</em>' attribute isn't clear, there
+   * really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
    *
@@ -168,8 +189,10 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
   boolean isComposition();
 
   /**
-   * Sets the value of the '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#isComposition
-   * <em>Composition</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   * Sets the value of the
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#isComposition
+   * <em>Composition</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+   * -->
    *
    * @param value the new value of the '<em>Composition</em>' attribute.
    * @see #isComposition()

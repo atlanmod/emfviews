@@ -18,15 +18,26 @@
 package org.atlanmod.emfviews.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.OCL;
+import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.Query;
+import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
+import org.eclipse.ocl.helper.OCLHelper;
 
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
@@ -151,6 +162,88 @@ public class View implements Virtualizer {
     for (Resource r : contributingModels) {
       String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
       modelResources.put(nsURI, r);
+    }
+
+    // First populate the view by executing queries on the viewpoint weaving model
+    for (VirtualProperty prop : viewpoint.getWeavingModel().getVirtualProperties()) {
+      String queryText = prop.getQuery();
+
+      if (queryText != null) {
+        // @Refactor: View doesn't need to depend on OCL directly. We could use
+        // an extension point/injection to find the corresponding ViewBuilder
+        // and delegate to it.
+
+        // @Correctness: what should be the query context?  Should it be specified by the user?
+        EObject root = getContributingModels().get(0).getContents().get(0);
+
+        // Create and execute OCL query
+        OCL ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
+        OCLHelper helper = ocl.createOCLHelper();
+        helper.setContext(root.eClass());
+        Query query;
+
+        try {
+          query = ocl.createQuery(helper.createQuery(queryText));
+        } catch (ParserException e) {
+          throw new RuntimeException("Error executing OCL query", e);
+        }
+
+        Object result = query.evaluate(root);
+
+        System.out.println("Query result: " + result);
+
+        // Find the corresponding EClass and feature
+        ConcreteConcept parentConcept = (ConcreteConcept) prop.getParent();
+        // @Correctness: should use Viewpoint.findEObject here
+        EClassifier parentClass = viewpoint.getContributingEPackages().get(0).getEClassifier(parentConcept.getPath());
+
+        System.out.println("Parent class: " + parentClass);
+
+        EStructuralFeature feature = ((EClass) viewpoint.getVirtual(parentClass)).getEStructuralFeature(prop.getName());
+
+        System.out.println("Feature: " + feature);
+
+        // Find all instances of parent element in models
+        // @Optimize: this is a potentially costly operation to do eagerly
+        Iterable<EObject> iterable = () -> getContributingModels().get(0).getAllContents();
+        Iterable<EObject> elems = StreamSupport.stream(iterable.spliterator(), true)
+          .filter(parentClass::isInstance)
+          ::iterator;
+
+        // Attach the result of the query to the corresponding virtual element
+        for (EObject o : elems) {
+          getVirtual(o).eSet(feature, result);
+        }
+
+        /*
+        IEolModule module = new EolModule();
+        try {
+          module.parse(query);
+        } catch (Exception e) {
+          throw new RuntimeException("Failed to parse the EOL query", e);
+        }
+
+        for (Entry<String, Resource> kv : modelResources.entrySet()) {
+          EmfModel m = new EmfModel();
+          StringProperties p = new StringProperties();
+          //p.put(EmfModel.PROPERTY_NAME, "test");
+          p.put(EmfModel.PROPERTY_METAMODEL_URI, kv.getKey());
+          p.put(EmfModel.PROPERTY_MODEL_URI, kv.getValue().getURI());
+          p.put(EmfModel.PROPERTY_READONLOAD, true);
+          p.put(EmfModel.PROPERTY_STOREONDISPOSAL, false);
+          module.getContext().getModelRepository().addModel(m);
+        }
+
+        try {
+          module.execute();
+          module.getContext().get
+        } catch (EolRuntimeException e) {
+          throw new RuntimeException("Failed to execute EOL", e);
+        }
+        module.getContext().getModelRepository().dispose();
+
+        */
+      }
     }
 
     // Populate virtual properties

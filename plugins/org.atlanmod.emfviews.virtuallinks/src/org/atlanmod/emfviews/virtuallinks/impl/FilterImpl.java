@@ -12,20 +12,22 @@ import org.atlanmod.emfviews.virtuallinks.Filter;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Filter</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object
+ * '<em><b>Filter</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.FilterImpl#getTarget <em>Target</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.impl.FilterImpl#getTarget
+ * <em>Target</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FilterImpl extends VirtualLinkImpl implements Filter {
   /**
-   * The cached value of the '{@link #getTarget() <em>Target</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
-   * -->
+   * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @see #getTarget()
    * @generated
@@ -65,7 +67,7 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
       if (target != oldTarget) {
         if (eNotificationRequired()) {
           eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                                        VirtualLinksPackage.FILTER__TARGET, oldTarget, target));
+            VirtualLinksPackage.FILTER__TARGET, oldTarget, target));
         }
       }
     }
@@ -91,8 +93,8 @@ public class FilterImpl extends VirtualLinkImpl implements Filter {
     ConcreteElement oldTarget = target;
     target = newTarget;
     if (eNotificationRequired()) {
-      eNotify(new ENotificationImpl(this, Notification.SET, VirtualLinksPackage.FILTER__TARGET,
-                                    oldTarget, target));
+      eNotify(new ENotificationImpl(this, Notification.SET,
+        VirtualLinksPackage.FILTER__TARGET, oldTarget, target));
     }
   }
 
