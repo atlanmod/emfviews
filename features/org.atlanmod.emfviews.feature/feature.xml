@@ -305,15 +305,16 @@ version(s), and exceptions or additional permissions here}.&quot;
    </license>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime" version="3.13.0" match="compatible"/>
       <import plugin="org.eclipse.core.resources" version="3.12.0" match="compatible"/>
       <import plugin="org.eclipse.epsilon.eol.engine" version="1.4.0" match="compatible"/>
       <import plugin="org.eclipse.epsilon.ecl.engine" version="1.4.0" match="compatible"/>
       <import plugin="org.eclipse.epsilon.emc.emf" version="1.4.0" match="compatible"/>
       <import plugin="org.atlanmod.emfviews.virtuallinks" version="0.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.uml2.uml.resources" version="5.3.0" match="compatible"/>
-      <import plugin="org.eclipse.ocl.ecore" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.emf.ecore" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.12.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore.xmi" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.ocl" version="3.9.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ocl.ecore" version="3.9.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
