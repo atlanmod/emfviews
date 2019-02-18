@@ -474,6 +474,16 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
    * @generated
    */
   @Override
+  public EAttribute getVirtualAssociation_Query() {
+    return (EAttribute) virtualAssociationEClass.getEStructuralFeatures().get(6);
+  }
+
+  /**
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @generated
+   */
+  @Override
   public EClass getFilter() {
     return filterEClass;
   }
@@ -670,6 +680,7 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     createEAttribute(virtualAssociationEClass, VIRTUAL_ASSOCIATION__UPPER_BOUND);
     createEReference(virtualAssociationEClass, VIRTUAL_ASSOCIATION__OPPOSITE);
     createEAttribute(virtualAssociationEClass, VIRTUAL_ASSOCIATION__COMPOSITION);
+    createEAttribute(virtualAssociationEClass, VIRTUAL_ASSOCIATION__QUERY);
 
     filterEClass = createEClass(FILTER);
     createEReference(filterEClass, FILTER__TARGET);
@@ -827,6 +838,9 @@ public class VirtualLinksPackageImpl extends EPackageImpl implements VirtualLink
     initEAttribute(getVirtualAssociation_Composition(), ecorePackage.getEBoolean(), "composition",
       null, 0, 1, VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
       !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getVirtualAssociation_Query(), ecorePackage.getEString(), "query", null, 0, 1,
+      VirtualAssociation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+      IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(filterEClass, Filter.class, "Filter", !IS_ABSTRACT, !IS_INTERFACE,
       IS_GENERATED_INSTANCE_CLASS);

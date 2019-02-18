@@ -411,13 +411,22 @@ public interface VirtualLinksPackage extends EPackage {
   int VIRTUAL_ASSOCIATION__COMPOSITION = VIRTUAL_LINK_FEATURE_COUNT + 5;
 
   /**
+   * The feature id for the '<em><b>Query</b></em>' attribute. <!--
+   * begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @generated
+   * @ordered
+   */
+  int VIRTUAL_ASSOCIATION__QUERY = VIRTUAL_LINK_FEATURE_COUNT + 6;
+
+  /**
    * The number of structural features of the '<em>Virtual Association</em>'
    * class. <!-- begin-user-doc --> <!-- end-user-doc -->
    *
    * @generated
    * @ordered
    */
-  int VIRTUAL_ASSOCIATION_FEATURE_COUNT = VIRTUAL_LINK_FEATURE_COUNT + 6;
+  int VIRTUAL_ASSOCIATION_FEATURE_COUNT = VIRTUAL_LINK_FEATURE_COUNT + 7;
 
   /**
    * The number of operations of the '<em>Virtual Association</em>' class. <!--
@@ -1111,6 +1120,18 @@ public interface VirtualLinksPackage extends EPackage {
   EAttribute getVirtualAssociation_Composition();
 
   /**
+   * Returns the meta object for the attribute
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getQuery
+   * <em>Query</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @return the meta object for the attribute '<em>Query</em>'.
+   * @see org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getQuery()
+   * @see #getVirtualAssociation()
+   * @generated
+   */
+  EAttribute getVirtualAssociation_Query();
+
+  /**
    * Returns the meta object for class
    * '{@link org.atlanmod.emfviews.virtuallinks.Filter <em>Filter</em>}'. <!--
    * begin-user-doc --> <!-- end-user-doc -->
@@ -1533,6 +1554,14 @@ public interface VirtualLinksPackage extends EPackage {
      * @generated
      */
     EAttribute VIRTUAL_ASSOCIATION__COMPOSITION = eINSTANCE.getVirtualAssociation_Composition();
+
+    /**
+     * The meta object literal for the '<em><b>Query</b></em>' attribute
+     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    EAttribute VIRTUAL_ASSOCIATION__QUERY = eINSTANCE.getVirtualAssociation_Query();
 
     /**
      * The meta object literal for the

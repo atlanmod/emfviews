@@ -18,7 +18,6 @@
 package org.atlanmod.emfviews.core;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,18 +25,14 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.ocl.OCL;
-import org.eclipse.ocl.ParserException;
-import org.eclipse.ocl.Query;
-import org.eclipse.ocl.ecore.EcoreEnvironmentFactory;
-import org.eclipse.ocl.helper.OCLHelper;
+import org.eclipse.ocl.pivot.utilities.OCL;
+import org.eclipse.ocl.pivot.utilities.ParserException;
+import org.eclipse.ocl.pivot.utilities.Query;
 
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
@@ -177,18 +172,17 @@ public class View implements Virtualizer {
         EObject root = getContributingModels().get(0).getContents().get(0);
 
         // Create and execute OCL query
-        OCL ocl = OCL.newInstance(EcoreEnvironmentFactory.INSTANCE);
-        OCLHelper helper = ocl.createOCLHelper();
-        helper.setContext(root.eClass());
+        OCL ocl = OCL.newInstance();
         Query query;
 
         try {
-          query = ocl.createQuery(helper.createQuery(queryText));
+          query = ocl.createQuery(ocl.createQuery(root.eClass(), queryText));
         } catch (ParserException e) {
           throw new RuntimeException("Error executing OCL query", e);
         }
 
-        Object result = query.evaluate(root);
+        Object result = query.evaluateEcore(root);
+        ocl.dispose();
 
         System.out.println("Query result: " + result);
 
@@ -216,6 +210,8 @@ public class View implements Virtualizer {
         }
 
         /*
+         * @Correctness: For EOL, we still have to figure out how to extract the result.
+         *
         IEolModule module = new EolModule();
         try {
           module.parse(query);
@@ -243,6 +239,65 @@ public class View implements Virtualizer {
         module.getContext().getModelRepository().dispose();
 
         */
+      }
+    }
+
+    // Virtual association queries from the viewpoint weaving model
+    for (VirtualAssociation assoc : viewpoint.getWeavingModel().getVirtualAssociations()) {
+      String queryText = assoc.getQuery();
+
+      if (queryText != null) {
+        // @Refactor: View doesn't need to depend on OCL directly. We could use
+        // an extension point/injection to find the corresponding ViewBuilder
+        // and delegate to it.
+
+        // Find all instances of the source concept
+        ConcreteConcept sourceConcept = (ConcreteConcept) assoc.getSource();
+        // @Correctness: should use Viewpoint.findEObject here
+        EClassifier sourceClass = viewpoint.getContributingEPackages().get(0).getEClassifier(sourceConcept.getPath());
+
+        System.out.println("Source: " + sourceClass);
+
+        // Find the association feature
+        EStructuralFeature feature = ((EClass) viewpoint.getVirtual(sourceClass)).getEStructuralFeature(assoc.getName());
+
+        System.out.println("Feature: " + feature);
+
+        // @Optimize: iterating over the whole model is potentially too costly operation to do eagerly
+        Iterable<EObject> iterable = () -> getContributingModels().get(0).getAllContents();
+        Iterable<EObject> sources = StreamSupport.stream(iterable.spliterator(), true)
+          .filter(sourceClass::isInstance)
+          // @Hack: we need a way to reduce the set of candidate objects here.  Add a field to the weaving model?
+          .filter(trace -> "fallback".equals(trace.eGet(trace.eClass().getEStructuralFeature("variable"))))
+          ::iterator;
+
+        // For each instance, execute the query
+        for (EObject source : sources) {
+          OCL ocl = OCL.newInstance();
+          Query query;
+
+          try {
+            query = ocl.createQuery(ocl.createQuery(source.eClass(), queryText));
+          } catch (ParserException e) {
+            throw new RuntimeException("Error executing OCL query", e);
+          }
+
+          Object result = query.evaluateEcore(source);
+
+          // Result should be an EObject, if not then the query returned undefined
+          if (result instanceof EObject) {
+            EObject target = (EObject) result;
+
+            // Then populate the corresponding feature
+            if (feature.isMany()) {
+              @SuppressWarnings("unchecked")
+              List<EObject> list = (List<EObject>) getVirtual(source).eGet(feature);
+              list.add(getVirtual(target));
+            } else {
+              getVirtual(source).eSet(feature, getVirtual(target));
+            }
+          }
+        }
       }
     }
 

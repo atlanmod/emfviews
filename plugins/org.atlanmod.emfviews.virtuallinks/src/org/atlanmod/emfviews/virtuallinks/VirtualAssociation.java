@@ -21,6 +21,8 @@ package org.atlanmod.emfviews.virtuallinks;
  * <em>Opposite</em>}</li>
  * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#isComposition
  * <em>Composition</em>}</li>
+ * <li>{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getQuery
+ * <em>Query</em>}</li>
  * </ul>
  *
  * @see org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualAssociation()
@@ -199,5 +201,33 @@ public interface VirtualAssociation extends VirtualLink, VirtualElement, Associa
    * @generated
    */
   void setComposition(boolean value);
+
+  /**
+   * Returns the value of the '<em><b>Query</b></em>' attribute. <!--
+   * begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Query</em>' attribute isn't clear, there really
+   * should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   *
+   * @return the value of the '<em>Query</em>' attribute.
+   * @see #setQuery(String)
+   * @see org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage#getVirtualAssociation_Query()
+   * @model
+   * @generated
+   */
+  String getQuery();
+
+  /**
+   * Sets the value of the
+   * '{@link org.atlanmod.emfviews.virtuallinks.VirtualAssociation#getQuery
+   * <em>Query</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @param value the new value of the '<em>Query</em>' attribute.
+   * @see #getQuery()
+   * @generated
+   */
+  void setQuery(String value);
 
 } // VirtualAssociation
