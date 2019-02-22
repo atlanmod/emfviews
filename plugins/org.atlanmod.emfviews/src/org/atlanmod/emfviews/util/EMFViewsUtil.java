@@ -22,10 +22,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 
 public final class EMFViewsUtil {
   // Prevent instances
@@ -108,6 +111,11 @@ public final class EMFViewsUtil {
       allPackages.addAll(getAllPackages(sub));
     }
     return allPackages;
+  }
+
+  public static Stream<EObject> contentsStream(Resource r) {
+    Iterable<EObject> contents = () -> r.getAllContents();
+    return StreamSupport.stream(contents.spliterator(), true);
   }
 
 }

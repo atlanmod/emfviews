@@ -66,7 +66,7 @@ public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl im
   /**
    * @return the concrete element held by this virtual element.
    */
-  protected T concrete() {
+  public T concrete() {
     return concreteObject;
   }
 
