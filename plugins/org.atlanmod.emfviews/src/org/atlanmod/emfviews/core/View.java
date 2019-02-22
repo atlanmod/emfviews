@@ -21,19 +21,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEObject;
+import org.atlanmod.emfviews.util.EMFViewsUtil;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
 /**
  * A virtual model conforming to a Viewpoint.
@@ -203,6 +211,36 @@ public class View implements Virtualizer {
       } else {
         vSource.eSet(feature, getVirtual(target));
       }
+    }
+  }
+
+  public Stream<EObject> getAllInstances(String kind) {
+    Optional<EClassifier> cls = EMFViewsUtil.getAllPackages(viewpoint.getRootPackage()).stream()
+      .map(p -> (p.getEClassifier(kind)))
+      .filter(c -> c != null)
+      .findFirst();
+
+    // If the classifier does not exist on the viewpoint,
+    // there can be no instances
+    if (!cls.isPresent()) {
+      return Stream.empty();
+    } else {
+      // Get the concrete classifier
+      EClassifier ccls = ((VirtualEClassifier<EClassifier>) cls.get()).concrete();
+      Stream<EObject> result = Stream.empty();
+      for (Resource r : getContributingModels()) {
+        // If the class belongs to a NeoEMF resource, then we can use the
+        // more efficient getAllInstances
+        if (r instanceof PersistentResource && ccls instanceof EClass) {
+          List<EObject> instances = ((PersistentResource) r).getAllInstances((EClass) ccls);
+          result = Stream.concat(result, instances.stream());
+        } else {
+          // Otherwise iterate on contents and check instances
+          result = Stream.concat(result, EMFViewsUtil.contentsStream(r).filter(ccls::isInstance));
+        }
+      }
+
+      return result;
     }
   }
 
