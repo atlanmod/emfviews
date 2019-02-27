@@ -240,7 +240,7 @@ public class View implements Virtualizer {
         }
       }
 
-      return result;
+      return result.map(this::getVirtual);
     }
   }
 
