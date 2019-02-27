@@ -35,13 +35,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.ecl.execute.EclOperationFactory;
 import org.eclipse.epsilon.ecl.trace.Match;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ContributingModel;
@@ -133,9 +132,9 @@ public class EclDelegate implements IVirtualLinksDelegate {
       Entry<String, Resource> tempEntry = iter.next();
       Resource modelResource = tempEntry.getValue();
       EmfModel inputModel = null;
-      inputModel = createEmfModelByURI(tempEntry.getKey(), modelResource.getURI().toString(),
-                                       inputMetamodelAliasToMetamodelNsURI.get(tempEntry.getKey()),
-                                       true, false);
+
+      inputModel = new InMemoryEmfModel(modelResource);
+      inputModel.setName(tempEntry.getKey());
 
       module.getContext().getModelRepository().addModel(inputModel);
     }
@@ -195,20 +194,6 @@ public class EclDelegate implements IVirtualLinksDelegate {
     }
 
     return weavingModel;
-  }
-
-  protected EmfModel createEmfModelByURI(String name, String modelURI, String metamodelURI,
-                                         boolean readOnLoad,
-                                         boolean storeOnDisposal) throws EolModelLoadingException {
-    EmfModel emfModel = new EmfModel();
-    StringProperties properties = new StringProperties();
-    properties.put(EmfModel.PROPERTY_NAME, name);
-    properties.put(EmfModel.PROPERTY_METAMODEL_URI, metamodelURI);
-    properties.put(EmfModel.PROPERTY_MODEL_URI, modelURI);
-    properties.put(EmfModel.PROPERTY_READONLOAD, readOnLoad);
-    properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, storeOnDisposal);
-    emfModel.load(properties);
-    return emfModel;
   }
 
 }
