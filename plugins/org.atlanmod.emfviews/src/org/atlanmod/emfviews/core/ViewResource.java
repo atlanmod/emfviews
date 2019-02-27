@@ -165,6 +165,7 @@ public class ViewResource extends ResourceImpl {
       try {
         weavingModel = vld.createWeavingModel(models);
       } catch (Exception e) {
+        e.printStackTrace();
         getErrors().add(new Err("Exception while creating weaving model from matching model: %s", e.toString()));
       }
     } else if (weavingModelPath != null) {
@@ -191,6 +192,7 @@ public class ViewResource extends ResourceImpl {
     try {
       setView(new View(viewpoint, contributingModels, weavingModel));
     } catch (Exception e) {
+      e.printStackTrace();
       // If we failed, add the exception to the resource errors, as this way
       // resource browsers can show multiple errors at once rather than barfing
       // on just one exception.
