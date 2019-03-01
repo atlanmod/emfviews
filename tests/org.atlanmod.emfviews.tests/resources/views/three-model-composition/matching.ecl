@@ -4,7 +4,7 @@
 
 rule detailedProcess
 match s : ea!Process
-with  t : bpmn!Process
+with  t : bpmn!bpmn2::Process
 {
 	compare
 	{

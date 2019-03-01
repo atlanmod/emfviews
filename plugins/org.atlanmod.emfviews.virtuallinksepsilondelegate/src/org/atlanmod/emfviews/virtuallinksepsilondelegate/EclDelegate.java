@@ -131,11 +131,8 @@ public class EclDelegate implements IVirtualLinksDelegate {
     while (iter.hasNext()) {
       Entry<String, Resource> tempEntry = iter.next();
       Resource modelResource = tempEntry.getValue();
-      EmfModel inputModel = null;
-
-      inputModel = new InMemoryEmfModel(modelResource);
+      EmfModel inputModel = new InMemoryEmfModel(modelResource);
       inputModel.setName(tempEntry.getKey());
-
       module.getContext().getModelRepository().addModel(inputModel);
     }
 
