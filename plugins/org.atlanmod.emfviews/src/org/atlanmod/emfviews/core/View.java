@@ -341,7 +341,11 @@ public class View implements Virtualizer {
 
       // Find the feature for this virtual association
       EObject vSource = getVirtual(source);
-      EStructuralFeature feature = vSource.eClass().getEStructuralFeature(assoc.getName());
+
+      // @Hack: ECL will blissfully ignore rules with the same name, but we want
+      // to add multiple types in an association.  So we ignore trailing numbers.
+      String featureName = assoc.getName().replaceAll("[0-9]+$", "");
+      EStructuralFeature feature = vSource.eClass().getEStructuralFeature(featureName);
 
       // If it's a many feature, add to the list
       if (feature.isMany()) {
