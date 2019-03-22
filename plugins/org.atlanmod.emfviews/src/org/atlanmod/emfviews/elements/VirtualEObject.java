@@ -29,7 +29,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.DynamicValueHolder;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.epsilon.eol.exceptions.EolIllegalPropertyException;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
+import org.atlanmod.emfviews.core.EpsilonEObject;
+import org.atlanmod.emfviews.core.EpsilonEStructuralFeature;
 import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Virtualizer;
 import org.atlanmod.emfviews.util.LazyEContentsList;
@@ -55,7 +59,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
   // With feature ID, the mapping is: 'a': 0, 'c': 1, 'd': 2, so the virtual
   // value associated to 'b' is now associated to 'c'.  With a map we keep track
   // of all structural features, filtered or not.
-  private Map<EStructuralFeature, Object> virtualValues;
+  private Map<String, Object> virtualValues;
 
   private Virtualizer virtualizer;
 
@@ -69,7 +73,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
     eSetClass(virtualEClass);
   }
 
-  protected Map<EStructuralFeature, Object> virtualValues() {
+  protected Map<String, Object> virtualValues() {
     if (virtualValues == null) {
       virtualValues = new HashMap<>();
     }
@@ -96,6 +100,22 @@ public class VirtualEObject extends DynamicEObjectImpl {
     // (We do not use the array because it has a static size, as it assumes
     //  the eClass features never change)
     return this;
+  }
+
+  @Override
+  public Object eGet(EStructuralFeature feature) {
+    if (feature instanceof EpsilonEStructuralFeature) {
+      try {
+        return ((EpsilonEObject) concreteEObject).get(feature.getName());
+      } catch (EolIllegalPropertyException e) {
+        return virtualValues().computeIfAbsent(feature.getName(), name -> ECollections.asEList(new ArrayList<>()));
+      } catch (EolRuntimeException e) {
+        e.printStackTrace();
+        return null;
+      }
+    } else {
+      return super.eGet(feature);
+    }
   }
 
   @Override
@@ -127,8 +147,10 @@ public class VirtualEObject extends DynamicEObjectImpl {
         return value;
       }
     } else {
+      String featureName = feature.getName();
+
       // If it's a reference, make sure it's a list
-      if (feature.isMany() && virtualValues().get(feature) == null) {
+      if (feature.isMany() && virtualValues().get(featureName) == null) {
 
         // @Correctness: do we need to distinguish concrete from virtual opposites?
         EReference opposite = ((EReference) feature).getEOpposite();
@@ -136,14 +158,14 @@ public class VirtualEObject extends DynamicEObjectImpl {
         // If the virtual feature has a virtual opposite, we need to return a
         // list that will keep the opposite in sync.
         if (opposite != null) {
-          virtualValues().put(feature, new EListWithInverse(opposite));
+          virtualValues().put(featureName, new EListWithInverse(opposite));
         } else {
           // Otherwise, a regular list will do
-          virtualValues().put(feature, ECollections.asEList(new ArrayList<>()));
+          virtualValues().put(featureName, ECollections.asEList(new ArrayList<>()));
         }
       }
 
-      return virtualValues().get(feature);
+      return virtualValues().get(featureName);
     }
   }
 
@@ -196,7 +218,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
       concreteEObject.eSet(concreteFeature, value);
     } else {
       // If not then it's a virtual feature
-      virtualValues().put(feature, value);
+      virtualValues().put(feature.getName(), value);
 
       if (feature instanceof EReference) {
         // If it's a reference, then the value must be an EObject
@@ -223,7 +245,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
   }
 
   void eSetWithoutInverse(EStructuralFeature feature, Object value) {
-    virtualValues().put(feature, value);
+    virtualValues().put(feature.getName(), value);
   }
 
   @Override

@@ -27,11 +27,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringJoiner;
 
-import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
-import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
-import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
-import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
-
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.ECollections;
@@ -43,9 +38,18 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.epsilon.common.parse.problem.ParseProblem;
+import org.eclipse.epsilon.ecl.EclModule;
+import org.eclipse.epsilon.ecl.execute.EclOperationFactory;
+import org.eclipse.epsilon.ecl.trace.Match;
+import org.eclipse.epsilon.ecl.trace.MatchTrace;
+import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
+import org.eclipse.epsilon.eol.models.IModel;
 
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
-import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
+import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
+import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 /**
  * A Resource that can load or save a View through an 'eview' file.
@@ -142,7 +146,7 @@ public class ViewResource extends ResourceImpl {
     }
   }
 
-  private List<Resource> loadModels(Map<String, EPackage> metamodels) {
+  private Map<String, Resource> loadModels(Map<String, EPackage> metamodels) {
     Map<String, Resource> contributingModels = new HashMap<>();
     for (String modelPath : contributingModelsPaths.split(",")) {
 
@@ -192,30 +196,83 @@ public class ViewResource extends ResourceImpl {
     return contributingModels;
   }
 
-  private WeavingModel loadWeavingModel(Map<String, Resource> models) {
+  private List<VirtualLinkMatch> loadWeavingModel(List<Resource> models) throws Exception  {
     // Get the weaving model from the matching model, if there is one
-    WeavingModel weavingModel = null;
+    List<VirtualLinkMatch> weavingModel = new ArrayList<>();
 
-    if (matchingModelPath != null && !matchingModelPath.isEmpty()) {
-      URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
-      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI);
+    URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
 
-      try {
-        weavingModel = vld.createWeavingModel(models);
-      } catch (Exception e) {
-        e.printStackTrace();
-        getErrors().add(new Err("Exception while creating weaving model from matching model: %s", e.toString()));
+    // @Temp: bypass VirtualLinksDelegator, run ECL directly and use that to populate the view
+    {
+      File eclFile = new File(matchingModelURI.toFileString());
+
+      EclModule module = new EclModule();
+      module.parse(eclFile);
+      if (module.getParseProblems().size() > 0) {
+        System.err.println("Parse errors occured...");
+        for (ParseProblem problem : module.getParseProblems()) {
+          System.err.println(problem.toString());
+        }
+        throw new Exception("Error in parsing ECL file.  See stderr for details");
       }
-    } else if (weavingModelPath != null) {
-      // Otherwise, the weaving model should be provided in the eview file
-      URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
-      Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
-      weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
-    } else {
-      weavingModel = Viewpoint.emptyWeavingModel;
+      EclOperationFactory operationFactory = new EclOperationFactory();
+      module.getContext().setOperationFactory(operationFactory);
+
+      // Keep track of which Epsilon models are owned by which EpsilonResource.
+      Map<IModel, EpsilonResource> epsToResource = new HashMap<>();
+
+      // Add models
+      for (Resource r : models) {
+        IModel m;
+
+        // If it's an EpsilonResource, we can add the underlying Epsilon model
+        // directly. Otherwise, wrap it using InMemoryEmfModel. We also keep
+        // track of that relationship since we need to call the EpsilonResource
+        // containing an object from a match.
+        if (r instanceof EpsilonResource) {
+          m = ((EpsilonResource) r).getEpsilonModel();
+          epsToResource.put(m, (EpsilonResource) r);
+        } else {
+          m = new InMemoryEmfModel(r);
+        }
+
+        // @Hack: need to map a model with a name used in the ECL file.
+        // For now use the file extension as convention.
+        m.setName(r.getURI().fileExtension().toUpperCase());
+        module.getContext().getModelRepository().addModel(m);
+      }
+
+      // Execute the module
+      MatchTrace mt = (MatchTrace) module.execute();
+
+      Map<Object, EObject> targets = new HashMap<>();
+      for (Match m : mt.getMatches()) {
+        if (m.isMatching()) {
+          VirtualLinkMatch vlm = new VirtualLinkMatch();
+          vlm.linkName = m.getRule().getName();
+
+          System.out.println(m);
+
+          // @Optimize: getOwningModel may be O(n) depending of the backing model.
+          vlm.source = targets.computeIfAbsent(m.getLeft(), obj -> asEObject(obj, module, epsToResource));
+          vlm.target = targets.computeIfAbsent(m.getRight(), obj -> asEObject(obj, module, epsToResource));
+
+          weavingModel.add(vlm);
+        }
+      }
     }
 
     return weavingModel;
+  }
+
+  private EObject asEObject(Object obj, EclModule module, Map<IModel, EpsilonResource> epsToResource) {
+    if (obj instanceof EObject) {
+      return (EObject) obj;
+    } else {
+      IModel owner = module.getContext().getModelRepository().getOwningModel(obj);
+      EpsilonResource r = epsToResource.get(owner);
+      return r.asEObject(obj);
+    }
   }
 
   @Override
@@ -225,10 +282,10 @@ public class ViewResource extends ResourceImpl {
     // Load everything and create the view
     Viewpoint viewpoint = loadViewpoint();
     Map<String, Resource> contributingModels = loadModels(viewpoint.getContributingEPackages());
-    WeavingModel weavingModel = loadWeavingModel(contributingModels);
-
+    List<Resource> models = new ArrayList<>(contributingModels.values());
     try {
-      setView(new View(viewpoint, new ArrayList<>(contributingModels.values()), weavingModel));
+      List<VirtualLinkMatch> weavingModel = loadWeavingModel(models);
+      setView(new View(viewpoint, models, weavingModel));
     } catch (Exception e) {
       e.printStackTrace();
       // If we failed, add the exception to the resource errors, as this way

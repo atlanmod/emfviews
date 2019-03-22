@@ -15,6 +15,14 @@ Require-Bundle: org.eclipse.emf.ecore;bundle-version="[2.13.0,3.0.0)",
  org.eclipse.core.runtime;bundle-version="3.14.0",
  org.eclipse.ui.workbench,
  org.eclipse.swt;bundle-version="3.107.0",
- org.eclipse.gmt.modisco.infra.browser;bundle-version="1.2.0"
+ org.eclipse.gmt.modisco.infra.browser;bundle-version="1.2.0",
+ org.eclipse.epsilon.ecl.engine;bundle-version="1.5.1",
+ org.eclipse.epsilon.eol.engine;bundle-version="1.5.1",
+ org.eclipse.epsilon.emc.bibtex
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.atlanmod.emfviews.Activator
+Import-Package: com.google.common.collect;version="21.0.0",
+ org.eclipse.emf.ecore.xmi.impl,
+ org.eclipse.epsilon.ecl.trace,
+ org.eclipse.epsilon.emc.csv,
+ org.eclipse.epsilon.emc.emf

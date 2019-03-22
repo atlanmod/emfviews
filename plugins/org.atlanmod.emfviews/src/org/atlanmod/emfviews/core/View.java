@@ -18,6 +18,7 @@
 package org.atlanmod.emfviews.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-
+import org.eclipse.epsilon.ecl.trace.Match;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.util.EMFViewsUtil;
@@ -65,7 +66,7 @@ public class View implements Virtualizer {
   // use Resource.getEObject to get them back.
 
   private Viewpoint viewpoint; // holds the metamodel the view needs to conform to
-  private WeavingModel weavingModel; // what virtual links to create
+  private List<VirtualLinkMatch> weavingModel; // what virtual links to create
 
   private Resource resource; // the resource using this view, if any.  This is
                              // used by VirtualEObject.eResource, to please some
@@ -92,13 +93,13 @@ public class View implements Virtualizer {
    * model.
    */
   public View(Viewpoint viewpoint, List<Resource> contributingModels) {
-    this(viewpoint, contributingModels, Viewpoint.emptyWeavingModel);
+    this(viewpoint, contributingModels, Collections.emptyList());
   }
 
   /**
    * Construct a View with a list of contributing models and a WeavingModel.
    */
-  public View(Viewpoint viewpoint, List<Resource> contributingModels, WeavingModel weavingModel) {
+  public View(Viewpoint viewpoint, List<Resource> contributingModels, List<VirtualLinkMatch> weavingModel) {
     this.viewpoint = viewpoint;
     this.contributingModels = contributingModels;
     this.weavingModel = weavingModel;
@@ -153,64 +154,16 @@ public class View implements Virtualizer {
 
   // Go through the WeavingModel instructions and build the virtual model.
   protected void build() {
-    Map<String, Resource> modelResources = new HashMap<>();
-
-    // Load contributing models
-    for (Resource r : contributingModels) {
-      String nsURI = r.getContents().get(0).eClass().getEPackage().getNsURI();
-      modelResources.put(nsURI, r);
-    }
-
-    // Populate virtual properties
-    for (VirtualProperty prop : weavingModel.getVirtualProperties()) {
-      // @Correctness: this should work with VirtualConcept as well
-
-      // The property is added to some object
-      ConcreteConcept elem = (ConcreteConcept) prop.getParent();
-      // Get the NsURI of the metamodel
-      String nsURI = elem.getModel().getURI();
-      // Find the corresponding resource
-      Resource model = modelResources.get(nsURI);
-      // Find the referenced element in that resource
-      EObject owner = model.getEObject(elem.getPath());
-      // Get its virtual counterpart
-      EObject vOwner = getVirtual(owner);
-
-      // Get the feature by name
-      EStructuralFeature feature = vOwner.eClass().getEStructuralFeature(prop.getName());
-
-      // Then set its value
-      vOwner.eSet(feature, prop.getType());
-    }
 
     // Populate the model with values for virtual associations
-    for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {
-      // @Correctness: this should work with VirtualConcept as well
+    for (VirtualLinkMatch m : weavingModel) {
+      EObject source = getVirtual(m.source);
+      EObject target = getVirtual(m.target);
+      EStructuralFeature feature = source.eClass().getEStructuralFeature(m.linkName);
 
-      ConcreteElement elem = (ConcreteConcept) assoc.getSource();
-      // Get the NsURI of the metamodel
-      String nsURI = elem.getModel().getURI();
-      // Find the corresponding resource
-      Resource model = modelResources.get(nsURI);
-      // Find the referenced element in that resource
-      EObject source = model.getEObject(elem.getPath());
-
-      // Do the same for the target
-      elem = (ConcreteConcept) assoc.getTarget();
-      EObject target = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
-
-      // Find the feature for this virtual association
-      EObject vSource = getVirtual(source);
-      EStructuralFeature feature = vSource.eClass().getEStructuralFeature(assoc.getName());
-
-      // If it's a many feature, add to the list
-      if (feature.isMany()) {
-        @SuppressWarnings("unchecked")
-        List<EObject> list = (List<EObject>) vSource.eGet(feature);
-        list.add(getVirtual(target));
-      } else {
-        vSource.eSet(feature, getVirtual(target));
-      }
+      // Virtual features are always lists
+      List<Object> list = (List<Object>) source.eGet(feature);
+      list.add(target);
     }
   }
 

@@ -37,6 +37,8 @@ import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaD
 import org.eclipse.emf.ecore.util.EcoreEList;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
+import org.atlanmod.emfviews.core.EpsilonEClass;
+import org.atlanmod.emfviews.core.EpsilonEStructuralFeature;
 
 // @Note @UnmodifiableElist:
 // We want views to be immutable.  When returning lists, we could use
@@ -457,11 +459,20 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
   @Override
   public EStructuralFeature getEStructuralFeature(String featureName) {
+    // Epsilon objects do not have metamodels, so when asked about a feature, we
+    // always return a valid feature object with that name, as if the feature
+    // exists. This will only fail when actually doing something with the
+    // feature.
+    if (concrete() instanceof EpsilonEClass) {
+      return new EpsilonEStructuralFeature(featureName);
+    }
+
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
       if (featureName.equals(f.getName())) {
         return f;
       }
     }
+
     return null;
   }
 
