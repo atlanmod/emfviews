@@ -32,7 +32,8 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.epsilon.ecl.trace.Match;
+
+import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.util.EMFViewsUtil;
@@ -214,9 +215,20 @@ public class View implements Virtualizer {
       concreteToVirtual = new HashMap<>();
     }
 
-    return concreteToVirtual.computeIfAbsent(obj, o ->
-      new VirtualEObject(o, viewpoint.getVirtual(o.eClass()), this)
-    );
+    return concreteToVirtual.computeIfAbsent(obj, o -> {
+      VirtualEClass vclass = viewpoint.getVirtual(o.eClass());
+
+      // If we are virtualizing an Epsilon object, we need to make sure the
+      // virtual class can accept any feature. We cannot set this flag in the
+      // viewpoint, since the viewpoint does not know that an EPackage
+      // corresponds to an Epsilon metamodel. We could add that information on a
+      // weaving model, but weaving models are optional.
+      if (o instanceof EpsilonEObject) {
+        vclass.allowDynamicFeatures = true;
+      }
+
+      return new VirtualEObject(o, vclass, this);
+    });
   }
 
 }

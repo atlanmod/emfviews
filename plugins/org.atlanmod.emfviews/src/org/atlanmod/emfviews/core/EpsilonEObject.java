@@ -25,14 +25,12 @@ public class EpsilonEObject implements EObject {
   Map<String, List<EObject>> features = new HashMap<>();
   Object obj;
   IPropertyGetter getter;
+  EClass eClass;
 
-  public EpsilonEObject(Object epsilonObject, IPropertyGetter getter) {
+  public EpsilonEObject(Object epsilonObject, IPropertyGetter getter, EClass eClass) {
     this.obj = epsilonObject;
     this.getter = getter;
-  }
-
-  public Object get(String featureName) throws EolRuntimeException {
-    return getter.invoke(obj, featureName);
+    this.eClass = eClass;
   }
 
   @Override
@@ -60,7 +58,11 @@ public class EpsilonEObject implements EObject {
 
   @Override
   public EClass eClass() {
-    return EpsilonEClass.INSTANCE;
+    if (eClass != null) {
+      return eClass;
+    } else {
+      return EpsilonEClass.INSTANCE;
+    }
   }
 
   @Override
@@ -110,8 +112,11 @@ public class EpsilonEObject implements EObject {
 
   @Override
   public Object eGet(EStructuralFeature feature) {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    try {
+      return getter.invoke(obj, feature.getName());
+    } catch (EolRuntimeException e) {
+      return null;
+    }
   }
 
   @Override

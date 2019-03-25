@@ -36,9 +36,8 @@ import org.eclipse.emf.ecore.impl.ESuperAdapter;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EClassifierExtendedMetaData;
 import org.eclipse.emf.ecore.util.EcoreEList;
 
+import org.atlanmod.emfviews.core.DynamicStructuralFeature;
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
-import org.atlanmod.emfviews.core.EpsilonEClass;
-import org.atlanmod.emfviews.core.EpsilonEStructuralFeature;
 
 // @Note @UnmodifiableElist:
 // We want views to be immutable.  When returning lists, we could use
@@ -57,6 +56,11 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
   // Features from the concrete class that should not appear on the virtual one.
   private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
+
+  // If true, will always getEStructuralFeature(name) will always return a valid
+  // structural feature. Virtual objects that have this VirtualEClass as class
+  // will proceed as if the feature exists: eGet and eSet will work.
+  public boolean allowDynamicFeatures = false;
 
   public VirtualEClass(EClass concreteEClass, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.ECLASS, concreteEClass, virtualizer);
@@ -459,18 +463,14 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
   @Override
   public EStructuralFeature getEStructuralFeature(String featureName) {
-    // Epsilon objects do not have metamodels, so when asked about a feature, we
-    // always return a valid feature object with that name, as if the feature
-    // exists. This will only fail when actually doing something with the
-    // feature.
-    if (concrete() instanceof EpsilonEClass) {
-      return new EpsilonEStructuralFeature(featureName);
-    }
-
     for (EStructuralFeature f : getEAllStructuralFeatures()) {
       if (featureName.equals(f.getName())) {
         return f;
       }
+    }
+
+    if (allowDynamicFeatures) {
+      return new DynamicStructuralFeature(featureName);
     }
 
     return null;

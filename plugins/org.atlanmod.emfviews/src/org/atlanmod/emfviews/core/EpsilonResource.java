@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.epsilon.emc.bibtex.BibtexModel;
 import org.eclipse.epsilon.emc.csv.CsvModel;
@@ -25,6 +28,7 @@ public class EpsilonResource extends ResourceImpl {
   IModel model;
 
   Map<Object, EpsilonEObject> cached = new HashMap<>();
+  Function<Object, EClass> objectEClass;
 
   public EpsilonResource(URI uri) {
     super(uri);
@@ -41,6 +45,9 @@ public class EpsilonResource extends ResourceImpl {
       m.setKnownHeaders(true);
       m.setReader(new BufferedReader(new InputStreamReader(inputStream)));
       model = m;
+
+      // @Correctness: need to ensure that package exists
+      objectEClass = obj -> (EClass) EPackage.Registry.INSTANCE.getEPackage("csv").getEClassifier("Row");
 
     } else if (uri.fileExtension().equals("bib")) {
       BibtexModel m = new BibtexModel();
@@ -71,7 +78,8 @@ public class EpsilonResource extends ResourceImpl {
 
   // Use when we know `o` is owned by the model.
   private EObject asEObjectUnchecked(Object o) {
-    return cached.computeIfAbsent(o, obj -> new EpsilonEObject(obj, model.getPropertyGetter()));
+    return cached.computeIfAbsent(o,
+      obj -> new EpsilonEObject(obj, model.getPropertyGetter(), objectEClass.apply(o)));
   }
 
   public EObject asEObject(Object o) {

@@ -293,8 +293,7 @@ public class EpsilonEClass implements EClass {
 
   @Override
   public String getName() {
-    // TODO: Auto-generated method stub
-    throw new UnsupportedOperationException();
+    return "EpsilonEClass";
   }
 
   @Override

@@ -32,8 +32,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.epsilon.eol.exceptions.EolIllegalPropertyException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
+import org.atlanmod.emfviews.core.DynamicStructuralFeature;
 import org.atlanmod.emfviews.core.EpsilonEObject;
-import org.atlanmod.emfviews.core.EpsilonEStructuralFeature;
 import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Virtualizer;
 import org.atlanmod.emfviews.util.LazyEContentsList;
@@ -102,19 +102,19 @@ public class VirtualEObject extends DynamicEObjectImpl {
     return this;
   }
 
+  // We need to override this when VirtualEClass.allowDynamicFeatures is true.
+  // In that case, eGet will not end up in dynamicGet, but in eOpenGet. We
+  // delegate to the concrete object to answer for that feature, even if it's
+  // not declared at the class level.
+  //
+  // @Refactor: maybe it makes sense to override eGet directly, and merge this
+  // with dynamicGet?
   @Override
-  public Object eGet(EStructuralFeature feature) {
-    if (feature instanceof EpsilonEStructuralFeature) {
-      try {
-        return ((EpsilonEObject) concreteEObject).get(feature.getName());
-      } catch (EolIllegalPropertyException e) {
-        return virtualValues().computeIfAbsent(feature.getName(), name -> ECollections.asEList(new ArrayList<>()));
-      } catch (EolRuntimeException e) {
-        e.printStackTrace();
-        return null;
-      }
+  public Object eOpenGet(EStructuralFeature eFeature, boolean resolve) {
+    if (eFeature instanceof DynamicStructuralFeature) {
+      return concreteEObject.eGet(eFeature);
     } else {
-      return super.eGet(feature);
+      return super.eOpenGet(eFeature, resolve);
     }
   }
 

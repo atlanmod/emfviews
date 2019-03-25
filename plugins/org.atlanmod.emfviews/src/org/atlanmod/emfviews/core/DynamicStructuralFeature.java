@@ -17,11 +17,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EStructuralFeatureExtendedMetaData;
 
-public class EpsilonEStructuralFeature implements EStructuralFeature, EStructuralFeatureExtendedMetaData.Holder {
+public class DynamicStructuralFeature implements EStructuralFeature, EStructuralFeatureExtendedMetaData.Holder {
 
   String name;
 
-  public EpsilonEStructuralFeature(String name) {
+  public DynamicStructuralFeature(String name) {
     this.name = name;
   }
 
