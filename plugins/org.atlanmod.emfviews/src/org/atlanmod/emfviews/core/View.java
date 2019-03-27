@@ -162,9 +162,12 @@ public class View implements Virtualizer {
       EObject target = getVirtual(m.target);
       EStructuralFeature feature = source.eClass().getEStructuralFeature(m.linkName);
 
-      // Virtual features are always lists
-      List<Object> list = (List<Object>) source.eGet(feature);
-      list.add(target);
+      if (feature.isMany()) {
+        List<Object> list = (List<Object>) source.eGet(feature);
+        list.add(target);
+      } else {
+        source.eSet(feature, target);
+      }
     }
   }
 
