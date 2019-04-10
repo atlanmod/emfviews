@@ -21,9 +21,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.StringJoiner;
 
@@ -196,7 +198,7 @@ public class ViewResource extends ResourceImpl {
     return contributingModels;
   }
 
-  private List<VirtualLinkMatch> loadWeavingModel(List<Resource> models) throws Exception  {
+  private List<VirtualLinkMatch> loadWeavingModel(Map<String, Resource> models) throws Exception  {
     // Get the weaving model from the matching model, if there is one
     List<VirtualLinkMatch> weavingModel = new ArrayList<>();
 
@@ -226,7 +228,9 @@ public class ViewResource extends ResourceImpl {
       Map<IModel, EpsilonResource> epsToResource = new HashMap<>();
 
       // Add models
-      for (Resource r : models) {
+      for (Entry<String, Resource> e : models.entrySet()) {
+        String name = e.getKey();
+        Resource r = e.getValue();
         IModel m;
 
         // If it's an EpsilonResource, we can add the underlying Epsilon model
@@ -240,9 +244,7 @@ public class ViewResource extends ResourceImpl {
           m = new InMemoryEmfModel(r);
         }
 
-        // @Hack: need to map a model with a name used in the ECL file.
-        // For now use the file extension as convention.
-        m.setName(r.getURI().fileExtension().toUpperCase());
+        m.setName(name);
         module.getContext().getModelRepository().addModel(m);
       }
 
@@ -284,10 +286,9 @@ public class ViewResource extends ResourceImpl {
     // Load everything and create the view
     Viewpoint viewpoint = loadViewpoint();
     Map<String, Resource> contributingModels = loadModels(viewpoint.getContributingEPackages());
-    List<Resource> models = new ArrayList<>(contributingModels.values());
     try {
-      List<VirtualLinkMatch> weavingModel = loadWeavingModel(models);
-      setView(new View(viewpoint, models, weavingModel));
+      List<VirtualLinkMatch> weavingModel = loadWeavingModel(contributingModels);
+      setView(new View(viewpoint, new ArrayList<>(contributingModels.values()), weavingModel));
     } catch (Exception e) {
       e.printStackTrace();
       // If we failed, add the exception to the resource errors, as this way
