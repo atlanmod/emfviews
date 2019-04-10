@@ -37,11 +37,6 @@ import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.util.EMFViewsUtil;
-import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
-import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
-import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
-import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 
@@ -173,7 +168,7 @@ public class View implements Virtualizer {
 
   public Stream<EObject> getAllInstances(String kind) {
     Optional<EClassifier> cls = EMFViewsUtil.getAllPackages(viewpoint.getRootPackage()).stream()
-      .map(p -> (p.getEClassifier(kind)))
+      .map(p -> p.getEClassifier(kind))
       .filter(c -> c != null)
       .findFirst();
 

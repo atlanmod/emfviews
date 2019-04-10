@@ -200,6 +200,10 @@ public class ViewResource extends ResourceImpl {
     // Get the weaving model from the matching model, if there is one
     List<VirtualLinkMatch> weavingModel = new ArrayList<>();
 
+    if (matchingModelPath == null || matchingModelPath.isEmpty()) {
+      return weavingModel;
+    }
+
     URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
 
     // @Temp: bypass VirtualLinksDelegator, run ECL directly and use that to populate the view
@@ -250,8 +254,6 @@ public class ViewResource extends ResourceImpl {
         if (m.isMatching()) {
           VirtualLinkMatch vlm = new VirtualLinkMatch();
           vlm.linkName = m.getRule().getName();
-
-          System.out.println(m);
 
           // @Optimize: getOwningModel may be O(n) depending of the backing model.
           vlm.source = targets.computeIfAbsent(m.getLeft(), obj -> asEObject(obj, module, epsToResource));

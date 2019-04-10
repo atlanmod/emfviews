@@ -29,11 +29,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.DynamicValueHolder;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.epsilon.eol.exceptions.EolIllegalPropertyException;
-import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
 import org.atlanmod.emfviews.core.DynamicStructuralFeature;
-import org.atlanmod.emfviews.core.EpsilonEObject;
 import org.atlanmod.emfviews.core.View;
 import org.atlanmod.emfviews.core.Virtualizer;
 import org.atlanmod.emfviews.util.LazyEContentsList;

@@ -30,6 +30,10 @@ public class Activator implements BundleActivator {
     // Ecore Editor, MoDisco, ...), and it's looking at a ViewResource, then we
     // close any NeoEMF resource it may hold.
 
+    // @Refactor: maybe move this to the UI plugin?
+    if (!PlatformUI.isWorkbenchRunning())
+      return;
+
     PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
       PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(new IPartListener2() {
 
