@@ -102,6 +102,14 @@
           </environments>
         </configuration>
       </plugin>
+
+      <!-- Needed when building the site goal (in Atlanmod Platform).
+           See https://stackoverflow.com/a/51093732 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
     </plugins>
   </build>
 
