@@ -16,7 +16,9 @@ Installation
 ------------
 
 The simplest option is to add our [update site][] to Eclipse, and to install the
-EMF Views feature from there.  To get started, see our [user manual][].
+EMF Views feature from there.  You need to install [Epsilon][] first if you want
+to use the ECL builder.  To get started after the installation, see our [user
+manual][].
 
 Alternatively, you can clone this repository and build the update site locally
 with [Maven](https://maven.apache.org/).  First install
@@ -156,3 +158,4 @@ which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 [make]: https://www.gnu.org/software/make/
 [Mel.xtext]: https://github.com/atlanmod/emfviews/blob/master/dsls/mel/org.atlanmod.emfviews.mel/src/org/atlanmod/emfviews/mel/Mel.xtext
 [Vpdl.xtext]: https://github.com/atlanmod/emfviews/blob/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext
+[Epsilon]: https://www.eclipse.org/epsilon/download/
