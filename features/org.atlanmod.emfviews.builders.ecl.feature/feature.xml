@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.atlanmod.emfviews.feature"
-      label="EMF Views"
+      id="org.atlanmod.emfviews.builders.ecl.feature"
+      label="ECL builder for EMF Views"
       version="0.3.0.qualifier"
       provider-name="Atlanmod">
 
    <description url="http://www.atlanmod.org/emfviews">
-      Lightweight views for your models
+      Epsilon Comparison Language (ECL) builder for EMF Views.
+
+This feature requires the Epsilon Core feature.
    </description>
 
    <copyright>
@@ -16,8 +18,10 @@ This program and the accompanying materials are made available
 under the terms of the Eclipse Public License 2.0 which is available
 at https://www.eclipse.org/legal/epl-2.0/
 This Source Code may also be made available under the following
-Secondary Licenses when the conditions for such availability set forth
-in the Eclipse Public License, v. 2.0 are satisfied: GNU General Public License,
+Secondary Licenses when the conditions for such availability
+set forth
+in the Eclipse Public License, v. 2.0 are satisfied: GNU General
+Public License,
 version 3 which is available at https://www.gnu.org/licenses/gpl-3.0.txt
 Contributors:
 Armines - refactoring and extension
@@ -304,33 +308,24 @@ version(s), and exceptions or additional permissions here}.&quot;
   You may add additional accurate notices of copyright ownership.
    </license>
 
+   <url>
+      <discovery label="Epsilon download" url="https://www.eclipse.org/epsilon/download/"/>
+   </url>
+
    <requires>
-      <import plugin="org.eclipse.core.resources" version="3.12.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.12.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.13.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore.xmi" version="2.13.0" match="compatible"/>
+      <import plugin="org.eclipse.core.resources" version="3.12.0" match="compatible"/>
+      <import plugin="org.eclipse.epsilon.eol.engine" version="1.4.0" match="compatible"/>
+      <import plugin="org.eclipse.epsilon.ecl.engine" version="1.4.0" match="compatible"/>
+      <import plugin="org.eclipse.epsilon.emc.emf" version="1.4.0" match="compatible"/>
       <import plugin="org.atlanmod.emfviews.virtuallinks" version="0.3.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.help" version="3.8.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
-         id="org.atlanmod.emfviews.virtuallinks"
+         id="org.atlanmod.emfviews.virtuallinksepsilondelegate"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.atlanmod.emfviews"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.atlanmod.emfviews.doc"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
 </feature>

@@ -15,6 +15,7 @@
 
   <modules>
     <module>org.atlanmod.emfviews.feature</module>
+    <module>org.atlanmod.emfviews.builders.ecl.feature</module>
     <module>org.atlanmod.emfviews.mel.feature</module>
     <module>org.atlanmod.emfviews.vpdl.feature</module>
   </modules>

@@ -9,6 +9,23 @@
    <feature url="features/org.atlanmod.emfviews.vpdl.feature_0.3.0.qualifier.jar" id="org.atlanmod.emfviews.vpdl.feature" version="0.3.0.qualifier">
       <category name="org.atlanmod.emfviews.dsl"/>
    </feature>
-   <category-def name="org.atlanmod.emfviews" label="EMF Views Core"/>
-   <category-def name="org.atlanmod.emfviews.dsl" label="EMF Views DSLs"/>
+   <feature url="features/org.atlanmod.emfviews.builders.ecl.feature_0.3.0.qualifier.jar" id="org.atlanmod.emfviews.builders.ecl.feature" version="0.3.0.qualifier">
+      <category name="org.atlanmod.emfviews.builders"/>
+   </feature>
+   <category-def name="org.atlanmod.emfviews" label="EMF Views Core">
+      <description>
+         Core plugin that can construct views from EMF models.
+      </description>
+   </category-def>
+   <category-def name="org.atlanmod.emfviews.dsl" label="EMF Views DSLs">
+      <description>
+         Domain-specific languages that ease declaring views and viewpoints.
+      </description>
+   </category-def>
+   <category-def name="org.atlanmod.emfviews.builders" label="EMF Views Builders">
+      <description>
+         Plugins that provide virtual links builders.
+      </description>
+   </category-def>
+   <repository-reference location="http://download.eclipse.org/epsilon/updates/" enabled="true" />
 </site>
