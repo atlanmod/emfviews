@@ -1,2 +1,2 @@
-contributingMetamodels=../../metamodels/minimalref.ecore
+contributingMetamodels=min::../../metamodels/minimalref.ecore
 weavingModel=weaving.xmi

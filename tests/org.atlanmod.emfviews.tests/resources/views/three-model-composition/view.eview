@@ -1,3 +1,5 @@
-contributingModels=../../models/travelAgencyEA.xmi,../../models/bookingTripRequirements.xmi,../../models/bookingTripProcess.xmi
 viewpoint=../../viewpoints/three-model-composition/viewpoint.eviewpoint
+contributingModels=cfw::../../models/travelAgencyEA.xmi,\
+                   bpmn::../../models/bookingTripProcess.xmi,\
+                   reqif::../../models/bookingTripRequirements.xmi
 matchingModel=matching.ecl

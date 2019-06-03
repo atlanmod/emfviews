@@ -1,2 +1,2 @@
-contributingMetamodels=../../metamodels/contentfwk.ecore
+contributingMetamodels=cfw::../../metamodels/contentfwk.ecore
 weavingModel=whitelist.xmi

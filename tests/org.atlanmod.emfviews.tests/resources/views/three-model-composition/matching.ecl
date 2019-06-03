@@ -1,9 +1,5 @@
-//alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
-//alias_bpmn=http://www.omg.org/spec/BPMN/20100524/MODEL-XMI
-//alias_reqif=http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
-
 rule detailedProcess
-match s : ea!Process
+match s : cfw!Process
 with  t : bpmn!bpmn2::Process
 {
 	compare
@@ -13,7 +9,7 @@ with  t : bpmn!bpmn2::Process
 }
 
 rule detailedRequirement
-match s : ea!Requirement
+match s : cfw!Requirement
 with  t : reqif!SpecObject
 {
 	compare

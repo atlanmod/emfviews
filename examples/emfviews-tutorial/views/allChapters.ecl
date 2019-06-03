@@ -1,6 +1,3 @@
-//alias_publication=http://publication
-//alias_book=http://book
-
 rule bookChapters
 match p : publication!Publication
 with  c : book!Chapter

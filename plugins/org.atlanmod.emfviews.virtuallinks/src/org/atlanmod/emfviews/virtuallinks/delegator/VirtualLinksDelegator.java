@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Armines
+ * Copyright (c) 2018--2019 Armines
  * Copyright (c) 2013 INRIA
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -15,7 +15,6 @@ package org.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -75,7 +74,7 @@ public class VirtualLinksDelegator {
     }
   }
 
-  public WeavingModel createWeavingModel(List<Resource> contributingModels) throws Exception {
+  public WeavingModel createWeavingModel(Map<String, Resource> contributingModels) throws Exception {
     return delegate.createWeavingModel(matchingModelURI, contributingModels);
   }
 

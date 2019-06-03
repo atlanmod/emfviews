@@ -5,8 +5,8 @@ select pub.Publication.*,
        book.Book.*,
        book.Chapter.title,
 
-from 'http://publication' as pub,
-	 'http://book' as book,
+from 'http://publication' as publication,
+     'http://book' as book,
 
 where 's.title = t.eContainer().title and t = t.eContainer().eContents().first()'
       for firstChapter

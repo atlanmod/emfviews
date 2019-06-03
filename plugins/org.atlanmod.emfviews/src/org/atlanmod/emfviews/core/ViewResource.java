@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017--2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -133,20 +134,27 @@ public class ViewResource extends ResourceImpl {
     }
   }
 
-  private List<Resource> loadModels(List<EPackage> metamodels) {
-    // Load contributing metamodels into a virtual resource set,
-    // to allow model ressources to be loaded with getResource
-    ResourceSet virtualResourceSet = new ResourceSetImpl();
-    for (EPackage p : metamodels) {
-      virtualResourceSet.getPackageRegistry().put(p.getNsURI(), p);
-    }
-
-    List<Resource> contributingModels = new ArrayList<>();
+  private Map<String, Resource> loadModels(Map<String, EPackage> metamodels) {
+    Map<String, Resource> contributingModels = new HashMap<>();
     for (String modelPath : contributingModelsPaths.split(",")) {
-      URI uri = URI.createURI(modelPath).resolve(getURI());
-      Resource r = virtualResourceSet.getResource(uri, true);
+
+      // Format is alias::URI
+      if (!modelPath.contains("::")) {
+        throw new IllegalArgumentException(String.format("Contributing model path '%s' does not contain alias separator '::'", modelPath));
+      }
+      String parts[] = modelPath.split("::");
+      String alias = parts[0];
+      URI uri = URI.createURI(parts[1]).resolve(getURI());
+
+      // Each resource needs to use a different resource set, otherwise we may
+      // have name clashes in EPackages.
+      EPackage metamodel = metamodels.get(alias);
+      ResourceSet rs = new ResourceSetImpl();
+      rs.getPackageRegistry().put(metamodel.getNsURI(), metamodel);
+      Resource r = rs.getResource(uri, true);
+
       if (r != null) {
-        contributingModels.add(r);
+        contributingModels.put(alias, r);
       } else {
         getErrors().add(new Err("Could not load contributing model resource '%s'", modelPath));
       }
@@ -154,7 +162,7 @@ public class ViewResource extends ResourceImpl {
     return contributingModels;
   }
 
-  private WeavingModel loadWeavingModel(List<Resource> models) {
+  private WeavingModel loadWeavingModel(Map<String, Resource> models) {
     // Get the weaving model from the matching model, if there is one
     WeavingModel weavingModel = null;
 
@@ -186,11 +194,11 @@ public class ViewResource extends ResourceImpl {
 
     // Load everything and create the view
     Viewpoint viewpoint = loadViewpoint();
-    List<Resource> contributingModels = loadModels(viewpoint.getContributingEPackages());
+    Map<String, Resource> contributingModels = loadModels(viewpoint.getContributingEPackages());
     WeavingModel weavingModel = loadWeavingModel(contributingModels);
 
     try {
-      setView(new View(viewpoint, contributingModels, weavingModel));
+      setView(new View(viewpoint, new ArrayList<>(contributingModels.values()), weavingModel));
     } catch (Exception e) {
       e.printStackTrace();
       // If we failed, add the exception to the resource errors, as this way

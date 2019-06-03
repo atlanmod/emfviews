@@ -97,8 +97,8 @@ The ~viewpoints~ folder contains two files.  Let us focus on the
 defined as:
 
 #+BEGIN_SRC
-contributingMetamodels=../metamodels/Publication.ecore,\
-                       ../metamodels/Book.ecore
+contributingMetamodels=publication::../metamodels/Publication.ecore,\
+                       book::../metamodels/Book.ecore
 weavingModel=publicationsAndBooks.xmi
 #+END_SRC
 
@@ -107,7 +107,8 @@ keys of ~eviewpoint~ files.)
 
 The first two lines list the /contributing metamodels/.  These are the two
 metamodels we are concerned with.  In this case, we give relative URIs to the
-Ecore files in the ~metamodels~ folder.
+Ecore files in the ~metamodels~ folder.  The paths are prefixed by an alias which
+will be used to match metamodels to models in the ~eview~ file.
 
 #+BEGIN_note
 We could also have used namespace URIs in ~contributingModels~.  The upside of
@@ -189,7 +190,7 @@ In the ~views~ folder, two views are defined: ~allChapters~ and ~firstChapter~.
 Let us focus on ~allChapters~ for now.  If we look inside ~allChapters.eview~:
 
 #+BEGIN_SRC
-contributingModels=../models/publication.xmi,../models/book.xmi
+contributingModels=publication::../models/publication.xmi,book::../models/book.xmi
 viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
 matchingModel=allChapters.ecl
 #+END_SRC
@@ -200,6 +201,10 @@ files.)
 The ~contributingModels~ line point to the model resources which contribute to
 the view.  Note that the order of the contributing models does not have to match
 the order of the ~contributingMetamodels~ line in the ~eviewpoint~ file.
+Metamodels from the ~eviewpoint~ file are matched to models using the prefix
+alias: ~pub~ is the alias for the Publication metamodel, and using the same
+alias indicates that the ~publication.xmi~ model conforms to it.  The alias is
+also used by ECL files, as seen below.
 
 The ~viewpoint~ line is a relative path to the ~eviewpoint~ file.  In order to
 define a view, we need to give it a metamodel, which is a viewpoint.
@@ -220,9 +225,6 @@ manually, it may be a better option when creating views programmatically.
 Let us look at this ECL file now:
 
 #+BEGIN_SRC ecl
-//alias_publication=http://publication
-//alias_book=http://book
-
 rule bookChapters
 match p : publication!Publication
 with  c : book!Chapter
@@ -279,7 +281,8 @@ we can define multiple views for the same viewpoint.  Take a look at
 ~firstChapter.eview~:
 
 #+BEGIN_SRC
-contributingModels=../models/publication.xmi,../models/book.xmi
+contributingModels=publication::../models/publication.xmi,\
+                   book::../models/book.xmi
 viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
 matchingModel=firstChapter.ecl
 #+END_SRC
@@ -413,8 +416,8 @@ specify the contributing models you want to use.  Here is the definition of
 
 #+BEGIN_SRC sh
 viewpoint=../src-gen/publicationsAndBooks.eviewpoint
-contributingModels=../../emfviews-tutorial/models/publication.xmi,\
-                   ../../emfviews-tutorial/models/book.xmi
+contributingModels=publication::../../emfviews-tutorial/models/publication.xmi,\
+                   book::../../emfviews-tutorial/models/book.xmi
 matchingModel=../src-gen/publicationsAndBooks.ecl
 weavingModel=publicationAndBooks.xmi
 #+END_SRC
@@ -821,8 +824,8 @@ Before we can run this configuration, we need to make a minor change to the
 ~eviewpoint~ file.  We add the ~saveInRegistry~ option:
 
 #+BEGIN_SRC
-contributingMetamodels=../metamodels/Publication.ecore,\
-                       ../metamodels/Book.ecore
+contributingMetamodels=publication::../metamodels/Publication.ecore,\
+                       book::../metamodels/Book.ecore
 weavingModel=publicationsAndBooks.xmi
 saveInRegistry
 #+END_SRC
@@ -906,8 +909,9 @@ key3=value spanning\
 
 For ~eviewpoint~ files, these are the accepted properties:
 
-- ~contributingMetamodels~ :: Comma-separated list of URIs to contributing
-     metamodels.  This key is mandatory.
+- ~contributingMetamodels~ :: Comma-separated list of alias-URI pairs to
+     contributing metamodels.  The alias and URI are separated by two colons
+     ~::~.  This key is mandatory.
 
 - ~weavingModel~ :: URI for the viewpoint's [[*Weaving models][weaving model]].  This key is
      optional; if unspecified, the viewpoint will be constructed with an empty
@@ -944,8 +948,8 @@ namespace URI of the ~EPackage~ and is looked up in the Ecore package registry.
 Here is an example of a valid ~eviewpoint~ file:
 
 #+BEGIN_EXAMPLE
-contributingMetamodels=../metamodels/Book.ecore,\
-                       http://www.eclipse.org/uml2/5.0.0/UML
+contributingMetamodels=book::../metamodels/Book.ecore,\
+                       uml::http://www.eclipse.org/uml2/5.0.0/UML
 weavingModel=books-and-uml.xmi
 #+END_EXAMPLE
 
@@ -955,7 +959,8 @@ UML metamodel through its namespace URI.
 ~eview~ files have 4 valid properties:
 
 - ~viewpoint~ :: URI to the ~eviewpoint~ file.  This key is mandatory.
-- ~contributingModels~ ::  Comma-separated list of URIs to contributing models.
+- ~contributingModels~ :: Comma-separated list of alias-URI pairs to
+     contributing models.  The alias and URI are separated by two colons ~::~.
      This key is mandatory.
 - ~weavingModel~ :: URI to the view's [[*Weaving models][weaving model]].  This key conflicts with
      ~matchingModel~.
@@ -972,7 +977,7 @@ Here is an example of a valid ~eview~ file:
 
 #+BEGIN_EXAMPLE
 viewpoint=../viewpoints/booksAndPub.eviewpoint
-contributingModels=models/book.xmi,../../publication.xmi
+contributingModels=book::models/book.xmi,publication::../../publication.xmi
 matchingModel=booksAndPub.ecl
 #+END_EXAMPLE
 
@@ -1253,10 +1258,6 @@ models.  Such files contain one rule for each virtual association.  Here is one
 ECL file with two rules:
 
 #+BEGIN_SRC ecl
-//alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0
-//alias_bpmn=http://www.omg.org/spec/BPMN/20100524/MODEL-XMI
-//alias_reqif=http://www.omg.org/spec/ReqIF/20110401/reqif.xsd
-
 rule detailedProcess
 match s : ea!Process
 with  t : bpmn!Process
@@ -1278,23 +1279,21 @@ with  t : reqif!SpecObject
 }
 #+END_SRC
 
-The first three lines are required to map package names used in the ECL file to
-actual Ecore packages through their namespace URI.
-
 See the [[https://www.eclipse.org/epsilon/doc/ecl/][ECL documentation]] for a full syntactic account of the language.
 
-Each rule is then used to match the two models it refers to.  If the predicate
-inside the ~compare~ clause is true for two model elements, then a virtual
-association (of the same as the rule's) will contain an entry for these two
-elements in the created weaving model.
+Each rule is used to match the two models it refers to.  If the predicate inside
+the ~compare~ clause is true for two model elements, then a virtual association
+(of the same as the rule's) will contain an entry for these two elements in the
+created weaving model.
 
 Here for example the rule ~detailedProcess~ will match whenever a model element
 of the ~ea!Process~ class and a model of the ~bpmn!Process~ class both have the
 exact same name.  These classes belong respectively to the TOGAF 'content
-framework' and BPMN metamodels, as specified by the ~alias_ea~ and ~alias_bpmn~
-lines in the header.  If two elements match, the resulting weaving model will
-contain an entry in the virtual association ~detailedProcess~ from the source
-element (an ~ea!Process~) to the target element (a ~bpmn!Process~).
+framework' and BPMN metamodels, as specified by the ~contributingMetamodels~
+line in an accompanying ~eviewpoint~ file.  If two elements match, the resulting
+weaving model will contain an entry in the virtual association ~detailedProcess~
+from the source element (an ~ea!Process~) to the target element (a
+~bpmn!Process~).
 
 This virtual association is then used to populate the view by the ~View~ class.
 
@@ -1306,7 +1305,7 @@ interface, which has a single method:
 
 #+BEGIN_SRC java
 WeavingModel createWeavingModel(URI linksDslFile,
-                                List<Resource> inputModels)
+                                Map<String, Resource> inputModels)
 #+END_SRC
 
 You can look at [[https://github.com/atlanmod/emfviews/blob/master/plugins/org.atlanmod.emfviews.virtuallinksepsilondelegate/src/org/atlanmod/emfviews/virtuallinksepsilondelegate/EclDelegate.java][~EclDelegate~]] for an example implementation of this interface.

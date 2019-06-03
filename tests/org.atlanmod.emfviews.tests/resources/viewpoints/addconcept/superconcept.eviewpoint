@@ -1,2 +1,2 @@
-contributingMetamodels=../../metamodels/minimalA.ecore,../../metamodels/minimalB.ecore
+contributingMetamodels=A::../../metamodels/minimalA.ecore,B::../../metamodels/minimalB.ecore
 weavingModel=superconcept-weaving.xmi

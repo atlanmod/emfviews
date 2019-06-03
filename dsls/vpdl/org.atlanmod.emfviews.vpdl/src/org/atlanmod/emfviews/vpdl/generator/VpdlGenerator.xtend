@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017--2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -39,7 +39,7 @@ import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
  */
 class VpdlGenerator extends AbstractGenerator {
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+  override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
     val name = viewpointName(resource)
 
     fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint(fsa))
@@ -69,15 +69,11 @@ class VpdlGenerator extends AbstractGenerator {
   }
 
   def CharSequence compileEviewpoint(Resource r, IFileSystemAccess2 fsa) '''
-    contributingMetamodels=«r.getListMetamodels.map([m | m.nsURI]).join(',')»
+    contributingMetamodels=«r.getListMetamodels.map([m | m.name + '::' + m.nsURI]).join(',')»
     weavingModel=«viewpointName(r)».xmi
   '''
 
   def CharSequence compileEcl(Resource resource) '''
-    «FOR m : resource.listMetamodels»
-    //alias_«m.name»=«m.nsURI»
-    «ENDFOR»
-
     «FOR r : resource.allRules»
     rule «r.relation.name»
     match s : «r.relation.metamodel.name»!«r.relation.class_.name»

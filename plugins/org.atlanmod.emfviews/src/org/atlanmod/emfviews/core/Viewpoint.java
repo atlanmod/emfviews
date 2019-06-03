@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017--2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -173,34 +173,34 @@ public class Viewpoint implements EcoreVirtualizer {
   // Singleton used as fallback when no options are provided
   private static final Options defaultOptions = new Options();
 
-  private List<EPackage> contributingPackages; // original, unmodified EPackages
-  private WeavingModel weavingModel;           // how to modify the EPackages
+  private Map<String, EPackage> contributingPackages; // original, unmodified EPackages
+  private WeavingModel weavingModel;                  // how to modify the EPackages
 
 
   /** A viewpoint without contributing metamodels is still useful as a virtualizer */
   public Viewpoint() {}
 
   /**
-   * Construct a Viewpoint from a list of contributing metamodels, an empty
-   * weaving model, and the default options.
+   * Construct a Viewpoint from a map of aliases to contributing metamodels, an
+   * empty weaving model, and the default options.
    */
-  public Viewpoint(List<EPackage> contributingMetamodels) {
+  public Viewpoint(Map<String, EPackage> contributingMetamodels) {
     this(contributingMetamodels, emptyWeavingModel);
   }
 
   /**
-   * Construct a Viewpoint from a list of contributing metamodels, a
+   * Construct a Viewpoint from a map of aliases to contributing metamodels, a
    * WeavingModel, and the default options.
    */
-  public Viewpoint(List<EPackage> contributingMetamodels, WeavingModel weavingModel) {
+  public Viewpoint(Map<String, EPackage> contributingMetamodels, WeavingModel weavingModel) {
     this(contributingMetamodels, weavingModel, null);
   }
 
   /**
-   * Construct a Viewpoint from a list of contributing metamodels, a
+   * Construct a Viewpoint from a map of aliases to contributing metamodels, a
    * WeavingModel, and provided Options.
    */
-  public Viewpoint(List<EPackage> contributingMetamodels, WeavingModel weavingModel, Options options) {
+  public Viewpoint(Map<String, EPackage> contributingMetamodels, WeavingModel weavingModel, Options options) {
     this.contributingPackages = contributingMetamodels;
     this.weavingModel = weavingModel;
 
@@ -226,9 +226,9 @@ public class Viewpoint implements EcoreVirtualizer {
 
   /**
    * Return the (unvirtualized) contributing metamodels given as input to this
-   * Viewpoint.
+   * Viewpoint.  This is a map from an alias to a package.
    */
-  public List<EPackage> getContributingEPackages() {
+  public Map<String, EPackage> getContributingEPackages() {
     return contributingPackages;
   }
 
@@ -275,7 +275,7 @@ public class Viewpoint implements EcoreVirtualizer {
     // from it using findEObject.
     // We have to register all subpackages of contributing packages to allow
     // findEObject to find a model when looking up only the URI.
-    Iterable<EPackage> allPackages = contributingPackages.stream()
+    Iterable<EPackage> allPackages = contributingPackages.values().stream()
         .flatMap(p -> EMFViewsUtil.getAllPackages(p).stream())
         ::iterator;
     for (EPackage p : allPackages) {
@@ -284,7 +284,7 @@ public class Viewpoint implements EcoreVirtualizer {
 
     // We also put *virtual* elements in the virtual resource set, so that we can add and
     // remove elements from them without affecting the originals.
-    for (EPackage p : contributingPackages) {
+    for (EPackage p : contributingPackages.values()) {
       virtualRegistry.put(p.getNsURI(), getVirtual(p));
       // The order of packages in the root package matters. We use the order
       // specified by the contributing models, and the virtual package is last.

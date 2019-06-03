@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017--2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -26,9 +26,13 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -96,25 +100,27 @@ public class TestEMFViews {
 
       // Ensure we have the three packages we want
       assertEquals(3, l.size());
-      assertEquals("contentfwk", eGet(l.get(0), "name"));
-      assertEquals("bpmn2", eGet(l.get(1), "name"));
-      assertEquals("reqif10", eGet(l.get(2), "name"));
+      List<String> names = l.stream().map(o -> (String) eGet(o, "name")).collect(Collectors.toList());
+      assertTrue(names.containsAll(Arrays.asList("contentfwk", "bpmn2", "reqif10")));
+
+      // Find contentfwk package
+      EObject cfwk = l.stream().filter(o -> "contentfwk".equals(eGet(o, "name"))).findFirst().get();
 
       // Ensure the filtered elements are absent
-      EObject c = getClassifier(l.get(0), "BusinessArchitecture").get();
+      EObject c = getClassifier(cfwk, "BusinessArchitecture").get();
       assertEquals(1, getFeatures(c).size());
       // and make sure the feature we left is in there
       assertTrue(getFeature(c, "processes").isPresent());
 
       // The original model is *not* modified
-      c = v.getViewpoint().getContributingEPackages().get(0).getEClassifier("BusinessArchitecture");
+      c = v.getViewpoint().getContributingEPackages().get("cfw").getEClassifier("BusinessArchitecture");
       assertEquals(16, getFeatures(c).size());
 
       // Ensure our virtual associations are in there
-      EObject p = getClassifier(l.get(0), "Process").get();
+      EObject p = getClassifier(cfwk, "Process").get();
       assertTrue(getFeature(p, "detailedProcess").isPresent());
 
-      EObject r = getClassifier(l.get(0), "Requirement").get();
+      EObject r = getClassifier(cfwk, "Requirement").get();
       assertTrue(getFeature(r, "detailedRequirement").isPresent());
     }
 
@@ -132,13 +138,12 @@ public class TestEMFViews {
       EList<EObject> l = v.getContents();
 
       assertEquals(3, l.size());
-      assertEquals("EnterpriseArchitecture", l.get(0).eClass().getName());
-      assertEquals("ReqIF", l.get(1).eClass().getName());
-      assertEquals("Definitions", l.get(2).eClass().getName());
+      List<String> names = l.stream().map(o -> o.eClass().getName()).collect(Collectors.toList());
+      assertTrue(names.containsAll(Arrays.asList("EnterpriseArchitecture", "ReqIF", "Definitions")));
 
       // Find the Business Architecture instance
-      EObject ba = l.get(0).eContents().get(1);
-      assertEquals("BusinessArchitecture", ba.eClass().getName());
+      EObject ea = l.stream().filter(o -> "EnterpriseArchitecture".equals(o.eClass().getName())).findFirst().get();
+      EObject ba = ea.eContents().get(1);
 
       // Check we only have "Process" instances in there (others are filtered
       // out), and that they each have a detailedProcess feature
@@ -188,7 +193,9 @@ public class TestEMFViews {
         + "               #B(EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
 
-    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P));
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P", P);
+    Viewpoint viewpoint = new Viewpoint(m);
 
     // Construct the view
     EObject[] model = Sexp2EMF.build("[(A :manyB [@B1 @B2])"
@@ -224,7 +231,8 @@ public class TestEMFViews {
     EList<EObject> l = v.getVirtualContents();
 
     // Find the Business Architecture instance where there are filtered elements
-    EObject vba = l.get(0).eContents().get(1);
+    EObject vcfwk = l.stream().filter(o -> "EnterpriseArchitecture".equals(o.eClass().getName())).findFirst().get();
+    EObject vba = vcfwk.eContents().get(1);
 
     // Make sure filtered features are absent
     for (EObject e : vba.eContents()) {
@@ -232,7 +240,8 @@ public class TestEMFViews {
     }
 
     // If we have the original feature from the unfiltered model
-    Resource m = v.getContributingModels().get(0);
+    Resource m = v.getContributingModels().stream().filter(o -> "contentfwk".equals(o.getContents().get(0).eClass().getEPackage().getName()))
+      .findFirst().get();
     EObject ba = m.getContents().get(0).eContents().get(1);
     EStructuralFeature f = ba.eClass().getEStructuralFeature("drivers");
 
@@ -303,7 +312,9 @@ public class TestEMFViews {
         + "               #1(EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
 
-    Viewpoint v = new Viewpoint(Arrays.asList(P));
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P", P);
+    Viewpoint v = new Viewpoint(m);
 
     // The association in the viewpoint is consistent with the contributing metamodel
     EPackage VP = v.getRootPackage().getESubpackages().get(0);
@@ -374,8 +385,8 @@ public class TestEMFViews {
     }
 
     // The original metamodels are *not* modified
-    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get(0), "A").get(), "eSuperTypes").size());
-    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get(1), "B").get(), "eSuperTypes").size());
+    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get("A"), "A").get(), "eSuperTypes").size());
+    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get("B"), "B").get(), "eSuperTypes").size());
   }
 
   @Test
@@ -408,7 +419,7 @@ public class TestEMFViews {
 
     // The original metamodel is *not* modified
     assertEquals(1,
-                 getFeatures(getClassifier(v.getContributingEPackages().get(0), "A").get()).size());
+                 getFeatures(getClassifier(v.getContributingEPackages().get("A"), "A").get()).size());
   }
 
   @Test
@@ -426,7 +437,7 @@ public class TestEMFViews {
     assertEquals(true, eGet(AtoB, "containment"));
 
     // The original metamodel is *not* modified
-    assertFalse(getFeature(getClassifier(v.getContributingEPackages().get(0), "A").get(), "refToB").isPresent());
+    assertFalse(getFeature(getClassifier(v.getContributingEPackages().get("A"), "A").get(), "refToB").isPresent());
   }
 
   @Test
@@ -450,8 +461,8 @@ public class TestEMFViews {
     assertEquals(BtoA, eGet(AtoB, "eOpposite"));
 
     // The original metamodels are *not* modified
-    A = getClassifier(v.getContributingEPackages().get(0), "A").get();
-    B = getClassifier(v.getContributingEPackages().get(1), "B").get();
+    A = getClassifier(v.getContributingEPackages().get("A"), "A").get();
+    B = getClassifier(v.getContributingEPackages().get("B"), "B").get();
     assertFalse(getFeature(A, "refToB").isPresent());
     assertFalse(getFeature(B, "refToB").isPresent());
   }
@@ -490,7 +501,7 @@ public class TestEMFViews {
     assertEquals(C2, eList(C1, "eSuperTypes").get(0));
 
     // The original metamodel is *not* modified
-    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get(0), "A").get(), "eSuperTypes").size());
+    assertEquals(0, eList(getClassifier(v.getContributingEPackages().get("A"), "A").get(), "eSuperTypes").size());
   }
 
   @Test
@@ -510,7 +521,7 @@ public class TestEMFViews {
     assertEquals(C, eGet(AtoC, "eType"));
 
     // The original model is *not* modified
-    A = v.getContributingEPackages().get(0).getEClassifier("A");
+    A = v.getContributingEPackages().get("A").getEClassifier("A");
     assertEquals(1, getFeatures(A).size());
   }
 
@@ -530,7 +541,7 @@ public class TestEMFViews {
     assertFalse(getFeature(A, "a").isPresent());
 
     // The original model is *not* modified
-    A = v.getContributingEPackages().get(0).getEClassifier("A");
+    A = v.getContributingEPackages().get("A").getEClassifier("A");
     assertEquals(1, getFeatures(A).size());
 
     // B has its feature, since it was not filtered
@@ -559,7 +570,7 @@ public class TestEMFViews {
     assertTrue(getFeature(C, "ID").isPresent());
 
     // The original model is *not* modified
-    p = v.getContributingEPackages().get(0);
+    p = v.getContributingEPackages().get("cfw");
     assertEquals(53, getClassifiers(p).size());
   }
 
@@ -577,7 +588,7 @@ public class TestEMFViews {
 
     Properties p = new Properties();
     p.setProperty(ViewpointResource.EVIEWPOINT_CONTRIBUTING_METAMODELS,
-                  URI.createFileURI(here + "/resources/metamodels/minimalref.ecore").toString());
+                  "min::" + (URI.createFileURI(here + "/resources/metamodels/minimalref.ecore").toString()));
     p.setProperty(ViewpointResource.EVIEWPOINT_WEAVING_MODEL,
                   URI.createFileURI(here + "/resources/viewpoints/minimal/weaving.xmi").toString());
     p.store(URIConverter.INSTANCE.createOutputStream(resourceURI("viewpoints/paths/absolute-file-scheme.eviewpoint")), null);
@@ -594,7 +605,7 @@ public class TestEMFViews {
 
     Properties p = new Properties();
     p.setProperty(ViewpointResource.EVIEWPOINT_CONTRIBUTING_METAMODELS,
-                  URI.createFileURI(here + "/resources/metamodels/minimalref.ecore").path());
+                  "min::" + (URI.createFileURI(here + "/resources/metamodels/minimalref.ecore").path()));
     p.setProperty(ViewpointResource.EVIEWPOINT_WEAVING_MODEL,
                   URI.createFileURI(here + "/resources/viewpoints/minimal/weaving.xmi").path());
     p.store(URIConverter.INSTANCE.createOutputStream(resourceURI("viewpoints/paths/absolute-no-scheme.eviewpoint")), null);
@@ -613,7 +624,7 @@ public class TestEMFViews {
 
     Properties p = new Properties();
     p.setProperty(ViewpointResource.EVIEWPOINT_CONTRIBUTING_METAMODELS,
-                  URI.createPlatformPluginURI(plugin + "/resources/metamodels/minimalref.ecore", true).toString());
+                  "min::" + (URI.createPlatformPluginURI(plugin + "/resources/metamodels/minimalref.ecore", true).toString()));
     p.setProperty(ViewpointResource.EVIEWPOINT_WEAVING_MODEL,
                   URI.createPlatformPluginURI(plugin + "/resources/viewpoints/minimal/weaving.xmi", true).toString());
     p.store(URIConverter.INSTANCE.createOutputStream(resourceURI("viewpoints/paths/absolute-platform-scheme.eviewpoint")), null);
@@ -664,7 +675,9 @@ public class TestEMFViews {
         + ":virtualLinks [(Filter :name 'P.A' :target @1)])",
         VirtualLinksFactory.eINSTANCE)[0];
 
-    Viewpoint v = new Viewpoint(Arrays.asList(P), WM);
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P", P);
+    Viewpoint v = new Viewpoint(m, WM);
     EPackage VP = v.getRootPackage().getESubpackages().get(0);
 
     assertEquals(P.getName(), VP.getName());
@@ -683,7 +696,9 @@ public class TestEMFViews {
         + "               (EClass :name 'B')])",
         EcoreFactory.eINSTANCE)[0];
 
-    Viewpoint viewpoint = new Viewpoint(Arrays.asList(P));
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P", P);
+    Viewpoint viewpoint = new Viewpoint(m);
 
     // Construct the view
     EObject[] model = Sexp2EMF.build("[(A) (B)]", P.getEFactoryInstance());
@@ -710,7 +725,9 @@ public class TestEMFViews {
         + "                      :concreteElements [#1(ConcreteConcept :path 'A')])]"
         + ":virtualLinks [(VirtualConcept :name 'B' :superConcepts [@1])])",
         VirtualLinksFactory.eINSTANCE)[0];
-    Viewpoint v1 = new Viewpoint(Arrays.asList(P0), WM1);
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P0", P0);
+    Viewpoint v1 = new Viewpoint(m, WM1);
 
     // The second viewpoint
     WeavingModel WM2 = (WeavingModel) Sexp2EMF.build("(WeavingModel :name 'WM2' "
@@ -718,7 +735,11 @@ public class TestEMFViews {
         + "                      :concreteElements [#1(ConcreteConcept :path 'B')])]"
         + ":virtualLinks [(VirtualConcept :name 'C' :superConcepts [@1])])",
         VirtualLinksFactory.eINSTANCE)[0];
-    Viewpoint v2 = new Viewpoint(v1.getRootPackage().getESubpackages(), WM2);
+    Map<String, EPackage> m1 = new HashMap<>();
+    for (int i=0; i < v1.getRootPackage().getESubpackages().size(); ++i) {
+      m1.put("P"+i, v1.getRootPackage().getESubpackages().get(i));
+    }
+    Viewpoint v2 = new Viewpoint(m1, WM2);
 
     return new Object[] {P0, v1, v2};
   }
@@ -787,7 +808,9 @@ public class TestEMFViews {
         + ":eClassifiers [(EClass :name 'A')])",
         EcoreFactory.eINSTANCE)[0];
 
-    Viewpoint v = new Viewpoint(Arrays.asList(P0));
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P0", P0);
+    Viewpoint v = new Viewpoint(m);
     EPackage P1 = v.getRootPackage().getESubpackages().get(0);
     EClassifier A = P1.getEClassifier("A");
 
@@ -809,7 +832,9 @@ public class TestEMFViews {
         + ":virtualLinks [(VirtualConcept :name 'B')])",
         VirtualLinksFactory.eINSTANCE)[0];
 
-    Viewpoint v = new Viewpoint(Arrays.asList(P0), WM);
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P0", P0);
+    Viewpoint v = new Viewpoint(m, WM);
     EPackage P1 = v.getRootPackage().getESubpackages().get(1);
     EClassifier B = P1.getEClassifier("B");
 
@@ -837,7 +862,9 @@ public class TestEMFViews {
     + ":virtualLinks [(Filter :name 'B' :target @B)])",
     VirtualLinksFactory.eINSTANCE)[0];
 
-    Viewpoint v = new Viewpoint(Arrays.asList(P0), WM);
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P0", P0);
+    Viewpoint v = new Viewpoint(m, WM);
     EPackage P1 = v.getRootPackage().getESubpackages().get(0);
     EClass A = (EClass) P1.getEClassifier("A");
     EClass C = (EClass) P1.getEClassifier("C");

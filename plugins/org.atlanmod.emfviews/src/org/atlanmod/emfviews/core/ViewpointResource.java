@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017--2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -20,7 +20,6 @@ package org.atlanmod.emfviews.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -176,21 +175,26 @@ public class ViewpointResource extends ResourceImpl {
     }
   }
 
-  // Return a list of EPackage from the list of metamodels paths
-  private List<EPackage> loadMetamodels() {
-    List<EPackage> packages = new ArrayList<>();
+  // Return a map of aliases to EPackage from the list of metamodels paths
+  private Map<String, EPackage> loadMetamodels() {
+    Map<String, EPackage> packages = new HashMap<>();
     for (String path : contributingMetamodelsPaths) {
-      // Get the EPackage from each metamodel URI
-      URI uri = URI.createURI(path).resolve(getURI());
 
-      EPackage p = null;
-
-      // If it's a namespace URI, fetch from the package registry
-      if ("http".equals(uri.scheme())) {
-        p = EPackage.Registry.INSTANCE.getEPackage(uri.toString());
+      // Format is alias::URI
+      if (!path.contains("::")) {
+        throw new IllegalArgumentException(String.format("Contributing metamodel path '%s' does not contain alias separator '::'", path));
       }
-      // If it's an Ecore file, then get the EPackage from the resource
-      else {
+      String parts[] = path.split("::");
+      String alias = parts[0];
+
+      // Get the EPackage from each metamodel URI
+      URI uri = URI.createURI(parts[1]).resolve(getURI());
+
+      // First try to fetch from the package registry
+      EPackage p = EPackage.Registry.INSTANCE.getEPackage(uri.toString());
+
+      // Then try to load it as a resource
+      if (p == null) {
         Resource r = new ResourceSetImpl().getResource(uri, true);
         EPackage pack = (EPackage) r.getContents().get(0);
         // @Assumption: the Ecore contains only one EPackage we care about
@@ -201,11 +205,7 @@ public class ViewpointResource extends ResourceImpl {
         p = pack;
       }
 
-      if (p == null) {
-        throw new IllegalArgumentException(String.format("Could not load EPackage from contributing metamodel '%s'", path));
-      } else {
-        packages.add(p);
-      }
+      packages.put(alias, p);
     }
     return packages;
   }

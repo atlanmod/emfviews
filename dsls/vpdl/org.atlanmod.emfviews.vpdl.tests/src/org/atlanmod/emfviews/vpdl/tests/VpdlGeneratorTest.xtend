@@ -96,7 +96,7 @@ class VpdlGeneratorTest {
         'http://www.eclipse.org/uml2/5.0.0/UML' as uml
     ''',
     '''
-      contributingMetamodels=http://www.eclipse.org/uml2/5.0.0/UML
+      contributingMetamodels=uml::http://www.eclipse.org/uml2/5.0.0/UML
       weavingModel=min.xmi
     ''',
     '''
@@ -107,8 +107,6 @@ class VpdlGeneratorTest {
                                               :concreteElements [#1(ConcreteElement :path 'Class.superClass')])])
     ''',
     '''
-      //alias_uml=http://www.eclipse.org/uml2/5.0.0/UML
-
     ''')
   }
 
@@ -126,7 +124,7 @@ class VpdlGeneratorTest {
       where 'this is not tested yet' for eClass
     ''',
     '''
-      contributingMetamodels=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0,http://www.eclipse.org/emf/2002/Ecore
+      contributingMetamodels=v::http://www.atlanmod.org/emfviews/virtuallinks/0.3.0,ecore::http://www.eclipse.org/emf/2002/Ecore
       weavingModel=full.xmi
     ''',
     '''
@@ -143,9 +141,6 @@ class VpdlGeneratorTest {
                                               :concreteElements [#4(ConcreteConcept :path 'EClass')])])
     ''',
     '''
-    //alias_v=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
-    //alias_ecore=http://www.eclipse.org/emf/2002/Ecore
-
     rule eClass
     match s : v!ConcreteConcept
     with  t : ecore!EClass
@@ -166,7 +161,7 @@ class VpdlGeneratorTest {
       from 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0' as m
     ''',
     '''
-      contributingMetamodels=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
+      contributingMetamodels=m::http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
       weavingModel=v.xmi
     ''',
     '''
@@ -177,8 +172,6 @@ class VpdlGeneratorTest {
                                               :concreteElements [#1(ConcreteElement :path 'ConcreteElement.*')])])
     ''',
     '''
-      //alias_m=http://www.atlanmod.org/emfviews/virtuallinks/0.3.0
-
     '''
     )
   }

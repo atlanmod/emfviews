@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017--2019 Armines
  * Copyright (c) 2013 INRIA
  *
  * This program and the accompanying materials are made available under the
@@ -18,11 +18,8 @@
 
 package org.atlanmod.emfviews.virtuallinksepsilondelegate;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -68,7 +65,7 @@ import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
-  public WeavingModel createWeavingModel(URI linksDslURI, List<Resource> inputModels) throws Exception {
+  public WeavingModel createWeavingModel(URI linksDslURI, Map<String, Resource> inputModels) throws Exception {
 
     File f;
 
@@ -84,35 +81,6 @@ public class EclDelegate implements IVirtualLinksDelegate {
       f = new File(linksDslURI.toFileString());
     }
 
-    // Collect the contributing metamodels from the header of the ECL file
-    // @Refactor: I'm not sure why this is even needed.
-    // We could pass the metamodels directly as arguments to the ECL delegate.
-    FileReader fr = new FileReader(f);
-    BufferedReader br = new BufferedReader(fr);
-    String sCurrentLine = "";
-
-    Map<String, Resource> inputMetamodelAliasToModel = new HashMap<>();
-    Map<String, String> inputMetamodelAliasToMetamodelNsURI = new HashMap<>();
-
-    // @Correctness: this ad-hoc parser does not signal errors, and will fail with whitespace between `alias`
-    // and the value.
-    while (((sCurrentLine = br.readLine()) != null) && sCurrentLine.startsWith("//alias")) {
-      String metamodelAlias =
-          sCurrentLine.substring(sCurrentLine.indexOf("_") + 1, sCurrentLine.indexOf("="));
-      String metamodelNsURI = sCurrentLine.substring(sCurrentLine.indexOf("=") + 1);
-
-      Resource model = inputModels.stream().filter(r ->
-      // @Refactor: is there an easier way to get the NsURI of the metamodel?
-      metamodelNsURI.compareToIgnoreCase(r.getContents().get(0).eClass().getEPackage().getNsURI()) == 0)
-          .findFirst()
-          .orElseThrow(() -> new IllegalArgumentException(String.format("No models correspond to the metamodel %s of alias %s",
-                                                                        metamodelNsURI, metamodelAlias)));
-
-      inputMetamodelAliasToModel.put(metamodelAlias, model);
-      inputMetamodelAliasToMetamodelNsURI.put(metamodelAlias, metamodelNsURI);
-    }
-    br.close();
-
     // Prepare the ECL Module
     EclModule module = new EclModule();
     module.parse(f);
@@ -126,13 +94,10 @@ public class EclDelegate implements IVirtualLinksDelegate {
     EclOperationFactory operationFactory = new EclOperationFactory();
     module.getContext().setOperationFactory(operationFactory);
 
-    Iterator<Map.Entry<String, Resource>> iter =
-        inputMetamodelAliasToModel.entrySet().iterator();
-    while (iter.hasNext()) {
-      Entry<String, Resource> tempEntry = iter.next();
-      Resource modelResource = tempEntry.getValue();
-      EmfModel inputModel = new InMemoryEmfModel(modelResource);
-      inputModel.setName(tempEntry.getKey());
+    for (Entry<String, Resource> e : inputModels.entrySet()) {
+      String name = e.getKey();
+      Resource modelResource = e.getValue();
+      EmfModel inputModel = new InMemoryEmfModel(name, modelResource);
       module.getContext().getModelRepository().addModel(inputModel);
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Armines
+ * Copyright (c) 2018--2019 Armines
  * Copyright (c) 2013 INRIA
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,7 +13,7 @@
 
 package org.atlanmod.emfviews.virtuallinks.delegator;
 
-import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -22,6 +22,6 @@ import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public interface IVirtualLinksDelegate {
 
-  WeavingModel createWeavingModel(URI linksDslFile, List<Resource> inputModels) throws Exception;
+  WeavingModel createWeavingModel(URI linksDslFile, Map<String, Resource> inputModels) throws Exception;
 
 }

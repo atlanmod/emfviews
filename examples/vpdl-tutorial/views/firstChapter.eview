@@ -1,4 +1,4 @@
 viewpoint=../src-gen/publicationsAndBooks.eviewpoint
-contributingModels=../../emfviews-tutorial/models/publication.xmi,\
-                   ../../emfviews-tutorial/models/book.xmi
+contributingModels=publication::../../emfviews-tutorial/models/publication.xmi,\
+                   book::../../emfviews-tutorial/models/book.xmi
 matchingModel=../src-gen/publicationsAndBooks.ecl
