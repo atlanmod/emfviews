@@ -258,8 +258,8 @@ defined as:
 </p>
 
 <pre class="example">
-contributingMetamodels=../metamodels/Publication.ecore,\
-		       ../metamodels/Book.ecore
+contributingMetamodels=publication::../metamodels/Publication.ecore,\
+		       book::../metamodels/Book.ecore
 weavingModel=publicationsAndBooks.xmi
 </pre>
 
@@ -271,7 +271,8 @@ keys of <code>eviewpoint</code> files.)
 <p>
 The first two lines list the <i>contributing metamodels</i>.  These are the two
 metamodels we are concerned with.  In this case, we give relative URIs to the
-Ecore files in the <code>metamodels</code> folder.
+Ecore files in the <code>metamodels</code> folder.  The paths are prefixed by an alias which
+will be used to match metamodels to models in the <code>eview</code> file.
 </p>
 
 <div class="note">
@@ -399,7 +400,7 @@ Let us focus on <code>allChapters</code> for now.  If we look inside <code>allCh
 </p>
 
 <pre class="example">
-contributingModels=../models/publication.xmi,../models/book.xmi
+contributingModels=publication::../models/publication.xmi,book::../models/book.xmi
 viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
 matchingModel=allChapters.ecl
 </pre>
@@ -413,6 +414,10 @@ files.)
 The <code>contributingModels</code> line point to the model resources which contribute to
 the view.  Note that the order of the contributing models does not have to match
 the order of the <code>contributingMetamodels</code> line in the <code>eviewpoint</code> file.
+Metamodels from the <code>eviewpoint</code> file are matched to models using the prefix
+alias: <code>pub</code> is the alias for the Publication metamodel, and using the same
+alias indicates that the <code>publication.xmi</code> model conforms to it.  The alias is
+also used by ECL files, as seen below.
 </p>
 
 <p>
@@ -445,10 +450,7 @@ Let us look at this ECL file now:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ecl"><span class="org-comment-delimiter">//</span><span class="org-comment">alias_publication=http://publication</span>
-<span class="org-comment-delimiter">//</span><span class="org-comment">alias_book=http://book</span>
-
-<span class="org-keyword">rule</span> bookChapters
+<pre class="src src-ecl"><span class="org-keyword">rule</span> bookChapters
 <span class="org-keyword">match</span> p : publication!Publication
 <span class="org-keyword">with</span>  c : book!Chapter
 {
@@ -524,7 +526,8 @@ we can define multiple views for the same viewpoint.  Take a look at
 </p>
 
 <pre class="example">
-contributingModels=../models/publication.xmi,../models/book.xmi
+contributingModels=publication::../models/publication.xmi,\
+		   book::../models/book.xmi
 viewpoint=../viewpoints/publicationsAndBooks.eviewpoint
 matchingModel=firstChapter.ecl
 </pre>
@@ -707,8 +710,8 @@ specify the contributing models you want to use.  Here is the definition of
 
 <div class="org-src-container">
 <pre class="src src-sh"><span class="org-variable-name">viewpoint</span>=../src-gen/publicationsAndBooks.eviewpoint
-<span class="org-variable-name">contributingModels</span>=../../emfviews-tutorial/models/publication.xmi,<span class="org-sh-escaped-newline">\</span>
-                   ../../emfviews-tutorial/models/book.xmi
+<span class="org-variable-name">contributingModels</span>=publication::../../emfviews-tutorial/models/publication.xmi,<span class="org-sh-escaped-newline">\</span>
+                   book::../../emfviews-tutorial/models/book.xmi
 <span class="org-variable-name">matchingModel</span>=../src-gen/publicationsAndBooks.ecl
 <span class="org-variable-name">weavingModel</span>=publicationAndBooks.xmi
 </pre>
@@ -1216,8 +1219,8 @@ Before we can run this configuration, we need to make a minor change to the
 </p>
 
 <pre class="example">
-contributingMetamodels=../metamodels/Publication.ecore,\
-		       ../metamodels/Book.ecore
+contributingMetamodels=publication::../metamodels/Publication.ecore,\
+		       book::../metamodels/Book.ecore
 weavingModel=publicationsAndBooks.xmi
 saveInRegistry
 </pre>
@@ -1340,8 +1343,9 @@ For <code>eviewpoint</code> files, these are the accepted properties:
 </p>
 
 <dl class="org-dl">
-<dt><code>contributingMetamodels</code></dt><dd>Comma-separated list of URIs to contributing
-metamodels.  This key is mandatory.</dd>
+<dt><code>contributingMetamodels</code></dt><dd>Comma-separated list of alias-URI pairs to
+contributing metamodels.  The alias and URI are separated by two colons
+<code>::</code>.  This key is mandatory.</dd>
 
 <dt><code>weavingModel</code></dt><dd>URI for the viewpoint&rsquo;s <a href="#weaving-models">weaving model</a>.  This key is
 optional; if unspecified, the viewpoint will be constructed with an empty
@@ -1393,8 +1397,8 @@ Here is an example of a valid <code>eviewpoint</code> file:
 </p>
 
 <pre class="example">
-contributingMetamodels=../metamodels/Book.ecore,\
-                       http://www.eclipse.org/uml2/5.0.0/UML
+contributingMetamodels=book::../metamodels/Book.ecore,\
+                       uml::http://www.eclipse.org/uml2/5.0.0/UML
 weavingModel=books-and-uml.xmi
 </pre>
 
@@ -1409,7 +1413,8 @@ UML metamodel through its namespace URI.
 
 <dl class="org-dl">
 <dt><code>viewpoint</code></dt><dd>URI to the <code>eviewpoint</code> file.  This key is mandatory.</dd>
-<dt><code>contributingModels</code></dt><dd>Comma-separated list of URIs to contributing models.
+<dt><code>contributingModels</code></dt><dd>Comma-separated list of alias-URI pairs to
+contributing models.  The alias and URI are separated by two colons <code>::</code>.
 This key is mandatory.</dd>
 <dt><code>weavingModel</code></dt><dd>URI to the view&rsquo;s <a href="#weaving-models">weaving model</a>.  This key conflicts with
 <code>matchingModel</code>.</dd>
@@ -1433,7 +1438,7 @@ Here is an example of a valid <code>eview</code> file:
 
 <pre class="example">
 viewpoint=../viewpoints/booksAndPub.eviewpoint
-contributingModels=models/book.xmi,../../publication.xmi
+contributingModels=book::models/book.xmi,publication::../../publication.xmi
 matchingModel=booksAndPub.ecl
 </pre>
 
@@ -1855,11 +1860,7 @@ ECL file with two rules:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ecl"><span class="org-comment-delimiter">//</span><span class="org-comment">alias_ea=http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0</span>
-<span class="org-comment-delimiter">//</span><span class="org-comment">alias_bpmn=http://www.omg.org/spec/BPMN/20100524/MODEL-XMI</span>
-<span class="org-comment-delimiter">//</span><span class="org-comment">alias_reqif=http://www.omg.org/spec/ReqIF/20110401/reqif.xsd</span>
-
-<span class="org-keyword">rule</span> detailedProcess
+<pre class="src src-ecl"><span class="org-keyword">rule</span> detailedProcess
 <span class="org-keyword">match</span> s : ea!Process
 <span class="org-keyword">with</span>  t : bpmn!Process
 {
@@ -1882,29 +1883,25 @@ ECL file with two rules:
 </div>
 
 <p>
-The first three lines are required to map package names used in the ECL file to
-actual Ecore packages through their namespace URI.
-</p>
-
-<p>
 See the <a href="https://www.eclipse.org/epsilon/doc/ecl/">ECL documentation</a> for a full syntactic account of the language.
 </p>
 
 <p>
-Each rule is then used to match the two models it refers to.  If the predicate
-inside the <code>compare</code> clause is true for two model elements, then a virtual
-association (of the same as the rule&rsquo;s) will contain an entry for these two
-elements in the created weaving model.
+Each rule is used to match the two models it refers to.  If the predicate inside
+the <code>compare</code> clause is true for two model elements, then a virtual association
+(of the same as the rule&rsquo;s) will contain an entry for these two elements in the
+created weaving model.
 </p>
 
 <p>
 Here for example the rule <code>detailedProcess</code> will match whenever a model element
 of the <code>ea!Process</code> class and a model of the <code>bpmn!Process</code> class both have the
 exact same name.  These classes belong respectively to the TOGAF &rsquo;content
-framework&rsquo; and BPMN metamodels, as specified by the <code>alias_ea</code> and <code>alias_bpmn</code>
-lines in the header.  If two elements match, the resulting weaving model will
-contain an entry in the virtual association <code>detailedProcess</code> from the source
-element (an <code>ea!Process</code>) to the target element (a <code>bpmn!Process</code>).
+framework&rsquo; and BPMN metamodels, as specified by the <code>contributingMetamodels</code>
+line in an accompanying <code>eviewpoint</code> file.  If two elements match, the resulting
+weaving model will contain an entry in the virtual association <code>detailedProcess</code>
+from the source element (an <code>ea!Process</code>) to the target element (a
+<code>bpmn!Process</code>).
 </p>
 
 <p>
@@ -1922,7 +1919,7 @@ interface, which has a single method:
 
 <div class="org-src-container">
 <pre class="src src-java"><span class="org-type">WeavingModel</span> <span class="org-function-name">createWeavingModel</span>(<span class="org-type">URI</span> <span class="org-variable-name">linksDslFile</span>,
-                                <span class="org-type">List</span>&lt;<span class="org-type">Resource</span>&gt; <span class="org-variable-name">inputModels</span>)
+                                <span class="org-type">Map</span>&lt;<span class="org-type">String</span>, <span class="org-type">Resource</span>&gt; <span class="org-variable-name">inputModels</span>)
 </pre>
 </div>
 
