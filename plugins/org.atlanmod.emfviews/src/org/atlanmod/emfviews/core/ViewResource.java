@@ -48,9 +48,14 @@ import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eol.models.IModel;
 
+import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+
+import cdobackend.CDOBackend;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
 import fr.inria.atlanmod.neoemf.data.blueprints.BlueprintsPersistenceBackendFactory;
+import fr.inria.atlanmod.neoemf.data.blueprints.neo4j.option.BlueprintsNeo4jOptionsBuilder;
 import fr.inria.atlanmod.neoemf.data.blueprints.util.BlueprintsURI;
+import fr.inria.atlanmod.neoemf.resource.PersistentResource;
 import fr.inria.atlanmod.neoemf.resource.PersistentResourceFactory;
 
 /**
@@ -148,6 +153,14 @@ public class ViewResource extends ResourceImpl {
     }
   }
 
+  private CDOBackend cdoBackend;
+  private CDOBackend getCDOBackend() {
+    if (cdoBackend == null) {
+      cdoBackend = new CDOBackend();
+    }
+    return cdoBackend;
+  }
+
   private Map<String, Resource> loadModels(Map<String, EPackage> metamodels) {
     Map<String, Resource> contributingModels = new HashMap<>();
     for (String modelPath : contributingModelsPaths.split(",")) {
@@ -163,12 +176,16 @@ public class ViewResource extends ResourceImpl {
       // Each resource needs to use a different resource set, otherwise we may
       // have name clashes in EPackages.
       EPackage metamodel = metamodels.get(alias);
+      if (metamodel == null)
+        throw new IllegalArgumentException(String.format("No metamodel declared in viewpoint for alias '%s'", alias));
       ResourceSet rs = new ResourceSetImpl();
       rs.getPackageRegistry().put(metamodel.getNsURI(), metamodel);
 
+      Map<?,?> loadOptions = Collections.EMPTY_MAP;
+
       // @Correctness: matching on file extension is brittle, but we don't have
       // a fool-proof way to detect NeoEMF resources
-      if (modelPath.endsWith(".graphdb")) {
+      if ("graphdb".equals(uri.fileExtension())) {
         // @Correctness: we shouldn't directly depend on NeoEMF for that
         // The initialization can be done programmatically, but how to
         // do it when opening a view with a graphical editor?
@@ -177,6 +194,9 @@ public class ViewResource extends ResourceImpl {
         rs.getResourceFactoryRegistry()
           .getProtocolToFactoryMap()
           .put(BlueprintsURI.SCHEME, PersistentResourceFactory.getInstance());
+
+        loadOptions = BlueprintsNeo4jOptionsBuilder.newBuilder()
+          .softCache().directWriteLongListSupport().asMap();
 
         if (uri.isPlatform()) {
           // Convert to a file URI since Blueprints does not support platform URI
@@ -188,7 +208,28 @@ public class ViewResource extends ResourceImpl {
         }
       }
 
-      Resource r = rs.getResource(uri, true);
+      Resource r;
+
+      if ("cdo".equals(uri.fileExtension())) {
+        try {
+          r = getCDOBackend().getResource(new File(uri.toFileString()), "res1");
+          // @Hack: the CDOResource resourceset has a package registry full of
+          // garbage. We don't want that, as that causes name clashes when using
+          // ECL.  The only metamodel we need is the one specified by the viewpoint.
+          r.getResourceSet().getPackageRegistry().clear();
+          r.getResourceSet().getPackageRegistry().put(metamodel.getNsURI(), metamodel);
+        } catch (Exception e) {
+          throw new RuntimeException("Exception while loading CDO resource", e);
+        }
+      } else {
+        r = rs.createResource(uri);
+        try {
+          r.load(loadOptions);
+        } catch (IOException e) {
+          throw new RuntimeException(String.format("Exception while loading model %s", uri), e);
+        }
+      }
+
       if (r != null) {
         contributingModels.put(alias, r);
       } else {
@@ -267,6 +308,25 @@ public class ViewResource extends ResourceImpl {
     }
 
     return weavingModel;
+  }
+
+  public void close() {
+    // Make sure to close any contributing resource
+    for (Resource r : view.getContributingModels()) {
+      if (r instanceof PersistentResource) {
+        ((PersistentResource) r).close();
+      }
+    }
+
+    // And the weaving model
+    /*if (weavingModelResource instanceof PersistentResource) {
+      ((PersistentResource) weavingModelResource).close();
+    }*/
+
+    // And the CDO backend
+    if (cdoBackend != null) {
+      cdoBackend.close();
+    }
   }
 
   private EObject asEObject(Object obj, EclModule module, Map<IModel, EpsilonResource> epsToResource) {
