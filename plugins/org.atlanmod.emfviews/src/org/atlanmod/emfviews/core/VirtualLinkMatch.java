@@ -4,8 +4,8 @@ import org.eclipse.emf.ecore.EObject;
 
 public class VirtualLinkMatch {
 
-  String linkName;
-  EObject source;
-  EObject target;
+  public String linkName;
+  public EObject source;
+  public EObject target;
 
 }

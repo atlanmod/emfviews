@@ -46,9 +46,8 @@ import org.eclipse.epsilon.ecl.execute.EclOperationFactory;
 import org.eclipse.epsilon.ecl.trace.Match;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.models.IModel;
-
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 import cdobackend.CDOBackend;
 import fr.inria.atlanmod.neoemf.data.PersistenceBackendFactoryRegistry;
@@ -239,6 +238,15 @@ public class ViewResource extends ResourceImpl {
     return contributingModels;
   }
 
+  public Delegator customDelegator;
+
+  public interface Delegator {
+    List<VirtualLinkMatch> match(Map<String,
+                                 Resource> models,
+                                 EclModule module, Map<IModel, EpsilonResource> epsToResource)
+      throws EolRuntimeException;
+  }
+
   private List<VirtualLinkMatch> loadWeavingModel(Map<String, Resource> models) throws Exception  {
     // Get the weaving model from the matching model, if there is one
     List<VirtualLinkMatch> weavingModel = new ArrayList<>();
@@ -289,7 +297,12 @@ public class ViewResource extends ResourceImpl {
         module.getContext().getModelRepository().addModel(m);
       }
 
-      // Execute the module
+      // If there is a custom delegator, use that
+      if (customDelegator != null) {
+        return customDelegator.match(models, module, epsToResource);
+      }
+
+      // Otherwise, use the default (O(n^2)) ECL execution
       MatchTrace mt = (MatchTrace) module.execute();
 
       Map<Object, EObject> targets = new HashMap<>();
