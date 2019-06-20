@@ -339,6 +339,7 @@ public class ViewResource extends ResourceImpl {
     // And the CDO backend
     if (cdoBackend != null) {
       cdoBackend.close();
+      cdoBackend = null;
     }
   }
 
