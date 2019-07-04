@@ -218,7 +218,7 @@ public class ViewResource extends ResourceImpl {
           r.getResourceSet().getPackageRegistry().clear();
           r.getResourceSet().getPackageRegistry().put(metamodel.getNsURI(), metamodel);
         } catch (Exception e) {
-          throw new RuntimeException("Exception while loading CDO resource", e);
+          throw new RuntimeException(String.format("Exception while loading CDO resource at %s", uri), e);
         }
       } else {
         r = rs.createResource(uri);
