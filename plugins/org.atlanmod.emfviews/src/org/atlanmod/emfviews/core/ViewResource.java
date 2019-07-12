@@ -224,7 +224,7 @@ public class ViewResource extends ResourceImpl {
         r = rs.createResource(uri);
         try {
           r.load(loadOptions);
-        } catch (IOException e) {
+        } catch (Exception e) {
           throw new RuntimeException(String.format("Exception while loading model %s", uri), e);
         }
       }
