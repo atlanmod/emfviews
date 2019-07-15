@@ -62,7 +62,6 @@ public class View implements Virtualizer {
   // use Resource.getEObject to get them back.
 
   private Viewpoint viewpoint; // holds the metamodel the view needs to conform to
-  private List<VirtualLinkMatch> weavingModel; // what virtual links to create
 
   private Resource resource; // the resource using this view, if any.  This is
                              // used by VirtualEObject.eResource, to please some
@@ -98,9 +97,8 @@ public class View implements Virtualizer {
   public View(Viewpoint viewpoint, List<Resource> contributingModels, List<VirtualLinkMatch> weavingModel) {
     this.viewpoint = viewpoint;
     this.contributingModels = contributingModels;
-    this.weavingModel = weavingModel;
 
-    build();
+    build(weavingModel);
   }
 
   /**
@@ -149,7 +147,7 @@ public class View implements Virtualizer {
   // Constructing the virtual model
 
   // Go through the WeavingModel instructions and build the virtual model.
-  protected void build() {
+  protected void build(List<VirtualLinkMatch> weavingModel) {
 
     // Populate the model with values for virtual associations
     for (VirtualLinkMatch m : weavingModel) {
