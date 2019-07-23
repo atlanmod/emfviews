@@ -53,7 +53,7 @@ Where:
 ;
 
 Rule:
-  condition=STRING
+  condition=BoolExpr
   K_FOR
   relation=[Relation]
 ;
@@ -67,13 +67,43 @@ K_FROM: 'from' | 'FROM';
 K_WHERE: 'where' | 'WHERE';
 K_SELECT: 'select' | 'SELECT';
 
-// These are for integrating a bit of the ECL syntax into VPDL
-// Currently unused
+// Boolean expression grammar for the WHERE clause
 
-Comparison:
-  left+=Left ('=' | '<=' | '>=' | '<' | '>' | '<>') right+=Right
+BoolExpr: 
+  BoolExprSimple ({Comparison.left=current} op=BoolOp right=BoolExprSimple)*
 ;
 
-Left: metamodel+=[Metamodel|ID] '.' class+=ID '.' attributeWhereLeft=ID;
+BoolExprSimple returns BoolExpr: 
+  Constant
+  | Nav
+  | '(' BoolExpr ')'
+;
 
-Right: (metamodel+=[Metamodel|ID] '.'class+=ID '.' attributeWhereRight=ID | value=STRING);
+Constant: 
+  {IntLiteral} value=INT 
+  | {BoolLiteral} value=BOOL 
+  | {StringLiteral} value=STRING
+;
+
+terminal BOOL: 'true' | 'false';
+
+Nav: start=ID ('.' body+=NavRest)*;
+NavRest: NavFeature | MethodCall;
+NavFeature: name=ID;
+
+MethodCall: method=ID '(' (args+=MethodArg (',' args+=MethodArg)*)? ')';
+
+MethodArg: BoolExpr | Lambda;
+
+Lambda: arg=ID '|' body=BoolExpr; 
+
+enum BoolOp:
+  EQ='='
+  | NEQ='<>' 
+  | LT='<'
+  | LTEQ='<='
+  | GT='>'
+  | GTEQ='>='
+  | AND='and'
+  | OR='or'
+;

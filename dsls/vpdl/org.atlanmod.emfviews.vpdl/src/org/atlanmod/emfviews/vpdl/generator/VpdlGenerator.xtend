@@ -23,6 +23,19 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import org.atlanmod.emfviews.vpdl.vpdl.Metamodel
 import org.atlanmod.emfviews.vpdl.vpdl.View
 import org.atlanmod.emfviews.vpdl.vpdl.SelectFeature
+import org.atlanmod.emfviews.vpdl.vpdl.BoolExpr
+import org.atlanmod.emfviews.vpdl.vpdl.Comparison
+import org.atlanmod.emfviews.vpdl.vpdl.Constant
+import org.atlanmod.emfviews.vpdl.vpdl.Nav
+import org.atlanmod.emfviews.vpdl.vpdl.IntLiteral
+import org.atlanmod.emfviews.vpdl.vpdl.BoolLiteral
+import org.atlanmod.emfviews.vpdl.vpdl.StringLiteral
+import org.atlanmod.emfviews.vpdl.vpdl.BoolOp
+import org.atlanmod.emfviews.vpdl.vpdl.NavRest
+import org.atlanmod.emfviews.vpdl.vpdl.NavFeature
+import org.atlanmod.emfviews.vpdl.vpdl.MethodCall
+import org.atlanmod.emfviews.vpdl.vpdl.MethodArg
+import org.atlanmod.emfviews.vpdl.vpdl.Lambda
 import java.io.ByteArrayOutputStream
 import org.atlanmod.emfviews.vpdl.vpdl.Rule
 import org.atlanmod.emfviews.vpdl.vpdl.Relation
@@ -81,7 +94,7 @@ class VpdlGenerator extends AbstractGenerator {
     {
       compare
       {
-        return «r.condition»;
+        return «r.condition.prettyPrint»;
       }
     }
     «ENDFOR»
@@ -125,5 +138,66 @@ class VpdlGenerator extends AbstractGenerator {
 
     out.toString
   }
+
+  // Pretty printer for boolean expressions of the WHERE clause
+
+  def CharSequence prettyPrint(BoolExpr expr) {
+    if (expr instanceof Constant)
+      return expr.prettyPrint();
+    if (expr instanceof Comparison)
+      return expr.prettyPrint();
+    if (expr instanceof Nav)
+      return expr.prettyPrint();
+    throw new IllegalArgumentException();
+  }
+
+  def CharSequence prettyPrint(Constant c) {
+    if (c instanceof IntLiteral)
+      return c.value.toString();
+    if (c instanceof BoolLiteral)
+      return c.value.toString();
+     if (c instanceof StringLiteral)
+      return c.value;
+  }
+
+  def CharSequence prettyPrint(Comparison c) '''«c.left.prettyPrint» «c.op.prettyPrint» «c.right.prettyPrint»'''
+
+  def CharSequence prettyPrint(BoolOp op) {
+    return switch (op) {
+      case BoolOp.EQ: '='
+      case BoolOp.NEQ: '<>'
+      case BoolOp.LT: '<'
+      case BoolOp.LTEQ: '<='
+      case BoolOp.GT: '>'
+      case BoolOp.GTEQ: '>='
+      case BoolOp.AND: 'and'
+      case BoolOp.OR: 'or'
+    }
+  }
+
+  def CharSequence prettyPrint(Nav n) '''«n.start»«FOR b : n.body».«b.prettyPrint»«ENDFOR»'''
+
+  def CharSequence prettyPrint(NavRest r) {
+    if (r instanceof NavFeature)
+      return r.prettyPrint();
+    if (r instanceof MethodCall)
+      return r.prettyPrint();
+  }
+
+  def CharSequence prettyPrint(NavFeature f) {
+    f.name
+  }
+
+  def CharSequence prettyPrint(MethodCall m) '''«m.method»(«FOR a : m.args»«a.prettyPrint»«ENDFOR»)'''
+
+  def CharSequence prettyPrint(MethodArg a) {
+    if (a instanceof BoolExpr)
+      return a.prettyPrint
+    if (a instanceof Lambda)
+      return a.prettyPrint
+  }
+
+  def CharSequence prettyPrint(Lambda l) '''«l.arg» | «l.body.prettyPrint»'''
+
 
 }

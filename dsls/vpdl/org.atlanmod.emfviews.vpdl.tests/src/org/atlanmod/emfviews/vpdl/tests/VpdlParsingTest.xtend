@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Armines
+ * Copyright (c) 2018, 2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -31,68 +31,108 @@ import static org.hamcrest.CoreMatchers.*
 @InjectWith(VpdlInjectorProvider)
 class VpdlParsingTest {
 
-	@Inject ParseHelper<View> parseHelper
+  @Inject ParseHelper<View> parseHelper
 
-	def void expect(CharSequence vpdl) {
-	  val result = parseHelper.parse(vpdl)
-	  Assert.assertNotNull("Could not parse VPDL file", result)
-	  Assert.assertThat(result.eResource.errors, is(emptyList))
-	}
+  def void expect(CharSequence vpdl) {
+    val result = parseHelper.parse(vpdl)
+    Assert.assertNotNull("Could not parse VPDL file", result)
+    Assert.assertThat(result.eResource.errors, is(emptyList))
+  }
 
-	@Test
-	def void fullSyntax() {
-		expect('''
-			create view threeModelComposition as
-
-			select
-			    // New relations
-			    togaf.Requirement join reqif.SpecObject as detailedRequirement,
-			    togaf.Process join bpmn.Process as detailedProcess,
-
-			    // Filters
-			    togaf.Process.isAutomated,
-			    togaf.Requirement[statementOfRequirement, acceptanceCriteria],
-			    reqif.SpecObject.type,
-			    bpmn.Process[isClosed, isExecutable, processType],
-
-			    // Need their containers as well if we want to see anything
-			    togaf.Element.name,
-			    togaf.EnterpriseArchitecture.architectures,
-			    togaf.StrategicArchitecture.strategicElements,
-			    togaf.BusinessArchitecture.processes,
-
-			    reqif.ReqIFContent.specObjects,
-			    reqif.ReqIF.coreContent,
-			    reqif.Identifiable[desc, longName],
-
-			    bpmn.Definitions[name, rootElements],
-			    bpmn.CallableElement.name,
-
-			from
-			  'http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0' as togaf,
-			  'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'       as bpmn,
-			  'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd'      as reqif,
-
-			where "s.name=t.name and s.isAutomated = false" for detailedProcess,
-			      "t.values.exists(v | v.theValue=s.name)"  for detailedRequirement,
-		''')
-	}
-
-	@Test
-	def void capitalKeywords() {
+  @Test
+  def void fullSyntax() {
     expect('''
-	  CREATE VIEW v AS
+      create view threeModelComposition as
 
-	  SELECT a.b JOIN d.e AS r FROM '' AS mm
-	  WHERE '' FOR r
-	  ''')
-	}
+      select
+          // New relations
+          togaf.Requirement join reqif.SpecObject as detailedRequirement,
+          togaf.Process join bpmn.Process as detailedProcess,
 
-	@Test
-	def void wildcardSelector() {
-	  expect('''
-	  create view v as
-	  select a.b.* from '' as mm
-	  ''')
-	}
+          // Filters
+          togaf.Process.isAutomated,
+          togaf.Requirement[statementOfRequirement, acceptanceCriteria],
+          reqif.SpecObject.type,
+          bpmn.Process[isClosed, isExecutable, processType],
+
+          // Need their containers as well if we want to see anything
+          togaf.Element.name,
+          togaf.EnterpriseArchitecture.architectures,
+          togaf.StrategicArchitecture.strategicElements,
+          togaf.BusinessArchitecture.processes,
+
+          reqif.ReqIFContent.specObjects,
+          reqif.ReqIF.coreContent,
+          reqif.Identifiable[desc, longName],
+
+          bpmn.Definitions[name, rootElements],
+          bpmn.CallableElement.name,
+
+      from
+        'http://www.obeonetwork.org/dsl/togaf/contentfwk/9.0.0' as togaf,
+        'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'       as bpmn,
+        'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd'      as reqif,
+
+      where s.name=t.name and s.isAutomated = false for detailedProcess,
+            t.values.exists(v | v.theValue=s.name)  for detailedRequirement,
+    ''')
+  }
+
+  @Test
+  def void capitalKeywords() {
+    expect('''
+      CREATE VIEW v AS
+
+      SELECT a.b JOIN d.e AS r FROM '' AS mm
+      WHERE '' FOR r
+    ''')
+  }
+
+  @Test
+  def void wildcardSelector() {
+    expect('''
+    create view v as
+    select a.b.* from '' as mm
+    ''')
+  }
+
+  @Test
+  def void whereConstant() {
+    expect('''
+      create view v as
+      select a.b JOIN d.e as r
+      from '' as mm
+      where true for r
+    ''')
+  }
+
+  @Test
+  def void whereComparison() {
+    expect('''
+      create view v as
+      select a.b JOIN d.e as r
+      from '' as mm
+      where 2 > 3 for r
+    ''')
+  }
+
+  @Test
+  def void whereNavigation() {
+    expect('''
+      create view v as
+      select a.b JOIN d.e as r
+      from '' as mm
+      where s.name for r
+    ''')
+  }
+
+  @Test
+  def void whereMethodCall() {
+    expect('''
+      create view v as
+      select a.b JOIN d.e as r
+      from '' as mm
+      where s.values.exists(v | v.val=t.name) for r
+    ''')
+  }
 }

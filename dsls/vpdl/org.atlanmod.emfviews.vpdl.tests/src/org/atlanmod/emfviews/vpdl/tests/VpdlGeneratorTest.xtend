@@ -121,7 +121,7 @@ class VpdlGeneratorTest {
       from 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0' as v,
            'http://www.eclipse.org/emf/2002/Ecore' as ecore,
 
-      where 'this is not tested yet' for eClass
+      where s.name = t.name for eClass
     ''',
     '''
       contributingMetamodels=v::http://www.atlanmod.org/emfviews/virtuallinks/0.3.0,ecore::http://www.eclipse.org/emf/2002/Ecore
@@ -147,7 +147,7 @@ class VpdlGeneratorTest {
     {
       compare
       {
-        return this is not tested yet;
+        return s.name = t.name;
       }
     }
     ''')
