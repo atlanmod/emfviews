@@ -56,9 +56,9 @@ class VpdlGenerator extends AbstractGenerator {
     val name = viewpointName(resource)
 
     fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint(fsa))
-    // TODO: do not generate ECL if WHERE clause is empty
-    fsa.generateFile(name + '.ecl', resource.compileEcl)
     fsa.generateFile(name + '.xmi', resource.compileXmi)
+    if (!resource.allRules.empty)
+      fsa.generateFile(name + '.ecl', resource.compileEcl)
   }
 
   def String viewpointName(Resource r) {

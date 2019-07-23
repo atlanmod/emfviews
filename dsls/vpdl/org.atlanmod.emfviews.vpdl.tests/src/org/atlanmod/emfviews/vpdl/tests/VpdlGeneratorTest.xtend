@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Armines
+ * Copyright (c) 2018, 2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -44,17 +44,17 @@ class VpdlGeneratorTest {
   @Inject IGenerator2 underTest
   @Inject ParseHelper<View> parseHelper
 
-
   def void expect(String extensionName, CharSequence vpdl, CharSequence viewpointContent,
                   CharSequence expectedModel, CharSequence matchingModel) {
-    // @Refactor: similar from MelGeneratorTest, with matchingModel in there
+    val withMatching = matchingModel.length > 0
+    val totalFiles = if (withMatching) 3 else 2
 
     val model = parseHelper.parse(vpdl)
     Assert.assertThat(model.eResource.errors, is(emptyList))
 
     val fsa = new InMemoryFileSystemAccess()
     underTest.doGenerate(model.eResource, fsa, null)
-    Assert.assertEquals(3, fsa.allFiles.size)
+    Assert.assertEquals(totalFiles, fsa.allFiles.size)
 
     val eviewpointPath = IFileSystemAccess::DEFAULT_OUTPUT + extensionName + ".eviewpoint"
     Assert.assertTrue(fsa.allFiles.containsKey(eviewpointPath))
@@ -80,9 +80,11 @@ class VpdlGeneratorTest {
       Assert.assertEquals(expectedXMI.toString, weavingModelXMI)
     }
 
-    val matchingPath = IFileSystemAccess::DEFAULT_OUTPUT + extensionName + ".ecl"
-    Assert.assertTrue(fsa.allFiles.containsKey(matchingPath))
-    Assert.assertEquals(matchingModel.toString, fsa.allFiles.get(matchingPath).toString)
+    if (withMatching) {
+      val matchingPath = IFileSystemAccess::DEFAULT_OUTPUT + extensionName + ".ecl"
+      Assert.assertTrue(fsa.allFiles.containsKey(matchingPath))
+      Assert.assertEquals(matchingModel.toString, fsa.allFiles.get(matchingPath).toString)
+    }
   }
 
   @Test
