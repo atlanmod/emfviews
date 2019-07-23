@@ -323,27 +323,23 @@ language for easing the specification of viewpoints and the creation of
 corresponding views using EMF Views.  The syntax of VPDL is inspired by SQL's
 ~SELECT~ statement.
 
-#+BEGIN_note
-The VPDL syntax is still experimental and likely to change in the near future.
-#+END_note
-
 Instead of manually creating ~eviewpoint~ and ~eview~ files, you write a single
 ~vpdl~ file which describes the viewpoint and the view at the same time.  Here
 is a VPDL file recreating the ~firstChapter~ view of the previous section:
 
-#+BEGIN_SRC sql
+#+BEGIN_SRC vpdl
 create view publicationsAndBooks as
 
-select pub.Publication.*,
-       pub.Publication join book.Chapter as firstChapter,
+select publication.Publication.*,
+       publication.Publication join book.Chapter as firstChapter,
        book.Book.*,
        book.Chapter.title,
 
-from 'http://publication' as pub,
+from 'http://publication' as publication,
      'http://book' as book,
 
-where 's.title = t.eContainer().title
-   and t = t.eContainer().eContents().first()'
+where s.title = t.eContainer().title
+      and t = t.eContainer().eContents().first()
       for firstChapter
 #+END_SRC
 
@@ -355,8 +351,8 @@ used for generating the ~eviewpoint~, ~eview~ and ~xmi~ weaving model file.
 With the ~select~ clause, you explicitly select the classes and features from
 the contributing metamodels that will appear in the viewpoint.  The ~select~
 clause essentially specifies the viewpoint's weaving model, albeit in plain
-text.  Here with ~pub.Publication.*~ we say that we want all features of the
-~pub.Publication~ class in the viewpoint, and by selecting only
+text.  Here with ~publication.Publication.*~ we say that we want all features of
+the ~publication.Publication~ class in the viewpoint, and by selecting only
 ~book.Chapter.title~ from ~book.Chapter~, we exclude the ~nbPages~ attribute.
 The ~select~ clause is a whitelist, so if we don't include the ~book.Book.*~
 line for instance, the resulting viewpoint would not let us navigate ~Book~
@@ -364,8 +360,8 @@ instances, since there would be no visible features.
 
 The line:
 
-#+BEGIN_SRC sql
-       pub.Publication join book.Chapter as firstChapter,
+#+BEGIN_SRC vpdl
+       publication.Publication join book.Chapter as firstChapter,
 #+END_SRC
 
 tells EMF Views to create a virtual association from ~Publication~ to ~Chapter~
@@ -416,8 +412,9 @@ specify the contributing models you want to use.  Here is the definition of
 
 #+BEGIN_SRC sh
 viewpoint=../src-gen/publicationsAndBooks.eviewpoint
-contributingModels=publication::../../emfviews-tutorial/models/publication.xmi,\
-                   book::../../emfviews-tutorial/models/book.xmi
+contributingModels=\
+  publication::../../emfviews-tutorial/models/publication.xmi,\
+  book::../../emfviews-tutorial/models/book.xmi
 matchingModel=../src-gen/publicationsAndBooks.ecl
 weavingModel=publicationAndBooks.xmi
 #+END_SRC
@@ -989,10 +986,6 @@ VPDL, standing for /ViewPoint Description Language/, is a domain-specific
 language for easing the creation of views and viewpoints when using EMF Views.
 The syntax of VPDL is inspired by the syntax of the SQL's ~SELECT~ statement.
 
-#+BEGIN_note
-VPDL is still under development and its syntax is likely to evolve in the future.
-#+END_note
-
 This is an overview of the structure of a VPDL file:
 
 #+BEGIN_SRC vpdl
@@ -1002,7 +995,7 @@ select // features and new associations
 
 from // contributing metamodels
 
-where // ECL matching rules for new associations
+where // matching rules for new associations
 #+END_SRC
 
 There are three clauses:
@@ -1060,9 +1053,9 @@ There are three clauses:
 - ~where~ ::  Specifies the rules used for populating new associations by
      matching model elements.
 
-     The rules are given as strings containing ECL expressions, where the names
-     ~s~ and ~t~ are bound respectively to the source model and target model of
-     the association.
+     The rules are written in a subset of ECL expressions.  The top-level
+     variables ~s~ and ~t~ will be bound respectively to the source model and
+     target model of the association when creating the view.
 
      This clause is optional.
 
@@ -1097,8 +1090,8 @@ from
   'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'       as bpmn,
   'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd'      as reqif,
 
-where 's.name=t.name and s.isAutomated = false' for detailedProcess,
-      't.values.exists(v | v.theValue=s.name)'  for detailedRequirement,
+where s.name = t.name and s.isAutomated = false for detailedProcess,
+      t.values.exists(v | v.theValue=s.name)    for detailedRequirement,
 #+END_SRC
 
 The following diagram outlines the VPDL grammar; [[https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/vpdl/org.atlanmod.emfviews.vpdl/src/org/atlanmod/emfviews/vpdl/Vpdl.xtext][the full Xtext grammar]] can be

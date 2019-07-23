@@ -258,7 +258,7 @@ Return output file name."
   (seq-map (lambda (key)
              (rx-to-string `(and bow ,key eow) 'no-group))
            '("create" "view" "as" "select" "join" "for"
-             "select" "from" "where" )))
+             "select" "from" "where" "and" "or")))
 
 (define-derived-mode vpdl-mode prog-mode "vpdl"
   "VPDL mode"
