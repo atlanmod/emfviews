@@ -310,7 +310,7 @@ where</text>
 <g class="nonterminal">
 <rect height="22" width="108" x="153" y="612"/>
 <text x="207" y="628">
-rule-string</text>
+bool-expr</text>
 </g>
 <g class="terminal">
 <rect height="22" rx="10" ry="10" width="44" x="271" y="612"/>

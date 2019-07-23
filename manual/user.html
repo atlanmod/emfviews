@@ -585,13 +585,6 @@ corresponding views using EMF Views.  The syntax of VPDL is inspired by SQL&rsqu
 <code>SELECT</code> statement.
 </p>
 
-<div class="note">
-<p>
-The VPDL syntax is still experimental and likely to change in the near future.
-</p>
-
-</div>
-
 <p>
 Instead of manually creating <code>eviewpoint</code> and <code>eview</code> files, you write a single
 <code>vpdl</code> file which describes the viewpoint and the view at the same time.  Here
@@ -599,18 +592,18 @@ is a VPDL file recreating the <code>firstChapter</code> view of the previous sec
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sql"><span class="org-keyword">create</span> <span class="org-keyword">view</span> <span class="org-function-name">publicationsAndBooks</span> <span class="org-keyword">as</span>
+<pre class="src src-vpdl"><span class="org-keyword">create</span> <span class="org-keyword">view</span> publicationsAndBooks <span class="org-keyword">as</span>
 
-<span class="org-keyword">select</span> pub.Publication.*,
-       pub.Publication <span class="org-keyword">join</span> book.Chapter <span class="org-keyword">as</span> firstChapter,
+<span class="org-keyword">select</span> publication.Publication.*,
+       publication.Publication <span class="org-keyword">join</span> book.Chapter <span class="org-keyword">as</span> firstChapter,
        book.Book.*,
        book.Chapter.title,
 
-<span class="org-keyword">from</span> <span class="org-string">'http://publication'</span> <span class="org-keyword">as</span> pub,
+<span class="org-keyword">from</span> <span class="org-string">'http://publication'</span> <span class="org-keyword">as</span> publication,
      <span class="org-string">'http://book'</span> <span class="org-keyword">as</span> book,
 
-<span class="org-keyword">where</span> <span class="org-string">'s.title = t.eContainer().title</span>
-<span class="org-string">   and t = t.eContainer().eContents().first()'</span>
+<span class="org-keyword">where</span> s.title = t.eContainer().title
+      <span class="org-keyword">and</span> t = t.eContainer().eContents().first()
       <span class="org-keyword">for</span> firstChapter
 </pre>
 </div>
@@ -628,8 +621,8 @@ used for generating the <code>eviewpoint</code>, <code>eview</code> and <code>xm
 With the <code>select</code> clause, you explicitly select the classes and features from
 the contributing metamodels that will appear in the viewpoint.  The <code>select</code>
 clause essentially specifies the viewpoint&rsquo;s weaving model, albeit in plain
-text.  Here with <code>pub.Publication.*</code> we say that we want all features of the
-<code>pub.Publication</code> class in the viewpoint, and by selecting only
+text.  Here with <code>publication.Publication.*</code> we say that we want all features of
+the <code>publication.Publication</code> class in the viewpoint, and by selecting only
 <code>book.Chapter.title</code> from <code>book.Chapter</code>, we exclude the <code>nbPages</code> attribute.
 The <code>select</code> clause is a whitelist, so if we don&rsquo;t include the <code>book.Book.*</code>
 line for instance, the resulting viewpoint would not let us navigate <code>Book</code>
@@ -641,7 +634,7 @@ The line:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sql">pub.Publication <span class="org-keyword">join</span> book.Chapter <span class="org-keyword">as</span> firstChapter,
+<pre class="src src-vpdl">publication.Publication <span class="org-keyword">join</span> book.Chapter <span class="org-keyword">as</span> firstChapter,
 </pre>
 </div>
 
@@ -710,8 +703,9 @@ specify the contributing models you want to use.  Here is the definition of
 
 <div class="org-src-container">
 <pre class="src src-sh"><span class="org-variable-name">viewpoint</span>=../src-gen/publicationsAndBooks.eviewpoint
-<span class="org-variable-name">contributingModels</span>=publication::../../emfviews-tutorial/models/publication.xmi,<span class="org-sh-escaped-newline">\</span>
-                   book::../../emfviews-tutorial/models/book.xmi
+<span class="org-variable-name">contributingModels</span>=<span class="org-sh-escaped-newline">\</span>
+  publication::../../emfviews-tutorial/models/publication.xmi,<span class="org-sh-escaped-newline">\</span>
+  book::../../emfviews-tutorial/models/book.xmi
 <span class="org-variable-name">matchingModel</span>=../src-gen/publicationsAndBooks.ecl
 <span class="org-variable-name">weavingModel</span>=publicationAndBooks.xmi
 </pre>
@@ -1454,13 +1448,6 @@ language for easing the creation of views and viewpoints when using EMF Views.
 The syntax of VPDL is inspired by the syntax of the SQL&rsquo;s <code>SELECT</code> statement.
 </p>
 
-<div class="note">
-<p>
-VPDL is still under development and its syntax is likely to evolve in the future.
-</p>
-
-</div>
-
 <p>
 This is an overview of the structure of a VPDL file:
 </p>
@@ -1472,7 +1459,7 @@ This is an overview of the structure of a VPDL file:
 
 <span class="org-keyword">from</span> <span class="org-comment-delimiter">// </span><span class="org-comment">contributing metamodels</span>
 
-<span class="org-keyword">where</span> <span class="org-comment-delimiter">// </span><span class="org-comment">ECL matching rules for new associations</span>
+<span class="org-keyword">where</span> <span class="org-comment-delimiter">// </span><span class="org-comment">matching rules for new associations</span>
 </pre>
 </div>
 
@@ -1568,9 +1555,9 @@ matching model elements.
 </p>
 
 <p>
-The rules are given as strings containing ECL expressions, where the names
-<code>s</code> and <code>t</code> are bound respectively to the source model and target model of
-the association.
+The rules are written in a subset of ECL expressions.  The top-level
+variables <code>s</code> and <code>t</code> will be bound respectively to the source model and
+target model of the association when creating the view.
 </p>
 
 <p>
@@ -1611,8 +1598,8 @@ Here is an example of a VPDL file:
   <span class="org-string">'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'</span>       <span class="org-keyword">as</span> bpmn,
   <span class="org-string">'http://www.omg.org/spec/ReqIF/20110401/reqif.xsd'</span>      <span class="org-keyword">as</span> reqif,
 
-<span class="org-keyword">where</span> <span class="org-string">'s.name=t.name and s.isAutomated = false'</span> <span class="org-keyword">for</span> detailedProcess,
-      <span class="org-string">'t.values.exists(v | v.theValue=s.name)'</span>  <span class="org-keyword">for</span> detailedRequirement,
+<span class="org-keyword">where</span> s.name = t.name <span class="org-keyword">and</span> s.isAutomated = false <span class="org-keyword">for</span> detailedProcess,
+      t.values.exists(v | v.theValue=s.name)    <span class="org-keyword">for</span> detailedRequirement,
 </pre>
 </div>
 
