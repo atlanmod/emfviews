@@ -95,6 +95,7 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#eview-and-eviewpoint-files">eview and eviewpoint files</a></li>
 <li><a href="#vpdl">VPDL</a></li>
+<li><a href="#mel">MEL</a></li>
 <li><a href="#java-api">Java API</a></li>
 </ul>
 </li>
@@ -147,7 +148,7 @@ navigate or query the view more naturally.
 <p>
 Views can be created interactively via <code>eview</code> and <code>eviewpoint</code> definition
 files, or can be created programmatically.  Moreover, EMF Views currently comes
-with two DSLs that ease the definition of views: <a href="#vpdl">VPDL</a> and MEL.
+with two DSLs that ease the definition of views: <a href="#vpdl">VPDL</a> and <a href="#mel">MEL</a>.
 </p>
 
 
@@ -540,7 +541,7 @@ is:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-ecl" id="org4faf004"><span class="org-keyword">return</span> p.title = c.eContainer().title
+<pre class="src src-ecl" id="org6da6005"><span class="org-keyword">return</span> p.title = c.eContainer().title
    <span class="org-keyword">and</span> c = c.eContainer().eContents().first();
 </pre>
 </div>
@@ -556,7 +557,7 @@ only one chapter is part of the <code>bookChapters</code> association:
 </p>
 
 
-<div id="org6da6005" class="figure">
+<div id="orge1c3b82" class="figure">
 <p><img src="images/view-first-chapter.png" alt="view-first-chapter.png">
 </p>
 </div>
@@ -652,7 +653,7 @@ to aliases used in the <code>select</code> clause.
 <p>
 Lastly, the <code>where</code> clause specifies, for each new association, how to match
 elements from contributing models in the view.  This is used to generate the matching model
-as an ECL file.  Here, we use the same predicate as <a href="#org4faf004">before</a>, but this time <code>s</code>
+as an ECL file.  Here, we use the same predicate as <a href="#org6da6005">before</a>, but this time <code>s</code>
 and <code>t</code> refer respectively to the source (<code>Publication</code>) and target (<code>Chapter</code>)
 of the association.
 </p>
@@ -713,7 +714,7 @@ specify the contributing models you want to use.  Here is the definition of
 
 <p>
 Opening <code>firstChapter.eview</code> using the MoDisco Model Browser, we get the same
-result as <a href="#org6da6005">before</a>, the difference being that this time the new association is
+result as <a href="#orge1c3b82">before</a>, the difference being that this time the new association is
 more accurately called <code>firstChapter</code>:
 </p>
 
@@ -1228,7 +1229,7 @@ necessary since the view will take care of instantiating the viewpoint directly.
 
 <div class="note">
 <p>
-Refer to the <a href="#orge1c3b82"><code>saveInRegistry</code> option documentation</a> for more details.
+Refer to the <a href="#org3a2f4fc"><code>saveInRegistry</code> option documentation</a> for more details.
 </p>
 
 </div>
@@ -1345,7 +1346,7 @@ contributing metamodels.  The alias and URI are separated by two colons
 optional; if unspecified, the viewpoint will be constructed with an empty
 weaving model.</dd>
 
-<dt><code>saveInRegistry</code> <a id="orge1c3b82"></a></dt><dd><p>
+<dt><code>saveInRegistry</code> <a id="org3a2f4fc"></a></dt><dd><p>
 (Optional).  If this property is
 present, the viewpoint created from the <code>eviewpoint</code> file will be saved in
 an internal registry, using the <code>eviewpoint</code> file location as a key.  This
@@ -1618,6 +1619,352 @@ found in the source code.
 The tutorial <a href="#creating-a-view-with-vpdl">Creating a view with VPDL</a> takes you through creating a VPDL file
 and using it in Eclipse.
 </p>
+
+
+<h4 id="mel"><a href="#mel">MEL</a></h4>
+<p>
+While <a href="#vpdl">VPDL</a> allows you to combine metamodels in the same view, it only allows you
+to filter classes and features from these metamodels.  On the other hand,
+viewpoint <a href="#weaving-models">weaving models</a> allow you to add new classes and properties, and modify
+existing ones, but are harder to specify manually.
+</p>
+
+<p>
+MEL is the <i>Metamodel Extension Language</i>, a domain-specific language for
+creating viewpoints that extends multiple existing metamodels.
+</p>
+
+<p>
+Here is an example of a simple MEL file:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-mel"><span class="org-keyword">import</span> uml <span class="org-keyword">from</span> <span class="org-string">'http://www.eclipse.org/uml2/5.0.0/UML'</span>
+
+<span class="org-keyword">define</span> single_inheritance_uml <span class="org-keyword">extending</span> uml {
+  <span class="org-keyword">modify</span> <span class="org-keyword">class</span> uml.Class {
+    <span class="org-keyword">modify</span> <span class="org-keyword">association</span> superClass {
+      <span class="org-keyword">cardinality</span> 0..1
+    }
+  }
+}
+</pre>
+</div>
+
+<p>
+This MEL file defines a new viewpoint, <code>single_inheritance_uml</code> that changes
+exactly one thing from the original UML: the association <code>Class.superClass</code> now
+points to at most one <code>Class</code>, instead of many.
+</p>
+
+<p>
+The general format of a MEL file is as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-mel"><span class="org-keyword">import</span> <span class="org-comment-delimiter">/* </span><span class="org-comment">metamodel imports */</span>
+
+<span class="org-keyword">define</span> <span class="org-comment-delimiter">/* </span><span class="org-comment">extension name */</span> <span class="org-keyword">extending</span> <span class="org-comment-delimiter">/* </span><span class="org-comment">input metamodels */</span> {
+  <span class="org-comment-delimiter">/* </span><span class="org-comment">extensions */</span>
+}
+</pre>
+</div>
+
+<p>
+In the <code>import</code> clause, the metamodels are imported by their namespace URI (a
+string) and given an alias:
+</p>
+
+<div class="verbatim">
+<p>
+<b>import</b> <i>alias</i> <b>from</b> <i>namespace-uri</i>
+</p>
+
+</div>
+
+<p>
+The alias is used when defining the extension: after the <code>extending</code> keyword,
+and for giving the full qualified name to classes.
+</p>
+
+<p>
+The extensions supported by MEL are:
+</p>
+
+<dl class="org-dl">
+<dt><code>add class</code></dt><dd><p>
+Adds a new virtual class to the viewpoint.
+</p>
+
+<p>
+The new class can extend or generalize any number of classes via the
+optional keywords <b>specializing</b> and <b>supertyping</b>.  Note that specialized
+or generalized classes may also be virtual classes defined in the current
+extension.
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>add class</b> <i>name</i> <b>specializing</b> <i>classes&#x2026;</i> <b>supertyping</b> <i>classes&#x2026;</i>
+</p>
+
+</div></dd>
+
+<dt><code>modify class</code></dt><dd><p>
+Open a block to modify the properties or associations of a
+given class (which may be one created by <code>add class</code>).
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>modify class</b> <i>name</i> { <i>class-modifications</i> }
+</p>
+
+</div>
+
+<p>
+The class modifications are:
+</p>
+
+<dl class="org-dl">
+<dt><code>add property</code></dt><dd><p>
+Adds a property to that class.
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>add property</b> <i>name</i> : <i>type</i> <i>cardinality</i>
+</p>
+
+</div>
+
+<p>
+The name and type are mandatory.  The type should be one the basic
+Ecore type (EString, EInt, etc.).
+</p>
+
+<p>
+The cardinality is optional and defaults to 1 (meaning the property
+always has a value).
+</p></dd>
+
+<dt><code>add association</code> <a id="orgd88f14c"></a></dt><dd><p>
+Adds an association to that class.
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>add association</b> <i>name</i> : <i>type</i> <i>cardinality</i>
+</p>
+
+</div>
+
+<p>
+The name and type are mandatory.  The type should be the name of a
+class (which may be one created by <code>add class</code>).
+</p>
+
+<p>
+The cardinality is optional and its syntax is:
+</p>
+
+<div class="VERBATIM">
+<p>
+(0|1|*)..(0|1|*)
+</p>
+
+</div>
+
+<p>
+You can create a <i>composition</i> relationship instead with the syntax:
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>add composition</b> <i>name</i> : <i>type</i> <i>cardinality</i>
+</p>
+
+</div></dd>
+
+<dt><code>modify property</code></dt><dd><p>
+Modify an existing property of that class.
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>modify property</b> <i>name</i> { <i>fields</i> }
+</p>
+
+</div>
+
+<p>
+The name is mandatory.  The allowed fields are:
+</p>
+
+<dl class="org-dl">
+<dt><code>name</code></dt><dd>the property name</dd>
+<dt><code>type</code></dt><dd>the property type (any Ecore data type)</dd>
+<dt><code>cardinality</code></dt><dd>the property cardinality (<code>0</code> or <code>1</code>)</dd>
+</dl>
+
+<p>
+Note that you cannot modify the property of a class created by <code>add
+          property</code>.  You should set the correct fields in the <code>add property</code>
+clause instead.
+</p></dd>
+
+<dt><code>modify association</code></dt><dd><p>
+Modify an existing association of that class.
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>modify association</b> <i>name</i> { <i>fields</i> }
+</p>
+
+</div>
+
+<p>
+The name is mandatory.  The allowed fields are:
+</p>
+
+<dl class="org-dl">
+<dt><code>name</code></dt><dd>the reference name</dd>
+<dt><code>type</code></dt><dd>the reference type (any class, including ones created by
+<code>add class</code>)</dd>
+<dt><code>cardinality</code></dt><dd>the reference cardinality (see <a href="#orgd88f14c"><code>add association</code></a>)</dd>
+<dt><code>relation-type</code></dt><dd>whether the property is an <code>association</code> or a <code>composition</code></dd>
+</dl>
+
+<p>
+Note that you cannot modify the reference of a class created by <code>add
+          association</code> or <code>add composition</code>.  You should set the correct fields
+in the <code>add association</code> (or <code>add composition</code>) clause instead.
+</p></dd>
+
+<dt><code>filter property</code></dt><dd><p>
+Remove a property from that class.
+</p>
+
+<p>
+The target property will not appear in the viewpoint created by this
+extension.
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>filter property</b> <i>name</i>
+</p>
+
+</div>
+
+<p>
+The name is mandatory.
+</p>
+
+<p>
+Note that you cannot filter a property of a class created by <code>add
+          property</code>.  You should just remove the <code>add property</code> clause instead.
+</p></dd>
+</dl></dd>
+
+<dt><code>filter class</code></dt><dd><p>
+Hide a class from the viewpoint.
+</p>
+
+<p>
+The target class will not appear in the viewpoint created by this
+extension.
+</p>
+
+<div class="VERBATIM">
+<p>
+<b>filter class</b> <i>name</i>
+</p>
+
+</div>
+
+<p>
+The name is mandatory, and cannot be the name of class created by <code>add
+     class</code>.
+</p></dd>
+</dl>
+
+<p>
+Here is an example of a (nonsensical) MEL program showing most of the
+constructs above:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-mel"><span class="org-keyword">import</span> uml <span class="org-keyword">from</span> <span class="org-string">'http://www.eclipse.org/uml2/5.0.0/UML'</span>
+<span class="org-keyword">import</span> bpmn <span class="org-keyword">from</span> <span class="org-string">'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'</span>
+
+<span class="org-keyword">define</span> extension1 <span class="org-keyword">extending</span> mm {
+  <span class="org-keyword">add</span> <span class="org-keyword">class</span> X
+  <span class="org-keyword">add</span> <span class="org-keyword">class</span> Y <span class="org-keyword">specializing</span> uml.Class, uml.Abstraction
+  <span class="org-keyword">add</span> <span class="org-keyword">class</span> Z <span class="org-keyword">supertyping</span> uml.Activity, uml.Action, X
+  <span class="org-keyword">add</span> <span class="org-keyword">class</span> B <span class="org-keyword">specializing</span> Y <span class="org-keyword">supertyping</span> Z
+
+  <span class="org-keyword">modify</span> <span class="org-keyword">class</span> X {
+    <span class="org-keyword">add</span> <span class="org-keyword">property</span> foo : EString 0
+    <span class="org-keyword">add</span> composition ref : X 1..1
+    <span class="org-keyword">add</span> <span class="org-keyword">association</span> ref : X 1..1
+  }
+
+  <span class="org-keyword">modify</span> <span class="org-keyword">class</span> uml.Class {
+    <span class="org-keyword">add</span> <span class="org-keyword">property</span> opt : EString 0
+    <span class="org-keyword">add</span> <span class="org-keyword">property</span> nonOpt : EString 1
+    <span class="org-keyword">add</span> composition refC : Y 0..*
+    <span class="org-keyword">add</span> <span class="org-keyword">association</span> ref : uml.Action 1..*
+  }
+
+  <span class="org-keyword">modify</span> <span class="org-keyword">class</span> bpmn.Activity {
+    <span class="org-keyword">modify</span> <span class="org-keyword">association</span> default {
+      <span class="org-keyword">name</span> defaultRenamed
+      <span class="org-keyword">type</span> X
+      <span class="org-keyword">cardinality</span> 0..*
+      relation-<span class="org-keyword">type</span> <span class="org-keyword">association</span>
+    }
+  }
+
+  <span class="org-keyword">modify</span> <span class="org-keyword">class</span> uml.Behavior {
+    <span class="org-keyword">modify</span> <span class="org-keyword">property</span> isReentrant {
+      <span class="org-keyword">type</span> EString
+      <span class="org-keyword">cardinality</span> 0
+    }
+    <span class="org-keyword">filter</span> <span class="org-keyword">property</span> isReentrant
+  }
+
+  <span class="org-keyword">modify</span> <span class="org-keyword">class</span> uml.Activity {
+    <span class="org-keyword">modify</span> <span class="org-keyword">property</span> isReadOnly {
+      <span class="org-keyword">type</span> EBoolean
+      <span class="org-keyword">cardinality</span> 0
+    }
+  }
+  <span class="org-comment-delimiter">// </span><span class="org-comment">a comment</span>
+  <span class="org-keyword">filter</span> <span class="org-keyword">class</span> uml.DataType
+}
+</pre>
+</div>
+
+<p>
+The following diagrams outline the MEL grammar; the <a href="https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/mel/org.atlanmod.emfviews.mel/src/org/atlanmod/emfviews/mel/Mel.xtext">full Xtext grammar</a> can be
+found in the source code.
+</p>
+
+
+<div class="figure">
+<p><img src="images/mel-grammar1.svg" class="no-shadow"/>
+</p>
+<p><span class="figure-number">Figure 15: </span>Overview diagram of MEL grammar</p>
+</div>
+
+
+<div class="figure">
+<p><img src="images/mel-grammar2.svg" class="no-shadow"/>
+</p>
+<p><span class="figure-number">Figure 16: </span>MEL grammar fragment diagram for clauses in the body of <code>modify class</code></p>
+</div>
 
 
 <h4 id="java-api"><a href="#java-api">Java API</a></h4>
