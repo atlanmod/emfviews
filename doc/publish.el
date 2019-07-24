@@ -263,7 +263,25 @@ Return output file name."
 (define-derived-mode vpdl-mode prog-mode "vpdl"
   "VPDL mode"
   (setq font-lock-defaults
-        `(,vpdl-keywords nil nilzp
+        `(,vpdl-keywords nil nil
+                         ((?/ . ". 124")
+                          (?* . ". 23b")
+                          (?\n . ">")
+                          (?\" . "\"")
+                          (?\' . "\"")))))
+
+;; MEL
+(defvar mel-keywords
+  (seq-map (lambda (key)
+             (rx-to-string `(and bow ,key eow) 'no-group))
+           '("import" "from" "define" "extending" "add" "class" "modify"
+             "cardinality" "specializing" "supertyping" "name" "type"
+             "association" "property" "filter" "constraint")))
+
+(define-derived-mode mel-mode prog-mode "mel"
+  "VPDL mode"
+  (setq font-lock-defaults
+        `(,mel-keywords nil nil
                          ((?/ . ". 124")
                           (?* . ". 23b")
                           (?\n . ">")

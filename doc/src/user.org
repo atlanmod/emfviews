@@ -19,7 +19,7 @@ navigate or query the view more naturally.
 
 Views can be created interactively via ~eview~ and ~eviewpoint~ definition
 files, or can be created programmatically.  Moreover, EMF Views currently comes
-with two DSLs that ease the definition of views: [[*VPDL][VPDL]] and MEL.
+with two DSLs that ease the definition of views: [[*VPDL][VPDL]] and [[*MEL][MEL]].
 
 * Tutorials
 These tutorials will take you through the main features of EMF Views.
@@ -1102,6 +1102,233 @@ found in the source code.
 
 The tutorial [[*Creating a view with VPDL][Creating a view with VPDL]] takes you through creating a VPDL file
 and using it in Eclipse.
+
+*** MEL
+While [[*VPDL][VPDL]] allows you to combine metamodels in the same view, it only allows you
+to filter classes and features from these metamodels.  On the other hand,
+viewpoint [[*Weaving models][weaving models]] allow you to add new classes and properties, and modify
+existing ones, but are harder to specify manually.
+
+MEL is the /Metamodel Extension Language/, a domain-specific language for
+creating viewpoints that extends multiple existing metamodels.
+
+Here is an example of a simple MEL file:
+
+#+BEGIN_SRC mel
+import uml from 'http://www.eclipse.org/uml2/5.0.0/UML'
+
+define single_inheritance_uml extending uml {
+  modify class uml.Class {
+    modify association superClass {
+      cardinality 0..1
+    }
+  }
+}
+#+END_SRC
+
+This MEL file defines a new viewpoint, ~single_inheritance_uml~ that changes
+exactly one thing from the original UML: the association ~Class.superClass~ now
+points to at most one ~Class~, instead of many.
+
+The general format of a MEL file is as follows:
+
+#+BEGIN_SRC mel
+import /* metamodel imports */
+
+define /* extension name */ extending /* input metamodels */ {
+  /* extensions */
+}
+#+END_SRC
+
+In the ~import~ clause, the metamodels are imported by their namespace URI (a
+string) and given an alias:
+
+#+BEGIN_verbatim
+*import* /alias/ *from* /namespace-uri/
+#+END_verbatim
+
+The alias is used when defining the extension: after the ~extending~ keyword,
+and for giving the full qualified name to classes.
+
+The extensions supported by MEL are:
+
+- ~add class~ :: Adds a new virtual class to the viewpoint.
+
+     The new class can extend or generalize any number of classes via the
+     optional keywords *specializing* and *supertyping*.  Note that specialized
+     or generalized classes may also be virtual classes defined in the current
+     extension.
+
+     #+BEGIN_VERBATIM
+     *add class* /name/ *specializing* /classes.../ *supertyping* /classes.../
+     #+END_VERBATIM
+
+- ~modify class~ :: Open a block to modify the properties or associations of a
+     given class (which may be one created by ~add class~).
+
+     #+BEGIN_VERBATIM
+     *modify class* /name/ { /class-modifications/ }
+     #+END_VERBATIM
+
+     The class modifications are:
+
+     - ~add property~ :: Adds a property to that class.
+
+          #+BEGIN_VERBATIM
+          *add property* /name/ : /type/ /cardinality/
+          #+END_VERBATIM
+
+          The name and type are mandatory.  The type should be one the basic
+          Ecore type (EString, EInt, etc.).
+
+          The cardinality is optional and defaults to 1 (meaning the property
+          always has a value).
+
+     - ~add association~ <<add association>> :: Adds an association to that class.
+
+          #+BEGIN_VERBATIM
+          *add association* /name/ : /type/ /cardinality/
+          #+END_VERBATIM
+
+          The name and type are mandatory.  The type should be the name of a
+          class (which may be one created by ~add class~).
+
+          The cardinality is optional and its syntax is:
+
+          #+BEGIN_VERBATIM
+          (0|1|*)..(0|1|*)
+          #+END_VERBATIM
+
+          You can create a /composition/ relationship instead with the syntax:
+
+          #+BEGIN_VERBATIM
+          *add composition* /name/ : /type/ /cardinality/
+          #+END_VERBATIM
+
+     - ~modify property~ :: Modify an existing property of that class.
+
+          #+BEGIN_VERBATIM
+          *modify property* /name/ { /fields/ }
+          #+END_VERBATIM
+
+          The name is mandatory.  The allowed fields are:
+
+          - ~name~ :: the property name
+          - ~type~ :: the property type (any Ecore data type)
+          - ~cardinality~ :: the property cardinality (~0~ or ~1~)
+
+          Note that you cannot modify the property of a class created by ~add
+          property~.  You should set the correct fields in the ~add property~
+          clause instead.
+
+     - ~modify association~ :: Modify an existing association of that class.
+
+          #+BEGIN_VERBATIM
+          *modify association* /name/ { /fields/ }
+          #+END_VERBATIM
+
+          The name is mandatory.  The allowed fields are:
+
+          - ~name~ :: the reference name
+          - ~type~ :: the reference type (any class, including ones created by
+               ~add class~)
+          - ~cardinality~ :: the reference cardinality (see [[add association][~add association~]])
+          - ~relation-type~ :: whether the property is an ~association~ or a ~composition~
+
+          Note that you cannot modify the reference of a class created by ~add
+          association~ or ~add composition~.  You should set the correct fields
+          in the ~add association~ (or ~add composition~) clause instead.
+
+     - ~filter property~ :: Remove a property from that class.
+
+          The target property will not appear in the viewpoint created by this
+          extension.
+
+          #+BEGIN_VERBATIM
+          *filter property* /name/
+          #+END_VERBATIM
+
+          The name is mandatory.
+
+          Note that you cannot filter a property of a class created by ~add
+          property~.  You should just remove the ~add property~ clause instead.
+
+- ~filter class~ :: Hide a class from the viewpoint.
+
+     The target class will not appear in the viewpoint created by this
+     extension.
+
+     #+BEGIN_VERBATIM
+     *filter class* /name/
+     #+END_VERBATIM
+
+     The name is mandatory, and cannot be the name of class created by ~add
+     class~.
+
+Here is an example of a (nonsensical) MEL program showing most of the
+constructs above:
+
+#+BEGIN_SRC mel
+import uml from 'http://www.eclipse.org/uml2/5.0.0/UML'
+import bpmn from 'http://www.omg.org/spec/BPMN/20100524/MODEL-XMI'
+
+define extension1 extending mm {
+  add class X
+  add class Y specializing uml.Class, uml.Abstraction
+  add class Z supertyping uml.Activity, uml.Action, X
+  add class B specializing Y supertyping Z
+
+  modify class X {
+    add property foo : EString 0
+    add composition ref : X 1..1
+    add association ref : X 1..1
+  }
+
+  modify class uml.Class {
+    add property opt : EString 0
+    add property nonOpt : EString 1
+    add composition refC : Y 0..*
+    add association ref : uml.Action 1..*
+  }
+
+  modify class bpmn.Activity {
+    modify association default {
+      name defaultRenamed
+      type X
+      cardinality 0..*
+      relation-type association
+    }
+  }
+
+  modify class uml.Behavior {
+    modify property isReentrant {
+      type EString
+      cardinality 0
+    }
+    filter property isReentrant
+  }
+
+  modify class uml.Activity {
+    modify property isReadOnly {
+      type EBoolean
+      cardinality 0
+    }
+  }
+  // a comment
+  filter class uml.DataType
+}
+#+END_SRC
+
+The following diagrams outline the MEL grammar; the [[https://raw.githubusercontent.com/atlanmod/emfviews/master/dsls/mel/org.atlanmod.emfviews.mel/src/org/atlanmod/emfviews/mel/Mel.xtext][full Xtext grammar]] can be
+found in the source code.
+
+#+CAPTION: Overview diagram of MEL grammar
+#+ATTR_HTML: :class no-shadow
+[[file:images/mel-grammar1.svg]]
+
+#+CAPTION: MEL grammar fragment diagram for clauses in the body of ~modify class~
+#+ATTR_HTML: :class no-shadow
+[[file:images/mel-grammar2.svg]]
 
 *** Java API
 You can construct ~View~ and ~Viewpoint~ classes directly by invoking their
