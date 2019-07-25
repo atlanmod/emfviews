@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
+import org.atlanmod.emfviews.virtuallinks.Filter;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
@@ -107,7 +108,9 @@ public class View implements Virtualizer {
 
       for (Resource r : getContributingModels()) {
         for (EObject o : r.getContents()) {
-          contents.add(getVirtual(o));
+          VirtualEObject v = getVirtual(o);
+          if (!v.isHidden)
+            contents.add(v);
         }
       }
 
@@ -202,6 +205,16 @@ public class View implements Virtualizer {
         list.add(getVirtual(target));
       } else {
         vSource.eSet(feature, getVirtual(target));
+      }
+    }
+
+    // Hide any filtered element
+    for (Filter filter : weavingModel.getFilters()) {
+      ConcreteElement target = filter.getTarget();
+      EObject targetObj = modelResources.get(target.getModel().getURI()).getEObject(target.getPath());
+      if (targetObj != null) {
+        VirtualEObject v = getVirtual(targetObj);
+        v.isHidden = true;
       }
     }
   }

@@ -577,6 +577,54 @@ public class TestEMFViews {
   }
 
   @Test
+  public void filterObject() {
+    // We can filter objects from models
+
+    // Metamodel and model
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' :nsPrefix 'P0' "
+        + ":eClassifiers [(EClass :name 'A'"
+        + "                :eStructuralFeatures [(EReference :name 'refToB'"
+        + "                                       :eType @1)])"
+        + "               #1(EClass :name 'B')])",
+        EcoreFactory.eINSTANCE)[0];
+
+    EObject[] model = Sexp2EMF.build("[#1(B) (A :refToB @1)]", P.getEFactoryInstance());
+
+    // Sanity checks
+    assertEquals("B", model[0].eClass().getName());
+    assertEquals("A", model[1].eClass().getName());
+    assertEquals(model[0], eGet(model[1], "refToB"));
+    assertTrue(model[1].eIsSet(model[1].eClass().getEStructuralFeature("refToB")));
+
+    // Viewpoint
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P", P);
+    Viewpoint viewpoint = new Viewpoint(m);
+
+    // Add the model to a resource, so we can use its fragment URI to filter it
+    Resource r = new ResourceImpl();
+    r.getContents().addAll(Arrays.asList(model));
+
+    String Buri = r.getURIFragment(model[0]);
+
+    WeavingModel wm = (WeavingModel) Sexp2EMF.build(String.format(
+      "(WeavingModel :name 'WM' "
+      + ":contributingModels [(ContributingModel :URI '00'"
+      + "                      :concreteElements [#1(ConcreteElement :path '%s')])]"
+      + ":virtualLinks [(Filter :name 'P.B' :target @1)])",
+      Buri), VirtualLinksFactory.eINSTANCE)[0];
+
+    // View that filters B
+    View view = new View(viewpoint, Arrays.asList(r), wm);
+
+    // B is now filtered
+    assertEquals(1, view.getVirtualContents().size());
+    EObject A = view.getVirtualContents().get(0);
+    assertNull(eGet(A, "refToB"));
+    assertFalse(A.eIsSet(A.eClass().getEStructuralFeature("refToB")));
+  }
+
+  @Test
   public void relativePaths() throws IOException {
     // An eviewpoint file should accept relative paths
 

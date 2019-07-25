@@ -18,6 +18,7 @@ package org.atlanmod.emfviews.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -568,6 +569,42 @@ public class TestVirtualObjects {
     assertEquals(2, Vo.eGet(0, false, false));
   }
 
+  @Test
+  public void filterObjectInSingleValuedReference() {
+    // Filtering an object that is the target of a single-valued reference
+    // should unset the feature
+
+    // Metamodel
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' " +
+      ":eClassifiers [(EClass :name 'A'" +
+      "                       :eStructuralFeatures [(EReference :name 'toB' :eType @B)])" +
+      "               #B(EClass :name 'B')" +
+      "])", EcoreFactory.eINSTANCE)[0];
+
+    EClass A = (EClass) P.getEClassifier("A");
+    EClass B = (EClass) P.getEClassifier("B");
+    EStructuralFeature toB = A.getEStructuralFeature("toB");
+
+    // Model
+    EObject a = EcoreUtil.create(A);
+    EObject b = EcoreUtil.create(B);
+    a.eSet(toB, b);
+
+    // View
+    VirtualEObject va = view.getVirtual(a);
+    VirtualEObject vb = view.getVirtual(b);
+    EStructuralFeature vtoB = viewpoint.getVirtual(A).getEStructuralFeature("toB");
+
+    // The feature is set and points to b
+    assertTrue(va.eIsSet(vtoB));
+    assertEquals(vb, va.eGet(vtoB));
+
+    // When b is hidden, the feature is unset and points to null
+    vb.isHidden = true;
+
+    assertFalse(va.eIsSet(vtoB));
+    assertNull(va.eGet(vtoB));
+  }
   @Test
   public void addSuperclass() {
     // Create a virtual class that has a virtual class as subclass

@@ -45,6 +45,7 @@ import org.atlanmod.emfviews.util.LazyEContentsList;
 public class VirtualEObject extends DynamicEObjectImpl {
 
   private EObject concreteEObject;
+  public boolean isHidden = false;
 
   // Using a map here as using feature ID as keys for virtual values is
   // unreliable when filters come into play.
@@ -122,7 +123,8 @@ public class VirtualEObject extends DynamicEObjectImpl {
         EList<EObject> list = (EList<EObject>) value;
         return new VirtualEList(list, virtualizer);
       } else if (value instanceof EObject) {
-        return virtualizer.getVirtual((EObject) value);
+        VirtualEObject v = virtualizer.getVirtual((EObject) value);
+        return v.isHidden ? null : v;
       } else {
         return value;
       }
@@ -236,8 +238,16 @@ public class VirtualEObject extends DynamicEObjectImpl {
     }
 
     EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(feature.getName());
-    // If it's a concrete feature, delegate to the concrete object
+    // If it's a concrete feature, delegate to the concrete object...
     if (concreteFeature != null) {
+      // ...but if it's a single-valued reference and its object is hidden,
+      // then the feature is not set
+      if (!concreteFeature.isMany() && concreteFeature instanceof EReference) {
+        EObject val = (EObject) concreteEObject.eGet(concreteFeature);
+        VirtualEObject vVal = virtualizer.getVirtual(val);
+        if (vVal != null && vVal.isHidden)
+          return false;
+      }
       return concreteEObject.eIsSet(concreteFeature);
     } else {
       // If not, then it's a virtual feature.
