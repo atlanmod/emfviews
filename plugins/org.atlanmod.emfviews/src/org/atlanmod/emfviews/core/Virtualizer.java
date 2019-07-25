@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017-2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -16,6 +16,7 @@
 
 package org.atlanmod.emfviews.core;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import org.atlanmod.emfviews.elements.VirtualEObject;
@@ -25,4 +26,8 @@ import org.atlanmod.emfviews.elements.VirtualEObject;
  */
 public interface Virtualizer {
   VirtualEObject getVirtual(EObject o);
+  EList<EObject> getVirtual(EList<EObject> list);
+
+  /** Tell the virtualizer to correctly handle filtered objects */
+  void activateObjectFiltering();
 }

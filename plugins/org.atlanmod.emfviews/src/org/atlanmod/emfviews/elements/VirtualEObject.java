@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017-2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -45,7 +45,19 @@ import org.atlanmod.emfviews.util.LazyEContentsList;
 public class VirtualEObject extends DynamicEObjectImpl {
 
   private EObject concreteEObject;
-  public boolean isHidden = false;
+
+  private boolean hidden = false;
+
+  public void setHidden(boolean hidden) {
+    this.hidden = hidden;
+    if (hidden) {
+      virtualizer.activateObjectFiltering();
+    }
+  }
+
+  public boolean isHidden() {
+    return hidden;
+  }
 
   // Using a map here as using feature ID as keys for virtual values is
   // unreliable when filters come into play.
@@ -121,10 +133,10 @@ public class VirtualEObject extends DynamicEObjectImpl {
       if (feature.isMany()) {
         @SuppressWarnings("unchecked")
         EList<EObject> list = (EList<EObject>) value;
-        return new VirtualEList(list, virtualizer);
+        return virtualizer.getVirtual(list);
       } else if (value instanceof EObject) {
         VirtualEObject v = virtualizer.getVirtual((EObject) value);
-        return v.isHidden ? null : v;
+        return v.isHidden() ? null : v;
       } else {
         return value;
       }
@@ -245,7 +257,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
       if (!concreteFeature.isMany() && concreteFeature instanceof EReference) {
         EObject val = (EObject) concreteEObject.eGet(concreteFeature);
         VirtualEObject vVal = virtualizer.getVirtual(val);
-        if (vVal != null && vVal.isHidden)
+        if (vVal != null && vVal.isHidden())
           return false;
       }
       return concreteEObject.eIsSet(concreteFeature);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017-2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -600,11 +600,54 @@ public class TestVirtualObjects {
     assertEquals(vb, va.eGet(vtoB));
 
     // When b is hidden, the feature is unset and points to null
-    vb.isHidden = true;
+    vb.setHidden(true);
 
     assertFalse(va.eIsSet(vtoB));
     assertNull(va.eGet(vtoB));
   }
+
+  @Test
+  public void filterObjectInManyValuedReference() {
+    // A filtered object that is an element of a many-valued reference
+    // should not appear
+
+    // Metamodel
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' " +
+      ":eClassifiers [(EClass :name 'A'" +
+      "                       :eStructuralFeatures [(EReference :name 'manyB' :eType @B :upperBound -1)])" +
+      "               #B(EClass :name 'B')" +
+      "])", EcoreFactory.eINSTANCE)[0];
+
+    EClass A = (EClass) P.getEClassifier("A");
+    EClass B = (EClass) P.getEClassifier("B");
+
+    // Model
+    EObject a = EcoreUtil.create(A);
+    EObject b1 = EcoreUtil.create(B);
+    EObject b2 = EcoreUtil.create(B);
+    EObject b3 = EcoreUtil.create(B);
+    eList(a, "manyB").addAll(Arrays.asList(b1, b2, b3));
+
+    // View
+    VirtualEObject va = view.getVirtual(a);
+    VirtualEObject vb1 = view.getVirtual(b1);
+    VirtualEObject vb2 = view.getVirtual(b2);
+    VirtualEObject vb3 = view.getVirtual(b3);
+    EStructuralFeature vmanyB = viewpoint.getVirtual(A).getEStructuralFeature("manyB");
+
+    // The feature is set and points to vb1, vb2, vb3
+    assertTrue(va.eIsSet(vmanyB));
+    assertEquals(3, eList(va, "manyB").size());
+    assertEquals(Arrays.asList(vb1, vb2, vb3), eList(va, "manyB"));
+
+    // When b2 is hidden, the feature is still set but the list doesn't contain vb2
+    vb2.setHidden(true);
+
+    assertTrue(va.eIsSet(vmanyB));
+    assertEquals(2, eList(va, "manyB").size());
+    assertEquals(Arrays.asList(vb1, vb3), eList(va, "manyB"));
+  }
+
   @Test
   public void addSuperclass() {
     // Create a virtual class that has a virtual class as subclass

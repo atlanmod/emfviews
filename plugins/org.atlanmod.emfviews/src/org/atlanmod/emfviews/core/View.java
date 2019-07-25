@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
+ * Copyright (c) 2017-2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import org.atlanmod.emfviews.elements.FilteredVirtualEList;
+import org.atlanmod.emfviews.elements.VirtualEList;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ConcreteElement;
@@ -109,7 +111,7 @@ public class View implements Virtualizer {
       for (Resource r : getContributingModels()) {
         for (EObject o : r.getContents()) {
           VirtualEObject v = getVirtual(o);
-          if (!v.isHidden)
+          if (!v.isHidden())
             contents.add(v);
         }
       }
@@ -214,7 +216,7 @@ public class View implements Virtualizer {
       EObject targetObj = modelResources.get(target.getModel().getURI()).getEObject(target.getPath());
       if (targetObj != null) {
         VirtualEObject v = getVirtual(targetObj);
-        v.isHidden = true;
+        v.setHidden(true);
       }
     }
   }
@@ -225,6 +227,8 @@ public class View implements Virtualizer {
   //
   // Similar reasoning to the implementation of EcoreVirtualizer in Viewpoint,
   // but this time there is only one class to implement.
+
+  boolean filterObjects = false;
 
   @Override
   public VirtualEObject getVirtual(EObject obj) {
@@ -241,4 +245,16 @@ public class View implements Virtualizer {
     );
   }
 
+  @Override
+  public EList<EObject> getVirtual(EList<EObject> list) {
+    if (filterObjects)
+      return new FilteredVirtualEList(list, this);
+    else
+      return new VirtualEList(list, this);
+  }
+
+  @Override
+  public void activateObjectFiltering() {
+    filterObjects = true;
+  }
 }
