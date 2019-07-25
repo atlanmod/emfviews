@@ -1430,6 +1430,11 @@ excludes an element from the contributing models.
 
 It can only refer to ~ConcreteElements~.
 
+In views, the ~whitelist~ flag is always taken to be false.  That is, filtered
+elements are always filtered /out/.  In addition, as filtering individual view
+elements comes with a performance cost, it is preferable to filter whole
+features or classes in the viewpoint instead.
+
 *** Virtual association
 A ~VirtualAssociation~ is an association that exists only in the view.
 
