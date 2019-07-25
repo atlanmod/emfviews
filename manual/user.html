@@ -2124,6 +2124,13 @@ excludes an element from the contributing models.
 It can only refer to <code>ConcreteElements</code>.
 </p>
 
+<p>
+In views, the <code>whitelist</code> flag is always taken to be false.  That is, filtered
+elements are always filtered <i>out</i>.  In addition, as filtering individual view
+elements comes with a performance cost, it is preferable to filter whole
+features or classes in the viewpoint instead.
+</p>
+
 
 <h4 id="virtual-association"><a href="#virtual-association">Virtual association</a></h4>
 <p>
