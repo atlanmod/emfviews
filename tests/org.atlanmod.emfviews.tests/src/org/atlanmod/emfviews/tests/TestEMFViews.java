@@ -215,7 +215,9 @@ public class TestEMFViews {
     assertEquals(Arrays.asList(B1, B2), eGet(A, "manyB"));
     assertEquals(Arrays.asList(vB1, vB2), eGet(vA, "manyB"));
 
-    ((EList<EObject>) eGet(A, "manyB")).remove(1);
+    @SuppressWarnings("unchecked")
+    EList<EObject> l = (EList<EObject>) eGet(A, "manyB");
+    l.remove(1);
 
     assertEquals(Arrays.asList(B1), eGet(A, "manyB"));
     assertEquals(Arrays.asList(vB1), eGet(vA, "manyB"));

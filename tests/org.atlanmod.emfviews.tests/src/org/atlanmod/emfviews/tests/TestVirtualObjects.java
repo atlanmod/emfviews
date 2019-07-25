@@ -318,7 +318,7 @@ public class TestVirtualObjects {
     // with a NPE in eGet if there is no EPackage.
     EPackage dumbPackage = EcoreFactory.eINSTANCE.createEPackage();
     dumbPackage.getEClassifiers().add(c);
-    VirtualEObject Vo = (VirtualEObject) view.getVirtual(EcoreUtil.create(c));
+    VirtualEObject Vo = view.getVirtual(EcoreUtil.create(c));
 
     // Can access set and get the feature in there
     Vo.eSet(0, 1);
@@ -451,7 +451,7 @@ public class TestVirtualObjects {
 
     // A virtual model object with the virtual class as metaclass can use the feature
     EObject o = EcoreUtil.create(A);
-    VirtualEObject VO = (VirtualEObject) view.getVirtual(o);
+    VirtualEObject VO = view.getVirtual(o);
 
     // We can set a value
     VO.eSet(Vb, 2);
@@ -482,9 +482,9 @@ public class TestVirtualObjects {
     EObject b1 = EcoreUtil.create(B);
     EObject b2 = EcoreUtil.create(B);
 
-    VirtualEObject Va = (VirtualEObject) view.getVirtual(a);
-    VirtualEObject Vb1 = (VirtualEObject) view.getVirtual(b1);
-    VirtualEObject Vb2 = (VirtualEObject) view.getVirtual(b2);
+    VirtualEObject Va = view.getVirtual(a);
+    VirtualEObject Vb1 = view.getVirtual(b1);
+    VirtualEObject Vb2 = view.getVirtual(b2);
 
     // Populate the feature with two Bs
     EList<EObject> listOfB = eList(Va, "AtoB");
@@ -519,7 +519,7 @@ public class TestVirtualObjects {
     listOfB.add(b2);
 
     // Ensure the b are virtualized when accessing the feature virtually
-    VirtualEObject Va = (VirtualEObject) view.getVirtual(a);
+    VirtualEObject Va = view.getVirtual(a);
     listOfB = eList(Va, "AtoB");
 
     assertEquals(view.getVirtual(b1), listOfB.get(0));
@@ -554,7 +554,7 @@ public class TestVirtualObjects {
     EObject o = EcoreUtil.create(A);
     o.eSet(a, 1);
     o.eSet(a2, 2);
-    VirtualEObject Vo = (VirtualEObject) view.getVirtual(o);
+    VirtualEObject Vo = view.getVirtual(o);
 
     try {
       assertEquals(1, eGet(Vo, "a"));
@@ -785,7 +785,7 @@ public class TestVirtualObjects {
   @Test
   public void virtualDatatype() {
     // We can get a virtual package out of a virtualized datatype
-    VirtualEDataType dt = viewpoint.getVirtual(EcorePackage.Literals.ECHARACTER_OBJECT);
+    VirtualEDataType<?> dt = viewpoint.getVirtual(EcorePackage.Literals.ECHARACTER_OBJECT);
     assertTrue(dt.getEPackage() instanceof VirtualEPackage);
   }
 

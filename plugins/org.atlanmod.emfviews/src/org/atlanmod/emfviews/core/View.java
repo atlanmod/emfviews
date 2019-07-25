@@ -64,8 +64,8 @@ public class View implements Virtualizer {
                              // modeling tools (e.g. OCL).
 
   private EList<EObject> virtualContents; // cache the results of getVirtualContents
-  private Map<EObject, EObject> concreteToVirtual; // used by the Virtualizer implementation to cache
-                                                   // virtual elements
+  private Map<EObject, VirtualEObject> concreteToVirtual; // used by the Virtualizer implementation to cache
+                                                          // virtual elements
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Public API
@@ -214,7 +214,7 @@ public class View implements Virtualizer {
   // but this time there is only one class to implement.
 
   @Override
-  public EObject getVirtual(EObject obj) {
+  public VirtualEObject getVirtual(EObject obj) {
     if (obj == null) {
       return null;
     }
