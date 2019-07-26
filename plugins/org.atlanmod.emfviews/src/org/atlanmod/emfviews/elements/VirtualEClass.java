@@ -303,8 +303,7 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
   @Override
   public EList<EGenericType> getEAllGenericSuperTypes() {
-    // @Correctness: get them from the supertypes?
-    return getEGenericSuperTypes();
+    return concrete().getEAllGenericSuperTypes();
   }
 
   @Override
