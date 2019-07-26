@@ -533,8 +533,7 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
   @Override
   public int getClassifierID() {
-    // @Correctness: not sure what this should return in the presence of filters
-    throw new UnsupportedOperationException();
+    return concrete().getClassifierID();
   }
 
   @Override

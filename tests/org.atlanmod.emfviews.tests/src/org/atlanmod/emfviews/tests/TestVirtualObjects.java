@@ -157,8 +157,7 @@ public class TestVirtualObjects {
     assertEquals(VA.getInstanceClass(), A.getInstanceClass());
     assertEquals(VA.getInstanceTypeName(), A.getInstanceTypeName());
     assertEquals(VA.getDefaultValue(), A.getDefaultValue());
-    // @Correctness: not sure what this should return in the presence of filters
-    //assertEquals(VA.getClassifierID(), A.getClassifierID());
+    assertEquals(VA.getClassifierID(), A.getClassifierID());
     assertEquals(VA.isAbstract(), A.isAbstract());
     assertEquals(VA.isInterface(), A.isInterface());
 
@@ -250,8 +249,7 @@ public class TestVirtualObjects {
     assertEquals(a.getDefaultValue(), va.getDefaultValue());
     assertEquals(a.isUnsettable(), va.isUnsettable());
     assertEquals(a.isDerived(), va.isDerived());
-    // @Correctness: not sure what this should return in the presence of filters
-    //assertEquals(a.getFeatureID(), va.getFeatureID());
+    assertEquals(a.getFeatureID(), va.getFeatureID());
     assertEquals(a.getContainerClass(), va.getContainerClass());
     assertEquals(viewpoint.getVirtual(a.getEContainingClass()), va.getEContainingClass());
   }

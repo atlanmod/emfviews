@@ -192,9 +192,7 @@ public abstract class VirtualEStructuralFeature<T extends EStructuralFeature> ex
 
   @Override
   public int getFeatureID() {
-    // @Correctness: Should we return the featureID of the underlying class,
-    // or a feature ID that makes sense for this virtual feature?
-    return ((VirtualEClass) eContainer()).getAllLocalFeatures().indexOf(this);
+    return concrete().getFeatureID();
   }
 
   @Override
