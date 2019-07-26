@@ -22,3 +22,4 @@ Export-Package: org.atlanmod.emfviews.vpdl.ui.quickfix,
  org.atlanmod.emfviews.vpdl.ui.contentassist,
  org.atlanmod.emfviews.vpdl.ui.internal
 Bundle-Activator: org.atlanmod.emfviews.vpdl.ui.internal.VpdlActivator
+Automatic-Module-Name: org.atlanmod.emfviews.vpdl.ui

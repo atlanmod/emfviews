@@ -22,3 +22,4 @@ Export-Package: org.atlanmod.emfviews.mel.ui.internal,
  org.atlanmod.emfviews.mel.ui.contentassist
 Bundle-Activator: org.atlanmod.emfviews.mel.ui.internal.MelActivator
 Import-Package: org.apache.log4j;version="1.2.0"
+Automatic-Module-Name: org.atlanmod.emfviews.mel.ui

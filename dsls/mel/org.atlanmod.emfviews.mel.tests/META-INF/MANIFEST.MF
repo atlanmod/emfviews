@@ -17,3 +17,4 @@ Require-Bundle: org.atlanmod.emfviews.mel;bundle-version="0.3.0",
  javax.annotation;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.atlanmod.emfviews.mel.tests;x-internal=true
+Automatic-Module-Name: org.atlanmod.emfviews.mel.tests

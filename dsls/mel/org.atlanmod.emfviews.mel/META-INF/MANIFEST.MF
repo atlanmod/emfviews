@@ -28,3 +28,4 @@ Export-Package: org.atlanmod.emfviews.mel.serializer,
  org.atlanmod.emfviews.mel.generator,
  org.atlanmod.emfviews.mel.services
 Import-Package: org.apache.log4j
+Automatic-Module-Name: org.atlanmod.emfviews.mel

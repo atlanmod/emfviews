@@ -29,3 +29,4 @@ Export-Package: org.atlanmod.emfviews.vpdl.services,
  org.atlanmod.emfviews.vpdl.serializer
 Bundle-Vendor: Atlanmod
 Import-Package: org.apache.log4j
+Automatic-Module-Name: org.atlanmod.emfviews.vpdl
