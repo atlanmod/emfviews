@@ -219,9 +219,10 @@ public class VirtualEObject extends DynamicEObjectImpl {
           if (opposite.isMany()) {
             ((EListWithInverse) e.eGet(opposite)).addWithoutInverse(VirtualEObject.this);
           } else {
-            // @Correctness: we don't do anything if the other end is a concrete object?
             if (e instanceof VirtualEObject) {
               ((VirtualEObject) e).eSetWithoutInverse(opposite, VirtualEObject.this);
+            } else {
+              virtualizer.getVirtual(e).eSetWithoutInverse(opposite, VirtualEObject.this);
             }
           }
         }
