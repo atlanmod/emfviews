@@ -79,7 +79,7 @@ pre, .verbatim, .VERBATIM {
 }
 dd > p:first-child { margin-top: 0; }
 .verbatim p:first-child, .VERBATIM p:first-child { margin-top: 0; }
-.verbatim p:last-child .VERBATIM p:last-child { margin-bottom: 0; }
+.verbatim p:last-child, .VERBATIM p:last-child { margin-bottom: 0; }
 .footpara { display: inline; }
 .footdef  { margin-bottom: 1em; }
 .figure { margin: 2rem; }
