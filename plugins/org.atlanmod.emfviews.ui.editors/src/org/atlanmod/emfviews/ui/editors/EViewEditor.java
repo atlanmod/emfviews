@@ -12,6 +12,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.viewers.ILazyTreeContentProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -25,8 +26,6 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import org.atlanmod.emfviews.core.EmfViewsFactory;
-
 public class EViewEditor extends EditorPart {
   private TreeViewer treeViewer;
 
@@ -37,8 +36,7 @@ public class EViewEditor extends EditorPart {
     IFile file = ((IFileEditorInput) getEditorInput()).getFile();
     URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
 
-    // @Refactor: maybe there's a way to use a global resource factory registry instead?
-    Resource v = new EmfViewsFactory().createResource(uri);
+    Resource v = (new ResourceSetImpl()).createResource(uri);
 
     try {
       v.load(null);
@@ -99,7 +97,7 @@ public class EViewEditor extends EditorPart {
           // Save the expanded state
           Object[] expandedElements = treeViewer.getExpandedElements();
 
-          Resource r = new EmfViewsFactory().createResource(uri);
+          Resource r = (new ResourceSetImpl()).createResource(uri);
           try {
             r.load(null);
           } catch (IOException ex) {
@@ -171,13 +169,11 @@ public class EViewEditor extends EditorPart {
 
   @Override
   public void doSave(IProgressMonitor monitor) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void doSaveAs() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 

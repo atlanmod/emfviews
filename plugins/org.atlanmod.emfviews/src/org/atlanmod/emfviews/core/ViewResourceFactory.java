@@ -1,6 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Armines
- * Copyright (c) 2013 INRIA
+ * Copyright (c) 2019 Armines
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -12,28 +11,17 @@
  * which is available at https://www.gnu.org/licenses/gpl-3.0.txt
  *
  * Contributors:
- *   fmdkdd - refactoring and extension
- *   Cauê Clasen - initial API an implementation
+ *   fmdkdd - initial API and implementation
  *******************************************************************************/
-
 package org.atlanmod.emfviews.core;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 
-public class EmfViewsFactory extends ResourceFactoryImpl {
-
-  // TODO: Split into two factories, one for eview and one for eviewpoint.
-
+public class ViewResourceFactory  extends ResourceFactoryImpl {
   @Override
   public Resource createResource(URI uri) {
-    if (uri.fileExtension().equals("eview")) {
-      return new ViewResource(uri);
-    } else if (uri.fileExtension().equals("eviewpoint")) {
-      return new ViewpointResource(uri);
-    } else {
-      return null;
-    }
+    return new ViewResource(uri);
   }
 }
