@@ -96,9 +96,9 @@ public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl im
 
   @Override
   public Resource eResource() {
-    // @Correctness: this should actually be set as part of the opposite reference
-    // of a VirtualEPackage.getContents().add, but in our case we know the virtualizer
-    // is the resource.
+    // This should actually be set as part of the opposite reference of a
+    // VirtualEPackage.getContents().add, but in our case we know the
+    // virtualizer is the resource.
     if (virtualizer instanceof Viewpoint) {
       return ((Viewpoint) virtualizer).getResource();
     }

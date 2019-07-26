@@ -107,9 +107,9 @@ public class VirtualEGenericType extends BaseVirtualElement<EGenericType> implem
 
   @Override
   public EClassifier getEClassifier() {
-    // We don't want to virtualize all classifiers here.  If we virtual raw
+    // We don't want to virtualize all classifiers here.  If we virtualize raw
     // data types like EString, OCL will get confused.
-    // @Correctness: but maybe we want to virtualize types that are part of the
+    // @Correctness: maybe we want to virtualize only types that are part of the
     // package?
     return concrete().getEClassifier();
   }

@@ -66,8 +66,6 @@ public class VirtualEDataType<T extends EDataType> extends VirtualEClassifier<T>
 
   @Override
   public ConversionDelegate getConversionDelegate() {
-    // @Correctness: what is a conversion delegate, and do we need to return the
-    // one from the concrete classifier?
     // Ecore validator needs this.
     return null;
   }

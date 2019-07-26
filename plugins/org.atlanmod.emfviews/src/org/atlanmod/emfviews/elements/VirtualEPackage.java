@@ -140,7 +140,6 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
 
   @Override
   public EAnnotation getEAnnotation(String source) {
-    // @Correctness: we don't virtualize annotations.  Should we?
     return concrete().getEAnnotation(source);
   }
 
@@ -230,7 +229,6 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
     throw new UnsupportedOperationException();
   }
 
-  // @Refactor: quite close to getAllFeatures in VirtualEClass
   protected List<EClassifier> getAllClassifiers() {
     List<EClassifier> elems = new ArrayList<>();
 

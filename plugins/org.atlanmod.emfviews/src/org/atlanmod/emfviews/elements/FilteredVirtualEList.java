@@ -33,6 +33,7 @@ public class FilteredVirtualEList extends AbstractList<EObject> implements EList
   //
   // This comes at the cost of requiring that a new FilteredVirtualEList be obtained by the
   // client whenever the set of hidden objects in this feature changes.
+  // Or, maybe we could leverage cross reference adapters somehow.
 
   private EList<EObject> concreteList;
   private Virtualizer virtualizer;

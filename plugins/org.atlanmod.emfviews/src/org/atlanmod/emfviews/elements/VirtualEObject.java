@@ -127,8 +127,6 @@ public class VirtualEObject extends DynamicEObjectImpl {
     // If it's a concrete feature, delegate to the concrete object
     if (concreteFeature != null) {
       // Make sure to virtualize whatever this returns
-      // @Refactor: this could be the job of the virtualizer, or at least it could expose
-      // a virtualizeList object.
       Object value = concreteEObject.eGet(concreteFeature);
       if (feature.isMany()) {
         @SuppressWarnings("unchecked")
@@ -195,8 +193,6 @@ public class VirtualEObject extends DynamicEObjectImpl {
 
   @Override
   public void dynamicSet(int dynamicFeatureID, Object value) {
-    // @Refactor: mostly the same flow as dynamicGet above
-
     // If it's a concrete feature, delegate to the concrete object
     EStructuralFeature feature = eClass().getEStructuralFeature(dynamicFeatureID);
 
@@ -220,9 +216,6 @@ public class VirtualEObject extends DynamicEObjectImpl {
         EReference opposite = ((EReference) feature).getEOpposite();
 
         if (opposite != null) {
-          // @Refactor: write a function that adds to a feature
-          // if it's many-valued, or set if it's single-valued.
-          // We do this dance many times.
           if (opposite.isMany()) {
             ((EListWithInverse) e.eGet(opposite)).addWithoutInverse(VirtualEObject.this);
           } else {

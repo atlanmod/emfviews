@@ -56,8 +56,6 @@ class MelGenerator extends AbstractGenerator {
   '''
 
   def String compileXMI(Resource r) {
-    // @Refactor: lifted from VpdlGenerator
-
     val factory = EmftvmFactory.eINSTANCE
     val rs = new ResourceSetImpl()
 

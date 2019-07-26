@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.viewers.ILazyTreeContentProvider;
-import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -128,14 +127,6 @@ public class EViewEditor extends EditorPart {
             } else if (o instanceof Resource) {
               treeViewer.setExpandedState(r, true);
             }
-          }
-        } else if (event.button == 1) {
-          // Print the object path on click
-          // @Refactor: remove
-          ITreeSelection selection = treeViewer.getStructuredSelection();
-          Object o = selection.getFirstElement();
-          if (o instanceof EObject) {
-            //System.out.println(getEObjectPath((EObject) o));
           }
         }
       }

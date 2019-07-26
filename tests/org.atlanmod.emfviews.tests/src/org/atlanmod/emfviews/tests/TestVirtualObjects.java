@@ -870,8 +870,6 @@ public class TestVirtualObjects {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Helpers for reducing the boilerplate of calling the reflective EMF API
 
-  // @Refactor: lifted from TestEMFViews
-
   Object eGet(EObject o, String featureName) {
     EStructuralFeature f = o.eClass().getEStructuralFeature(featureName);
     // Throw immediately rather than waiting for other objects to complain

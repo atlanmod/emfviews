@@ -29,8 +29,6 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
   private VirtualEObject owner;
 
   // Cached values
-  // @Optimize: Maybe lazily initializing all of that hampers performance
-  // more than it helps.  Need to crunch some numbers.
   private EList<EReference> containments;
   private int numContainments = -1;
   private Object[] containedValues;
@@ -62,8 +60,8 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
     }
 
     if (containedValues[index] == null) {
-      // @Optimize: what if eGet returns null?  We will call eGet again
-      // We should differentiate between null (unfetched) and null (fetched).
+      // What if eGet returns null?  We will call eGet again.
+      // We could differentiate between null (unfetched) and null (fetched).
       containedValues[index] = owner.eGet(containments().get(index));
     }
 
@@ -112,7 +110,6 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
 
   @Override
   public boolean contains(Object o) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -135,61 +132,51 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
 
   @Override
   public Object[] toArray() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public <T> T[] toArray(T[] a) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean add(EObject e) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean remove(Object o) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean containsAll(Collection<?> c) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean addAll(Collection<? extends EObject> c) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean addAll(int index, Collection<? extends EObject> c) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean removeAll(Collection<?> c) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean retainAll(Collection<?> c) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void clear() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -216,61 +203,51 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
 
   @Override
   public EObject set(int index, EObject element) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void add(int index, EObject element) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EObject remove(int index) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public int indexOf(Object o) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public int lastIndexOf(Object o) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public ListIterator<EObject> listIterator() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public ListIterator<EObject> listIterator(int index) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public List<EObject> subList(int fromIndex, int toIndex) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EObject basicGet(int index) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public List<EObject> basicList() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
@@ -281,103 +258,86 @@ public class LazyEContentsList implements EList<EObject>, InternalEList<EObject>
 
   @Override
   public ListIterator<EObject> basicListIterator() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public ListIterator<EObject> basicListIterator(int index) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public Object[] basicToArray() {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public <T> T[] basicToArray(T[] array) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public int basicIndexOf(Object object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public int basicLastIndexOf(Object object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean basicContains(Object object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean basicContainsAll(Collection<?> collection) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public NotificationChain basicRemove(Object object, NotificationChain notifications) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public NotificationChain basicAdd(EObject object, NotificationChain notifications) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void addUnique(EObject object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void addUnique(int index, EObject object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean addAllUnique(Collection<? extends EObject> collection) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public boolean addAllUnique(int index, Collection<? extends EObject> collection) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EObject setUnique(int index, EObject object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void move(int newPosition, EObject object) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 
   @Override
   public EObject move(int newPosition, int oldPosition) {
-    // TODO: Auto-generated method stub
     throw new UnsupportedOperationException();
   }
 

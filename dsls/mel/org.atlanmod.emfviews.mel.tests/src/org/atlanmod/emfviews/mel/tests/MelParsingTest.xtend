@@ -122,7 +122,7 @@ class MelParsingTest {
       }
     ''')
     Assert.assertNotNull(result)
-    // @Refactor: that's a good place to test better error messages
+    // That's a good place to test better error messages
     Assert.assertThat(result.eResource.errors, not(is(emptyList)))
   }
 

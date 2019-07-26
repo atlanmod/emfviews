@@ -66,8 +66,6 @@ import org.atlanmod.sexp2emf.Sexp2EMF;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestEMFViews {
 
-  // TODO: test failures
-
   @BeforeClass
   public static void setup() {
     EcorePackage.eINSTANCE.eClass();
@@ -92,10 +90,9 @@ public class TestEMFViews {
         it.next();
       }
 
-      // FIXME: after this point, ideally we should just compare the Viewpoint
-      // with a serialized "expected" result, or at the very least do an
-      // exhaustive comparison with the base models. For now, comparing by hand
-      // a few select features will do.
+      // After this point, ideally we should just compare the Viewpoint
+      // with a serialized "expected" result.  But this is too unwieldy
+      // for large models.
       EList<EObject> l = v.getContents().get(0).eContents();
 
       // Ensure we have the three packages we want
@@ -689,8 +686,6 @@ public class TestEMFViews {
   public void wildcardPath() throws IOException {
     // A '*' in a concrete element should include (or exclude) all
     // attributes.
-
-    // @Correctness: should '*' include inherited features as well?
 
     Viewpoint v = loadViewpoint("viewpoints/wildcard/wildcard.eviewpoint");
 
