@@ -405,9 +405,12 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
     @Override
     public EStructuralFeature[] crossReferences() {
-      // @Correctness: blatantly incorrect, but this quells down an exception for
-      // the Sample Ecore Editor
-      return new EStructuralFeature[] {};
+      List<EStructuralFeature> crossRefs = new ArrayList<>();
+      for (EReference ref : getEAllReferences()) {
+        if (!ref.isContainment())
+          crossRefs.add(ref);
+      }
+      return crossRefs.toArray(new EStructuralFeature[0]);
     }
 
     @Override
