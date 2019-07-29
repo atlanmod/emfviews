@@ -246,14 +246,6 @@ public class VirtualEObject extends DynamicEObjectImpl {
     EStructuralFeature concreteFeature = concreteEObject.eClass().getEStructuralFeature(feature.getName());
     // If it's a concrete feature, delegate to the concrete object...
     if (concreteFeature != null) {
-      // ...but if it's a single-valued reference and its object is hidden,
-      // and the feature is unsettable, then the feature is not set
-      if (!concreteFeature.isMany() && concreteFeature.isUnsettable() && concreteFeature instanceof EReference) {
-        EObject val = (EObject) concreteEObject.eGet(concreteFeature);
-        VirtualEObject vVal = virtualizer.getVirtual(val);
-        if (vVal != null && vVal.isHidden())
-          return false;
-      }
       return concreteEObject.eIsSet(concreteFeature);
     } else {
       // Virtual features are always set

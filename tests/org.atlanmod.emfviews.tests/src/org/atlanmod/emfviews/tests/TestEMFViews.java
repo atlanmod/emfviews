@@ -591,7 +591,6 @@ public class TestEMFViews {
     assertEquals("B", model[0].eClass().getName());
     assertEquals("A", model[1].eClass().getName());
     assertEquals(model[0], eGet(model[1], "refToB"));
-    assertTrue(model[1].eIsSet(model[1].eClass().getEStructuralFeature("refToB")));
 
     // Viewpoint
     Map<String, EPackage> m = new HashMap<>();
@@ -618,7 +617,6 @@ public class TestEMFViews {
     assertEquals(1, view.getVirtualContents().size());
     EObject A = view.getVirtualContents().get(0);
     assertNull(eGet(A, "refToB"));
-    assertFalse(A.eIsSet(A.eClass().getEStructuralFeature("refToB")));
   }
 
   @Test

@@ -594,14 +594,11 @@ public class TestVirtualObjects {
     VirtualEObject vb = view.getVirtual(b);
     EStructuralFeature vtoB = viewpoint.getVirtual(A).getEStructuralFeature("toB");
 
-    // The feature is set and points to b
-    assertTrue(va.eIsSet(vtoB));
+    // The points to b
     assertEquals(vb, va.eGet(vtoB));
 
-    // When b is hidden, the feature is unset and points to null
+    // When b is hidden, the feature points to null
     vb.setHidden(true);
-
-    assertFalse(va.eIsSet(vtoB));
     assertNull(va.eGet(vtoB));
   }
 
