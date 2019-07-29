@@ -462,8 +462,8 @@ public class Viewpoint implements EcoreVirtualizer {
           throw EX("Opposite of new association '%s' should be an EReference", a.getName());
         }
         EReference opp = (EReference) o;
-        getVirtual(ref).setVirtualOpposite(getVirtual(opp));
-        getVirtual(opp).setVirtualOpposite(getVirtual(ref));
+        getVirtual(ref).virtualOpposite = getVirtual(opp);
+        getVirtual(opp).virtualOpposite = getVirtual(ref);
       }
 
       ref.setContainment(a.isComposition());

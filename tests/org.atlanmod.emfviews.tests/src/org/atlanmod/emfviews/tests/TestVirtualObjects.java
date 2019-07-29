@@ -774,8 +774,8 @@ public class TestVirtualObjects {
     ((InternalEObject) r2).eInverseAdd((InternalEObject) B, EcorePackage.ESTRUCTURAL_FEATURE__ECONTAINING_CLASS,
                                         EStructuralFeature.class, null);
 
-    Vr.setVirtualOpposite(Vr2);
-    Vr2.setVirtualOpposite(Vr);
+    Vr.virtualOpposite = Vr2;
+    Vr2.virtualOpposite = Vr;
 
     // Case 1: many to many
     {

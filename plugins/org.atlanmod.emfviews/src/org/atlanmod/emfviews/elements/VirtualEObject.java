@@ -142,12 +142,12 @@ public class VirtualEObject extends DynamicEObjectImpl {
       // If it's a reference, make sure it's a list
       if (feature.isMany() && virtualValues().get(feature) == null) {
 
-        // @Correctness: do we need to distinguish concrete from virtual opposites?
-        EReference opposite = ((EReference) feature).getEOpposite();
+        VirtualEReference ref = (VirtualEReference) feature;
+        EReference opposite = ref.getEOpposite();
 
         // If the virtual feature has a virtual opposite, we need to return a
         // list that will keep the opposite in sync.
-        if (opposite != null) {
+        if (opposite != null && opposite == ref.virtualOpposite) {
           virtualValues().put(feature, new EListWithInverse(opposite));
         } else {
           // Otherwise, a regular list will do

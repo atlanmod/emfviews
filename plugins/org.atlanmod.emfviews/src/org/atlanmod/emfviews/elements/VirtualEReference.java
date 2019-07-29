@@ -28,7 +28,7 @@ import org.atlanmod.emfviews.core.EcoreVirtualizer;
 
 public class VirtualEReference extends VirtualEStructuralFeature<EReference> implements EReference {
 
-  private EReference virtualOpposite;
+  public EReference virtualOpposite;
 
   public VirtualEReference(EReference concreteReference, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EREFERENCE, concreteReference, virtualizer);
@@ -83,10 +83,6 @@ public class VirtualEReference extends VirtualEStructuralFeature<EReference> imp
   @Override
   public void setEOpposite(EReference value) {
     throw new UnsupportedOperationException();
-  }
-
-  public void setVirtualOpposite(EReference value) {
-    virtualOpposite = value;
   }
 
   @Override
