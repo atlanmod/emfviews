@@ -247,10 +247,8 @@ public class VirtualEObject extends DynamicEObjectImpl {
     // If it's a concrete feature, delegate to the concrete object...
     if (concreteFeature != null) {
       // ...but if it's a single-valued reference and its object is hidden,
-      // then the feature is not set
-      // @Correctness: probably we want to check if the feature is unsettable
-      // first; maybe orthogonal to multiplicity
-      if (!concreteFeature.isMany() && concreteFeature instanceof EReference) {
+      // and the feature is unsettable, then the feature is not set
+      if (!concreteFeature.isMany() && concreteFeature.isUnsettable() && concreteFeature instanceof EReference) {
         EObject val = (EObject) concreteEObject.eGet(concreteFeature);
         VirtualEObject vVal = virtualizer.getVirtual(val);
         if (vVal != null && vVal.isHidden())
