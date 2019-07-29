@@ -16,6 +16,9 @@
 
 package org.atlanmod.emfviews.elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -111,13 +114,18 @@ public class VirtualEReference extends VirtualEStructuralFeature<EReference> imp
 
   @Override
   public EList<EAttribute> getEKeys() {
-    // @Correctness: should we return the actual EAttribute from concreteFeature.getEKeys?
-    // If, so, should they be filtered?
+    List<EAttribute> keys = new ArrayList<>();
 
-    // We need this to not throw for the Sample Ecore Editor to work
+    for (EAttribute a : concrete().getEKeys()) {
+      VirtualEAttribute va = virtualizer.getVirtual(a);
+      if (va.isVisible()) {
+        keys.add(va);
+      }
+    }
+
     // See @UnmodifiableEList.
     return new EcoreEList.UnmodifiableEList<>(this,
-        EcorePackage.Literals.EREFERENCE__EKEYS, 0, new Object[] {});
+        EcorePackage.Literals.EREFERENCE__EKEYS, keys.size(), keys.toArray());
   }
 
 }
