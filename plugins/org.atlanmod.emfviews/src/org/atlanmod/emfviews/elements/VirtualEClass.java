@@ -404,8 +404,7 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
   @Override
   public EList<EOperation> getEAllOperations() {
-    // @Correctness: get them from the supertypes?
-    return getEOperations();
+    return concrete().getEAllOperations();
   }
 
   @Override
