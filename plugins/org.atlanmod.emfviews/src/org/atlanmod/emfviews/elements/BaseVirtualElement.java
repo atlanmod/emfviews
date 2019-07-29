@@ -44,13 +44,16 @@ import org.atlanmod.emfviews.core.Viewpoint;
  * concrete ones.  (Although there are exceptions, e.g. when going to the
  * metametalevel or when returning primitive types.)
  *
- * In addition, virtual elements can hide classes or features through filters,
- * or even have new, virtual-only features (see VirtualEPackage or VirtualEClass).
- */
+ *
+ * In addition, virtual elements can be filtered in or out, and even have new,
+ * virtual-only features (see VirtualEPackage or VirtualEClass).
+ * */
 public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl implements EObject {
 
   private T concreteObject;
   protected EcoreVirtualizer virtualizer;
+
+  public boolean filtered = false;
 
   /**
    * Construct a virtual element as a proxy to a concrete object whose metaclass
@@ -61,6 +64,14 @@ public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl im
     super(eClass);
     this.concreteObject = concrete;
     this.virtualizer = virtualizer;
+  }
+
+  /**
+   * Whether the element is visible in a view. Depends on its filtered attribute
+   * and the whitelisting mode of the virtualizer.
+   */
+  public boolean isVisible() {
+    return filtered == virtualizer.isWhitelist();
   }
 
   /**

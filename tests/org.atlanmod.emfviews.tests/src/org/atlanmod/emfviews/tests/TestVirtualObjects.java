@@ -29,7 +29,6 @@ import java.util.Optional;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -50,10 +49,12 @@ import org.atlanmod.emfviews.core.ViewResource;
 import org.atlanmod.emfviews.core.Viewpoint;
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
+import org.atlanmod.emfviews.elements.VirtualEClassifier;
 import org.atlanmod.emfviews.elements.VirtualEDataType;
 import org.atlanmod.emfviews.elements.VirtualEObject;
 import org.atlanmod.emfviews.elements.VirtualEPackage;
 import org.atlanmod.emfviews.elements.VirtualEReference;
+import org.atlanmod.emfviews.elements.VirtualEStructuralFeature;
 import org.atlanmod.sexp2emf.Sexp2EMF;
 
 //Fix the run order since Eclipse is incapable of doing that for the output.
@@ -334,7 +335,7 @@ public class TestVirtualObjects {
     assertTrue(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
 
-    VP.filterClassifier((EClassifier) getClassifier(VP, "A").get());
+    ((VirtualEClassifier<?>) getClassifier(VP, "A").get()).filtered = true;
 
     assertFalse(getClassifier(VP, "A").isPresent());
     assertTrue(getClassifier(VP, "B").isPresent());
@@ -377,7 +378,7 @@ public class TestVirtualObjects {
       assertEquals(2, eGet(Do, "b"));
 
       // But once we filter out a feature, dynamic object is lost
-      VA.filterFeature((EStructuralFeature) getFeature(VA, "a").get());
+      ((VirtualEStructuralFeature<?>) getFeature(VA, "a").get()).filtered = true;
 
       // We should get 2, but we get null, because the feature "b" now has index 0
       // in the eSettings object of dynamic object.
@@ -411,7 +412,7 @@ public class TestVirtualObjects {
     assertEquals(1, eGet(VO, "a"));
 
     // Filter the first feature
-    VA.filterFeature((EStructuralFeature) getFeature(VA, "a").get());
+    ((VirtualEStructuralFeature<?>) getFeature(VA, "a").get()).filtered = true;
 
     // We can still access the non-filtered feature 'b', through different means
     assertEquals(2, VO.eGet(Vb));
@@ -543,7 +544,7 @@ public class TestVirtualObjects {
     assertTrue(getFeature(VA, "a2").isPresent());
 
     // Filter the first one
-    VA.filterFeature((EStructuralFeature) getFeature(VA, "a").get());
+    ((VirtualEStructuralFeature<?>) getFeature(VA, "a").get()).filtered = true;
 
     // Now you can't see it
     assertEquals(Optional.empty(), getFeature(VA, "a"));
@@ -672,8 +673,7 @@ public class TestVirtualObjects {
     assertEquals(1, VS.getESuperTypes().size());
 
     // Filter the superclass it through its package
-    VirtualEPackage VP = viewpoint.getVirtual(P);
-    VP.filterClassifier(viewpoint.getVirtual(A));
+    viewpoint.getVirtual(A).filtered = true;
 
     assertEquals(0, VS.getESuperTypes().size());
   }

@@ -17,9 +17,7 @@
 package org.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -32,9 +30,9 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
-import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData.EPackageExtendedMetaData;
+import org.eclipse.emf.ecore.util.EcoreEList;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
 import org.atlanmod.emfviews.core.View;
@@ -46,7 +44,6 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
   private List<VirtualEClass> virtualClassifiers = new ArrayList<>();
   private List<VirtualEPackage> virtualPackages = new ArrayList<>();
   private VirtualEPackage virtualSuperPackage;
-  private Set<EClassifier> filteredClassifiers = new HashSet<>();
 
   public VirtualEPackage(EPackage concreteEPackage, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.EPACKAGE, concreteEPackage, virtualizer);
@@ -66,18 +63,6 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
       virtualPackages.add(p);
       p.virtualSuperPackage = this;
     }
-  }
-
-  public void filterClassifier(EClassifier c) {
-    filteredClassifiers.add(c);
-  }
-
-  public void unfilterClassifier(EClassifier c) {
-    filteredClassifiers.remove(c);
-  }
-
-  public boolean isClassifierFiltered(EClassifier c) {
-    return filteredClassifiers.contains(c);
   }
 
   @Override
@@ -243,12 +228,11 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
     return elems;
   }
 
-  // @Refactor: quite close to getAllFeatures in VirtualEClass
-  protected List<EClassifier> getNonFilteredClassifiers() {
+  protected List<EClassifier> getVisibleClassifiers() {
     List<EClassifier> elems = new ArrayList<>();
 
     for (EClassifier f : getAllClassifiers()) {
-      if (!isClassifierFiltered(f)) {
+      if (((VirtualEClassifier<?>) f).isVisible()) {
         elems.add(f);
       }
     }
@@ -259,7 +243,7 @@ public class VirtualEPackage extends BaseVirtualElement<EPackage> implements EPa
 
   @Override
   public EList<EClassifier> getEClassifiers() {
-    List<EClassifier> cs = getNonFilteredClassifiers();
+    List<EClassifier> cs = getVisibleClassifiers();
     // See @UnmodifiableEList
     return new EcoreEList.UnmodifiableEList<>(
         this, EcorePackage.Literals.EPACKAGE__ECLASSIFIERS, cs.size(), cs.toArray());

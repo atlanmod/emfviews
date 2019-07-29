@@ -57,4 +57,6 @@ public interface EcoreVirtualizer {
   VirtualEAttribute getVirtual(EAttribute o);
   VirtualEReference getVirtual(EReference o);
   VirtualEGenericType getVirtual(EGenericType o);
+
+  boolean isWhitelist();
 }

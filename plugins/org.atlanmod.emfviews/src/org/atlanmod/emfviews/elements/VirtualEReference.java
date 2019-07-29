@@ -100,8 +100,7 @@ public class VirtualEReference extends VirtualEStructuralFeature<EReference> imp
     }
 
     if (opposite != null) {
-      VirtualEClass owner = (VirtualEClass) opposite.getEContainingClass();
-      if (!owner.isFeatureFiltered(opposite)) {
+      if (((VirtualEReference) opposite).isVisible()) {
         return opposite;
       }
     }

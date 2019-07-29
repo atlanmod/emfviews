@@ -17,7 +17,6 @@
 package org.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,9 +51,6 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
 
   // Supertypes that exist only on the virtual class, not the concrete one.
   private List<EClass> virtualSuperTypes = new ArrayList<>();
-
-  // Features from the concrete class that should not appear on the virtual one.
-  private Set<EStructuralFeature> filteredFeatures = new HashSet<>();
 
   public VirtualEClass(EClass concreteEClass, EcoreVirtualizer virtualizer) {
     super(EcorePackage.Literals.ECLASS, concreteEClass, virtualizer);
@@ -134,18 +130,6 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
     return super.dynamicGet(dynamicFeatureID);
   }
 
-  public void filterFeature(EStructuralFeature f) {
-    filteredFeatures.add(f);
-  }
-
-  public void unfilterFeature(EStructuralFeature f) {
-    filteredFeatures.remove(f);
-  }
-
-  public boolean isFeatureFiltered(EStructuralFeature f) {
-    return filteredFeatures.contains(f);
-  }
-
   @Override
   public boolean isAbstract() {
     return concrete().isAbstract();
@@ -171,20 +155,16 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
     // This is just a map(getVirtual).filter(!filtered)
     List<EClass> types = new ArrayList<>();
 
-    // @Assumption: this class and its super types are part of the same package,
-    // so we can query it only once.
-    VirtualEPackage vpackage = (VirtualEPackage) getEPackage();
-
     for (EClass c : concrete().getESuperTypes()) {
-      EClass vc = virtualizer.getVirtual(c);
-      if (!vpackage.isClassifierFiltered(vc)) {
+      VirtualEClass vc = virtualizer.getVirtual(c);
+      if (vc.isVisible()) {
         types.add(vc);
       }
     }
 
     for (EClass c : virtualSuperTypes) {
-      EClass vc = virtualizer.getVirtual(c);
-      if (!vpackage.isClassifierFiltered(vc)) {
+      VirtualEClass vc = virtualizer.getVirtual(c);
+      if (vc.isVisible()) {
         types.add(vc);
       }
     }
@@ -205,9 +185,8 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
     // and B is filtered.  We want to maintain A <- C.
     EClass c = concrete();
     for (EClass sup : c.getEAllSuperTypes()) {
-      EClass vsup = virtualizer.getVirtual(sup);
-      VirtualEPackage p = (VirtualEPackage) vsup.getEPackage();
-      if (!p.isClassifierFiltered(vsup)) {
+      VirtualEClass vsup = virtualizer.getVirtual(sup);
+      if (vsup.isVisible()) {
         sups.add(vsup);
       }
     }
@@ -268,7 +247,7 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : getAllFeatures()) {
-      if (!isFeatureFiltered(f)) {
+      if (((VirtualEStructuralFeature<?>) f).isVisible()) {
         elems.add(f);
       }
     }
@@ -280,7 +259,7 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
     List<EStructuralFeature> elems = new ArrayList<>();
 
     for (EStructuralFeature f : getAllLocalFeatures()) {
-      if (!isFeatureFiltered(f)) {
+      if (((VirtualEStructuralFeature<?>) f).isVisible()) {
         elems.add(f);
       }
     }

@@ -18,22 +18,19 @@
 package org.atlanmod.emfviews.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EGenericType;
-import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -46,6 +43,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 
+import org.atlanmod.emfviews.elements.BaseVirtualElement;
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
 import org.atlanmod.emfviews.elements.VirtualEClassifier;
@@ -113,6 +111,7 @@ public class Viewpoint implements EcoreVirtualizer {
   /** Used by the Virtualizer implementation to cache virtual elements */
   private Map<EObject, EObject> concreteToVirtual;
 
+  private boolean whitelist = false;  // whether we are in whitelist mode
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Constructors
@@ -248,6 +247,11 @@ public class Viewpoint implements EcoreVirtualizer {
     return resource;
   }
 
+  @Override
+  public boolean isWhitelist() {
+    return whitelist;
+  }
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Constructing the virtual metamodel
@@ -255,8 +259,8 @@ public class Viewpoint implements EcoreVirtualizer {
   // Create the virtual elements and virtual packages.
   //
   // First we virtualize the contributing packages in the virtual package, then
-  // we apply filters (by setting the 'filtered' flag in the object's owner),
-  // then we create all the new objects as instructed by the weaving model.
+  // we apply filters, then we create all the new objects as instructed by the
+  // weaving model.
   protected void build(Options options) {
     baseResourceSet = new ResourceSetImpl();
     virtualResourceSet = new ResourceSetImpl();
@@ -292,8 +296,8 @@ public class Viewpoint implements EcoreVirtualizer {
     }
 
     // Filter concrete elements (we don't allow filtering of virtual elements, so we can apply filters
-    // before creating those)
-    applyFilters(virtualRegistry);
+    // before creating those).
+    applyFilters(baseRegistry);
 
     // Create all *new* elements first, and set their EMF attributes after to avoid any circular dependencies
     syntheticElements = createSyntheticElements();
@@ -324,79 +328,46 @@ public class Viewpoint implements EcoreVirtualizer {
 
   // Apply the given filters to all the packages in the virtual resource set.
   private void applyFilters(EPackage.Registry registry) {
-    List<Filter> filters = weavingModel.getFilters();
-    boolean blacklist = !weavingModel.isWhitelist();
+    whitelist = weavingModel.isWhitelist();
 
-    if (blacklist) {
-      for (Filter f : filters) {
-        ConcreteElement l = f.getTarget();
-        EObject filteredElement = findEObject(l, registry);
+    for (Filter f : weavingModel.getFilters()) {
+      ConcreteElement l = f.getTarget();
 
-        if (filteredElement instanceof EStructuralFeature) {
-          EStructuralFeature feature = (EStructuralFeature) filteredElement;
-          ((VirtualEClass) feature.getEContainingClass()).filterFeature(feature);
-        } else if (filteredElement instanceof EClassifier) {
-          EClassifier classifier = (EClassifier) filteredElement;
-          ((VirtualEPackage) classifier.getEPackage()).filterClassifier(classifier);
-        }
-      }
-    } else {
-      // Whitelisting: build a list of objects to delete, then delete them
-      // @Optimize: complexity is O(n*m) where n is the total numbef of EObjects
-      // in all packages from the registry, and m is the number of filters.
-      List<EObject> filtered = new ArrayList<>();
+      List<EObject> filteredElements = new ArrayList<>();
+      EObject base;
 
-      for (Object po : registry.values()) {
-        EPackage p = (EPackage) po;
-        TreeIterator<EObject> it = p.eAllContents();
+      // If it's a wildcard, then find the base element and collect
+      // all its contents
+      if (l.getPath().endsWith(".*")) {
+        ConcreteElement baseC = VirtualLinksFactory.eINSTANCE.createConcreteElement();
+        baseC.setModel(l.getModel());
+        baseC.setPath(l.getPath().replace(".*", ""));
+        base = findEObject(baseC, registry);
+        Iterator<EObject> it = base.eAllContents();
         while (it.hasNext()) {
-          EObject o = it.next();
+          filteredElements.add(it.next());
+        }
+      } else {
+        // Otherwise it's a single object
+        base = findEObject(l, registry);
+        filteredElements.add(base);
+      }
 
-          // @Correctness: Cannot target elements that do not have a name, so we leave them alone
-          // Crucially, EGenericType is not an ENamedElement, but is contained by
-          // EStructuralFeature, and we don't want to delete those.
-          if ((o instanceof ENamedElement)) {
-            String path = EMFViewsUtil.getEObjectPath(o);
-
-            // If path does not match any filter, we can delete this object
-            if (!filters.stream()
-                .anyMatch(f -> matchesFilter(f.getTarget().getPath(), path))) {
-              filtered.add(o);
-            }
-          }
+      // In whitelist mode, a filter implies that all the parent elements
+      // are also filtered (the alternative is to explicitly filter all
+      // containers, which is tedious)
+      if (whitelist) {
+        EObject e = base;
+        while (e != null) {
+          ((BaseVirtualElement<?>) getVirtualGeneric(e)).filtered = true;
+          e = e.eContainer();
         }
       }
 
-      for (EObject o : filtered) {
-        if (o instanceof EStructuralFeature) {
-          EStructuralFeature feature = (EStructuralFeature) o;
-          ((VirtualEClass) feature.getEContainingClass()).filterFeature(feature);
-        } else if (o instanceof EClassifier) {
-          EClassifier c = (EClassifier) o;
-          ((VirtualEPackage) c.getEPackage()).filterClassifier(c);
-        }
+      // Now go over each elements to be filtered, and flip their filtered bit
+      for (EObject e : filteredElements) {
+        ((BaseVirtualElement<?>) getVirtualGeneric(e)).filtered = true;
       }
-    }
-  }
-
-  private static boolean matchesFilter(String filter, String path) {
-    if (filter.endsWith(".*")) {
-      // In the case of a wildcard 'a.b.*', it's a match if the path is
-      // of the form 'a.b.x', but not 'a.b.x.y'.
-      // It's also a match if the path is 'a.b' and 'a', to include parents.
-
-      // Drop the '.*'
-      String filterBase = filter.substring(0, filter.length() - 3);
-
-      // Drop anything after the last dot
-      String[] pathComp = path.split("\\.");
-      String pathBase = Arrays.stream(pathComp)
-          .limit(Math.max(1, pathComp.length - 1)).collect(Collectors.joining(","));
-
-      return pathBase.startsWith(filterBase);
-    } else {
-      // Otherwise, if path is a prefix of filter, it's a match
-      return filter.startsWith(path);
     }
   }
 
@@ -512,9 +483,9 @@ public class Viewpoint implements EcoreVirtualizer {
    * Helper function to find the EObject referenced to in a weaving model
    * Element.
    *
-   * One thing to note is that we always return an EObject that has not been
-   * virtualized yet, so be sure to call getVirtual on the result if the object
-   * is to be added to the virtual metamodel.
+   * Return an EObject that may not have been virtualized yet (depending on the
+   * registry), so be sure to call getVirtual on the result if the object is to
+   * be added to the virtual metamodel.
    */
   private EObject findEObject(Element elem, EPackage.Registry registry) {
     // If it's a ConcreteElement, we are looking for an EObject from the
@@ -604,6 +575,19 @@ public class Viewpoint implements EcoreVirtualizer {
   // Shortcut method to create an exception
   static private ViewpointException EX(String msg, Object... args) {
     return new ViewpointException(msg, args);
+  }
+
+  protected EObject getVirtualGeneric(EObject o) {
+    if (o == null) return null;
+    if (o instanceof EPackage) return getVirtual((EPackage) o);
+    if (o instanceof EClass) return getVirtual((EClass) o);
+    if (o instanceof EDataType) return getVirtual((EDataType) o);
+    if (o instanceof EEnum) return getVirtual((EStructuralFeature) o);
+    if (o instanceof EAttribute) return getVirtual((EAttribute) o);
+    if (o instanceof EReference) return getVirtual((EReference) o);
+    if (o instanceof EGenericType) return getVirtual((EGenericType) o);
+
+    throw EX("Cannot virtualize object '%s'", o);
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
