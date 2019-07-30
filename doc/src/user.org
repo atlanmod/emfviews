@@ -883,6 +883,9 @@ The ~VPDL~ method is the fastest for interactive creation, but the ~eview~
 approach is more flexible.  Using the API should be preferred when creating
 views from Java code.
 
+The ~MEL~ DSL lets you create viewpoints easily, but to obtain a view you still
+need to create a view weaving model.
+
 *** eview and eviewpoint files
 The ~eview~ and ~eviewpoint~ files respectively describe views and viewpoints.
 
