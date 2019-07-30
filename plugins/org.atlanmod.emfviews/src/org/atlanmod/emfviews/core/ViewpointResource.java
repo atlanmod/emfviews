@@ -111,7 +111,6 @@ public class ViewpointResource extends ResourceImpl {
   // Loading/saving the 'eviewpoint' file
 
 
-
   @Override
   protected void doLoad(InputStream inputStream, Map<?, ?> _options) throws IOException {
     // Parse from eviewpoint file
@@ -170,6 +169,7 @@ public class ViewpointResource extends ResourceImpl {
         registry.put(getURI().toString(), viewpoint);
       }
     } catch (Exception ex) {
+      // see @ResourceErrors
       getErrors().add(new Err("Failed to create the viewpoint due to exception:\n%s", ex));
       throw ex;
     }

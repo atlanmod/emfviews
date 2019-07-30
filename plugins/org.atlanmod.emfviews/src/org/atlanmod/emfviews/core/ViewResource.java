@@ -50,6 +50,13 @@ import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
  * the EmfViewsFactory.
  */
 public class ViewResource extends ResourceImpl {
+  // Note @ResourceErrors:
+  // In ViewResource and ViewpointResource, we catch exceptions and add them to
+  // the Resource errors instead of throwing. That way, if we failed, resource
+  // browsers can show multiple errors at once rather than barfing on just one
+  // exception and not even opening the resource.
+  // We also usually print the stack trace to stderr, so when developing we can
+  // access that more quickly.
 
   // Valid fields for an eview file
   public static final String EVIEW_VIEWPOINT = "viewpoint";
@@ -116,6 +123,7 @@ public class ViewResource extends ResourceImpl {
     ViewpointResource vpr = new ViewpointResource(uri);
     vpr.load(null);
     if (!vpr.getErrors().isEmpty()) {
+      // see @ResourceErrors
       getErrors().add(new Err("Failed to load viewpoint due to the following errors"));
       getErrors().addAll(vpr.getErrors());
 
@@ -155,6 +163,7 @@ public class ViewResource extends ResourceImpl {
       if (r != null) {
         contributingModels.put(alias, r);
       } else {
+        // see @ResourceErrors
         getErrors().add(new Err("Could not load contributing model resource '%s'", modelPath));
       }
     }
@@ -173,6 +182,7 @@ public class ViewResource extends ResourceImpl {
         weavingModel = vld.createWeavingModel(models);
       } catch (Exception e) {
         e.printStackTrace();
+        // see @ResourceErrors
         getErrors().add(new Err("Exception while creating weaving model from matching model: %s", e.toString()));
       }
     } else if (weavingModelPath != null) {
@@ -200,9 +210,7 @@ public class ViewResource extends ResourceImpl {
       setView(new View(viewpoint, new ArrayList<>(contributingModels.values()), weavingModel));
     } catch (Exception e) {
       e.printStackTrace();
-      // If we failed, add the exception to the resource errors, as this way
-      // resource browsers can show multiple errors at once rather than barfing
-      // on just one exception.
+      // see @ResourceErrors
       getErrors().add(new Err(e.toString()));
     }
   }
@@ -245,8 +253,8 @@ public class ViewResource extends ResourceImpl {
       getErrors().add(new Err("Error in parsing eview file: missing %s field", EVIEW_CONTRIBUTING_MODELS));
     }
 
-    // There cannot be a matching model and weaving model specified together, but
-    // at least one of them must be present.
+    // There cannot be a matching model and weaving model specified together,
+    // but at least one of them must be present.
     if (p.containsKey(EVIEW_MATCHING_MODEL) && p.containsKey(EVIEW_WEAVING_MODEL)) {
       getErrors().add(new Err("Error in parsing eview file: the keys {matching model, weaving model} are exclusive"));
     }
