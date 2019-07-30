@@ -38,6 +38,7 @@ import org.eclipse.epsilon.ecl.trace.Match;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
 import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
 import org.atlanmod.emfviews.virtuallinks.ContributingModel;
@@ -65,7 +66,7 @@ import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 public class EclDelegate implements IVirtualLinksDelegate {
 
   @Override
-  public WeavingModel createWeavingModel(URI linksDslURI, Map<String, Resource> inputModels) throws Exception {
+  public WeavingModel createWeavingModel(URI linksDslURI, Map<String, Resource> inputModels) {
 
     File f;
 
@@ -83,14 +84,19 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     // Prepare the ECL Module
     EclModule module = new EclModule();
-    module.parse(f);
-    if (module.getParseProblems().size() > 0) {
-      System.err.println("Parse errors occured...");
-      for (ParseProblem problem : module.getParseProblems()) {
-        System.err.println(problem.toString());
+    try {
+      module.parse(f);
+      if (module.getParseProblems().size() > 0) {
+        System.err.println("Parse errors occured...");
+        for (ParseProblem problem : module.getParseProblems()) {
+          System.err.println(problem.toString());
+        }
+        throw new RuntimeException("Error in parsing ECL file.  See stderr for details");
       }
-      throw new Exception("Error in parsing ECL file.  See stderr for details");
+    } catch (Exception ex) {
+      throw new RuntimeException("Error in parsing ECL file", ex);
     }
+
     EclOperationFactory operationFactory = new EclOperationFactory();
     module.getContext().setOperationFactory(operationFactory);
 
@@ -102,7 +108,12 @@ public class EclDelegate implements IVirtualLinksDelegate {
     }
 
     // Execute the module
-    MatchTrace mt = (MatchTrace) module.execute();
+    MatchTrace mt;
+    try {
+      mt = (MatchTrace) module.execute();
+    } catch (EolRuntimeException ex) {
+      throw new RuntimeException("Error in executing ECL file", ex);
+    }
 
     List<Match> matches = mt.getMatches();
 

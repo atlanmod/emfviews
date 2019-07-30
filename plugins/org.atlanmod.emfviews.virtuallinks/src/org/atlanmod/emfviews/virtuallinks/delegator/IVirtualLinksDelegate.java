@@ -22,6 +22,6 @@ import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public interface IVirtualLinksDelegate {
 
-  WeavingModel createWeavingModel(URI linksDslFile, Map<String, Resource> inputModels) throws Exception;
+  WeavingModel createWeavingModel(URI linksDslFile, Map<String, Resource> inputModels);
 
 }
