@@ -158,39 +158,50 @@ public class View implements Virtualizer {
       modelResources.put(nsURI, r);
     }
 
+    // At the view level, we interpret the weaving model a bit differently than
+    // in viewpoint.  Virtual properties and associations refer to
+    // ConcreteConcept, but we really only need to locate the model EObjects we
+    // need to associate or populate, so the nomenclature can be confusing.
+    // Here is how they should be interpreted:
+    //
+    // VirtualProperty    := populate a virtual attribute
+    // +- parent          := the EObject to populate the virtual attribute on
+    // +- type            := the value to set
+    //
+    // VirtualAssociation := populate a virtual reference
+    // +- source          := the EObject owning the virtual reference
+    // +- target          := the EObject that is added to the virtual reference
+    //
+    // Filter             := hide an EObject
+    // +- target          := the EObject to hide
+    //
+    // In addition, either ConcreteElement or ConcreteConcept are used to target
+    // EObjects from contributing models.  Their path should be an URI fragment
+    // such that resource.getEObject() returns the corresponding EObject.
+    //
+    // This allows us to reuse the same weaving model structure at the view
+    // level, but it's admittedly a tad confusing.
+
     // Populate virtual properties
     for (VirtualProperty prop : weavingModel.getVirtualProperties()) {
-      // @Correctness: this should work with VirtualConcept as well
-
-      // The property is added to some object
+      // Find the corresponding EObject
       ConcreteConcept elem = (ConcreteConcept) prop.getParent();
-      // Get the NsURI of the metamodel
       String nsURI = elem.getModel().getURI();
-      // Find the corresponding resource
       Resource model = modelResources.get(nsURI);
-      // Find the referenced element in that resource
       EObject owner = model.getEObject(elem.getPath());
       // Get its virtual counterpart
       EObject vOwner = getVirtual(owner);
 
-      // Get the feature by name
+      // Get the feature and set it
       EStructuralFeature feature = vOwner.eClass().getEStructuralFeature(prop.getName());
-
-      // Then set its value
       vOwner.eSet(feature, prop.getType());
     }
 
     // Populate the model with values for virtual associations
     for (VirtualAssociation assoc : weavingModel.getVirtualAssociations()) {
-      // @Correctness: this should work with VirtualConcept as well
-
+      // Find the corresponding EObject
       ConcreteElement elem = (ConcreteConcept) assoc.getSource();
-      // Get the NsURI of the metamodel
-      String nsURI = elem.getModel().getURI();
-      // Find the corresponding resource
-      Resource model = modelResources.get(nsURI);
-      // Find the referenced element in that resource
-      EObject source = model.getEObject(elem.getPath());
+      EObject source = modelResources.get(elem.getModel().getURI()).getEObject(elem.getPath());
 
       // Do the same for the target
       elem = (ConcreteConcept) assoc.getTarget();

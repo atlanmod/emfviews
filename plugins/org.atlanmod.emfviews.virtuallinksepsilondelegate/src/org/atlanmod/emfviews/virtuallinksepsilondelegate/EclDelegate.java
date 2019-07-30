@@ -65,13 +65,16 @@ import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
  */
 public class EclDelegate implements IVirtualLinksDelegate {
 
+  private VirtualLinksFactory vlFactory = VirtualLinksFactory.eINSTANCE;
+
   @Override
   public WeavingModel createWeavingModel(URI linksDslURI, Map<String, Resource> inputModels) {
 
     File f;
 
-    // Need to turn an EMF URI into an actual File location. We cannot use the URIConverter.INSTANCE since it only
-    // provides InputStream, and EclModule needs an actual file.
+    // Need to turn an EMF URI into an actual File location. We cannot use the
+    // URIConverter.INSTANCE since it only provides InputStream, and EclModule
+    // needs an actual file.
     if (linksDslURI.isPlatform()) {
       // Find the system path for the file from the workspace URI
       IContainer wsroot = EcorePlugin.getWorkspaceRoot();
@@ -118,8 +121,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
     List<Match> matches = mt.getMatches();
 
     // Use the matches to construct a weaving model
-    VirtualLinksFactory vLinksFactory = VirtualLinksFactory.eINSTANCE;
-    WeavingModel weavingModel = vLinksFactory.createWeavingModel();
+    WeavingModel weavingModel = vlFactory.createWeavingModel();
 
     HashMap<String, ContributingModel> modelsByURI = new HashMap<>();
 
@@ -128,45 +130,36 @@ public class EclDelegate implements IVirtualLinksDelegate {
         EObject left = (EObject) match.getLeft();
         EObject right = (EObject) match.getRight();
 
-        VirtualAssociation vAsso = vLinksFactory.createVirtualAssociation();
+        VirtualAssociation vAsso = vlFactory.createVirtualAssociation();
         vAsso.setName(match.getRule().getName());
         vAsso.setLowerBound(0);
         vAsso.setUpperBound(1);
 
-        ConcreteConcept lSource = vLinksFactory.createConcreteConcept();
-        lSource.setPath(left.eResource().getURIFragment(left));
-
-        String sourceModelURI = left.eClass().getEPackage().getNsURI();
-        if (!modelsByURI.containsKey(sourceModelURI)) {
-          ContributingModel m = vLinksFactory.createContributingModel();
-          m.setURI(sourceModelURI);
-          modelsByURI.put(sourceModelURI, m);
-          weavingModel.getContributingModels().add(m);
-        }
-        lSource.setModel(modelsByURI.get(sourceModelURI));
-
-        vAsso.setSource(lSource);
-
-        ConcreteConcept lTarget = vLinksFactory.createConcreteConcept();
-        lTarget.setPath(right.eResource().getURIFragment(right));
-        // TODO: check the linked elements are concepts
-
-        String targetModelURI = right.eClass().getEPackage().getNsURI();
-        if (!modelsByURI.containsKey(targetModelURI)) {
-          ContributingModel m = vLinksFactory.createContributingModel();
-          m.setURI(targetModelURI);
-          modelsByURI.put(targetModelURI, m);
-          weavingModel.getContributingModels().add(m);
-        }
-        lTarget.setModel(modelsByURI.get(targetModelURI));
-
-        vAsso.setTarget(lTarget);
+        vAsso.setSource(addConcreteConcept(left, modelsByURI, weavingModel));
+        vAsso.setTarget(addConcreteConcept(right, modelsByURI, weavingModel));
 
         weavingModel.getVirtualLinks().add(vAsso);
       }
     }
 
     return weavingModel;
+  }
+
+  // Create ConcreteConcept and add it to the weaving model, ensuring
+  // the owning contributing model is added as well.
+  private ConcreteConcept addConcreteConcept(EObject obj, Map<String,
+                                             ContributingModel> modelsByURI, WeavingModel weavingModel) {
+    ConcreteConcept cc = vlFactory.createConcreteConcept();
+    cc.setPath(obj.eResource().getURIFragment(obj));
+
+    String modelURI = obj.eClass().getEPackage().getNsURI();
+    cc.setModel(modelsByURI.computeIfAbsent(modelURI, (uri) -> {
+      ContributingModel m = vlFactory.createContributingModel();
+      m.setURI(uri);
+      weavingModel.getContributingModels().add(m);
+      return m;
+    }));
+    return cc;
   }
 
 }
