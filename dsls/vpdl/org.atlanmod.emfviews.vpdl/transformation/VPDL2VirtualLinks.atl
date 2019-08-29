@@ -75,7 +75,7 @@ rule Relations {
 	      name <- s.name,
 	      source <- source,
 	      target <- target,
-	      upperBound <- 1
+	      upperBound <- -1
 	  ),
 
 	  source: VirtualLinks!ConcreteConcept (

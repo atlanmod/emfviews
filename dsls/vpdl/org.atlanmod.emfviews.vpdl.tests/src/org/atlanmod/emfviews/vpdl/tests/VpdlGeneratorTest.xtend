@@ -134,7 +134,7 @@ class VpdlGeneratorTest {
       :name 'full' :whitelist true
       :virtualLinks [(Filter :name 'model' :target @1)
                      (Filter :name 'path' :target @2)
-                     (VirtualAssociation :name 'eClass' :source @3  :target @4 :upperBound 1)]
+                     (VirtualAssociation :name 'eClass' :source @3  :target @4 :upperBound -1)]
       :contributingModels [(ContributingModel :URI 'http://www.atlanmod.org/emfviews/virtuallinks/0.3.0'
                                               :concreteElements [#1(ConcreteElement :path 'ConcreteElement.model')
                                                                  #2(ConcreteElement :path 'ConcreteElement.path')
