@@ -407,6 +407,7 @@ public class Viewpoint implements EcoreVirtualizer {
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
         }
         getVirtual((EClass) sub).addVirtualSuperType(klass);
+        getVirtual(klass).synthetic = true;
       }
     }
   }
@@ -431,6 +432,7 @@ public class Viewpoint implements EcoreVirtualizer {
         attr.setLowerBound(1);
       }
       parentClass.addVirtualFeature(getVirtual(attr));
+      getVirtual(attr).synthetic = true;
     }
   }
 
@@ -469,6 +471,7 @@ public class Viewpoint implements EcoreVirtualizer {
       ref.setContainment(a.isComposition());
 
       getVirtual((EClass) source).addVirtualFeature(getVirtual(ref));
+      getVirtual(ref).synthetic = true;
 
       // We have to set the eContainingClass feature of the reference manually, since the feature is virtual.
       // We don't want this to be done automatically in addVirtualFeature, because we don't want to alter

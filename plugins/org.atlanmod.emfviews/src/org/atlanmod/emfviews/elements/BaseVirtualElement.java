@@ -54,6 +54,7 @@ public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl im
   protected EcoreVirtualizer virtualizer;
 
   public boolean filtered = false;
+  public boolean synthetic = false;
 
   /**
    * Construct a virtual element as a proxy to a concrete object whose metaclass
@@ -69,9 +70,10 @@ public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl im
   /**
    * Whether the element is visible in a view. Depends on its filtered attribute
    * and the whitelisting mode of the virtualizer.
+   * Synthetic elements are always visible.
    */
   public boolean isVisible() {
-    return filtered == virtualizer.isWhitelist();
+    return synthetic || filtered == virtualizer.isWhitelist();
   }
 
   /**
