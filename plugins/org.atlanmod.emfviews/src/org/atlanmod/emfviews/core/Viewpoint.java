@@ -392,6 +392,8 @@ public class Viewpoint implements EcoreVirtualizer {
       EClass klass = (EClass) syntheticElements.get(c);
       klass.setName(c.getName());
       virtualPackage.getEClassifiers().add(klass);
+      getVirtual(klass).synthetic = true;
+
 
       for (Concept e : c.getSuperConcepts()) {
         EObject sup = findEObject(e, registry);
@@ -407,7 +409,6 @@ public class Viewpoint implements EcoreVirtualizer {
           throw EX("Subconcept '%s' of new concept '%s' should be an EClass", e, c.getName());
         }
         getVirtual((EClass) sub).addVirtualSuperType(klass);
-        getVirtual(klass).synthetic = true;
       }
     }
   }

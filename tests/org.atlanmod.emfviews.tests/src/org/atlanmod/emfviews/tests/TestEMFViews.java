@@ -574,6 +574,43 @@ public class TestEMFViews {
   }
 
   @Test
+  public void filterWhitelistSyntheticElements() {
+    // In a weaving model in whitelist mode, synthetic elements
+    // are still present in the view
+
+    // Metamodel and model
+    EPackage P = (EPackage) Sexp2EMF.build("(EPackage :name 'P' :nsURI '00' :nsPrefix 'P0' "
+        + ":eClassifiers [(EClass :name 'A')])",
+        EcoreFactory.eINSTANCE)[0];
+
+    // Weaving model
+    WeavingModel wm = (WeavingModel) Sexp2EMF.build(
+      "(WeavingModel :name 'WM' "
+      + ":whitelist true "
+      + ":virtualLinks [(VirtualAssociation :name 'assoc'"
+      + "                :source @B"
+      + "                :target @B"
+      + "                :lowerBound 0 :upperBound -1)"
+      + "               #B(VirtualConcept :name 'B')"
+      + "               (VirtualProperty :name 'prop'"
+      + "                :parent @B"
+      + "                :type 'int')])",
+      VirtualLinksFactory.eINSTANCE)[0];
+
+    // Viewpoint
+    Map<String, EPackage> m = new HashMap<>();
+    m.put("P", P);
+    Viewpoint viewpoint = new Viewpoint(m, wm);
+
+    // The synthetic elements are present
+    EPackage V = viewpoint.getRootPackage();
+    EClass B = (EClass) findClassifier(V, "B");
+    assertNotNull(B);
+    assertNotNull(B.getEStructuralFeature("assoc"));
+    assertNotNull(B.getEStructuralFeature("prop"));
+  }
+
+  @Test
   public void filterObject() {
     // We can filter objects from models
 
