@@ -144,6 +144,7 @@ public class TestEMFViews {
 
       // Check we only have "Process" instances in there (others are filtered
       // out), and that they each have a detailedProcess feature
+      assertFalse(ba.eContents().isEmpty());
       for (EObject e : ba.eContents()) {
         assertEquals("Process", e.eClass().getName());
         assertNotNull(e.eClass().getEStructuralFeature("detailedProcess"));
@@ -234,6 +235,7 @@ public class TestEMFViews {
     EObject vba = vcfwk.eContents().get(1);
 
     // Make sure filtered features are absent
+    assertFalse(vba.eContents().isEmpty());
     for (EObject e : vba.eContents()) {
       assertEquals("Process", e.eClass().getName());
     }

@@ -421,7 +421,7 @@ public class TestVirtualObjects {
 
     // Accessing the 'a' feature fails
     try {
-      assertEquals(1, eGet(VO, "a"));
+      eGet(VO, "a");
       fail("Expected eGet to fail");
     } catch (IllegalArgumentException ex) {
       assertEquals("Feature 'a' does not exist on eClass", ex.getMessage());
@@ -557,7 +557,7 @@ public class TestVirtualObjects {
     VirtualEObject Vo = view.getVirtual(o);
 
     try {
-      assertEquals(1, eGet(Vo, "a"));
+      eGet(Vo, "a");
       fail("Expected eGet to fail on hidden feature");
     } catch (IllegalArgumentException ex) {
       assertEquals("Feature 'a' does not exist on eClass", ex.getMessage());
