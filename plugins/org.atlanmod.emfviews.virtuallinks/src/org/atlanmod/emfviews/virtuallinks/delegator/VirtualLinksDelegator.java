@@ -15,6 +15,7 @@ package org.atlanmod.emfviews.virtuallinks.delegator;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -23,15 +24,15 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public class VirtualLinksDelegator {
 
   static final String EXTENSION_POINT = "org.atlanmod.emfviews.virtuallinks.delegator";
 
   static Map<String, IVirtualLinksDelegate> extensionsToDelegate = new HashMap<>();
+  static public boolean skipRegistry = false; // used for testing
 
   public static void register(String fileExtension, IVirtualLinksDelegate delegate) {
     extensionsToDelegate.put(fileExtension, delegate);
@@ -46,7 +47,7 @@ public class VirtualLinksDelegator {
 
     IExtensionRegistry registry = Platform.getExtensionRegistry();
 
-    if (registry == null) {
+    if (registry == null || skipRegistry) {
       // We are not running in an Eclipse platform, so use the map instead
       delegate = extensionsToDelegate.get(extension);
       if (delegate == null) {
@@ -74,8 +75,12 @@ public class VirtualLinksDelegator {
     }
   }
 
-  public WeavingModel createWeavingModel(Map<String, Resource> contributingModels) throws Exception {
-    return delegate.createWeavingModel(matchingModelURI, contributingModels);
+  public void init(Map<String, Resource> contributingModels) {
+    delegate.init(matchingModelURI, contributingModels);
+  }
+
+  public List<EObject> executeMatchRule(String ruleName, EObject param, boolean rightHand) throws Exception {
+    return delegate.executeMatchRule(ruleName, param, rightHand);
   }
 
 }

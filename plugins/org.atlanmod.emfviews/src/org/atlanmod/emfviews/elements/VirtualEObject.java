@@ -18,7 +18,10 @@ package org.atlanmod.emfviews.elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
@@ -68,9 +71,89 @@ public class VirtualEObject extends DynamicEObjectImpl {
   // With feature ID, the mapping is: 'a': 0, 'c': 1, 'd': 2, so the virtual
   // value associated to 'b' is now associated to 'c'.  With a map we keep track
   // of all structural features, filtered or not.
-  private Map<EStructuralFeature, Object> virtualValues;
+  private Map<EStructuralFeature, Object> virtualValues = new HashMap<>();
+
+  private Object getVirtualValue(EStructuralFeature feature) {
+    // If it's many-valued, make sure it's a list
+    if (feature.isMany() && virtualValues.get(feature) == null) {
+      // Start with a regular list
+      virtualValues.put(feature, ECollections.asEList(new ArrayList<>()));
+
+      if (feature instanceof EReference) {
+        VirtualEReference ref = (VirtualEReference) feature;
+        EReference opposite = ref.getEOpposite();
+
+        // If the virtual feature has a virtual opposite, we need to return a
+        // list that will keep the opposite in sync.
+        if (opposite != null && opposite == ref.virtualOpposite) {
+        virtualValues.put(feature, new EListWithInverse(opposite));
+        }
+      }
+    }
+
+    // If this is the first time this feature is accessed,
+    // populate the virtual feature with matches from the virtual links delegator.
+    if (!initializedFeatures.contains(feature)) {
+      initializeFeatureFromMatchRule(feature.getName(), feature, false);
+
+      // The opposite feature may have a matching rule as well
+      if (feature instanceof EReference) {
+        VirtualEReference ref = (VirtualEReference) feature;
+        EReference opposite = ref.getEOpposite();
+        if (opposite != null) {
+          initializeFeatureFromMatchRule(opposite.getName(), feature, true);
+        }
+      }
+    }
+
+    return virtualValues.get(feature);
+  }
+
+  private void initializeFeatureFromMatchRule(String ruleName, EStructuralFeature inFeature, boolean rightHand) {
+    // Set initialized now to avoid infinite recursive calls
+    // when calling getVirtualValue
+    initializedFeatures.add(inFeature);
+
+    List<EObject> init = virtualizer.getMatchesForRule(ruleName, concreteEObject, rightHand);
+
+    if (init.size() == 0)
+      return;
+
+    EReference opp = null;
+    if (inFeature instanceof EReference) {
+      EReference ref = (EReference) inFeature;
+      opp = ref.getEOpposite();
+    }
+
+    if (inFeature.isMany()) {
+      @SuppressWarnings("unchecked")
+      EList<EObject> list = (EList<EObject>) getVirtualValue(inFeature);
+
+      for (EObject o: init) {
+        VirtualEObject target = virtualizer.getVirtual(o);
+
+        // Don't add ourselves to the opposite feature, if any.
+        // The opposite feature will populate itself from an existing rule anyway.
+        if (opp != null) {
+          EListWithInverse l = (EListWithInverse) list;
+          l.addWithoutInverse(target);
+        } else {
+          list.add(target);
+        }
+      }
+    } else {
+      VirtualEObject target = virtualizer.getVirtual(init.get(0));
+      putVirtualValue(inFeature, target);
+    }
+  }
+
+  private void putVirtualValue(EStructuralFeature feature, Object o) {
+    virtualValues.put(feature, o);
+  }
 
   private Virtualizer virtualizer;
+
+  private Set<EStructuralFeature> initializedFeatures = new HashSet<>();
 
   /**
    * Create a virtual counterpart to concreteEObject, having virtualEClass as
@@ -80,13 +163,6 @@ public class VirtualEObject extends DynamicEObjectImpl {
     this.concreteEObject = concreteEObject;
     this.virtualizer = virtualizer;
     eSetClass(virtualEClass);
-  }
-
-  protected Map<EStructuralFeature, Object> virtualValues() {
-    if (virtualValues == null) {
-      virtualValues = new HashMap<>();
-    }
-    return virtualValues;
   }
 
   private EList<EObject> cachedContents;
@@ -139,23 +215,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
         return value;
       }
     } else {
-      // If it's a reference, make sure it's a list
-      if (feature.isMany() && virtualValues().get(feature) == null) {
-
-        VirtualEReference ref = (VirtualEReference) feature;
-        EReference opposite = ref.getEOpposite();
-
-        // If the virtual feature has a virtual opposite, we need to return a
-        // list that will keep the opposite in sync.
-        if (opposite != null && opposite == ref.virtualOpposite) {
-          virtualValues().put(feature, new EListWithInverse(opposite));
-        } else {
-          // Otherwise, a regular list will do
-          virtualValues().put(feature, ECollections.asEList(new ArrayList<>()));
-        }
-      }
-
-      return virtualValues().get(feature);
+      return getVirtualValue(feature);
     }
   }
 
@@ -206,7 +266,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
       concreteEObject.eSet(concreteFeature, value);
     } else {
       // If not then it's a virtual feature
-      virtualValues().put(feature, value);
+      virtualValues.put(feature, value);
 
       if (feature instanceof EReference) {
         // If it's a reference, then the value must be an EObject
@@ -231,7 +291,7 @@ public class VirtualEObject extends DynamicEObjectImpl {
   }
 
   void eSetWithoutInverse(EStructuralFeature feature, Object value) {
-    virtualValues().put(feature, value);
+    virtualValues.put(feature, value);
   }
 
   @Override

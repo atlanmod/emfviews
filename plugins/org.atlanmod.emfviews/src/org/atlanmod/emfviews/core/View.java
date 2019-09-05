@@ -18,6 +18,7 @@
 package org.atlanmod.emfviews.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.atlanmod.emfviews.virtuallinks.Filter;
 import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
 import org.atlanmod.emfviews.virtuallinks.VirtualProperty;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
 
 /**
  * A virtual model conforming to a Viewpoint.
@@ -69,6 +71,8 @@ public class View implements Virtualizer {
   private EList<EObject> virtualContents; // cache the results of getVirtualContents
   private Map<EObject, VirtualEObject> concreteToVirtual; // used by the Virtualizer implementation to cache
                                                           // virtual elements
+
+  VirtualLinksDelegator virtualLinksDelegator; // to match rules for Virtualizer implementation
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Public API
@@ -265,7 +269,22 @@ public class View implements Virtualizer {
   }
 
   @Override
+  public List<EObject> getMatchesForRule(String ruleName, EObject param, boolean rightHand) {
+    // If we have no vld, VirtualEObjects may still ask to execute a rule.
+    // We just return an empty list, meaning we don't have any objects to initialize lazily.
+    if (virtualLinksDelegator == null)
+      return Collections.emptyList();
+
+    try {
+      return virtualLinksDelegator.executeMatchRule(ruleName, param, rightHand);
+    } catch (Exception ex) {
+      throw new RuntimeException(String.format("Failed to execute match rule %s", ruleName), ex);
+    }
+  }
+
+  @Override
   public void activateObjectFiltering() {
     filterObjects = true;
   }
+
 }

@@ -19,10 +19,13 @@
 package org.atlanmod.emfviews.virtuallinksepsilondelegate;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -33,31 +36,28 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.ecl.EclModule;
+import org.eclipse.epsilon.ecl.dom.MatchRule;
 import org.eclipse.epsilon.ecl.execute.EclOperationFactory;
+import org.eclipse.epsilon.ecl.execute.context.IEclContext;
 import org.eclipse.epsilon.ecl.trace.Match;
-import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
+import org.eclipse.epsilon.eol.dom.Parameter;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
-import org.atlanmod.emfviews.virtuallinks.ConcreteConcept;
-import org.atlanmod.emfviews.virtuallinks.ContributingModel;
-import org.atlanmod.emfviews.virtuallinks.VirtualAssociation;
-import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 
 /**
- * Create a weaving model from an ECL file and input models.
+ * Execute ECL rules on input models.
  *
  * An ECL file contains multiple rules which are used to find matches between
  * two elements of two metamodels.  In EMF Views, we use ECL files as a
- * declarative way to build a weaving model.  Any time two elements match a
- * rule, we create a VirtualAssociation between them.  This association will be
- * used by the View to populate a virtual reference associated to the ECL rule.
+ * declarative way to populate virtual associations.  Any time two elements
+ * match a rule, we populate the corresponding virtual feature with the matching
+ * elements.
  *
- * The role of the EclDelegate is to create the weaving model for the view by
- * using ECL to execute the rules.
+ * The role of the EclDelegate is to execute the ECL rules when the view
+ * requests it.
  *
  * EclDelegate is the default implementation of IVirtualLinksDelegate provided
  * by EMF Views, but other means of creating weaving models could be used by
@@ -65,10 +65,10 @@ import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
  */
 public class EclDelegate implements IVirtualLinksDelegate {
 
-  private VirtualLinksFactory vlFactory = VirtualLinksFactory.eINSTANCE;
+  private EclModule module;
 
   @Override
-  public WeavingModel createWeavingModel(URI linksDslURI, Map<String, Resource> inputModels) {
+  public void init(URI linksDslURI, Map<String, Resource> inputModels) {
 
     File f;
 
@@ -86,7 +86,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
     }
 
     // Prepare the ECL Module
-    EclModule module = new EclModule();
+    module = new EclModule();
     try {
       module.parse(f);
       if (module.getParseProblems().size() > 0) {
@@ -100,66 +100,63 @@ public class EclDelegate implements IVirtualLinksDelegate {
       throw new RuntimeException("Error in parsing ECL file", ex);
     }
 
-    EclOperationFactory operationFactory = new EclOperationFactory();
-    module.getContext().setOperationFactory(operationFactory);
+    module.getContext().setOperationFactory(new EclOperationFactory());
 
+    // Add input models
     for (Entry<String, Resource> e : inputModels.entrySet()) {
       String name = e.getKey();
       Resource modelResource = e.getValue();
       EmfModel inputModel = new InMemoryEmfModel(name, modelResource);
       module.getContext().getModelRepository().addModel(inputModel);
     }
+  }
 
-    // Execute the module
-    MatchTrace mt;
-    try {
-      mt = (MatchTrace) module.execute();
-    } catch (EolRuntimeException ex) {
-      throw new RuntimeException("Error in executing ECL file", ex);
-    }
+  /**
+   * Execute the rule RULENAME with given PARAM. If RIGHTHAND is false, then
+   * PARAM is used as the left parameter to the rule, and matched against all
+   * instances of the right parameter specified in the rule. If RIGHTHAND is
+   * true, PARAM is used as the right parameter, and matched against all
+   * instances of the left parameter specified by the rule.
+   */
+  @Override
+  public List<EObject> executeMatchRule(String ruleName, EObject param, boolean rightHand) throws EolRuntimeException {
 
-    List<Match> matches = mt.getMatches();
+    // Find the rule
+    Optional<MatchRule> ruleOpt = module.getMatchRules().stream()
+      .filter(r -> ruleName.equals(r.getName())).findFirst();
 
-    // Use the matches to construct a weaving model
-    WeavingModel weavingModel = vlFactory.createWeavingModel();
+    if (!ruleOpt.isPresent())
+      return Collections.emptyList();
 
-    HashMap<String, ContributingModel> modelsByURI = new HashMap<>();
+    MatchRule rule = ruleOpt.get();
 
-    for (Match match : matches) {
-      if (match.isMatching()) {
-        EObject left = (EObject) match.getLeft();
-        EObject right = (EObject) match.getRight();
+    // Now execute it
 
-        VirtualAssociation vAsso = vlFactory.createVirtualAssociation();
-        vAsso.setName(match.getRule().getName());
-        vAsso.setLowerBound(0);
-        vAsso.setUpperBound(1);
+    // Find the instance type of the missing param
+    // @Correctness: this is brittle; an API from ECL would be welcome
+    int otherParamIndex = rightHand ? 1 : 2;
+    Parameter otherParam = (Parameter) rule.getChildren().get(otherParamIndex);
 
-        vAsso.setSource(addConcreteConcept(left, modelsByURI, weavingModel));
-        vAsso.setTarget(addConcreteConcept(right, modelsByURI, weavingModel));
+    IEclContext context = module.getContext();
 
-        weavingModel.getVirtualLinks().add(vAsso);
+    List<Match> matches = new ArrayList<>();
+
+    for (Object other: rule.getAllInstances(otherParam, context, false)) {
+      Object left  = rightHand ? other : param;
+      Object right = rightHand ? param : other;
+
+      // @Optimize: letting ECL interpret the rules for each instance is slow.
+      // Instead, we could compile the rule to something faster via partial evaluation
+      // or a custom interpreter which spits out lambdas/bytecode.
+      Match m = rule.match(left, right, context, false, null, false);
+      if (m.isMatching()) {
+        matches.add(m);
       }
     }
 
-    return weavingModel;
-  }
-
-  // Create ConcreteConcept and add it to the weaving model, ensuring
-  // the owning contributing model is added as well.
-  private ConcreteConcept addConcreteConcept(EObject obj, Map<String,
-                                             ContributingModel> modelsByURI, WeavingModel weavingModel) {
-    ConcreteConcept cc = vlFactory.createConcreteConcept();
-    cc.setPath(obj.eResource().getURIFragment(obj));
-
-    String modelURI = obj.eClass().getEPackage().getNsURI();
-    cc.setModel(modelsByURI.computeIfAbsent(modelURI, (uri) -> {
-      ContributingModel m = vlFactory.createContributingModel();
-      m.setURI(uri);
-      weavingModel.getContributingModels().add(m);
-      return m;
-    }));
-    return cc;
+    return matches.stream()
+      .map(m -> (EObject) (rightHand ? m.getLeft() : m.getRight()))
+      .collect(Collectors.toList());
   }
 
 }

@@ -1,0 +1,3 @@
+viewpoint=../../viewpoints/addassoc/bidirectional-many.eviewpoint
+contributingModels=A::../../models/minimalA.xmi,B::../../models/minimalB.xmi
+matchingModel=many-ref.ecl

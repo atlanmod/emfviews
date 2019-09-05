@@ -48,6 +48,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -60,6 +61,8 @@ import org.atlanmod.emfviews.core.ViewpointResource;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksFactory;
 import org.atlanmod.emfviews.virtuallinks.VirtualLinksPackage;
 import org.atlanmod.emfviews.virtuallinks.WeavingModel;
+import org.atlanmod.emfviews.virtuallinks.delegator.VirtualLinksDelegator;
+import org.atlanmod.emfviews.virtuallinksepsilondelegate.EclDelegate;
 import org.atlanmod.sexp2emf.Sexp2EMF;
 
 // Fix the run order since Eclipse is incapable of doing that for the output.
@@ -154,6 +157,7 @@ public class TestEMFViews {
       // BPMN Process
       EObject p = ba.eContents().get(0);
       EObject dp = (EObject) eGet(p, "detailedProcess");
+      assertNotNull(dp);
       assertEquals("bpmn2", eGet(dp.eClass().eContainer(), "name"));
     }
   }
@@ -954,6 +958,195 @@ public class TestEMFViews {
     assertEquals(Arrays.asList(A), C.getEAllSuperTypes());
   }
 
+  @Test
+  public void lazyECLRuleMatching() throws Exception {
+    // A virtual feature + an ECL matching file will lazily call the ECL rule
+    // only when accessing the feature for the first time
+
+    // Setup
+    try (CountExecutedRulesEclDelegate delegate = new CountExecutedRulesEclDelegate()) {
+      View v = loadView("views/lazy-rule/single-ref.eview");
+
+      // The rule has not been executed
+      assertNull(delegate.executeCounter.get("assoc"));
+
+      EList<EObject> c = v.getVirtualContents();
+      EObject A = c.get(0);
+      EObject B = c.get(1);
+
+      // B is present
+      assertEquals(B, eGet(A, "assoc"));
+
+      // Multiple accesses do not populate the features more than once
+      assertEquals(B, eGet(A, "assoc"));
+      assertEquals(B, eGet(A, "assoc"));
+
+      // The rule has been executed exactly once
+      assertEquals(1, (int)delegate.executeCounter.get("assoc"));
+    }
+  }
+
+  @Test
+  public void lazyECLRuleMatchingWithOpposite() throws Exception {
+    // Accessing the opposite of a lazy rule still triggers the rule
+
+    // Setup
+    try (CountExecutedRulesEclDelegate delegate = new CountExecutedRulesEclDelegate()) {
+      View v = loadView("views/lazy-rule/opposite.eview");
+
+      // The rule has not been executed
+      assertNull(delegate.executeCounter.get("refToB"));
+
+      EList<EObject> c = v.getVirtualContents();
+      EObject A = c.get(0);
+      EObject B = c.get(1);
+
+      // A is in the opposite
+      assertEquals(A, eGet(B, "refToA"));
+
+      // The forward feature is populated
+      assertEquals(B, eGet(A, "refToB"));
+
+      // Multiple accesses do not populate the features more than once
+      assertEquals(B, eGet(A, "refToB"));
+      assertEquals(A, eGet(B, "refToA"));
+      assertEquals(B, eGet(A, "refToB"));
+      assertEquals(A, eGet(B, "refToA"));
+
+      // The rule has been executed exactly twice
+      assertEquals(2, (int)delegate.executeCounter.get("refToB"));
+    }
+  }
+
+  @Test
+  public void lazyECLRuleMatchingManyAssoc() throws Exception {
+    // Idem but for virtual reference with -1 upper bound
+
+    // Setup
+    try (CountExecutedRulesEclDelegate delegate = new CountExecutedRulesEclDelegate()) {
+      View v = loadView("views/lazy-rule/many-ref.eview");
+
+      // The rule has not been executed
+      assertNull(delegate.executeCounter.get("manyB"));
+
+      EList<EObject> c = v.getVirtualContents();
+      EObject A = c.get(0);
+      EObject B = c.get(1);
+
+      // B is present
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+
+      // Multiple accesses do not populate the features more than once
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+
+      // The rule has been executed exactly once
+      assertEquals(1, (int)delegate.executeCounter.get("manyB"));
+    }
+  }
+
+  @Test
+  public void lazyECLRuleMatchingManyAssocOpposite() throws Exception {
+    // Idem but for virtual reference with -1 upper bound
+    // browsing from the opposite feature first
+
+    // Setup
+    try (CountExecutedRulesEclDelegate delegate = new CountExecutedRulesEclDelegate()) {
+      View v = loadView("views/lazy-rule/many-ref.eview");
+
+      // The rule has not been executed
+      assertNull(delegate.executeCounter.get("manyB"));
+
+      EList<EObject> c = v.getVirtualContents();
+      EObject A = c.get(0);
+      EObject B = c.get(1);
+
+      // A is in the opposite
+      assertEquals(Arrays.asList(A), eGet(B, "manyA"));
+
+      // The forward feature is now populated
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+
+      // Multiple accesses do not populate the features more than once
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+      assertEquals(Arrays.asList(A), eGet(B, "manyA"));
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+      assertEquals(Arrays.asList(A), eGet(B, "manyA"));
+
+      // The rule has been executed exactly twice
+      assertEquals(2, (int)delegate.executeCounter.get("manyB"));
+    }
+  }
+
+  @Test
+  public void lazyECLRuleMatchingManyAssocAsymmetric() throws Exception {
+    // Idem but for virtual reference with -1 upper bound
+    // with an upper bound 1 opposite
+
+    // Setup
+    try (CountExecutedRulesEclDelegate delegate = new CountExecutedRulesEclDelegate()) {
+      View v = loadView("views/lazy-rule/many-ref-asymmetric.eview");
+
+      // The rule has not been executed
+      assertNull(delegate.executeCounter.get("manyB"));
+
+      EList<EObject> c = v.getVirtualContents();
+      EObject A = c.get(0);
+      EObject B = c.get(1);
+
+      // B is present
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+
+      // A is the opposite
+      assertEquals(A, eGet(B, "refToA"));
+
+      // The forward feature is now populated
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+
+      // Multiple accesses do not populate the features more than once
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+      assertEquals(A, eGet(B, "refToA"));
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+      assertEquals(A, eGet(B, "refToA"));
+
+      // The rule has been executed exactly twice
+      assertEquals(2, (int)delegate.executeCounter.get("manyB"));
+    }
+  }
+
+  @Test
+  public void lazyECLRuleMatchingManyAssocAsymmetricOpposite() throws Exception {
+    // Idem but for virtual reference with -1 upper bound
+    // with an upper bound 1 opposite, starting from the opposite
+
+    // Setup
+    try (CountExecutedRulesEclDelegate delegate = new CountExecutedRulesEclDelegate()) {
+      View v = loadView("views/lazy-rule/many-ref-asymmetric.eview");
+
+      // The rule has not been executed
+      assertNull(delegate.executeCounter.get("manyB"));
+
+      EList<EObject> c = v.getVirtualContents();
+      EObject A = c.get(0);
+      EObject B = c.get(1);
+
+      // A is the opposite
+      assertEquals(A, eGet(B, "refToA"));
+
+      // The forward feature is now populated
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+
+      // Multiple accesses do not populate the features more than once
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+      assertEquals(A, eGet(B, "refToA"));
+      assertEquals(Arrays.asList(B), eGet(A, "manyB"));
+      assertEquals(A, eGet(B, "refToA"));
+
+      // The rule has been executed exactly twice
+      assertEquals(2, (int)delegate.executeCounter.get("manyB"));
+    }
+  }
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Helpers for dealing with EMF resources and packages
 
@@ -1050,13 +1243,37 @@ public class TestEMFViews {
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Helpers for handling paths
+  // Other helpers
 
   // @Correctness: not sure if this is platform-agnostic
   static String here = new File(".").getAbsolutePath();
 
   URI resourceURI(String relativePath) {
     return URI.createFileURI(here + "/resources/" + relativePath);
+  }
+
+  // Helper class to replace the EclDelegate with one that counts the number of times
+  // a given rule has been called.  Useful for testing lazy rules.
+  // Implements AutoCloseable to restore the VirtualLinksDelegator state.
+  static class CountExecutedRulesEclDelegate extends EclDelegate implements AutoCloseable {
+    Map<String, Integer> executeCounter = new HashMap<>();
+
+    public CountExecutedRulesEclDelegate() {
+      VirtualLinksDelegator.register("ecl", this);
+      VirtualLinksDelegator.skipRegistry = true;
+    }
+
+    @Override
+    public List<EObject> executeMatchRule(String ruleName, EObject param, boolean rightHand) throws EolRuntimeException {
+      Integer c = executeCounter.get(ruleName);
+      executeCounter.put(ruleName, c == null ? 1 : c + 1);
+      return super.executeMatchRule(ruleName, param, rightHand);
+    }
+
+    @Override
+    public void close() throws Exception {
+      VirtualLinksDelegator.skipRegistry = false;
+    }
   }
 
 }

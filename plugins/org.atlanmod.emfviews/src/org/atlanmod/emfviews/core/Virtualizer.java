@@ -16,6 +16,8 @@
 
 package org.atlanmod.emfviews.core;
 
+import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
@@ -27,6 +29,8 @@ import org.atlanmod.emfviews.elements.VirtualEObject;
 public interface Virtualizer {
   VirtualEObject getVirtual(EObject o);
   EList<EObject> getVirtual(EList<EObject> list);
+
+  List<EObject> getMatchesForRule(String ruleName, EObject param, boolean rightHand);
 
   /** Tell the virtualizer to correctly handle filtered objects */
   void activateObjectFiltering();

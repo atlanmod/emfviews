@@ -1,0 +1,2 @@
+contributingMetamodels=A::../../metamodels/minimalA.ecore,B::../../metamodels/minimalB.ecore
+weavingModel=bidirectional-asymmetric.xmi

@@ -170,28 +170,35 @@ public class ViewResource extends ResourceImpl {
     return contributingModels;
   }
 
-  private WeavingModel loadWeavingModel(Map<String, Resource> models) {
-    // Get the weaving model from the matching model, if there is one
-    WeavingModel weavingModel = null;
+  private VirtualLinksDelegator loadMatchingModel(Map<String, Resource> models) {
+    // Initialize the virtual links delegator from a matching model, if there is one
+    VirtualLinksDelegator vld = null;
 
     if (matchingModelPath != null && !matchingModelPath.isEmpty()) {
       URI matchingModelURI = URI.createURI(matchingModelPath).resolve(getURI());
-      VirtualLinksDelegator vld = new VirtualLinksDelegator(matchingModelURI);
+      vld = new VirtualLinksDelegator(matchingModelURI);
 
+      // Initialize only for now; rules are executed lazily in View.getMatchesForRule
       try {
-        weavingModel = vld.createWeavingModel(models);
+        vld.init(models);
       } catch (Exception e) {
         e.printStackTrace();
         // see @ResourceErrors
-        getErrors().add(new Err("Exception while creating weaving model from matching model: %s", e.toString()));
+        getErrors().add(new Err("Exception while initializing matching model: %s", e.toString()));
       }
-    } else if (weavingModelPath != null) {
-      // Otherwise, the weaving model should be provided in the eview file
+    }
+
+    return vld;
+  }
+
+  private WeavingModel loadWeavingModel() {
+    WeavingModel weavingModel = Viewpoint.emptyWeavingModel;
+
+    if (weavingModelPath != null) {
+      // The weaving model is provided in the eview file
       URI weavingModelURI = URI.createURI(weavingModelPath).resolve(getURI());
       Resource weavingModelResource = new ResourceSetImpl().getResource(weavingModelURI, true);
       weavingModel = (WeavingModel) weavingModelResource.getContents().get(0);
-    } else {
-      weavingModel = Viewpoint.emptyWeavingModel;
     }
 
     return weavingModel;
@@ -204,10 +211,12 @@ public class ViewResource extends ResourceImpl {
     // Load everything and create the view
     Viewpoint viewpoint = loadViewpoint();
     Map<String, Resource> contributingModels = loadModels(viewpoint.getContributingEPackages());
-    WeavingModel weavingModel = loadWeavingModel(contributingModels);
+    VirtualLinksDelegator vld = loadMatchingModel(contributingModels);
+    WeavingModel weavingModel = loadWeavingModel();
 
     try {
       setView(new View(viewpoint, new ArrayList<>(contributingModels.values()), weavingModel));
+      view.virtualLinksDelegator = vld;
     } catch (Exception e) {
       e.printStackTrace();
       // see @ResourceErrors

@@ -13,15 +13,16 @@
 
 package org.atlanmod.emfviews.virtuallinks.delegator;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-
-import org.atlanmod.emfviews.virtuallinks.WeavingModel;
 
 public interface IVirtualLinksDelegate {
 
-  WeavingModel createWeavingModel(URI linksDslFile, Map<String, Resource> inputModels);
+  void init(URI linksDslFile, Map<String, Resource> inputModels);
+  List<EObject> executeMatchRule(String ruleName, EObject param, boolean rightHand) throws Exception;
 
 }
