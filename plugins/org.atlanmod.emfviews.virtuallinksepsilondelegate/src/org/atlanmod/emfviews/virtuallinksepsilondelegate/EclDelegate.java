@@ -21,6 +21,7 @@ package org.atlanmod.emfviews.virtuallinksepsilondelegate;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -66,6 +67,11 @@ import org.atlanmod.emfviews.virtuallinks.delegator.IVirtualLinksDelegate;
 public class EclDelegate implements IVirtualLinksDelegate {
 
   private EclModule module;
+  private Map<String, Lambda> compiledRules;
+
+  static interface Lambda {
+    Object exec(Object ...args) throws EolRuntimeException;
+  }
 
   @Override
   public void init(URI linksDslURI, Map<String, Resource> inputModels) {
@@ -102,12 +108,17 @@ public class EclDelegate implements IVirtualLinksDelegate {
 
     module.getContext().setOperationFactory(new EclOperationFactory());
 
-    // Add input models
+    // Add input models and grab the metamodel URI
     for (Entry<String, Resource> e : inputModels.entrySet()) {
       String name = e.getKey();
       Resource modelResource = e.getValue();
       EmfModel inputModel = new InMemoryEmfModel(name, modelResource);
       module.getContext().getModelRepository().addModel(inputModel);
+    }
+
+    compiledRules = new HashMap<>();
+    for (MatchRule m: module.getMatchRules()) {
+      compiledRules.put(m.getName(), EclPartialEvaluator.compileMatchRule(m, module.getContext()));
     }
   }
 
@@ -129,6 +140,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       return Collections.emptyList();
 
     MatchRule rule = ruleOpt.get();
+    Lambda compiledRule = compiledRules.get(ruleName);
 
     // Now execute it
 
@@ -145,13 +157,8 @@ public class EclDelegate implements IVirtualLinksDelegate {
       Object left  = rightHand ? other : param;
       Object right = rightHand ? param : other;
 
-      // @Optimize: letting ECL interpret the rules for each instance is slow.
-      // Instead, we could compile the rule to something faster via partial evaluation
-      // or a custom interpreter which spits out lambdas/bytecode.
-      Match m = rule.match(left, right, context, false, null, false);
-      if (m.isMatching()) {
-        matches.add(m);
-      }
+      if ((boolean) compiledRule.exec(left, right))
+        matches.add(new Match(left, right, true));
     }
 
     return matches.stream()
