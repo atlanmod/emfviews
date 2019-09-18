@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MEL Metamodel Extension Language
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.4.0
 Bundle-SymbolicName: org.atlanmod.emfviews.mel;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;bundle-version="[2.14.0,3.0.0)",

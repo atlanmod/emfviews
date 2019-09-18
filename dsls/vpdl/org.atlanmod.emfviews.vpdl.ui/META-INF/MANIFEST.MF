@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VPDL Viewpoint Description Language UI
 Bundle-Vendor: Atlanmod
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.4.0
 Bundle-SymbolicName: org.atlanmod.emfviews.vpdl.ui;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.atlanmod.emfviews.vpdl;bundle-version="0.3.0",

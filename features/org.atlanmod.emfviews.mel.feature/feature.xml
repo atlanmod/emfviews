@@ -2,7 +2,7 @@
 <feature
       id="org.atlanmod.emfviews.mel.feature"
       label="MEL Metamodel Extension Language"
-      version="0.3.0.qualifier"
+      version="0.4.0"
       provider-name="Atlanmod">
 
    <description url="https://github.com/atlanmod/emfviews">

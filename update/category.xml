@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.atlanmod.emfviews.feature_0.3.0.qualifier.jar" id="org.atlanmod.emfviews.feature" version="0.3.0.qualifier">
+   <feature url="features/org.atlanmod.emfviews.feature_0.4.0.jar" id="org.atlanmod.emfviews.feature" version="0.4.0">
       <category name="org.atlanmod.emfviews"/>
    </feature>
-   <feature url="features/org.atlanmod.emfviews.mel.feature_0.3.0.qualifier.jar" id="org.atlanmod.emfviews.mel.feature" version="0.3.0.qualifier">
+   <feature url="features/org.atlanmod.emfviews.mel.feature_0.4.0.jar" id="org.atlanmod.emfviews.mel.feature" version="0.4.0">
       <category name="org.atlanmod.emfviews.dsl"/>
    </feature>
-   <feature url="features/org.atlanmod.emfviews.vpdl.feature_0.3.0.qualifier.jar" id="org.atlanmod.emfviews.vpdl.feature" version="0.3.0.qualifier">
+   <feature url="features/org.atlanmod.emfviews.vpdl.feature_0.4.0.jar" id="org.atlanmod.emfviews.vpdl.feature" version="0.4.0">
       <category name="org.atlanmod.emfviews.dsl"/>
    </feature>
-   <feature url="features/org.atlanmod.emfviews.builders.ecl.feature_0.3.0.qualifier.jar" id="org.atlanmod.emfviews.builders.ecl.feature" version="0.3.0.qualifier">
+   <feature url="features/org.atlanmod.emfviews.builders.ecl.feature_0.4.0.jar" id="org.atlanmod.emfviews.builders.ecl.feature" version="0.4.0">
       <category name="org.atlanmod.emfviews.builders"/>
    </feature>
    <category-def name="org.atlanmod.emfviews" label="EMF Views Core">

@@ -2,7 +2,7 @@
 <feature
       id="org.atlanmod.emfviews.feature"
       label="EMF Views"
-      version="0.3.0.qualifier"
+      version="0.4.0"
       provider-name="Atlanmod">
 
    <description url="http://www.atlanmod.org/emfviews">
