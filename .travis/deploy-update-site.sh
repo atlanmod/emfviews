@@ -12,6 +12,11 @@ export SRC_FOLDER="update/target/repository"
 export DEST_FOLDER="emfviews/snapshot"
 export DEPLOY_KEY="deploy-key-updates"
 
+# When the commit is a release tag, deploy the update site to that folder instead
+if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    DEST_FOLDER="emfviews/${TRAVIS_TAG}"
+fi
+
 export OUT_DIR="out-updates"
 
 # Add an index.html that instructs users browing the update site URL in a

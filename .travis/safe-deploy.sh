@@ -88,6 +88,8 @@ cd ..
 # Clean out existing contents
 rm -rf ${OUT_DIR}/${DEST_FOLDER} || exit 0
 
+# Ensure destination folder parent exists
+mkdir -p `dirname ${OUT_DIR}/${DEST_FOLDER}`
 # Replace with fresh contents
 cp -r ${SRC_FOLDER} ${OUT_DIR}/${DEST_FOLDER}
 
@@ -134,3 +136,6 @@ if [ "$KEEP_HISTORY" = true ]; then
 else
     git push --force $SSH_REPO ${TARGET_BRANCH_TEMP}:${TARGET_BRANCH}
 fi
+
+# Clean cloned repo
+rm -rf ${OUT_DIR}
