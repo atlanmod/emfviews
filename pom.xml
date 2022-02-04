@@ -10,9 +10,9 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>1.4.0</tycho-version>
+    <tycho-version>1.7.0</tycho-version>
     <eclipse>http://download.eclipse.org/releases/2018-09/201809191002/</eclipse>
-    <eclipse-epsilon>http://download.eclipse.org/epsilon/updates/</eclipse-epsilon>
+    <eclipse-epsilon>http://download.eclipse.org/epsilon/updates/1.5/</eclipse-epsilon>
     <xtext-version>2.15.0</xtext-version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
