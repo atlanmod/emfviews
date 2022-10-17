@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.atlanmod.emfviews</groupId>
-    <artifactId>mel</artifactId>
-    <version>0.4.0</version>
-  </parent>
+    <parent>
+        <groupId>org.atlanmod.emfviews</groupId>
+        <artifactId>mel</artifactId>
+        <version>0.4.0</version>
+    </parent>
 
-  <artifactId>org.atlanmod.emfviews.mel</artifactId>
+    <artifactId>org.atlanmod.emfviews.mel</artifactId>
 
-  <properties>
-    <mwe2-path>${basedir}/src/org/atlanmod/emfviews/mel/GenerateMel.mwe2</mwe2-path>
-    <language-fqn>org.atlanmod.emfviews.mel</language-fqn>
-    <atl.module>MEL2VirtualLinks</atl.module>
-  </properties>
+    <properties>
+        <mwe2-path>${basedir}/src/org/atlanmod/emfviews/mel/GenerateMel.mwe2</mwe2-path>
+        <language-fqn>org.atlanmod.emfviews.mel</language-fqn>
+        <atl.module>MEL2VirtualLinks</atl.module>
+    </properties>
 
-  <packaging>eclipse-plugin</packaging>
+    <packaging>eclipse-plugin</packaging>
 
-  <build>
-    <plugins>
+    <build>
+        <plugins>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-      </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+            </plugin>
 
-      <plugin>
-        <groupId>org.eclipse.xtend</groupId>
-        <artifactId>xtend-maven-plugin</artifactId>
-      </plugin>
+            <plugin>
+                <groupId>org.eclipse.xtend</groupId>
+                <artifactId>xtend-maven-plugin</artifactId>
+            </plugin>
 
-      <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-antrun-plugin</artifactId>
-      </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+            </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clean-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>mwe2-clean</id>
-            <phase>clean</phase>
-          </execution>
-        </executions>
-      </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>mwe2-clean</id>
+                        <phase>clean</phase>
+                    </execution>
+                </executions>
+            </plugin>
 
-    </plugins>
-  </build>
+        </plugins>
+    </build>
 
 </project>

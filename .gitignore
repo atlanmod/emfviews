@@ -29,6 +29,11 @@ xtend-gen/
 .idea
 
 ##
+## Visio Studio Code files
+##
+.vscode/
+
+##
 ## Maven Files
 ##
 target/
