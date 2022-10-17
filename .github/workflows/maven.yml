@@ -22,7 +22,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+    - name: Clone sexp2emf
+      uses: actions/checkout@v2
+      with:
+        repository: atlanmod/sexp2emf
+        path: './sexp2emf'
     - name: Build sexp2emf
-      run: git clone https://github.com/atlanmod/sexp2emf.git && mvn -f ./sexp2emf/pom.xml install
+      run: mvn -f ./sexp2emf/pom.xml install
     - name: Build with Maven
       run: ./mvnw -B package --file pom.xml
