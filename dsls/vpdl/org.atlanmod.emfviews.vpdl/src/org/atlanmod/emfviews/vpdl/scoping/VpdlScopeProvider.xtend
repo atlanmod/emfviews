@@ -64,12 +64,12 @@ class VpdlScopeProvider extends AbstractVpdlScopeProvider {
 
     else if (context instanceof Attribute && reference == VpdlPackage.Literals.ATTRIBUTE__ATTRIBUTE) {
       val sf = context.eContainer.eContainer as SelectFeature
-      return Scopes.scopeFor(sf.class_.EStructuralFeatures)
+      return Scopes.scopeFor(sf.class_.EAllStructuralFeatures)
     }
 
     else if (context instanceof SelectFeatureRest && reference == VpdlPackage.Literals.ATTRIBUTE__ATTRIBUTE) {
       val sf = context.eContainer as SelectFeature
-      return Scopes.scopeFor(sf.class_.EStructuralFeatures)
+      return Scopes.scopeFor(sf.class_.EAllStructuralFeatures)      
     }
 
     return super.getScope(context, reference)

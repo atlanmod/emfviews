@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -43,31 +44,41 @@ public final class EMFViewsUtil {
    * @return the matching object, if it can be found
    */
   public static Optional<EObject> findElement(EObject root, String path) {
-    String[] components = path.split("\\.");
+    String[] pathComponents = path.split("\\.");
     Queue<EObject> objs = new ArrayDeque<>();
     objs.addAll(root.eContents());
 
     // Try to match each component with each object in the queue
-    EObject o = null;
-    for (String comp : components) {
+    EObject possibleMatchedObject = null;
+    for (String pathComp : pathComponents) {
       boolean componentMatched = false;
+      
       while (!componentMatched) {
-        o = objs.poll();
-        // No more objects to search, give up since we haven't matched all the
-        // components
-        if (o == null) {
+        possibleMatchedObject = objs.poll();
+        
+        if (possibleMatchedObject == null) {
+          // No more objects to search, give up since we haven't matched all the
+          // components
           return Optional.empty();
         }
-        EStructuralFeature nameFeature = o.eClass().getEStructuralFeature("name");
+        
         // Can only match named features
+        EStructuralFeature nameFeature = possibleMatchedObject.eClass().getEStructuralFeature("name");
+        
         if (nameFeature != null) {
-          String objName = (String) o.eGet(nameFeature);
-          if (comp.equals(objName)) {
-            // Match: continue with the next component and the contents of the
-            // matching object
-            objs.clear();
-            objs.addAll(o.eContents());
-            componentMatched = true;
+          String objName = (String) possibleMatchedObject.eGet(nameFeature);
+          
+          if (pathComp.equals(objName)) {
+	            // Match: continue with the next component and the contents of the
+	            // matching object
+	            objs.clear();
+	            objs.addAll(possibleMatchedObject.eContents());
+				if (possibleMatchedObject instanceof EClass) {
+					// since eContents does not get attributes from EClasses, this extra step is necessary to get it
+					EClass possibleMatchedClass = (EClass) possibleMatchedObject;
+					objs.addAll(possibleMatchedClass.getEAllAttributes());
+				}
+				componentMatched = true;
           }
         }
         // Mismatch: continue with the next object in the queue
@@ -76,7 +87,7 @@ public final class EMFViewsUtil {
 
     // Return the object that matched the last component, or null if the path
     // was empty
-    return Optional.ofNullable(o);
+    return Optional.ofNullable(possibleMatchedObject);
   }
 
   /**
