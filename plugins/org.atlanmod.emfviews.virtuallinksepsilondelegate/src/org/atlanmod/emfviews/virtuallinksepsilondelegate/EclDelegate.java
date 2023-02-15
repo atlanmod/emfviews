@@ -158,7 +158,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
       Object right = rightHand ? param : other;
 
       if ((boolean) compiledRule.exec(left, right))
-        matches.add(new Match(left, right, true));
+        matches.add(new Match(left, right, true, null));
     }
 
     return matches.stream()

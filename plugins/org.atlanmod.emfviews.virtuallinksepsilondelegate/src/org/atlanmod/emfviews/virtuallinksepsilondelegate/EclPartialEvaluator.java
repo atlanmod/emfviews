@@ -24,7 +24,7 @@ import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.ecl.dom.MatchRule;
 import org.eclipse.epsilon.ecl.execute.context.IEclContext;
 import org.eclipse.epsilon.emc.emf.EmfModelMetamodel;
-import org.eclipse.epsilon.eol.compile.m3.MetaClass;
+import org.eclipse.epsilon.eol.m3.MetaClass;
 import org.eclipse.epsilon.eol.dom.BooleanLiteral;
 import org.eclipse.epsilon.eol.dom.EqualsOperatorExpression;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
@@ -78,7 +78,7 @@ public class EclPartialEvaluator {
     try {
       return compile(block.getBody(), Arrays.asList(left.getName(), right.getName()), context);
     } catch (CompilationException ex) {
-      return args -> m.match(args[0], args[1], context, false, null, false).isMatching();
+      return args -> m.match(args[0], args[1], context, null, false).isMatching();
     }
   }
 
@@ -129,7 +129,7 @@ public class EclPartialEvaluator {
     else if (expr instanceof PropertyCallExpression) {
       PropertyCallExpression e = (PropertyCallExpression) expr;
       Lambda target = compile(e.getTargetExpression(), vars, context);
-      String name = e.getPropertyNameExpression().getName();
+      String name = e.getName();
 
       // @Optimize: Could determine the property getter statically, and even
       // hardcode some (i.e., eGet).
