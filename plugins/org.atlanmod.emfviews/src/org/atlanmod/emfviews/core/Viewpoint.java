@@ -46,7 +46,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
-
 import org.atlanmod.emfviews.elements.BaseVirtualElement;
 import org.atlanmod.emfviews.elements.VirtualEAttribute;
 import org.atlanmod.emfviews.elements.VirtualEClass;
@@ -360,7 +359,7 @@ public class Viewpoint implements EcoreVirtualizer {
 				filteredElements.add(baseObject);
 			}
 
-			// In whitelist mode, a filter implies that all the parent elements
+			// In whitelist mode, a filter implies that all the parent (container) elements
 			// are also filtered (the alternative is to explicitly filter all
 			// containers, which is tedious)
 			if (whitelist) {
@@ -599,7 +598,8 @@ public class Viewpoint implements EcoreVirtualizer {
 	}
 
 	protected EObject getVirtualGeneric(EObject o) {
-		// ignore null objects and also some objects not useful for views, like
+		// ignore null objects and also some objects not useful for views for the
+		// moment, like
 		// EAnnotations, EOperations and EParameters for example
 		if (o == null || o instanceof EAnnotation || o instanceof EOperation || o instanceof EParameter
 				|| o instanceof EStringToStringMapEntryImpl) {

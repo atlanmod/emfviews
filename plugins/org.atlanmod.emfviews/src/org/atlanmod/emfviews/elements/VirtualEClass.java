@@ -209,7 +209,7 @@ public class VirtualEClass extends VirtualEClassifier<EClass>
     // LinkedHashSet preserves the insertion order for stability.
     Set<EStructuralFeature> elems = new LinkedHashSet<>();
 
-    for (EClass sup : getESuperTypes()) {
+    for (EClass sup : getEAllSuperTypes()) {
       // Add all (filtered and non-filtered) features from supertypes
       elems.addAll(((VirtualEClass) sup).getAllFeatures());
     }
