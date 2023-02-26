@@ -339,7 +339,7 @@ public class Viewpoint implements EcoreVirtualizer {
 		// Since the order of filter analysis are not predictable, it's necessary to
 		// hold the excluded elements into a list to ensure that they will not be
 		// included again by mistake
-		List<EAttribute> eliminatedAttr = new ArrayList<>();
+		List<EStructuralFeature> eliminatedAttr = new ArrayList<>();
 
 		for (Filter filter : weavingModel.getFilters()) {
 			ConcreteElement elementToFind = filter.getTarget();
@@ -367,11 +367,13 @@ public class Viewpoint implements EcoreVirtualizer {
 
 				for (EClass superClass : allSuperTypes) {
 					filteredElements.add(superClass);
-					Iterator<EAttribute> superTypeAttrIt = superClass.getEAllAttributes().iterator();
+					Iterator<EStructuralFeature> superTypeAttrIt = superClass.getEAllStructuralFeatures().iterator();
 					while (superTypeAttrIt.hasNext()) {
-						EAttribute superTypeAttrNext = superTypeAttrIt.next();
-						if (!eliminatedAttr.contains(superTypeAttrNext)) {
-							filteredElements.add(superTypeAttrNext);
+						EStructuralFeature superTypeAttrNext = superTypeAttrIt.next();
+						if (superTypeAttrNext instanceof EAttribute || superTypeAttrNext instanceof EReference) {
+							if (!eliminatedAttr.contains(superTypeAttrNext)) {
+								filteredElements.add(superTypeAttrNext);
+							}
 						}
 					}
 				}
@@ -402,12 +404,15 @@ public class Viewpoint implements EcoreVirtualizer {
 					allSuperTypesOfParent.addAll(parentBaseObjecteClass.getEAllSuperTypes());
 
 					for (EClass superClass : allSuperTypesOfParent) {
-						Iterator<EAttribute> superTypeAttrIt = superClass.getEAllAttributes().iterator();
+						Iterator<EStructuralFeature> superTypeAttrIt = superClass.getEAllStructuralFeatures()
+								.iterator();
 						while (superTypeAttrIt.hasNext()) {
-							EAttribute superTypeAttrNext = superTypeAttrIt.next();
-							if (!superTypeAttrNext.equals(baseObject)) {
-								filteredElements.remove(superTypeAttrNext);
-								eliminatedAttr.add(superTypeAttrNext);
+							EStructuralFeature superTypeAttrNext = superTypeAttrIt.next();
+							if (superTypeAttrNext instanceof EAttribute || superTypeAttrNext instanceof EReference) {
+								if (!superTypeAttrNext.equals(baseObject)) {
+									filteredElements.remove(superTypeAttrNext);
+									eliminatedAttr.add(superTypeAttrNext);
+								}
 							}
 						}
 					}
