@@ -336,6 +336,11 @@ public class Viewpoint implements EcoreVirtualizer {
 	private void applyFilters(EPackage.Registry registry) {
 		whitelist = weavingModel.isWhitelist();
 
+		// Since the order of filter analysis are not predictable, it's necessary to
+		// hold the excluded elements into a list to ensure that they will not be
+		// included again by mistake
+		List<EAttribute> eliminatedAttr = new ArrayList<>();
+
 		for (Filter filter : weavingModel.getFilters()) {
 			ConcreteElement elementToFind = filter.getTarget();
 
@@ -349,14 +354,65 @@ public class Viewpoint implements EcoreVirtualizer {
 				baseObjectConcrete.setModel(elementToFind.getModel());
 				baseObjectConcrete.setPath(elementToFind.getPath().replace(".*", ""));
 				baseObject = findEObject(baseObjectConcrete, registry);
+				filteredElements.add(baseObject);
+
+				// Since the viewpoint should include every attribute (*), it's necessary to add
+				// all superTypes and their attributes to the filtered elements, so the view
+				// will be able to virtualize everything
+				List<EClass> allSuperTypes = new ArrayList<EClass>();
+				if (baseObject instanceof EClass) {
+					EClass baseObjecteClass = (EClass) baseObject;
+					allSuperTypes.addAll(baseObjecteClass.getEAllSuperTypes());
+				}
+
+				for (EClass superClass : allSuperTypes) {
+					filteredElements.add(superClass);
+					Iterator<EAttribute> superTypeAttrIt = superClass.getEAllAttributes().iterator();
+					while (superTypeAttrIt.hasNext()) {
+						EAttribute superTypeAttrNext = superTypeAttrIt.next();
+						if (!eliminatedAttr.contains(superTypeAttrNext)) {
+							filteredElements.add(superTypeAttrNext);
+						}
+					}
+				}
+
+				// Also filter all contents (*) from the baseObject
 				Iterator<EObject> it = baseObject.eAllContents();
 				while (it.hasNext()) {
-					filteredElements.add(it.next());
+					EObject next = it.next();
+					filteredElements.add(next);
 				}
 			} else {
 				// Otherwise it's a single object
 				baseObject = findEObject(elementToFind, registry);
 				filteredElements.add(baseObject);
+
+				// Business logic: When the viewpoint includes a single object, sometimes is
+				// necessary to exclude its supertypes from filtered elements
+				// even when other elements previously included them
+				// e.g., elements inheritance are like A <- B and A <- C, but not B <- C.
+				// The view includes all elements of B (so also everything from A), but just a
+				// single attribute of C, which makes it mandatory, to exclude (at least some) A
+				// attributes
+				EObject parentBaseObject = baseObject.eContainer();
+				List<EClass> allSuperTypesOfParent = new ArrayList<EClass>();
+				if (parentBaseObject instanceof EClass) {
+					EClass parentBaseObjecteClass = (EClass) parentBaseObject;
+					allSuperTypesOfParent.add(parentBaseObjecteClass);
+					allSuperTypesOfParent.addAll(parentBaseObjecteClass.getEAllSuperTypes());
+
+					for (EClass superClass : allSuperTypesOfParent) {
+						Iterator<EAttribute> superTypeAttrIt = superClass.getEAllAttributes().iterator();
+						while (superTypeAttrIt.hasNext()) {
+							EAttribute superTypeAttrNext = superTypeAttrIt.next();
+							if (!superTypeAttrNext.equals(baseObject)) {
+								filteredElements.remove(superTypeAttrNext);
+								eliminatedAttr.add(superTypeAttrNext);
+							}
+						}
+					}
+				}
+
 			}
 
 			// In whitelist mode, a filter implies that all the parent (container) elements
