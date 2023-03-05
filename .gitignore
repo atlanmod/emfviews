@@ -9,6 +9,8 @@
 .metadata/
 .settings/
 bin/
+.project
+*/.project
 
 # Xtext
 src-gen/
