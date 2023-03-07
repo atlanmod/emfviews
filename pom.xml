@@ -12,13 +12,13 @@
     <properties>
         <tycho-version>2.7.5</tycho-version>
         <epsilon.version>1.5</epsilon.version>
-        <xtext.version>2.28.0</xtext.version>
+        <xtext.version>2.29.0</xtext.version>
         <eclipse.url>https://download.eclipse.org/releases/2022-12/202212071000/</eclipse.url>
         <epsilon.url>https://download.eclipse.org/epsilon/updates/${epsilon.version}/</epsilon.url>
         <xtext.url>https://download.eclipse.org/modeling/tmf/xtext/updates/releases/${xtext.version}/</xtext.url>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <emf.version>[2.12.0,)</emf.version>
+        <emf.version>[2.14.0,)</emf.version>
     </properties>
 
     <modules>
@@ -72,7 +72,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>1.5.0</version>
+                    <version>1.6.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.eclipse.xtend</groupId>
