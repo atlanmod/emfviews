@@ -12,7 +12,7 @@
   <artifactId>org.atlanmod.emfviews.vpdl</artifactId>
 
   <properties>
-    <mwe2-path>${basedir}/src/org/atlanmod/emfviews/vpdl/GenerateVpdl.mwe2</mwe2-path>
+    <mwe2-path>/${basedir}/src/org/atlanmod/emfviews/vpdl/GenerateVpdl.mwe2</mwe2-path>
     <language-fqn>org.atlanmod.emfviews.vpdl</language-fqn>
     <atl.module>VPDL2VirtualLinks</atl.module>
   </properties>

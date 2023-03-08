@@ -13,6 +13,13 @@
 
   <packaging>pom</packaging>
 
+    <properties>
+        <mwe2-path>/${basedir}/src/org/atlanmod/emfviews/mel/GenerateMel.mwe2</mwe2-path>
+        <language-fqn>org.atlanmod.emfviews.mel</language-fqn>
+        <atl.module>MEL2VirtualLinks</atl.module>
+    </properties>
+
+
   <modules>
     <module>org.atlanmod.emfviews.mel</module>
     <module>org.atlanmod.emfviews.mel.ide</module>
