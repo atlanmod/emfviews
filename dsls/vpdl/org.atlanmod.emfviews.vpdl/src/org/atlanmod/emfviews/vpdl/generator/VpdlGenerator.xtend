@@ -57,8 +57,10 @@ class VpdlGenerator extends AbstractGenerator {
 
     fsa.generateFile(name + '.eviewpoint', resource.compileEviewpoint(fsa))
     fsa.generateFile(name + '.xmi', resource.compileXmi)
-    if (!resource.allRules.empty)
-      fsa.generateFile(name + '.ecl', resource.compileEcl)
+    if (!resource.allRules.empty) {
+//      fsa.generateFile(name + '.ecl', resource.compileEcl)
+		fsa.generateFile(name + '.json', resource.compileJson)
+	}
   }
 
   def String viewpointName(Resource r) {
@@ -98,6 +100,16 @@ class VpdlGenerator extends AbstractGenerator {
       }
     }
     «ENDFOR»
+  '''
+  
+  def CharSequence compileJson(Resource resource) '''
+  	{
+    «FOR r : resource.allRules»
+    «r.condition.prettyPrint»,
+    "CLASS_LEFT":"«r.relation.class_.name»",
+    "CLASS_RIGHT:"«r.relation.classRight.name»",
+    «ENDFOR»
+  	}
   '''
 
   def String compileXmi(Resource r) {
