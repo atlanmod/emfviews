@@ -16,14 +16,18 @@
 
 package org.atlanmod.emfviews.elements;
 
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import org.atlanmod.emfviews.core.EcoreVirtualizer;
@@ -87,7 +91,8 @@ public class BaseVirtualElement<T extends EObject> extends DynamicEObjectImpl im
   public EObject eContainer() {
     EObject c = concrete().eContainer();
 
-    if (c == null) {
+    if (c == null || c instanceof EAnnotation || c instanceof EOperation || c instanceof EParameter
+			|| c instanceof EStringToStringMapEntryImpl) {
       return null;
     } else if (c instanceof EPackage) {
       return virtualizer.getVirtual((EPackage) c);
