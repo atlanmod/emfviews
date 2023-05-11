@@ -137,7 +137,7 @@ public class EclPartialEvaluator {
       return args -> {
         Object source = target.exec(args);
         IPropertyGetter getter = context.getIntrospectionManager().getPropertyGetterFor(source, name, context);
-        return getter.invoke(source, name);
+        return getter.invoke(source, name, context);
       };
     }
 

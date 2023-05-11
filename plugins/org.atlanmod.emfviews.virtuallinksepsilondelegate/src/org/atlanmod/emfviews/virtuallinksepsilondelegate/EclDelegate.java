@@ -152,7 +152,7 @@ public class EclDelegate implements IVirtualLinksDelegate {
     IEclContext context = module.getContext();
     
     //workaround to deal with epsilon 2.4 that apparently clean-up the module when get the context
-    context.setModule(module);
+    //context.setModule(module);
 
     List<Match> matches = new ArrayList<>();
 
