@@ -44,6 +44,8 @@ import org.eclipse.m2m.atl.emftvm.EmftvmFactory
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import org.eclipse.m2m.atl.emftvm.util.DefaultModuleResolver
+import com.google.common.collect.Maps
+import java.util.Map
 
 /*
  * Generates code from your model files on save.
@@ -102,15 +104,20 @@ class VpdlGenerator extends AbstractGenerator {
     «ENDFOR»
   '''
   
-  def CharSequence compileJson(Resource resource) '''
-  	{
-    «FOR r : resource.allRules»
-    «r.condition.prettyPrint»,
-    "CLASS_LEFT":"«r.relation.class_.name»",
-    "CLASS_RIGHT:"«r.relation.classRight.name»",
-    «ENDFOR»
+  def CharSequence compileJson(Resource resource){
+  	val result = Maps::<Object, Object>newHashMap
+  	val subResult = Maps::<Object, Object>newHashMap
+  	
+  	for(r : resource.allRules) {  		
+  		subResult.put("CLASS_LEFT", r.relation.class_.name);
+  		subResult.put("CLASS_RIGHT", r.relation.classRight.name);
+  		val split = (r.condition.prettyPrint as String).split("=");
+  		subResult.put(split.get(0), split.get(1));
+  		result.put(r.relation.name, subResult);		
   	}
-  '''
+  	
+  	return result.prettyPrintJson;
+  }
 
   def String compileXmi(Resource r) {
     val factory = EmftvmFactory.eINSTANCE
@@ -210,6 +217,28 @@ class VpdlGenerator extends AbstractGenerator {
   }
 
   def CharSequence prettyPrint(Lambda l) '''«l.arg» | «l.body.prettyPrint»'''
+  
+  def String prettyPrintJson(Map<Object, Object> map) {
+	var value = ""
 
-
+  	val mapAsString = new StringBuilder("{");
+  	
+    for (Map.Entry<Object, Object> entry : map.entrySet()) {
+        val key = entry.getKey().toString();
+        val valueObj = entry.getValue();
+        if (valueObj instanceof Map) {
+        	value = valueObj.prettyPrintJson;
+        	mapAsString.append("\"").append(key).append("\":").append(value).append(",");
+        } else{
+        	value = valueObj.toString;
+        	mapAsString.append("\"").append(key).append("\":\"").append(value).append("\",");
+        }
+        
+    }
+    
+    mapAsString.deleteCharAt(mapAsString.length() - 1);
+    mapAsString.append("}");
+  	
+  	return mapAsString.toString;
+  }
 }
