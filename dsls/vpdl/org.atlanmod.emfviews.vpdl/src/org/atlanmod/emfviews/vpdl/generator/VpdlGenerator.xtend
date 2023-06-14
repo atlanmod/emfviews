@@ -111,8 +111,9 @@ class VpdlGenerator extends AbstractGenerator {
   	for(r : resource.allRules) {  		
   		subResult.put("CLASS_LEFT", r.relation.class_.name);
   		subResult.put("CLASS_RIGHT", r.relation.classRight.name);
-  		val split = (r.condition.prettyPrint as String).split("=");
-  		subResult.put(split.get(0), split.get(1));
+  		val split = (r.condition.prettyPrint as String).split("<~>");
+  		subResult.put("CLASS_LEFT_EMBEDDINGS", split.get(0).replace("{", "").replace("}",""));
+  		subResult.put("CLASS_RIGHT_EMBEDDINGS",split.get(1).replace("{", "").replace("}",""));
   		result.put(r.relation.name, subResult);		
   	}
   	
