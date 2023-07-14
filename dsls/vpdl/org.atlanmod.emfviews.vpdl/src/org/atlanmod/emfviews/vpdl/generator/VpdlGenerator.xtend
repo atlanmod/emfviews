@@ -116,7 +116,7 @@ class VpdlGenerator extends AbstractGenerator {
 
 			subResult.put("CLASS_LEFT", r.relation.class_.name);
 			subResult.put("CLASS_RIGHT", r.relation.classRight.name);
-			val embeddings = Maps::<Object, Object>newHashMap
+
 			val leftEmbeddings = split.get(0).replace("{", "").replace("}", "")
 			val leftEmbeddingsList = leftEmbeddings.split(',').map[trim]
 			val leftMap = newHashMap
@@ -127,9 +127,19 @@ class VpdlGenerator extends AbstractGenerator {
 			    leftMap.put(key, value)
 			  
 			]
+			
 			val rightEmbeddings = split.get(2).replace("{", "").replace("}", "");
-			subResult.put("EMBEDDINGS", leftMap);
-			subResult.put("CLASS_RIGHT_EMBEDDINGS", split.get(2).replace("{", "").replace("}", ""));
+			val rightEmbeddingsList = rightEmbeddings.split(',').map[trim]
+			val rightMap = newHashMap
+			rightEmbeddingsList.forEach[
+			  
+			    val key = it.trim
+			    val value = "string"
+			    rightMap.put(key, value)
+			  
+			]
+			subResult.put("EMBEDDINGS", leftMap + rightMap);
+			
 			result.put(r.relation.name, subResult);
 		}
 
@@ -293,8 +303,10 @@ class VpdlGenerator extends AbstractGenerator {
 		params.put("LEARNING_RATE", 0.001);
 		params.put("ADD_NEGATIVE_TRAINING", false);
 		params.put("NEG_SAMPLING_RATIO", 2.0);
-		params.put("LEFT_PATH", "");
-		params.put("RIGHT_PATH", "");
+		params.put("TRAINING_SPLIT", 0.1);
+		params.put("VALIDATION_SPLIT", 0.1);
+		params.put("SOURCE_MODEL_PATH", "");
+		params.put("TARGET_MODEL_PATH", "");
 		params.put("LINK_PATH", linkName);
 
 		return params;
