@@ -114,8 +114,8 @@ class VpdlGenerator extends AbstractGenerator {
 			subResult.put("ARCHITECTURE", getArchitecture());
 			subResult.put("TRAINING_PARAMETERS", getTrainingParams(split.get(1)));
 
-			subResult.put("CLASS_LEFT", r.relation.class_.name);
-			subResult.put("CLASS_RIGHT", r.relation.classRight.name);
+			subResult.put("S", r.relation.class_.name);
+			subResult.put("T", r.relation.classRight.name);
 
 			val leftEmbeddings = split.get(0).replace("{", "").replace("}", "")
 			val leftEmbeddingsList = leftEmbeddings.split(',').map[trim]
